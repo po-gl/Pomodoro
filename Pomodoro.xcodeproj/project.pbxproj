@@ -7,13 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		612B9088285CC863003F1990 /* TimeInterval+formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9087285CC863003F1990 /* TimeInterval+formatter.swift */; };
+		612B908A285CD2E4003F1990 /* Color+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9089285CD2E4003F1990 /* Color+hex.swift */; };
+		613D6D9C285C82FD0020C194 /* SequenceTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613D6D9B285C82FD0020C194 /* SequenceTimer.swift */; };
+		613D6D9E285C85FE0020C194 /* SequenceTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613D6D9D285C85FE0020C194 /* SequenceTimerTests.swift */; };
+		613D6D9F285C890F0020C194 /* SequenceTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613D6D9B285C82FD0020C194 /* SequenceTimer.swift */; };
 		617789B22856A1F300BD43D7 /* PomodoroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617789B12856A1F300BD43D7 /* PomodoroApp.swift */; };
-		617789B42856A1F300BD43D7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617789B32856A1F300BD43D7 /* ContentView.swift */; };
 		617789B62856A1F300BD43D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 617789B52856A1F300BD43D7 /* Assets.xcassets */; };
 		617789BA2856A1F300BD43D7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 617789B92856A1F300BD43D7 /* Preview Assets.xcassets */; };
 		617789C42856A1F400BD43D7 /* PomodoroTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617789C32856A1F400BD43D7 /* PomodoroTests.swift */; };
 		617789CE2856A1F400BD43D7 /* PomodoroUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617789CD2856A1F400BD43D7 /* PomodoroUITests.swift */; };
 		617789D02856A1F400BD43D7 /* PomodoroUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617789CF2856A1F400BD43D7 /* PomodoroUITestsLaunchTests.swift */; };
+		617789DE2856A38C00BD43D7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617789B32856A1F300BD43D7 /* ContentView.swift */; };
+		61B17251285CFCBB001C8245 /* View+Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B17250285CFCBB001C8245 /* View+Modifier.swift */; };
+		61B17253285CFCF8001C8245 /* UIView+ClosestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B17252285CFCF8001C8245 /* UIView+ClosestVC.swift */; };
+		61B17256285CFD5C001C8245 /* AlwaysPopoverModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B17255285CFD5C001C8245 /* AlwaysPopoverModifier.swift */; };
+		61B17258285CFE26001C8245 /* PopoverContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B17257285CFE26001C8245 /* PopoverContentViewController.swift */; };
+		61F5C220285CE482002BE18E /* TimePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F5C21F285CE482002BE18E /* TimePicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +44,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		612B9087285CC863003F1990 /* TimeInterval+formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+formatter.swift"; sourceTree = "<group>"; };
+		612B9089285CD2E4003F1990 /* Color+hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+hex.swift"; sourceTree = "<group>"; };
+		613D6D9B285C82FD0020C194 /* SequenceTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceTimer.swift; sourceTree = "<group>"; };
+		613D6D9D285C85FE0020C194 /* SequenceTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceTimerTests.swift; sourceTree = "<group>"; };
 		617789AE2856A1F300BD43D7 /* Pomodoro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pomodoro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		617789B12856A1F300BD43D7 /* PomodoroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroApp.swift; sourceTree = "<group>"; };
 		617789B32856A1F300BD43D7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -45,6 +59,11 @@
 		617789C92856A1F400BD43D7 /* PomodoroUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PomodoroUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		617789CD2856A1F400BD43D7 /* PomodoroUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroUITests.swift; sourceTree = "<group>"; };
 		617789CF2856A1F400BD43D7 /* PomodoroUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		61B17250285CFCBB001C8245 /* View+Modifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Modifier.swift"; sourceTree = "<group>"; };
+		61B17252285CFCF8001C8245 /* UIView+ClosestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ClosestVC.swift"; sourceTree = "<group>"; };
+		61B17255285CFD5C001C8245 /* AlwaysPopoverModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlwaysPopoverModifier.swift; sourceTree = "<group>"; };
+		61B17257285CFE26001C8245 /* PopoverContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverContentViewController.swift; sourceTree = "<group>"; };
+		61F5C21F285CE482002BE18E /* TimePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +91,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		612B9085285CC80D003F1990 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				612B9087285CC863003F1990 /* TimeInterval+formatter.swift */,
+				612B9089285CD2E4003F1990 /* Color+hex.swift */,
+				61B17250285CFCBB001C8245 /* View+Modifier.swift */,
+				61B17252285CFCF8001C8245 /* UIView+ClosestVC.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		617789A52856A1F200BD43D7 = {
 			isa = PBXGroup;
 			children = (
@@ -96,7 +126,10 @@
 			isa = PBXGroup;
 			children = (
 				617789B12856A1F300BD43D7 /* PomodoroApp.swift */,
-				617789B32856A1F300BD43D7 /* ContentView.swift */,
+				61BEBD812856B17A00987514 /* Views */,
+				61BEBD822856B1D400987514 /* Model */,
+				612B9085285CC80D003F1990 /* Extensions */,
+				613D6D9B285C82FD0020C194 /* SequenceTimer.swift */,
 				617789B52856A1F300BD43D7 /* Assets.xcassets */,
 				617789B72856A1F300BD43D7 /* Pomodoro.entitlements */,
 				617789B82856A1F300BD43D7 /* Preview Content */,
@@ -116,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				617789C32856A1F400BD43D7 /* PomodoroTests.swift */,
+				613D6D9D285C85FE0020C194 /* SequenceTimerTests.swift */,
 			);
 			path = PomodoroTests;
 			sourceTree = "<group>";
@@ -127,6 +161,32 @@
 				617789CF2856A1F400BD43D7 /* PomodoroUITestsLaunchTests.swift */,
 			);
 			path = PomodoroUITests;
+			sourceTree = "<group>";
+		};
+		61B17254285CFD40001C8245 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				61B17255285CFD5C001C8245 /* AlwaysPopoverModifier.swift */,
+				61B17257285CFE26001C8245 /* PopoverContentViewController.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		61BEBD812856B17A00987514 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				61B17254285CFD40001C8245 /* Helpers */,
+				617789B32856A1F300BD43D7 /* ContentView.swift */,
+				61F5C21F285CE482002BE18E /* TimePicker.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		61BEBD822856B1D400987514 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,7 +319,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				617789B42856A1F300BD43D7 /* ContentView.swift in Sources */,
+				61B17258285CFE26001C8245 /* PopoverContentViewController.swift in Sources */,
+				61F5C220285CE482002BE18E /* TimePicker.swift in Sources */,
+				613D6D9C285C82FD0020C194 /* SequenceTimer.swift in Sources */,
+				61B17256285CFD5C001C8245 /* AlwaysPopoverModifier.swift in Sources */,
+				612B908A285CD2E4003F1990 /* Color+hex.swift in Sources */,
+				61B17253285CFCF8001C8245 /* UIView+ClosestVC.swift in Sources */,
+				61B17251285CFCBB001C8245 /* View+Modifier.swift in Sources */,
+				617789DE2856A38C00BD43D7 /* ContentView.swift in Sources */,
+				612B9088285CC863003F1990 /* TimeInterval+formatter.swift in Sources */,
 				617789B22856A1F300BD43D7 /* PomodoroApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -269,6 +337,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				617789C42856A1F400BD43D7 /* PomodoroTests.swift in Sources */,
+				613D6D9E285C85FE0020C194 /* SequenceTimerTests.swift in Sources */,
+				613D6D9F285C890F0020C194 /* SequenceTimer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -412,6 +482,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Pomodoro/Pomodoro.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Pomodoro/Preview Content\"";
@@ -430,6 +501,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.po-gl.Pomodoro";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -444,6 +516,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Pomodoro/Pomodoro.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Pomodoro/Preview Content\"";
@@ -462,6 +535,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.po-gl.Pomodoro";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = YES;
