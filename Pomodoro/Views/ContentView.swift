@@ -170,13 +170,18 @@ struct ContentView: View {
     func pickerCluster() -> some View {
         return VStack {
             ForEach(0..<timerSelections.count, id: \.self) { i in
-                 TimePicker(selections: $timerSelections[i])
+                HStack {
+                    Text("T\(i+1)")
+                        .font(.system(size:20).monospaced())
+                        .fontWeight(.thin)
+                    TimePicker(selections: $timerSelections[i])
+                        .disabled(!sequenceTimer.isPaused)
+                        .onChange(of: timerSelections[i]) { _ in
+                            sequenceTimer.reset(getTimerSelectionIntervals())
+                            updateProportions()
+                        }
+                }
                     .padding(.top, 10)
-                    .disabled(!sequenceTimer.isPaused)
-                    .onChange(of: timerSelections[i]) { _ in
-                        sequenceTimer.reset(getTimerSelectionIntervals())
-                        updateProportions()
-                    }
             }
         }
     }
