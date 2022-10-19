@@ -23,6 +23,7 @@
 		61B17253285CFCF8001C8245 /* UIView+ClosestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B17252285CFCF8001C8245 /* UIView+ClosestVC.swift */; };
 		61B17256285CFD5C001C8245 /* AlwaysPopoverModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B17255285CFD5C001C8245 /* AlwaysPopoverModifier.swift */; };
 		61B17258285CFE26001C8245 /* PopoverContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B17257285CFE26001C8245 /* PopoverContentViewController.swift */; };
+		61F4220F2900AC350036400A /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F4220E2900AC350036400A /* ProgressBar.swift */; };
 		61F5C220285CE482002BE18E /* TimePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F5C21F285CE482002BE18E /* TimePicker.swift */; };
 /* End PBXBuildFile section */
 
@@ -63,6 +64,7 @@
 		61B17252285CFCF8001C8245 /* UIView+ClosestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ClosestVC.swift"; sourceTree = "<group>"; };
 		61B17255285CFD5C001C8245 /* AlwaysPopoverModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlwaysPopoverModifier.swift; sourceTree = "<group>"; };
 		61B17257285CFE26001C8245 /* PopoverContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverContentViewController.swift; sourceTree = "<group>"; };
+		61F4220E2900AC350036400A /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		61F5C21F285CE482002BE18E /* TimePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -178,6 +180,7 @@
 				61B17254285CFD40001C8245 /* Helpers */,
 				617789B32856A1F300BD43D7 /* ContentView.swift */,
 				61F5C21F285CE482002BE18E /* TimePicker.swift */,
+				61F4220E2900AC350036400A /* ProgressBar.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -320,6 +323,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				61B17258285CFE26001C8245 /* PopoverContentViewController.swift in Sources */,
+				61F4220F2900AC350036400A /* ProgressBar.swift in Sources */,
 				61F5C220285CE482002BE18E /* TimePicker.swift in Sources */,
 				613D6D9C285C82FD0020C194 /* SequenceTimer.swift in Sources */,
 				61B17256285CFD5C001C8245 /* AlwaysPopoverModifier.swift in Sources */,

@@ -12,7 +12,7 @@ class SequenceTimer: ObservableObject {
     @Published var timeRemaining: TimeInterval = 0.0
     @Published var isPaused: Bool = true
     
-    private var sequenceOfIntervals: [TimeInterval] = []
+    public var sequenceOfIntervals: [TimeInterval] = []
     @Published var currentIndex: Int = 0
     
     private var nextIndex: Int {
@@ -27,25 +27,51 @@ class SequenceTimer: ObservableObject {
     
     init(sequenceOfIntervals: [TimeInterval], timerProvider: Timer.Type = Timer.self) {
         self.timerProvider = timerProvider
+        self.sequenceOfIntervals = sequenceOfIntervals
         if !sequenceOfIntervals.isEmpty {
-            start(sequenceOfIntervals)
+            start(self.sequenceOfIntervals)
         }
     }
     
-    func start(_ sequenceOfIntervals: [TimeInterval]) {
+    public func start(_ sequenceOfIntervals: [TimeInterval]) {
         self.sequenceOfIntervals = sequenceOfIntervals
         reset()
         unpause()
     }
     
-    func reset(_ sequenceOfIntervals: [TimeInterval] = []) {
+    public func reset(_ sequenceOfIntervals: [TimeInterval] = []) {
         if !sequenceOfIntervals.isEmpty {
             self.sequenceOfIntervals = sequenceOfIntervals
         }
         end()
         currentIndex = 0
-        timeRemaining = self.sequenceOfIntervals[0]
+        updateTimeRemaining(0)
         createTimer()
+    }
+    
+    public func saveToUserDefaults() {
+        let timeSinceAppSuspended = Date()
+        UserDefaults.standard.set(isPaused, forKey: "isPaused")
+        UserDefaults.standard.set(timeSinceAppSuspended, forKey: "timeSinceAppSuspended")
+        UserDefaults.standard.set(timeRemaining, forKey: "timeRemaining")
+        UserDefaults.standard.set(currentIndex, forKey: "currentIndex")
+        UserDefaults.standard.set(sequenceOfIntervals, forKey: "sequenceOfIntervals")
+    }
+    
+    public func restoreFromUserDefaults() {
+        isPaused = UserDefaults.standard.bool(forKey: "isPaused")
+        if isPaused {
+            timeRemaining = UserDefaults.standard.object(forKey: "timeRemaining") as! TimeInterval
+        } else {
+            let timeSinceAppSuspended = UserDefaults.standard.object(forKey: "timeSinceAppSuspended") as? Date ?? Date()
+            let now = Date()
+            let secondsSinceAppSuspended = now.distance(to: timeSinceAppSuspended)
+            let timeRemainingAtAppSuspended = UserDefaults.standard.object(forKey: "timeRemaining") as? TimeInterval ?? 0.0
+            timeRemaining = timeRemainingAtAppSuspended - secondsSinceAppSuspended
+        }
+        currentIndex = UserDefaults.standard.integer(forKey: "currentIndex")
+        sequenceOfIntervals = UserDefaults.standard.object(forKey: "sequenceOfIntervals") as? [TimeInterval] ?? sequenceOfIntervals
+        updateTimeRemaining(currentIndex)
     }
     
     private func createTimer() {

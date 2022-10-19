@@ -8,27 +8,27 @@
 import SwiftUI
 
 struct ContentView: View {
-    // TODO move to constants file
-    let backgroundActiveColors = [Color(hex: 0xE0EDA4), Color(hex: 0xEDD9A3)]
-    let backgroundInactiveColor = Color(hex: 0xFFFFFF)
-    let barActiveColors = [Color(hex: 0x44D37B), Color(hex: 0xF06136)]
-    let barInactiveColors = [Color(hex: 0x75C493), Color(hex: 0xF08260)]
+    @ObservedObject var sequenceTimer: SequenceTimer
+    @State var timeIntervals: [TimeInterval]
     
-    @ObservedObject var sequenceTimer = SequenceTimer(sequenceOfIntervals: [6.0, 3.0], timerProvider: Timer.self)
+    @State var backgroundActiveColor: Color
     
-    @State var backgroundActiveColor = Color(hex: 0xE0EDA4)
-    @State var barColors = [Color(hex: 0x44D37B), Color(hex: 0xF08260)]
-    @State var timerMessage = "Timer:"
+    
+    init() {
+//        let localtimeIntervals = [25*60.0, 5*60.0]
+        let localtimeIntervals = [4.0, 5.0]
+        let localsequenceTimer = SequenceTimer(sequenceOfIntervals: localtimeIntervals)
+        self.timeIntervals = localtimeIntervals
+        self.sequenceTimer = localsequenceTimer
+        
+        self.backgroundActiveColor = Color("BackgroundWork")
+        
+        self.sequenceTimer.restoreFromUserDefaults()
+    }
 
-    @State var timerSelections = [[0, 0, 6], [0, 0, 3]]
     
-    @State var colorBarProportions = [0.666, 0.333]
-    @State var colorBarIndicatorProgress = 0.0
-    
-
     var body: some View {
         GeometryReader { metrics in
-            
             VStack {
                 HStack {
                     Spacer()
@@ -40,33 +40,31 @@ struct ContentView: View {
                 Spacer()
                 timerDisplay()
                 Spacer()
-                colorBar(metrics)
+                ProgressBar(sequenceTimer: sequenceTimer,
+                            timeIntervals: $timeIntervals,
+                            metrics: metrics)
                     .frame(maxHeight: 130)
-
-                HStack {
-                    Spacer()
-                    pickerCluster()
-                        .padding(.trailing, 20)
-                }
                 Spacer()
                 buttonCluster()
                 Spacer()
             }
-            .background(sequenceTimer.isPaused ? backgroundInactiveColor : backgroundActiveColor)
+            .background(sequenceTimer.isPaused ? Color("BackgroundStopped") : backgroundActiveColor)
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification), perform: {_ in
+                sequenceTimer.saveToUserDefaults()
+            })
         }
     }
     
     
     func handleTimerEnd() {
         withAnimation(.easeInOut(duration: 0.3)) {
-            backgroundActiveColor = backgroundActiveColors[sequenceTimer.currentIndex]
-            updateBarColors()
+            backgroundActiveColor = sequenceTimer.currentIndex % 2 == 0 ? Color("BackgroundWork") : Color("BackgroundRest")
         }
         
         // Asking permission
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
             if success {
-                print("All set!")
+                print("All set on permissions!")
             } else if let error = error {
                 print(error.localizedDescription)
             }
@@ -95,7 +93,7 @@ struct ContentView: View {
 
     func timerDisplay() -> some View {
         VStack(alignment: .leading) {
-            Text("\(timerMessage) \(sequenceTimer.currentIndex+1)")
+            Text("Timer: \(sequenceTimer.currentIndex+1)")
                 .font(.system(size: 30))
                 .fontWeight(.light)
                 .multilineTextAlignment(.leading)
@@ -106,37 +104,11 @@ struct ContentView: View {
                 .font(.system(size: 70))
                 .fontWeight(.light)
                 .monospacedDigit()
-                .onChange(of: sequenceTimer.timeRemaining) { _ in
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        colorBarIndicatorProgress = getTimerProgress()
-                    }
-                }
                 .shadow(radius: 20)
         }
     }
-
-    func colorBar(_ metrics: GeometryProxy) -> some View {
-        VStack (alignment: .leading){
-            downArrow()
-                .offset(x: (metrics.size.width-20) * colorBarIndicatorProgress)
-            HStack(spacing: 0) {
-                ForEach(0..<timerSelections.count, id: \.self) { i in
-                    ZStack {
-                        Rectangle()
-                            .foregroundColor(barColors[i])
-                            .innerShadow(using: Rectangle())
-                            .cornerRadius(10)
-                            .padding(.horizontal, 2)
-                        highlightRectangle()
-                    }
-                        .frame(maxWidth: metrics.size.width * colorBarProportions[i], maxHeight: 80)
-                }
-            }
-            upArrow()
-                .offset(x: (metrics.size.width-20) * colorBarIndicatorProgress)
-        }
-    }
-
+    
+    
     func buttonCluster() -> some View {
         return HStack {
             Spacer()
@@ -153,11 +125,6 @@ struct ContentView: View {
             Button(action: {
                 withAnimation(.easeIn(duration: 0.2)){
                     sequenceTimer.toggle()
-                    if sequenceTimer.isPaused {
-                        resetBarColors()
-                    } else {
-                        updateBarColors()
-                    }
                 }
             }, label: {
                 Text(sequenceTimer.isPaused ? "Start" : "Stop")
@@ -167,60 +134,6 @@ struct ContentView: View {
         }
     }
 
-    func pickerCluster() -> some View {
-        return VStack {
-            ForEach(0..<timerSelections.count, id: \.self) { i in
-                HStack {
-                    Text("T\(i+1)")
-                        .font(.system(size:20).monospaced())
-                        .fontWeight(.thin)
-                    TimePicker(selections: $timerSelections[i])
-                        .disabled(!sequenceTimer.isPaused)
-                        .onChange(of: timerSelections[i]) { _ in
-                            sequenceTimer.reset(getTimerSelectionIntervals())
-                            updateProportions()
-                        }
-                }
-                    .padding(.top, 10)
-            }
-        }
-    }
-    
-
-    func getTimerSelectionIntervals() -> [TimeInterval] {
-        var intervals: [TimeInterval] = []
-        for timerSelection in timerSelections {
-            intervals.append(selectionsToSeconds(timerSelection))
-        }
-        return intervals
-    }
-
-    func selectionsToSeconds(_ selections: [Int]) -> TimeInterval {
-        let hourSeconds = selections[0] * 60 * 60
-        let minuteSeconds = selections[1] * 60
-        let seconds = selections[2]
-        return TimeInterval(hourSeconds + minuteSeconds + seconds)
-    }
-    
-    func updateProportions() {
-        let intervals = getTimerSelectionIntervals()
-        let total = intervals.reduce(0, +)
-        for i in 0..<intervals.count {
-            colorBarProportions[i] = intervals[i] / total
-        }
-    }
-    
-    func getTimerProgress() -> TimeInterval {
-        let intervals = getTimerSelectionIntervals()
-        let total = intervals.reduce(0, +)
-        var cumulative = 0.0
-        for i in 0..<sequenceTimer.currentIndex {
-           cumulative += intervals[i]
-        }
-        let currentTime = intervals[sequenceTimer.currentIndex] - sequenceTimer.timeRemaining
-        return (cumulative + currentTime) / total
-    }
-    
     
     func menuButton() -> some View {
         return Menu {
@@ -245,55 +158,6 @@ struct ContentView: View {
                         .shadow(radius: 20)
                 }
             }
-        }
-    }
-    
-    
-    func updateBarColors() {
-        for i in 0..<timerSelections.count {
-            barColors[i] = i == sequenceTimer.currentIndex ? barActiveColors[i] : barInactiveColors[i]
-        }
-    }
-    
-    func resetBarColors() {
-        for i in 0..<timerSelections.count {
-            barColors[i] = barActiveColors[i]
-        }
-    }
-    
-
-    func downArrow() -> some View {
-        return Image(systemName: "arrowtriangle.down.fill")
-            .imageScale(.large)
-            .foregroundColor(Color(hex: 0x444444))
-            .opacity(0.9)
-    }
-    
-    func upArrow() -> some View {
-        return Image(systemName: "arrowtriangle.up.fill")
-            .imageScale(.large)
-            .foregroundColor(Color(hex: 0xAAAAAA))
-            .opacity(0.7)
-    }
-    
-    func highlightRectangle() -> some View {
-        VStack() {
-            HStack() {
-                Spacer()
-                ZStack {
-                    Rectangle()
-                        .frame(maxWidth: 16, maxHeight: 2)
-                        .foregroundColor(.white)
-                        .blur(radius: 4)
-                        .padding(12)
-                    Rectangle()
-                        .frame(maxWidth: 8, maxHeight: 2)
-                        .foregroundColor(.white)
-                        .blur(radius: 2)
-                        .padding(12)
-                }
-            }
-            Spacer()
         }
     }
 }
