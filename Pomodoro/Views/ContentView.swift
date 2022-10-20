@@ -38,7 +38,7 @@ struct ContentView: View {
                         .foregroundColor(.black)
                 }
                 Spacer()
-                timerDisplay()
+                TimerDisplay(sequenceTimer: sequenceTimer)
                 Spacer()
                 ProgressBar(sequenceTimer: sequenceTimer,
                             timeIntervals: $timeIntervals,
@@ -52,6 +52,9 @@ struct ContentView: View {
             .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification), perform: {_ in
                 sequenceTimer.saveToUserDefaults()
             })
+            .onChange(of: sequenceTimer.currentIndex) { _ in
+                handleTimerEnd()
+            }
         }
     }
     
@@ -91,24 +94,6 @@ struct ContentView: View {
     }
     
 
-    func timerDisplay() -> some View {
-        VStack(alignment: .leading) {
-            Text("Timer: \(sequenceTimer.currentIndex+1)")
-                .font(.system(size: 30))
-                .fontWeight(.light)
-                .multilineTextAlignment(.leading)
-                .onChange(of: sequenceTimer.currentIndex) { _ in
-                    handleTimerEnd()
-                }
-            Text("\(sequenceTimer.timeRemaining.timerFormatted())")
-                .font(.system(size: 70))
-                .fontWeight(.light)
-                .monospacedDigit()
-                .shadow(radius: 20)
-        }
-    }
-    
-    
     func buttonCluster() -> some View {
         return HStack {
             Spacer()
