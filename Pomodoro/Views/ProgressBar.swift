@@ -17,23 +17,30 @@ struct ProgressBar: View {
     @State var colorBarIndicatorProgress = 0.0
     
     var body: some View {
-        VStack (alignment: .leading) {
+        VStack (alignment: .leading, spacing: 0) {
             downArrow()
-                .offset(x: (metrics.size.width-20) * colorBarIndicatorProgress)
+                .offset(x: metrics.size.width * colorBarIndicatorProgress)
             HStack(spacing: 0) {
                 ForEach(0..<colorBarProportions.count, id: \.self) { i in
                     ZStack {
                         Rectangle()
                             .foregroundColor(getColorForStatus(pomoTimer.order[i].getStatus()))
-                            .innerShadow(using: Rectangle())
-                            .cornerRadius(10)
-                            .padding(.horizontal, 2)
+                            .frame(width: metrics.size.width * colorBarProportions[i], height: 16)
+                        
+                        HStack(spacing: 0) {
+                            Rectangle()
+                                .foregroundColor(.clear)
+                                .frame(width: metrics.size.width * colorBarProportions[i] - 2.0, height: 16)
+                            Rectangle()
+                                .frame(width: 2, height: 16)
+                        }
                     }
-                        .frame(maxWidth: metrics.size.width * colorBarProportions[i], maxHeight: 80)
                 }
             }
+            Rectangle()
+                .frame(width: metrics.size.width, height: 2)
             upArrow()
-                .offset(x: (metrics.size.width-20) * colorBarIndicatorProgress)
+                .offset(x: metrics.size.width * colorBarIndicatorProgress)
         }
         .onChange(of: pomoTimer.timeRemaining) { _ in
             withAnimation(.easeInOut(duration: 0.2)) {
@@ -73,6 +80,7 @@ struct ProgressBar: View {
             .imageScale(.large)
             .foregroundColor(Color(hex: 0x444444))
             .opacity(0.9)
+            .offset(x: -12)
     }
     
     func upArrow() -> some View {
@@ -80,6 +88,7 @@ struct ProgressBar: View {
             .imageScale(.large)
             .foregroundColor(Color(hex: 0xAAAAAA))
             .opacity(0.7)
+            .offset(x: -12)
     }
     
     
