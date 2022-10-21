@@ -8,22 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var sequenceTimer: SequenceTimer
-    @State var timeIntervals: [TimeInterval]
+    @ObservedObject var pomoTimer: PomoTimer
     
-    @State var backgroundActiveColor: Color
+    @State var backgroundActiveColor = Color("BackgroundWork")
     
     
     init() {
 //        let localtimeIntervals = [25*60.0, 5*60.0]
-        let localtimeIntervals = [4.0, 5.0]
-        let localsequenceTimer = SequenceTimer(sequenceOfIntervals: localtimeIntervals)
-        self.timeIntervals = localtimeIntervals
-        self.sequenceTimer = localsequenceTimer
-        
-        self.backgroundActiveColor = Color("BackgroundWork")
-        
-        self.sequenceTimer.restoreFromUserDefaults()
+        self.pomoTimer = PomoTimer(pomos: 1, longBreak: 30.0)
+//        self.pomoTimer.restoreFromUserDefaults()
     }
 
     
@@ -38,21 +31,21 @@ struct ContentView: View {
                         .foregroundColor(.black)
                 }
                 Spacer()
-                TimerDisplay(sequenceTimer: sequenceTimer)
+                TimerDisplay(pomoTimer: pomoTimer)
                 Spacer()
-                ProgressBar(sequenceTimer: sequenceTimer,
-                            timeIntervals: $timeIntervals,
-                            metrics: metrics)
-                    .frame(maxHeight: 130)
+//                ProgressBar(sequenceTimer: sequenceTimer,
+//                            timeIntervals: $timeIntervals,
+//                            metrics: metrics)
+//                    .frame(maxHeight: 130)
                 Spacer()
                 buttonCluster()
                 Spacer()
             }
-            .background(sequenceTimer.isPaused ? Color("BackgroundStopped") : backgroundActiveColor)
+            .background(pomoTimer.isPaused ? Color("BackgroundStopped") : backgroundActiveColor)
             .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification), perform: {_ in
-                sequenceTimer.saveToUserDefaults()
+                pomoTimer.saveToUserDefaults()
             })
-            .onChange(of: sequenceTimer.currentIndex) { _ in
+            .onChange(of: pomoTimer.status) { _ in
                 handleTimerEnd()
             }
         }
@@ -61,7 +54,14 @@ struct ContentView: View {
     
     func handleTimerEnd() {
         withAnimation(.easeInOut(duration: 0.3)) {
-            backgroundActiveColor = sequenceTimer.currentIndex % 2 == 0 ? Color("BackgroundWork") : Color("BackgroundRest")
+            switch pomoTimer.status {
+            case "Work":
+                backgroundActiveColor = Color("BackgroundWork")
+            case "Rest":
+                backgroundActiveColor = Color("BackgroundRest")
+            default:
+                backgroundActiveColor = Color("BackgroundRest")
+            }
         }
         
         // Asking permission
@@ -98,21 +98,21 @@ struct ContentView: View {
         return HStack {
             Spacer()
             Button(action: {
-                sequenceTimer.reset()
+                pomoTimer.reset()
             }, label: {
                 Text("Reset")
                     .font(.system(size: 20).monospaced())
-                    .foregroundColor(sequenceTimer.isPaused ? .orange : .gray)
+                    .foregroundColor(pomoTimer.isPaused ? .orange : .gray)
             })
-            .disabled(!sequenceTimer.isPaused)
+            .disabled(!pomoTimer.isPaused)
             Spacer()
 
             Button(action: {
                 withAnimation(.easeIn(duration: 0.2)){
-                    sequenceTimer.toggle()
+                    pomoTimer.toggle()
                 }
             }, label: {
-                Text(sequenceTimer.isPaused ? "Start" : "Stop")
+                Text(pomoTimer.isPaused ? "Start" : "Stop")
                     .font(.system(size: 30).monospaced())
             })
             Spacer()
