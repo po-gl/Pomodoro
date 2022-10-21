@@ -14,7 +14,7 @@ struct ContentView: View {
     
     
     init() {
-        self.pomoTimer = PomoTimer(pomos: 2, longBreak: 30.0)
+        pomoTimer = PomoTimer(pomos: 2, longBreak: 30.0)
     }
 
     
