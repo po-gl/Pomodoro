@@ -56,6 +56,8 @@ struct ContentView: View {
                 backgroundActiveColor = Color("BackgroundWork")
             case "Rest":
                 backgroundActiveColor = Color("BackgroundRest")
+            case "Long Break":
+                backgroundActiveColor = Color("BackgroundLongBreak")
             default:
                 backgroundActiveColor = Color("BackgroundRest")
             }

@@ -24,7 +24,7 @@ struct ProgressBar: View {
                 ForEach(0..<colorBarProportions.count, id: \.self) { i in
                     ZStack {
                         Rectangle()
-                            .foregroundColor(pomoTimer.order[i].getStatus() == .work ? Color("BarWork") : Color("BarRest"))
+                            .foregroundColor(getColorForStatus(pomoTimer.order[i].getStatus()))
                             .innerShadow(using: Rectangle())
                             .cornerRadius(10)
                             .padding(.horizontal, 2)
@@ -80,5 +80,17 @@ struct ProgressBar: View {
             .imageScale(.large)
             .foregroundColor(Color(hex: 0xAAAAAA))
             .opacity(0.7)
+    }
+    
+    
+    func getColorForStatus(_ status: PomoStatus) -> Color {
+        switch status {
+        case .work:
+            return Color("BarWork")
+        case .rest:
+            return Color("BarRest")
+        case .longBreak:
+            return Color("BarLongBreak")
+        }
     }
 }
