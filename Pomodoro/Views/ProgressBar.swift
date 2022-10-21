@@ -9,24 +9,22 @@ import Foundation
 import SwiftUI
 
 struct ProgressBar: View {
-    @ObservedObject var sequenceTimer: SequenceTimer
-    @Binding var timeIntervals: [TimeInterval]
+    @ObservedObject var pomoTimer: PomoTimer
     
     var metrics: GeometryProxy
     
-    @State var colorBarProportions = [0.666, 0.333]
+    @State var colorBarProportions: [Double] = []
     @State var colorBarIndicatorProgress = 0.0
-    
     
     var body: some View {
         VStack (alignment: .leading) {
             downArrow()
                 .offset(x: (metrics.size.width-20) * colorBarIndicatorProgress)
             HStack(spacing: 0) {
-                ForEach(0..<timeIntervals.count, id: \.self) { i in
+                ForEach(0..<colorBarProportions.count, id: \.self) { i in
                     ZStack {
                         Rectangle()
-                            .foregroundColor(i % 2 == 0 ? Color("BarWork") : Color("BarRest"))
+                            .foregroundColor(pomoTimer.order[i].getStatus() == .work ? Color("BarWork") : Color("BarRest"))
                             .innerShadow(using: Rectangle())
                             .cornerRadius(10)
                             .padding(.horizontal, 2)
@@ -37,7 +35,7 @@ struct ProgressBar: View {
             upArrow()
                 .offset(x: (metrics.size.width-20) * colorBarIndicatorProgress)
         }
-        .onChange(of: sequenceTimer.timeRemaining) { _ in
+        .onChange(of: pomoTimer.timeRemaining) { _ in
             withAnimation(.easeInOut(duration: 0.2)) {
                 colorBarIndicatorProgress = getTimerProgress()
             }
@@ -49,22 +47,23 @@ struct ProgressBar: View {
     
     
     func getTimerProgress() -> TimeInterval {
-        let intervals = sequenceTimer.sequenceOfIntervals
+        let intervals = pomoTimer.order.map { $0.getTime() }
         let total = intervals.reduce(0, +)
         var cumulative = 0.0
-        for i in 0..<sequenceTimer.currentIndex {
+        for i in 0..<pomoTimer.currentIndex {
            cumulative += intervals[i]
         }
-        let currentTime = intervals[sequenceTimer.currentIndex] - sequenceTimer.timeRemaining
+        let currentTime = intervals[pomoTimer.currentIndex] - pomoTimer.timeRemaining
         return (cumulative + currentTime) / total
     }
     
     
     func updateProportions() {
-        let intervals = timeIntervals
+        colorBarProportions.removeAll()
+        let intervals = pomoTimer.order.map { $0.getTime() }
         let total = intervals.reduce(0, +)
-        for i in 0..<intervals.count {
-            colorBarProportions[i] = intervals[i] / total
+        for interval in intervals {
+            colorBarProportions.append(interval / total)
         }
     }
     

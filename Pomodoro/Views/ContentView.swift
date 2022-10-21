@@ -15,7 +15,7 @@ struct ContentView: View {
     
     init() {
 //        let localtimeIntervals = [25*60.0, 5*60.0]
-        self.pomoTimer = PomoTimer(pomos: 1, longBreak: 30.0)
+        self.pomoTimer = PomoTimer(pomos: 2, longBreak: 30.0)
 //        self.pomoTimer.restoreFromUserDefaults()
     }
 
@@ -33,10 +33,9 @@ struct ContentView: View {
                 Spacer()
                 TimerDisplay(pomoTimer: pomoTimer)
                 Spacer()
-//                ProgressBar(sequenceTimer: sequenceTimer,
-//                            timeIntervals: $timeIntervals,
-//                            metrics: metrics)
-//                    .frame(maxHeight: 130)
+                ProgressBar(pomoTimer: pomoTimer,
+                            metrics: metrics)
+                    .frame(maxHeight: 130)
                 Spacer()
                 buttonCluster()
                 Spacer()
