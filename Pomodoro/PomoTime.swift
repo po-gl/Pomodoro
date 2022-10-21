@@ -8,12 +8,14 @@
 import Foundation
 
 
+enum PomoStatus {
+    case work
+    case rest
+    case longBreak
+}
+
+
 class PomoTime {
-    enum PomoStatus {
-        case work
-        case rest
-        case longBreak
-    }
     private var timeInterval: TimeInterval
     private var status: PomoStatus
     
