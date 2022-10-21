@@ -31,8 +31,7 @@ struct ContentView: View {
                 Spacer()
                 TimerDisplay(pomoTimer: pomoTimer)
                 Spacer()
-                ProgressBar(pomoTimer: pomoTimer,
-                            metrics: metrics)
+                ProgressBar(pomoTimer: pomoTimer, metrics: metrics)
                     .frame(maxHeight: 130)
                 Spacer()
                 buttonCluster()
