@@ -38,12 +38,8 @@ struct ProgressBar: View {
                         }
                     }
                 }
-                Rectangle()
-                    .frame(width: 2, height: 30)
-                    .offset(x:  -getBarWidth()/2.0 - 1.0, y: 1.0)
-                Rectangle()
-                    .frame(width: getBarWidth(), height: 2)
-                    .offset(y: 8)
+                startEdge()
+                lowerEdge()
             }
             upIndicator()
                 .offset(x: getBarWidth() * colorBarIndicatorProgress)
@@ -81,6 +77,23 @@ struct ProgressBar: View {
     }
     
     
+    func getColorForStatus(_ status: PomoStatus) -> Color {
+        switch status {
+        case .work:
+            return Color("BarWork")
+        case .rest:
+            return Color("BarRest")
+        case .longBreak:
+            return Color("BarLongBreak")
+        }
+    }
+    
+    
+    func getBarWidth() -> Double {
+        return metrics.size.width - 32.0
+    }
+    
+    
     func downIndicator() -> some View {
         return Rectangle()
             .frame(width: 2, height: 16)
@@ -94,19 +107,17 @@ struct ProgressBar: View {
             .offset(x: -2, y: 4)
     }
     
-    
-    func getColorForStatus(_ status: PomoStatus) -> Color {
-        switch status {
-        case .work:
-            return Color("BarWork")
-        case .rest:
-            return Color("BarRest")
-        case .longBreak:
-            return Color("BarLongBreak")
-        }
+    func startEdge() -> some View {
+        return Rectangle()
+            .foregroundColor(.clear)
+            .background(LinearGradient(gradient: Gradient(colors: [.black, .gray]), startPoint: .top, endPoint: .bottom))
+            .frame(width: 2, height: 30)
+            .offset(x:  -getBarWidth()/2.0 - 1.0, y: 1.0)
     }
     
-    func getBarWidth() -> Double {
-        return metrics.size.width - 32.0
+    func lowerEdge() -> some View {
+        return Rectangle()
+            .frame(width: getBarWidth(), height: 2)
+            .offset(y: 8)
     }
 }
