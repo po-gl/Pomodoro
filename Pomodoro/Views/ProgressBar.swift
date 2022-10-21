@@ -19,28 +19,34 @@ struct ProgressBar: View {
     var body: some View {
         VStack (alignment: .leading, spacing: 0) {
             downIndicator()
-                .offset(x: metrics.size.width * colorBarIndicatorProgress)
-            HStack(spacing: 0) {
-                ForEach(0..<colorBarProportions.count, id: \.self) { i in
-                    ZStack {
-                        Rectangle()
-                            .foregroundColor(getColorForStatus(pomoTimer.order[i].getStatus()))
-                            .frame(width: metrics.size.width * colorBarProportions[i], height: 16)
-                        
-                        HStack(spacing: 0) {
+                .offset(x: getBarWidth() * colorBarIndicatorProgress)
+            ZStack {
+                HStack(spacing: 0) {
+                    ForEach(0..<colorBarProportions.count, id: \.self) { i in
+                        ZStack {
                             Rectangle()
-                                .foregroundColor(.clear)
-                                .frame(width: metrics.size.width * colorBarProportions[i] - 2.0, height: 16)
-                            Rectangle()
-                                .frame(width: 2, height: 16)
+                                .foregroundColor(getColorForStatus(pomoTimer.order[i].getStatus()))
+                                .frame(width: getBarWidth() * colorBarProportions[i], height: 16)
+                            
+                            HStack(spacing: 0) {
+                                Rectangle()
+                                    .foregroundColor(.clear)
+                                    .frame(width: getBarWidth() * colorBarProportions[i] - 2.0, height: 16)
+                                Rectangle()
+                                    .frame(width: 2, height: 16)
+                            }
                         }
                     }
                 }
+                Rectangle()
+                    .frame(width: 2, height: 30)
+                    .offset(x:  -getBarWidth()/2.0 - 1.0, y: 1.0)
+                Rectangle()
+                    .frame(width: getBarWidth(), height: 2)
+                    .offset(y: 8)
             }
-            Rectangle()
-                .frame(width: metrics.size.width, height: 2)
             upIndicator()
-                .offset(x: metrics.size.width * colorBarIndicatorProgress)
+                .offset(x: getBarWidth() * colorBarIndicatorProgress)
         }
         .onChange(of: pomoTimer.timeRemaining) { _ in
             withAnimation(.easeInOut(duration: 0.2)) {
@@ -98,5 +104,9 @@ struct ProgressBar: View {
         case .longBreak:
             return Color("BarLongBreak")
         }
+    }
+    
+    func getBarWidth() -> Double {
+        return metrics.size.width - 32.0
     }
 }
