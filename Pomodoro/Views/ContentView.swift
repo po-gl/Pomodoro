@@ -14,9 +14,7 @@ struct ContentView: View {
     
     
     init() {
-//        let localtimeIntervals = [25*60.0, 5*60.0]
         self.pomoTimer = PomoTimer(pomos: 2, longBreak: 30.0)
-//        self.pomoTimer.restoreFromUserDefaults()
     }
 
     
