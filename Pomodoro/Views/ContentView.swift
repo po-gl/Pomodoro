@@ -51,14 +51,12 @@ struct ContentView: View {
     func handleTimerEnd() {
         withAnimation(.easeInOut(duration: 0.3)) {
             switch pomoTimer.status {
-            case "Work":
+            case .work:
                 backgroundActiveColor = Color("BackgroundWork")
-            case "Rest":
+            case .rest:
                 backgroundActiveColor = Color("BackgroundRest")
-            case "Long Break":
+            case .longBreak:
                 backgroundActiveColor = Color("BackgroundLongBreak")
-            default:
-                backgroundActiveColor = Color("BackgroundRest")
             }
         }
         

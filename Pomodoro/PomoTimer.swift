@@ -11,7 +11,8 @@ import SwiftUI
 
 class PomoTimer: SequenceTimer {
     var order: [PomoTime]
-    var status: String { get { return order[currentIndex].getStatusString() } }
+    var status: PomoStatus { get { return order[currentIndex].getStatus() } }
+    var statusString: String { get { return order[currentIndex].getStatusString() } }
     
     init(pomos: Int, longBreak: Double) {
         var pomoTimes: [PomoTime] = []

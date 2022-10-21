@@ -14,7 +14,7 @@ struct TimerDisplay: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("\(pomoTimer.status)")
+            Text("\(pomoTimer.statusString)")
                 .font(.system(size: 30))
                 .fontWeight(.light)
                 .multilineTextAlignment(.leading)
