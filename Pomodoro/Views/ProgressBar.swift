@@ -18,7 +18,7 @@ struct ProgressBar: View {
     
     var body: some View {
         VStack (alignment: .leading, spacing: 0) {
-            downArrow()
+            downIndicator()
                 .offset(x: metrics.size.width * colorBarIndicatorProgress)
             HStack(spacing: 0) {
                 ForEach(0..<colorBarProportions.count, id: \.self) { i in
@@ -39,7 +39,7 @@ struct ProgressBar: View {
             }
             Rectangle()
                 .frame(width: metrics.size.width, height: 2)
-            upArrow()
+            upIndicator()
                 .offset(x: metrics.size.width * colorBarIndicatorProgress)
         }
         .onChange(of: pomoTimer.timeRemaining) { _ in
@@ -75,20 +75,17 @@ struct ProgressBar: View {
     }
     
     
-    func downArrow() -> some View {
-        return Image(systemName: "arrowtriangle.down.fill")
-            .imageScale(.large)
-            .foregroundColor(Color(hex: 0x444444))
-            .opacity(0.9)
-            .offset(x: -12)
+    func downIndicator() -> some View {
+        return Rectangle()
+            .frame(width: 2, height: 16)
+            .offset(x: -2, y: -2)
     }
     
-    func upArrow() -> some View {
-        return Image(systemName: "arrowtriangle.up.fill")
-            .imageScale(.large)
-            .foregroundColor(Color(hex: 0xAAAAAA))
-            .opacity(0.7)
-            .offset(x: -12)
+    func upIndicator() -> some View {
+        return Rectangle()
+            .foregroundColor(.gray)
+            .frame(width: 2, height: 16)
+            .offset(x: -2, y: 4)
     }
     
     
