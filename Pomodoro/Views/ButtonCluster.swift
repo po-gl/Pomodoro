@@ -12,28 +12,51 @@ import SwiftUI
 struct ButtonCluster: View {
     @ObservedObject var pomoTimer: PomoTimer
     
+    var metrics: GeometryProxy
+    
     var body: some View {
-        HStack {
-            Spacer()
-            Button(action: {
-                pomoTimer.reset()
-            }, label: {
-                Text("Reset")
-                    .font(.system(size: 20).monospaced())
-                    .foregroundColor(pomoTimer.isPaused ? .orange : .gray)
-            })
-            .disabled(!pomoTimer.isPaused)
-            Spacer()
-
-            Button(action: {
-                withAnimation(.easeIn(duration: 0.2)){
-                    pomoTimer.toggle()
+        ZStack {
+            if pomoTimer.isPaused {
+                Stepper {
+                } onIncrement: {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        pomoTimer.incrementPomos()
+                    }
+                } onDecrement: {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        pomoTimer.decrementPomos()
+                    }
                 }
-            }, label: {
-                Text(pomoTimer.isPaused ? "Start" : "Stop")
-                    .font(.system(size: 30).monospaced())
-            })
-            Spacer()
+                .offset(x: getPomoStepperOffsetX() ,y: -245)
+            }
+            HStack {
+                Spacer()
+                Button(action: {
+                    pomoTimer.reset()
+                }, label: {
+                    Text("Reset")
+                        .font(.system(size: 20).monospaced())
+                        .foregroundColor(pomoTimer.isPaused ? .orange : .gray)
+                })
+                .disabled(!pomoTimer.isPaused)
+                Spacer()
+
+                Button(action: {
+                    withAnimation(.easeIn(duration: 0.2)){
+                        pomoTimer.toggle()
+                    }
+                }, label: {
+                    Text(pomoTimer.isPaused ? "Start" : "Stop")
+                        .font(.system(size: 30).monospaced())
+                })
+                Spacer()
+            }
         }
+    }
+    
+    private func getPomoStepperOffsetX() -> Double {
+        let intervals = pomoTimer.order.map { $0.getTime() }
+        let total = intervals.reduce(0, +)
+        return -(intervals[pomoTimer.order.count-1] / total * (metrics.size.width - 32.0)) + 30
     }
 }
