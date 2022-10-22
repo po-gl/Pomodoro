@@ -24,7 +24,7 @@ struct ContentView: View {
             VStack {
                 HStack {
                     Spacer()
-                    menuButton()
+                    MenuButton()
                         .padding(.horizontal)
                         .padding(.top)
                         .foregroundColor(.black)
@@ -88,33 +88,6 @@ struct ContentView: View {
 
         // add our notification request
         UNUserNotificationCenter.current().add(request)
-    }
-
-    
-    func menuButton() -> some View {
-        return Menu {
-            Button(action: {}) {
-                Label("Manage Timers", systemImage: "clock.arrow.2.circlepath")
-            }
-            Button(action: {}) {
-                Label("About", systemImage: "sparkles")
-                    .symbolRenderingMode(.multicolor)
-            }
-        }
-        label: {
-            Button(action: {}) {
-                ZStack {
-                    Circle()
-                        .frame(maxWidth: 40)
-                        .foregroundColor(.white)
-                        .opacity(0.0)
-                    Image(systemName: "cloud.rain.fill")
-                        .symbolRenderingMode(.multicolor)
-                        .font(.system(size: 20))
-                        .shadow(radius: 20)
-                }
-            }
-        }
     }
 }
 
