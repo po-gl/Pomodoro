@@ -66,7 +66,7 @@ class SequenceTimer: ObservableObject {
             let timeSinceAppSuspended = UserDefaults.standard.object(forKey: "timeSinceAppSuspended") as? Date ?? Date()
             let now = Date()
             let secondsSinceAppSuspended = now.distance(to: timeSinceAppSuspended)
-            let timeRemainingAtAppSuspended = UserDefaults.standard.object(forKey: "timeRemaining") as? TimeInterval ?? 0.0
+            let timeRemainingAtAppSuspended = UserDefaults.standard.object(forKey: "timeRemaining") as? TimeInterval ?? timeRemaining
             timeRemaining = timeRemainingAtAppSuspended - secondsSinceAppSuspended
         }
         currentIndex = UserDefaults.standard.integer(forKey: "currentIndex")
