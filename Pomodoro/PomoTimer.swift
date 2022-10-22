@@ -19,6 +19,10 @@ class PomoTimer: SequenceTimer {
     
     private let maxPomos: Int = 6
     
+    static let defaultWorkTime: Double = 25.0 * 60.0
+    static let defaultRestTime: Double = 5.0 * 60.0
+    static let defaultBreakTime: Double = 30.0 * 60.0
+    
     init(pomos: Int, longBreak: Double) {
         pomoCount = pomos
         longBreakTime = longBreak
@@ -79,14 +83,11 @@ fileprivate func getPomoTimes(_ pomos: Int, _ longBreak: Double) -> [PomoTime] {
 
 fileprivate func addPomos(_ pomos: Int, _ pomoTimes: inout [PomoTime]) {
     for _ in 0..<pomos {
-//        pomoTimes.append(PomoTime(25 * 60.0, .work))
-//        pomoTimes.append(PomoTime(5 * 60.0, .rest))
-        pomoTimes.append(PomoTime(4.0, .work))
-        pomoTimes.append(PomoTime(2.0, .rest))
+        pomoTimes.append(PomoTime(PomoTimer.defaultWorkTime, .work))
+        pomoTimes.append(PomoTime(PomoTimer.defaultRestTime, .rest))
     }
 }
 
 fileprivate func addLongBreak(_ longBreak: Double, _ pomoTimes: inout [PomoTime]) {
-//    pomoTimes.append(PomoTime(longBreak * 60.0, .longBreak))
-    pomoTimes.append(PomoTime(5.0, .longBreak))
+    pomoTimes.append(PomoTime(longBreak, .longBreak))
 }
