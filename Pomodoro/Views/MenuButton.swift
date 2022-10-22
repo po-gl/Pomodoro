@@ -9,10 +9,14 @@ import Foundation
 import SwiftUI
 
 struct MenuButton: View {
+    @State var showingManageTimer: Bool = false
+    
     var body: some View {
         Menu {
-            Button(action: {}) {
-                Label("Manage Timers", systemImage: "clock.arrow.2.circlepath")
+            Section {
+                Button(action: {showingManageTimer.toggle()}) {
+                    Label("Manage Timer", systemImage: "clock.arrow.2.circlepath")
+                }
             }
             Button(action: {}) {
                 Label("About", systemImage: "sparkles")
@@ -32,6 +36,9 @@ struct MenuButton: View {
                         .shadow(radius: 20)
                 }
             }
+        }
+        .sheet(isPresented: $showingManageTimer) {
+            Text("Managing saved timers")
         }
     }
 }
