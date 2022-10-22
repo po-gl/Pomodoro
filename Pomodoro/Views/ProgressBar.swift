@@ -13,7 +13,6 @@ struct ProgressBar: View {
     
     var metrics: GeometryProxy
     
-    @State var colorBarProportions: [Double] = []
     @State var colorBarIndicatorProgress = 0.0
     
     var body: some View {
@@ -22,16 +21,16 @@ struct ProgressBar: View {
                 .offset(x: getBarWidth() * colorBarIndicatorProgress)
             ZStack {
                 HStack(spacing: 0) {
-                    ForEach(0..<colorBarProportions.count, id: \.self) { i in
+                    ForEach(0..<pomoTimer.order.count, id: \.self) { i in
                         ZStack {
                             Rectangle()
                                 .foregroundColor(getColorForStatus(pomoTimer.order[i].getStatus()))
-                                .frame(width: getBarWidth() * colorBarProportions[i], height: 16)
+                                .frame(width: getBarWidth() * getProportion(i), height: 16)
                             
                             HStack(spacing: 0) {
                                 Rectangle()
                                     .foregroundColor(.clear)
-                                    .frame(width: getBarWidth() * colorBarProportions[i] - 2.0, height: 16)
+                                    .frame(width: getBarWidth() * getProportion(i) - 2.0, height: 16)
                                 Rectangle()
                                     .frame(width: 2, height: 16)
                             }
@@ -49,9 +48,6 @@ struct ProgressBar: View {
                 colorBarIndicatorProgress = getTimerProgress()
             }
         }
-        .onAppear() {
-            updateProportions()
-        }
     }
     
     
@@ -66,14 +62,10 @@ struct ProgressBar: View {
         return (cumulative + currentTime) / total
     }
     
-    
-    func updateProportions() {
-        colorBarProportions.removeAll()
+    func getProportion(_ index: Int) -> Double {
         let intervals = pomoTimer.order.map { $0.getTime() }
         let total = intervals.reduce(0, +)
-        for interval in intervals {
-            colorBarProportions.append(interval / total)
-        }
+        return intervals[index] / total
     }
     
     
