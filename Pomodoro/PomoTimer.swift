@@ -14,14 +14,35 @@ class PomoTimer: SequenceTimer {
     var status: PomoStatus { get { return order[currentIndex].getStatus() } }
     var statusString: String { get { return order[currentIndex].getStatusString() } }
     
+    var pomoCount: Int
+    var longBreakTime: Double
+    
+    private let maxPomos: Int = 6
+    
     init(pomos: Int, longBreak: Double) {
+        pomoCount = pomos
+        longBreakTime = longBreak
         let pomoTimes = getPomoTimes(pomos, longBreak)
         let timeIntervals = pomoTimes.map { $0.getTime() }
         order = pomoTimes
         super.init(sequenceOfIntervals: timeIntervals)
     }
     
+    func incrementPomos() {
+        pomoCount += 1
+        if pomoCount > maxPomos { pomoCount = maxPomos }
+        reset(pomos: pomoCount, longBreak: longBreakTime)
+    }
+    
+    func decrementPomos() {
+        pomoCount -= 1
+        if pomoCount < 1 { pomoCount = 1 }
+        reset(pomos: pomoCount, longBreak: longBreakTime)
+    }
+    
     func reset(pomos: Int, longBreak: Double) {
+        pomoCount = pomos
+        longBreakTime = longBreak
         let pomoTimes = getPomoTimes(pomos, longBreak)
         let timeIntervals = pomoTimes.map { $0.getTime() }
         order = pomoTimes
