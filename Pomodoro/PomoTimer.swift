@@ -10,26 +10,30 @@ import SwiftUI
 
 
 class PomoTimer: SequenceTimer {
-    var order: [PomoTime]
+    @Published var order: [PomoTime]
     var status: PomoStatus { get { return order[currentIndex].getStatus() } }
     var statusString: String { get { return order[currentIndex].getStatusString() } }
     
     init(pomos: Int, longBreak: Double) {
-        var pomoTimes: [PomoTime] = []
-        addPomos(pomos, &pomoTimes)
-        addLongBreak(longBreak, &pomoTimes)
-        order = pomoTimes
-        
+        let pomoTimes = getPomoTimes(pomos, longBreak)
         let timeIntervals = pomoTimes.map { $0.getTime() }
+        order = pomoTimes
         super.init(sequenceOfIntervals: timeIntervals)
     }
     
-    override func start(_ sequenceOfIntervals: [TimeInterval]) {
-        super.start(self.sequenceOfIntervals)
+    func reset(pomos: Int, longBreak: Double) {
+        let pomoTimes = getPomoTimes(pomos, longBreak)
+        let timeIntervals = pomoTimes.map { $0.getTime() }
+        order = pomoTimes
+        super.reset(timeIntervals)
     }
     
     override func reset(_ sequenceOfIntervals: [TimeInterval] = []) {
         super.reset([])
+    }
+    
+    override func start(_ sequenceOfIntervals: [TimeInterval]) {
+        super.start(self.sequenceOfIntervals)
     }
     
     override func saveToUserDefaults() {
@@ -41,6 +45,14 @@ class PomoTimer: SequenceTimer {
         order = UserDefaults.standard.object(forKey: "order") as? [PomoTime] ?? order
         super.restoreFromUserDefaults()
     }
+}
+
+
+fileprivate func getPomoTimes(_ pomos: Int, _ longBreak: Double) -> [PomoTime] {
+    var pomoTimes: [PomoTime] = []
+    addPomos(pomos, &pomoTimes)
+    addLongBreak(longBreak, &pomoTimes)
+    return pomoTimes
 }
 
 
