@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		611AE62E2903A9AF00FA24F0 /* ButtonCluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611AE62D2903A9AF00FA24F0 /* ButtonCluster.swift */; };
 		612B9088285CC863003F1990 /* TimeInterval+formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9087285CC863003F1990 /* TimeInterval+formatter.swift */; };
 		612B908A285CD2E4003F1990 /* Color+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9089285CD2E4003F1990 /* Color+hex.swift */; };
 		613D6D9C285C82FD0020C194 /* SequenceTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613D6D9B285C82FD0020C194 /* SequenceTimer.swift */; };
@@ -50,6 +51,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		611AE62D2903A9AF00FA24F0 /* ButtonCluster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCluster.swift; sourceTree = "<group>"; };
 		612B9087285CC863003F1990 /* TimeInterval+formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+formatter.swift"; sourceTree = "<group>"; };
 		612B9089285CD2E4003F1990 /* Color+hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+hex.swift"; sourceTree = "<group>"; };
 		613D6D9B285C82FD0020C194 /* SequenceTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceTimer.swift; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 				617789B32856A1F300BD43D7 /* ContentView.swift */,
 				619255AC290121DA00D399B8 /* TimerDisplay.swift */,
 				61F5C21F285CE482002BE18E /* TimePicker.swift */,
+				611AE62D2903A9AF00FA24F0 /* ButtonCluster.swift */,
 				61F4220E2900AC350036400A /* ProgressBar.swift */,
 			);
 			path = Views;
@@ -343,6 +346,7 @@
 				61B17253285CFCF8001C8245 /* UIView+ClosestVC.swift in Sources */,
 				61B17251285CFCBB001C8245 /* View+Modifier.swift in Sources */,
 				617789DE2856A38C00BD43D7 /* ContentView.swift in Sources */,
+				611AE62E2903A9AF00FA24F0 /* ButtonCluster.swift in Sources */,
 				612B9088285CC863003F1990 /* TimeInterval+formatter.swift in Sources */,
 				617789B22856A1F300BD43D7 /* PomodoroApp.swift in Sources */,
 				619255B12901F4CB00D399B8 /* PomoTimer.swift in Sources */,

@@ -35,7 +35,7 @@ struct ContentView: View {
                 ProgressBar(pomoTimer: pomoTimer, metrics: metrics)
                     .frame(maxHeight: 130)
                 Spacer()
-                buttonCluster()
+                ButtonCluster(pomoTimer: pomoTimer)
                 Spacer()
             }
             .background(pomoTimer.isPaused ? Color("BackgroundStopped") : backgroundActiveColor)
@@ -88,32 +88,6 @@ struct ContentView: View {
 
         // add our notification request
         UNUserNotificationCenter.current().add(request)
-    }
-    
-
-    func buttonCluster() -> some View {
-        return HStack {
-            Spacer()
-            Button(action: {
-                pomoTimer.reset()
-            }, label: {
-                Text("Reset")
-                    .font(.system(size: 20).monospaced())
-                    .foregroundColor(pomoTimer.isPaused ? .orange : .gray)
-            })
-            .disabled(!pomoTimer.isPaused)
-            Spacer()
-
-            Button(action: {
-                withAnimation(.easeIn(duration: 0.2)){
-                    pomoTimer.toggle()
-                }
-            }, label: {
-                Text(pomoTimer.isPaused ? "Start" : "Stop")
-                    .font(.system(size: 30).monospaced())
-            })
-            Spacer()
-        }
     }
 
     
