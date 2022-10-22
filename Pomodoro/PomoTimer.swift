@@ -31,6 +31,16 @@ class PomoTimer: SequenceTimer {
     override func reset(_ sequenceOfIntervals: [TimeInterval] = []) {
         super.reset([])
     }
+    
+    override func saveToUserDefaults() {
+        UserDefaults.standard.set(order, forKey: "order")
+        super.saveToUserDefaults()
+    }
+    
+    override func restoreFromUserDefaults() {
+        order = UserDefaults.standard.object(forKey: "order") as? [PomoTime] ?? order
+        super.restoreFromUserDefaults()
+    }
 }
 
 
