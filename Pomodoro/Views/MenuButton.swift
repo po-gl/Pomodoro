@@ -40,5 +40,6 @@ struct MenuButton: View {
         .sheet(isPresented: $showingManageTimer) {
             Text("Managing saved timers")
         }
+        .disabled(true)
     }
 }
