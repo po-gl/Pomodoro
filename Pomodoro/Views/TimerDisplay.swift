@@ -17,12 +17,18 @@ struct TimerDisplay: View {
             Text("\(pomoTimer.statusString)")
                 .font(.system(size: 30))
                 .fontWeight(.light)
-                .multilineTextAlignment(.leading)
             Text("\(pomoTimer.timeRemaining.timerFormatted())")
                 .font(.system(size: 70))
                 .fontWeight(.light)
                 .monospacedDigit()
                 .shadow(radius: 20)
+            HStack {
+                Spacer()
+                Text("\(pomoTimer.pomoCount) Pomos")
+                    .font(.system(size: 30))
+                    .fontWeight(.ultraLight)
+            }
         }
+        .frame(width: 285)
     }
 }
