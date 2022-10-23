@@ -88,13 +88,14 @@ struct ProgressBar: View {
     
     func downIndicator() -> some View {
         return Rectangle()
+            .foregroundColor(.primary)
             .frame(width: 2, height: 16)
             .offset(x: -2, y: -2)
     }
     
     func upIndicator() -> some View {
         return Rectangle()
-            .foregroundColor(.gray)
+            .foregroundColor(.secondary)
             .frame(width: 2, height: 16)
             .offset(x: -2, y: 4)
     }
@@ -102,7 +103,7 @@ struct ProgressBar: View {
     func startEdge() -> some View {
         return Rectangle()
             .foregroundColor(.clear)
-            .background(LinearGradient(gradient: Gradient(colors: [.black, .gray]), startPoint: .top, endPoint: .bottom))
+            .background(LinearGradient(gradient: Gradient(colors: [.primary, .secondary]), startPoint: .top, endPoint: .bottom))
             .frame(width: 2, height: 30)
             .offset(x:  -getBarWidth()/2.0 - 1.0, y: 1.0)
     }

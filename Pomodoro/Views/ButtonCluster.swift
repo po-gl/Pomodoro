@@ -36,7 +36,7 @@ struct ButtonCluster: View {
                 }, label: {
                     Text("Reset")
                         .font(.system(size: 20).monospaced())
-                        .foregroundColor(pomoTimer.isPaused ? .orange : .gray)
+                        .foregroundColor(pomoTimer.isPaused ? .orange : .secondary)
                 })
                 .disabled(!pomoTimer.isPaused)
                 Spacer()
