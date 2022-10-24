@@ -28,6 +28,7 @@
 		619255B5290204AB00D399B8 /* PomoTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619255B3290204AB00D399B8 /* PomoTime.swift */; };
 		619ED26729072C4C004E344D /* TimerDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619ED26629072C4C004E344D /* TimerDisplay.swift */; };
 		619ED26929072E00004E344D /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619ED26829072E00004E344D /* Haptics.swift */; };
+		619ED26B29073299004E344D /* ButtonCluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619ED26A29073299004E344D /* ButtonCluster.swift */; };
 		61B17251285CFCBB001C8245 /* View+Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B17250285CFCBB001C8245 /* View+Modifier.swift */; };
 		61B17253285CFCF8001C8245 /* UIView+ClosestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B17252285CFCF8001C8245 /* UIView+ClosestVC.swift */; };
 		61B17256285CFD5C001C8245 /* AlwaysPopoverModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B17255285CFD5C001C8245 /* AlwaysPopoverModifier.swift */; };
@@ -103,6 +104,7 @@
 		619255B3290204AB00D399B8 /* PomoTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomoTime.swift; sourceTree = "<group>"; };
 		619ED26629072C4C004E344D /* TimerDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDisplay.swift; sourceTree = "<group>"; };
 		619ED26829072E00004E344D /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
+		619ED26A29073299004E344D /* ButtonCluster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCluster.swift; sourceTree = "<group>"; };
 		61B17250285CFCBB001C8245 /* View+Modifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Modifier.swift"; sourceTree = "<group>"; };
 		61B17252285CFCF8001C8245 /* UIView+ClosestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ClosestVC.swift"; sourceTree = "<group>"; };
 		61B17255285CFD5C001C8245 /* AlwaysPopoverModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlwaysPopoverModifier.swift; sourceTree = "<group>"; };
@@ -319,6 +321,7 @@
 			children = (
 				61FAEAB229065FDC00CACF78 /* ContentView.swift */,
 				619ED26629072C4C004E344D /* TimerDisplay.swift */,
+				619ED26A29073299004E344D /* ButtonCluster.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -588,6 +591,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				619ED26B29073299004E344D /* ButtonCluster.swift in Sources */,
 				61FAEADA290689A200CACF78 /* SequenceTimer.swift in Sources */,
 				61FAEAB329065FDC00CACF78 /* ContentView.swift in Sources */,
 				61FAEADB290689A200CACF78 /* PomoTime.swift in Sources */,

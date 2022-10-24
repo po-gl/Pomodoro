@@ -18,6 +18,8 @@ struct ContentView: View {
     var body: some View {
         VStack {
             TimerDisplay(pomoTimer: pomoTimer)
+            Spacer()
+            ButtonCluster(pomoTimer: pomoTimer)
         }
         .padding()
     }
