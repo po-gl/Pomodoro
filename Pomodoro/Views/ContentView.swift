@@ -66,8 +66,16 @@ struct ContentView: View {
             }
         }
         
-        // Vibration?
-        workStart()
+        if !pomoTimer.isPaused {
+            switch pomoTimer.status {
+            case .work:
+                workStartHaptic()
+            case .rest:
+                restStartHaptic()
+            case .longBreak:
+                breakStartHaptic()
+            }
+        }
         
         // Notification
         let content = UNMutableNotificationContent()
@@ -108,14 +116,34 @@ struct ContentView: View {
         }
     }
     
-    func workStart() {
+    
+    func workStartHaptic() {
+        multiHaptic(5, 0.2, 0.05, 0.8, 0.65)
+    }
+    
+    func restStartHaptic() {
+        multiHaptic(5, 0.25, 0.05, 0.8, 0.5)
+    }
+    
+    func breakStartHaptic() {
+        multiHaptic(7, 0.3, 0.05, 0.8, 0.5)
+    }
+    
+    func multiHaptic(_ count: Int,
+                     _ duration: Double, _ seperationDuration: Double,
+                     _ intensity: Float, _ sharpness: Float) {
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
         
         var events: [CHHapticEvent] = []
         
-        let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 1.0)
-        let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 1.0)
-        events.append(CHHapticEvent(eventType: .hapticTransient, parameters: [intensity, sharpness], relativeTime: 0.0))
+        let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity)
+        let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: sharpness)
+        for i in 0..<count {
+            events.append(CHHapticEvent(eventType: .hapticContinuous,
+                                        parameters: [intensity, sharpness],
+                                        relativeTime: Double(i) * (duration + seperationDuration),
+                                        duration: duration))
+        }
         
         do {
             let pattern = try CHHapticPattern(events: events, parameters: [])
