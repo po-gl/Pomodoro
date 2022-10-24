@@ -30,8 +30,7 @@ struct MenuButton: View {
                         .frame(maxWidth: 40)
                         .foregroundColor(.white)
                         .opacity(0.0)
-                    Image(systemName: "cloud.rain.fill")
-                        .symbolRenderingMode(.multicolor)
+                    Text("🍅")
                         .font(.system(size: 20))
                         .shadow(radius: 20)
                 }
