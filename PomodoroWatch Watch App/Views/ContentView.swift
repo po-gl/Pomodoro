@@ -8,12 +8,16 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var pomoTimer: PomoTimer
+    
+    init() {
+        pomoTimer = PomoTimer(pomos: 4, longBreak: PomoTimer.defaultBreakTime)
+        pomoTimer.restoreFromUserDefaults()
+    }
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+            TimerDisplay(pomoTimer: pomoTimer)
         }
         .padding()
     }
