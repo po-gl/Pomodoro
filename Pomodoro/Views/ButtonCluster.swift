@@ -32,7 +32,9 @@ struct ButtonCluster: View {
             HStack {
                 Spacer()
                 Button(action: {
-                    pomoTimer.reset()
+                    withAnimation(.easeIn(duration: 0.2)){
+                        pomoTimer.reset()
+                    }
                 }, label: {
                     Text("Reset")
                         .font(.system(size: 20).monospaced())
