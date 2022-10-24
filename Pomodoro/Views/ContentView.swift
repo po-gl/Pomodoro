@@ -69,11 +69,11 @@ struct ContentView: View {
         if !pomoTimer.isPaused {
             switch pomoTimer.status {
             case .work:
-                workStartHaptic(engine: engine)
+                workHaptic(engine: engine)
             case .rest:
-                restStartHaptic(engine: engine)
+                restHaptic(engine: engine)
             case .longBreak:
-                breakStartHaptic(engine: engine)
+                breakHaptic(engine: engine)
             }
         }
         

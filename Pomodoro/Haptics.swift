@@ -21,15 +21,15 @@ func prepareHaptics(engine: inout CHHapticEngine?) {
 }
 
 
-func workStartHaptic(engine: CHHapticEngine?) {
+func workHaptic(engine: CHHapticEngine?) {
     multiHaptic(5, 0.2, 0.05, 0.8, 0.65, engine)
 }
 
-func restStartHaptic(engine: CHHapticEngine?) {
+func restHaptic(engine: CHHapticEngine?) {
     multiHaptic(5, 0.25, 0.05, 0.8, 0.5, engine)
 }
 
-func breakStartHaptic(engine: CHHapticEngine?) {
+func breakHaptic(engine: CHHapticEngine?) {
     multiHaptic(7, 0.3, 0.05, 0.8, 0.5, engine)
 }
 
