@@ -45,7 +45,7 @@ struct ContentView: View {
             })
             .onAppear {
                 getNotificationPermissions()
-                prepareHaptics()
+                prepareHaptics(engine: &engine)
             }
             .onChange(of: pomoTimer.status) { _ in
                 handleTimerEnd()
@@ -69,11 +69,11 @@ struct ContentView: View {
         if !pomoTimer.isPaused {
             switch pomoTimer.status {
             case .work:
-                workStartHaptic()
+                workStartHaptic(engine: engine)
             case .rest:
-                restStartHaptic()
+                restStartHaptic(engine: engine)
             case .longBreak:
-                breakStartHaptic()
+                breakStartHaptic(engine: engine)
             }
         }
         
@@ -102,55 +102,6 @@ struct ContentView: View {
             } else if let error = error {
                 print("There was an error requesting permissions: \(error.localizedDescription)")
             }
-        }
-    }
-    
-    func prepareHaptics() {
-        guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
-        
-        do {
-            engine = try CHHapticEngine()
-            try engine?.start()
-        } catch {
-            print("There was an error creating the haptics engine: \(error.localizedDescription)")
-        }
-    }
-    
-    
-    func workStartHaptic() {
-        multiHaptic(5, 0.2, 0.05, 0.8, 0.65)
-    }
-    
-    func restStartHaptic() {
-        multiHaptic(5, 0.25, 0.05, 0.8, 0.5)
-    }
-    
-    func breakStartHaptic() {
-        multiHaptic(7, 0.3, 0.05, 0.8, 0.5)
-    }
-    
-    func multiHaptic(_ count: Int,
-                     _ duration: Double, _ seperationDuration: Double,
-                     _ intensity: Float, _ sharpness: Float) {
-        guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
-        
-        var events: [CHHapticEvent] = []
-        
-        let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity)
-        let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: sharpness)
-        for i in 0..<count {
-            events.append(CHHapticEvent(eventType: .hapticContinuous,
-                                        parameters: [intensity, sharpness],
-                                        relativeTime: Double(i) * (duration + seperationDuration),
-                                        duration: duration))
-        }
-        
-        do {
-            let pattern = try CHHapticPattern(events: events, parameters: [])
-            let player = try engine?.makePlayer(with: pattern)
-            try player?.start(atTime: 0.0)
-        } catch {
-            print("Failed to play pattern: \(error.localizedDescription)")
         }
     }
 }
