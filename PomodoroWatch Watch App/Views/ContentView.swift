@@ -16,12 +16,16 @@ struct ContentView: View {
     }
     
     var body: some View {
-        VStack {
-            TimerDisplay(pomoTimer: pomoTimer)
-            Spacer()
-            ButtonCluster(pomoTimer: pomoTimer)
+        GeometryReader { metrics in
+            VStack {
+                TimerDisplay(pomoTimer: pomoTimer)
+                Spacer()
+                ProgressBar(pomoTimer: pomoTimer, metrics: metrics)
+                Spacer()
+                ButtonCluster(pomoTimer: pomoTimer)
+            }
+            .padding()
         }
-        .padding()
     }
 }
 
