@@ -11,8 +11,6 @@ import SwiftUI
 
 class PomoTimer: SequenceTimer {
     @Published var order: [PomoTime]
-    var status: PomoStatus { get { return order[currentIndex].getStatus() } }
-    var statusString: String { get { return order[currentIndex].getStatusString() } }
     
     var pomoCount: Int
     var longBreakTime: Double
@@ -29,8 +27,20 @@ class PomoTimer: SequenceTimer {
         let pomoTimes = getPomoTimes(pomos, longBreak)
         let timeIntervals = pomoTimes.map { $0.getTime() }
         order = pomoTimes
-        super.init(sequenceOfIntervals: timeIntervals)
+        super.init(timeIntervals)
     }
+    
+    
+    public func getStatus(atDate: Date = Date()) -> PomoStatus {
+        let index = getIndex(atDate: atDate)
+        return order[index].getStatus()
+    }
+    
+    public func getStatusString(atDate: Date = Date()) -> String {
+        let index = getIndex(atDate: atDate)
+        return order[index].getStatusString()
+    }
+    
     
     func incrementPomos() {
         pomoCount += 1
@@ -58,7 +68,7 @@ class PomoTimer: SequenceTimer {
     }
     
     override func start(_ sequenceOfIntervals: [TimeInterval]) {
-        super.start(self.sequenceOfIntervals)
+        super.start()
     }
     
     override func saveToUserDefaults() {

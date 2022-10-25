@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.scenePhase) private var scenePhase
     @ObservedObject var pomoTimer: PomoTimer
+    
+    @State var start = Date()
     
     init() {
         pomoTimer = PomoTimer(pomos: 4, longBreak: PomoTimer.defaultBreakTime)
-        pomoTimer.restoreFromUserDefaults()
     }
     
     var body: some View {
@@ -22,23 +24,28 @@ struct ContentView: View {
                 Spacer()
                 ProgressBar(pomoTimer: pomoTimer, metrics: metrics)
                 Spacer()
+                Spacer()
                 ButtonCluster(pomoTimer: pomoTimer)
                     .padding(.bottom)
             }
             .ignoresSafeArea()
             .padding(.top)
         }
-        .onAppear {
-        }
-        .onChange(of: pomoTimer.status) { _ in
-            handleTimerEnd()
+        .onChange(of: scenePhase) { newPhase in
+            if newPhase == .active {
+                print("\nActive")
+                pomoTimer.restoreFromUserDefaults()
+            } else if newPhase == .inactive {
+                print("\nInactive")
+                pomoTimer.saveToUserDefaults()
+            }
         }
     }
     
     
     func handleTimerEnd() {
         if !pomoTimer.isPaused {
-            switch pomoTimer.status {
+            switch pomoTimer.getStatus() {
             case .work:
                 workHaptic()
             case .rest:

@@ -9,124 +9,110 @@ import Foundation
 import SwiftUI
 
 class SequenceTimer: ObservableObject {
-    @Published var timeRemaining: TimeInterval = 0.0
     @Published var isPaused: Bool = true
     
-    public var sequenceOfIntervals: [TimeInterval] = []
-    @Published var currentIndex: Int = 0
+    private var startTime = Date()
+    private var timeAmounts: [TimeInterval] = []
     
-    private var nextIndex: Int {
-        return currentIndex + 1
-    }
-    
-    private let intervalInSeconds = 1.0
-    
-    private var timerProvider: Timer.Type
-    private var timer = Timer()
+    private var pauseStart = Date()
+    private var pauseOffset: TimeInterval = 0.0
     
     
-    init(sequenceOfIntervals: [TimeInterval], timerProvider: Timer.Type = Timer.self) {
-        self.timerProvider = timerProvider
-        self.sequenceOfIntervals = sequenceOfIntervals
+    init(_ sequenceOfIntervals: [TimeInterval]) {
+        timeAmounts = sequenceOfIntervals
         if !sequenceOfIntervals.isEmpty {
-            start(self.sequenceOfIntervals)
+            start(sequenceOfIntervals)
         }
     }
     
-    public func start(_ sequenceOfIntervals: [TimeInterval]) {
-        self.sequenceOfIntervals = sequenceOfIntervals
+    
+    public func timeRemaining(atDate: Date = Date()) -> TimeInterval {
+        let now = atDate
+        let index = getIndex(atDate: now)
+        
+        let sinceStartOffset = now.timeIntervalSince(startTime)
+        let pauseOffset = (isPaused ? now.timeIntervalSince(pauseStart) : 0.0) + pauseOffset
+        let startOffset = timeAmounts[0..<index].reduce(0.0, +)
+        
+        let diff = ((timeAmounts[index] + startDelay(index)) - (sinceStartOffset - startOffset - pauseOffset)).rounded()
+        
+        return diff > 0.0 ? diff : 0.0
+    }
+    
+    
+    public func getIndex(atDate: Date = Date()) -> Int {
+        let now = atDate
+        let sinceStartOffset = now.timeIntervalSince(startTime)
+        let pauseOffset = (isPaused ? now.timeIntervalSince(pauseStart) : 0.0) + pauseOffset
+        
+        var runningAmount = 0.0
+        for (index, amount) in timeAmounts.enumerated() {
+            let diff = ((amount + startDelay(index)) - (sinceStartOffset - runningAmount - pauseOffset)).rounded()
+            if diff >= 0.0 {
+                return index
+            }
+            runningAmount += amount
+        }
+        return timeAmounts.count-1
+    }
+    
+    
+    public func start(_ sequenceOfIntervals: [TimeInterval] = []) {
+        if !sequenceOfIntervals.isEmpty {
+            timeAmounts = sequenceOfIntervals
+        }
         reset()
         unpause()
     }
     
+    
     public func reset(_ sequenceOfIntervals: [TimeInterval] = []) {
         if !sequenceOfIntervals.isEmpty {
-            self.sequenceOfIntervals = sequenceOfIntervals
+            timeAmounts = sequenceOfIntervals
         }
-        end()
-        currentIndex = 0
-        updateTimeRemaining(0)
-        createTimer()
+        pause()
+        pauseOffset = 0.0
+        startTime = Date()
     }
     
+    
+    public func pause() {
+        isPaused = true
+        pauseStart = Date()
+    }
+    
+    public func unpause() {
+        isPaused = false
+        pauseOffset += Date().timeIntervalSince(pauseStart)
+    }
+    
+    public func toggle() {
+        isPaused ? unpause() : pause()
+    }
+    
+    
+    private func startDelay(_ index: Int) -> Double {
+        return 1.0 * Double(index)
+    }
+    
+    
     public func saveToUserDefaults() {
-        let timeSinceAppSuspended = Date()
+        UserDefaults.standard.set(Date(), forKey: "timeSinceAppSuspended")
+        
         UserDefaults.standard.set(isPaused, forKey: "isPaused")
-        UserDefaults.standard.set(timeSinceAppSuspended, forKey: "timeSinceAppSuspended")
-        UserDefaults.standard.set(timeRemaining, forKey: "timeRemaining")
-        UserDefaults.standard.set(currentIndex, forKey: "currentIndex")
-        UserDefaults.standard.set(sequenceOfIntervals, forKey: "sequenceOfIntervals")
+        UserDefaults.standard.set(startTime, forKey: "startTime")
+        UserDefaults.standard.set(timeAmounts, forKey: "timeAmounts")
+        UserDefaults.standard.set(pauseStart, forKey: "pauseStart")
+        UserDefaults.standard.set(pauseOffset, forKey: "pauseOffset")
     }
     
     public func restoreFromUserDefaults() {
-        isPaused = UserDefaults.standard.bool(forKey: "isPaused")
-        if isPaused {
-            timeRemaining = UserDefaults.standard.object(forKey: "timeRemaining") as! TimeInterval
-        } else {
-            let timeSinceAppSuspended = UserDefaults.standard.object(forKey: "timeSinceAppSuspended") as? Date ?? Date()
-            let now = Date()
-            let secondsSinceAppSuspended = now.distance(to: timeSinceAppSuspended)
-            let timeRemainingAtAppSuspended = UserDefaults.standard.object(forKey: "timeRemaining") as? TimeInterval ?? timeRemaining
-            timeRemaining = timeRemainingAtAppSuspended - secondsSinceAppSuspended
-        }
-        currentIndex = UserDefaults.standard.integer(forKey: "currentIndex")
-        sequenceOfIntervals = UserDefaults.standard.object(forKey: "sequenceOfIntervals") as? [TimeInterval] ?? sequenceOfIntervals
-        updateTimeRemaining(currentIndex)
-    }
-    
-    private func createTimer() {
-        self.timer = timerProvider.scheduledTimer(withTimeInterval: intervalInSeconds, repeats: true) {_ in
-            self.timerBlock()
-        }
-        RunLoop.current.add(timer, forMode: .common)
-    }
-    
-    private func timerBlock() {
-        if notPaused() {
-            decreaseTimeRemaining()
-        }
-    }
-    
-    private func notPaused() -> Bool {
-        return !isPaused
-    }
-    
-    private func decreaseTimeRemaining() {
-        if timeRemaining > 0.0 {
-            timeRemaining -= 1.0
-        } else {
-            updateToNextInterval()
-        }
-    }
-    
-    private func updateToNextInterval() {
-        currentIndex = getNextIntervalIndex()
-        updateTimeRemaining(currentIndex)
-    }
-    
-    private func getNextIntervalIndex() -> Int {
-        return nextIndex % sequenceOfIntervals.count
-    }
-    
-    private func updateTimeRemaining(_ index: Int) {
-        timeRemaining = sequenceOfIntervals[index]
-    }
-    
-    func pause() {
-        isPaused = true
-    }
-    
-    func unpause() {
-        isPaused = false
-    }
-    
-    func toggle() {
-        isPaused.toggle()
-    }
-    
-    func end() {
-        timer.invalidate()
-        pause()
+        isPaused = UserDefaults.standard.object(forKey: "isPaused") as? Bool ?? isPaused
+        startTime = UserDefaults.standard.object(forKey: "startTime") as? Date ?? startTime
+        timeAmounts = UserDefaults.standard.object(forKey: "timeAmounts") as? [TimeInterval] ?? timeAmounts
+        pauseStart = UserDefaults.standard.object(forKey: "pauseStart") as? Date ?? pauseStart
+        pauseOffset = UserDefaults.standard.object(forKey: "pauseOffset") as? TimeInterval ?? pauseOffset
+        print("RESTORE::isPaused=\(isPaused)   startTime=\(startTime)   pauseStart=\(pauseStart)   pauseOffset=\(pauseOffset)   timeAmounts=\(timeAmounts)")
     }
 }
 
