@@ -23,14 +23,39 @@ struct ContentView: View {
                 ProgressBar(pomoTimer: pomoTimer, metrics: metrics)
                 Spacer()
                 ButtonCluster(pomoTimer: pomoTimer)
+                    .padding(.bottom)
             }
-            .padding()
+            .ignoresSafeArea()
+            .padding(.top)
+        }
+        .onAppear {
+        }
+        .onChange(of: pomoTimer.status) { _ in
+            handleTimerEnd()
+        }
+    }
+    
+    
+    func handleTimerEnd() {
+        if !pomoTimer.isPaused {
+            switch pomoTimer.status {
+            case .work:
+                workHaptic()
+            case .rest:
+                restHaptic()
+            case .longBreak:
+                breakHaptic()
+            }
         }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ForEach(["Apple Watch Series 7 (41mm)", "Apple Watch Series 7 (45mm)"], id: \.self) { deviceName in
+            ContentView()
+                .previewDevice(PreviewDevice(rawValue: deviceName))
+                .previewDisplayName(deviceName)
+        }
     }
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		611A3CA529076BEF00B7AFD3 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611A3CA429076BEF00B7AFD3 /* ProgressBar.swift */; };
 		611AE62E2903A9AF00FA24F0 /* ButtonCluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611AE62D2903A9AF00FA24F0 /* ButtonCluster.swift */; };
 		611AE6302903AB1800FA24F0 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611AE62F2903AB1800FA24F0 /* MenuButton.swift */; };
 		612B9088285CC863003F1990 /* TimeInterval+formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9087285CC863003F1990 /* TimeInterval+formatter.swift */; };
@@ -29,6 +30,7 @@
 		619ED26729072C4C004E344D /* TimerDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619ED26629072C4C004E344D /* TimerDisplay.swift */; };
 		619ED26929072E00004E344D /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619ED26829072E00004E344D /* Haptics.swift */; };
 		619ED26B29073299004E344D /* ButtonCluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619ED26A29073299004E344D /* ButtonCluster.swift */; };
+		619ED26E29073A7E004E344D /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619ED26D29073A7E004E344D /* Haptics.swift */; };
 		61B17251285CFCBB001C8245 /* View+Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B17250285CFCBB001C8245 /* View+Modifier.swift */; };
 		61B17253285CFCF8001C8245 /* UIView+ClosestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B17252285CFCF8001C8245 /* UIView+ClosestVC.swift */; };
 		61B17256285CFD5C001C8245 /* AlwaysPopoverModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B17255285CFD5C001C8245 /* AlwaysPopoverModifier.swift */; };
@@ -46,7 +48,6 @@
 		61FAEADB290689A200CACF78 /* PomoTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619255B3290204AB00D399B8 /* PomoTime.swift */; };
 		61FAEADC290689A200CACF78 /* Color+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9089285CD2E4003F1990 /* Color+hex.swift */; };
 		61FAEADE290689A200CACF78 /* PomoTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619255B02901F4CB00D399B8 /* PomoTimer.swift */; };
-		61FAEADF290689A200CACF78 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F4220E2900AC350036400A /* ProgressBar.swift */; };
 		61FAEAE0290689A200CACF78 /* TimeInterval+formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9087285CC863003F1990 /* TimeInterval+formatter.swift */; };
 /* End PBXBuildFile section */
 
@@ -82,6 +83,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		611A3CA429076BEF00B7AFD3 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		611AE62D2903A9AF00FA24F0 /* ButtonCluster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCluster.swift; sourceTree = "<group>"; };
 		611AE62F2903AB1800FA24F0 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		612B9087285CC863003F1990 /* TimeInterval+formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+formatter.swift"; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 		619ED26629072C4C004E344D /* TimerDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDisplay.swift; sourceTree = "<group>"; };
 		619ED26829072E00004E344D /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		619ED26A29073299004E344D /* ButtonCluster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCluster.swift; sourceTree = "<group>"; };
+		619ED26D29073A7E004E344D /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		61B17250285CFCBB001C8245 /* View+Modifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Modifier.swift"; sourceTree = "<group>"; };
 		61B17252285CFCF8001C8245 /* UIView+ClosestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ClosestVC.swift"; sourceTree = "<group>"; };
 		61B17255285CFD5C001C8245 /* AlwaysPopoverModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlwaysPopoverModifier.swift; sourceTree = "<group>"; };
@@ -284,6 +287,7 @@
 			isa = PBXGroup;
 			children = (
 				61FAEAB029065FDC00CACF78 /* PomodoroWatchApp.swift */,
+				619ED26D29073A7E004E344D /* Haptics.swift */,
 				61FAEAD8290688FB00CACF78 /* Views */,
 				61FAEAB429065FDE00CACF78 /* Assets.xcassets */,
 				61FAEAB629065FDE00CACF78 /* Preview Content */,
@@ -322,6 +326,7 @@
 				61FAEAB229065FDC00CACF78 /* ContentView.swift */,
 				619ED26629072C4C004E344D /* TimerDisplay.swift */,
 				619ED26A29073299004E344D /* ButtonCluster.swift */,
+				611A3CA429076BEF00B7AFD3 /* ProgressBar.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -593,13 +598,14 @@
 			files = (
 				619ED26B29073299004E344D /* ButtonCluster.swift in Sources */,
 				61FAEADA290689A200CACF78 /* SequenceTimer.swift in Sources */,
+				619ED26E29073A7E004E344D /* Haptics.swift in Sources */,
 				61FAEAB329065FDC00CACF78 /* ContentView.swift in Sources */,
 				61FAEADB290689A200CACF78 /* PomoTime.swift in Sources */,
 				61FAEAE0290689A200CACF78 /* TimeInterval+formatter.swift in Sources */,
-				61FAEADF290689A200CACF78 /* ProgressBar.swift in Sources */,
 				61FAEADC290689A200CACF78 /* Color+hex.swift in Sources */,
 				619ED26729072C4C004E344D /* TimerDisplay.swift in Sources */,
 				61FAEADE290689A200CACF78 /* PomoTimer.swift in Sources */,
+				611A3CA529076BEF00B7AFD3 /* ProgressBar.swift in Sources */,
 				61FAEAB129065FDC00CACF78 /* PomodoroWatchApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -943,7 +949,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = .watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = .PomodoroWatch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -975,7 +981,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = .watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = .PomodoroWatch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;

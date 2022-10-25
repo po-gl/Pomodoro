@@ -14,7 +14,6 @@ struct ButtonCluster: View {
     
     var body: some View {
         HStack {
-            Spacer()
             Image(systemName: "arrow.counterclockwise.circle.fill")
                 .foregroundColor(pomoTimer.isPaused ? .orange : Color(hex: 0x333333))
                 .font(.system(size: 40))
@@ -35,7 +34,6 @@ struct ButtonCluster: View {
                         pomoTimer.toggle()
                     }
                 }
-            Spacer()
         }
     }
 }

@@ -15,11 +15,11 @@ struct TimerDisplay: View {
         VStack(alignment: .leading) {
             Text("\(pomoTimer.statusString)")
                 .foregroundColor(getColorForStatus(pomoTimer.status))
-                .font(.system(size: 30))
+                .font(.system(size: 26))
                 .fontWeight(.light)
             Text("\(pomoTimer.timeRemaining.timerFormatted())")
                 .font(.system(size: 40))
-                .fontWeight(.medium)
+                .fontWeight(.regular)
                 .monospacedDigit()
                 .shadow(radius: 20)
         }
