@@ -8,14 +8,14 @@
 import Foundation
 
 
-enum PomoStatus {
+enum PomoStatus: Codable {
     case work
     case rest
     case longBreak
 }
 
 
-class PomoTime {
+class PomoTime: Codable {
     private var timeInterval: TimeInterval
     private var status: PomoStatus
     
@@ -41,5 +41,22 @@ class PomoTime {
         case .longBreak:
             return "Long Break"
         }
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case timeInterval
+        case status
+    }
+    
+    required init (from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        timeInterval = try values.decode(TimeInterval.self, forKey: .timeInterval)
+        status = try values.decode(PomoStatus.self, forKey: .status)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(timeInterval, forKey: .timeInterval)
+        try container.encode(status, forKey: .status)
     }
 }
