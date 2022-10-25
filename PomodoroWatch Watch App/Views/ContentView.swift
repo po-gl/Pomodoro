@@ -14,7 +14,17 @@ struct ContentView: View {
     @State var start = Date()
     
     init() {
-        pomoTimer = PomoTimer(pomos: 4, longBreak: PomoTimer.defaultBreakTime)
+        pomoTimer = PomoTimer(pomos: 4, longBreak: PomoTimer.defaultBreakTime) { status in
+            print("Performed action! \(Date()) \(status)")
+            switch status {
+            case .work:
+                workHaptic()
+            case .rest:
+                restHaptic()
+            case .longBreak:
+                breakHaptic()
+            }
+        }
     }
     
     var body: some View {
@@ -38,20 +48,6 @@ struct ContentView: View {
             } else if newPhase == .inactive {
                 print("\nInactive")
                 pomoTimer.saveToUserDefaults()
-            }
-        }
-    }
-    
-    
-    func handleTimerEnd() {
-        if !pomoTimer.isPaused {
-            switch pomoTimer.getStatus() {
-            case .work:
-                workHaptic()
-            case .rest:
-                restHaptic()
-            case .longBreak:
-                breakHaptic()
             }
         }
     }

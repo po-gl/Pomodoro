@@ -20,14 +20,17 @@ class PomoTimer: SequenceTimer {
     static let defaultWorkTime: Double = 25.0 * 60.0
     static let defaultRestTime: Double = 5.0 * 60.0
     static let defaultBreakTime: Double = 30.0 * 60.0
+
     
-    init(pomos: Int, longBreak: Double) {
+    init(pomos: Int, longBreak: Double, perform action: @escaping (PomoStatus) -> Void) {
         pomoCount = pomos
         longBreakTime = longBreak
         let pomoTimes = getPomoTimes(pomos, longBreak)
         let timeIntervals = pomoTimes.map { $0.getTime() }
         order = pomoTimes
-        super.init(timeIntervals)
+        super.init(timeIntervals) { index in
+            action(pomoTimes[index].getStatus())
+        }
     }
     
     

@@ -17,19 +17,28 @@ class SequenceTimer: ObservableObject {
     private var pauseStart = Date()
     private var pauseOffset: TimeInterval = 0.0
     
+    private var action: (Int) -> Void
+    private var timer = Timer()
+    private var timerProvider = Timer.self
     
-    init(_ sequenceOfIntervals: [TimeInterval]) {
+    
+    init(_ sequenceOfIntervals: [TimeInterval], perform: @escaping (Int) -> Void, timerProvider: Timer.Type = Timer.self) {
         timeAmounts = sequenceOfIntervals
+        action = perform
+        self.timerProvider = timerProvider
         if !sequenceOfIntervals.isEmpty {
             start(sequenceOfIntervals)
         }
     }
     
     
-    public func timeRemaining(atDate: Date = Date()) -> TimeInterval {
-        let now = atDate
+    public func timeRemaining(atDate now: Date = Date()) -> TimeInterval {
         let index = getIndex(atDate: now)
-        
+        return timeRemaining(for: index, atDate: now)
+    }
+    
+    
+    private func timeRemaining(for index: Int, atDate now: Date = Date()) -> TimeInterval {
         let sinceStartOffset = now.timeIntervalSince(startTime)
         let pauseOffset = (isPaused ? now.timeIntervalSince(pauseStart) : 0.0) + pauseOffset
         let startOffset = timeAmounts[0..<index].reduce(0.0, +)
@@ -84,6 +93,7 @@ class SequenceTimer: ObservableObject {
     public func unpause() {
         isPaused = false
         pauseOffset += Date().timeIntervalSince(pauseStart)
+        createTimer(index: getIndex())
     }
     
     public func toggle() {
@@ -93,6 +103,17 @@ class SequenceTimer: ObservableObject {
     
     private func startDelay(_ index: Int) -> Double {
         return 1.0 * Double(index)
+    }
+    
+    
+    private func createTimer(index: Int) {
+        self.timer = timerProvider.scheduledTimer(withTimeInterval: self.timeRemaining(for: index), repeats: false) { _ in
+            if index < self.timeAmounts.count-1 {
+                self.action(index+1)
+                self.createTimer(index: index+1)
+            }
+        }
+        RunLoop.current.add(timer, forMode: .common)
     }
     
     
