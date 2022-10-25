@@ -88,6 +88,7 @@ class SequenceTimer: ObservableObject {
     public func pause() {
         isPaused = true
         pauseStart = Date()
+        timer.invalidate()
     }
     
     public func unpause() {
@@ -125,6 +126,7 @@ class SequenceTimer: ObservableObject {
         UserDefaults.standard.set(timeAmounts, forKey: "timeAmounts")
         UserDefaults.standard.set(pauseStart, forKey: "pauseStart")
         UserDefaults.standard.set(pauseOffset, forKey: "pauseOffset")
+        timer.invalidate()
     }
     
     public func restoreFromUserDefaults() {
@@ -134,6 +136,10 @@ class SequenceTimer: ObservableObject {
         pauseStart = UserDefaults.standard.object(forKey: "pauseStart") as? Date ?? pauseStart
         pauseOffset = UserDefaults.standard.object(forKey: "pauseOffset") as? TimeInterval ?? pauseOffset
         print("RESTORE::isPaused=\(isPaused)   startTime=\(startTime)   pauseStart=\(pauseStart)   pauseOffset=\(pauseOffset)   timeAmounts=\(timeAmounts)")
+        
+        if !isPaused {
+            createTimer(index: getIndex())
+        }
     }
 }
 
