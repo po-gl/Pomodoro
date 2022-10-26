@@ -34,9 +34,8 @@ struct TimerDisplay: View {
                         .fontWeight(.ultraLight)
                 }
                 
-                if pomoTimer.isPaused {
-                    pomoStepper()
-                }
+                pomoStepper()
+                    .opacity(pomoTimer.isPaused ? 1.0 : 0.0)
             }
             .frame(width: 285)
         }
