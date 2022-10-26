@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-func setupNotification(_ pomoTimer: PomoTimer) {
+func setupNotifications(_ pomoTimer: PomoTimer) {
     guard !pomoTimer.isPaused else { return }
     let now = Date()
     let currentIndex = pomoTimer.getIndex(atDate: now)

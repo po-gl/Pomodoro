@@ -62,7 +62,7 @@ struct ContentView: View {
                     } else if newPhase == .inactive {
                         print("\nInactive")
                         pomoTimer.saveToUserDefaults()
-                        setupNotification(pomoTimer)
+                        setupNotifications(pomoTimer)
                     }
                 }
             }
