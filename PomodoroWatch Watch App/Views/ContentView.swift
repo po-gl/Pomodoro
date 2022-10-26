@@ -27,6 +27,8 @@ struct ContentView: View {
                 breakHaptic()
             }
         }
+        
+        pomoTimer.saveToUserDefaults()
     }
     
     var body: some View {
