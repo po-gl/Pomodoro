@@ -28,13 +28,17 @@ class PomoTimer: SequenceTimer {
         let pomoTimes = getPomoTimes(pomos, longBreak)
         let timeIntervals = pomoTimes.map { $0.getTime() }
         order = pomoTimes
+        
+        weak var selfInstance: PomoTimer?
         super.init(timeIntervals) { index in
             if index < pomoTimes.count {
                 action(pomoTimes[index].getStatus())
             } else {
+                selfInstance?.toggle()
                 action(.end)
             }
         }
+        selfInstance = self
     }
     
     
