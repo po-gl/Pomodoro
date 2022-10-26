@@ -28,6 +28,7 @@ struct ContentView: View {
             }
         }
         
+        pomoTimer.pause()
         pomoTimer.saveToUserDefaults()
     }
     
