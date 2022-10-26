@@ -29,19 +29,25 @@ class PomoTimer: SequenceTimer {
         let timeIntervals = pomoTimes.map { $0.getTime() }
         order = pomoTimes
         super.init(timeIntervals) { index in
-            action(pomoTimes[index].getStatus())
+            if index < pomoTimes.count {
+                action(pomoTimes[index].getStatus())
+            } else {
+                action(.end)
+            }
         }
     }
     
     
     public func getStatus(atDate: Date = Date()) -> PomoStatus {
         let index = getIndex(atDate: atDate)
+        if index == order.count-1 && timeRemaining(atDate: atDate) == 0.0 {
+            return .end
+        }
         return order[index].getStatus()
     }
     
     public func getStatusString(atDate: Date = Date()) -> String {
-        let index = getIndex(atDate: atDate)
-        return order[index].getStatusString()
+        return getStatus(atDate: atDate).rawValue
     }
     
     

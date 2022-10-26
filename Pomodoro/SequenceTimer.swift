@@ -109,8 +109,8 @@ class SequenceTimer: ObservableObject {
     
     private func createTimer(index: Int) {
         self.timer = timerProvider.scheduledTimer(withTimeInterval: self.timeRemaining(for: index), repeats: false) { _ in
+            self.action(index+1)
             if index < self.timeAmounts.count-1 {
-                self.action(index+1)
                 self.createTimer(index: index+1)
             }
         }

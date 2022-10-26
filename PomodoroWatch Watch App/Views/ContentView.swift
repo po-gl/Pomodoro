@@ -14,7 +14,7 @@ struct ContentView: View {
     @State var start = Date()
     
     init() {
-        pomoTimer = PomoTimer(pomos: 4, longBreak: PomoTimer.defaultBreakTime) { status in
+        pomoTimer = PomoTimer(pomos: 1, longBreak: PomoTimer.defaultBreakTime) { status in
             print("Performed action! \(Date()) \(status)")
             switch status {
             case .work:
@@ -22,6 +22,8 @@ struct ContentView: View {
             case .rest:
                 restHaptic()
             case .longBreak:
+                breakHaptic()
+            case .end:
                 breakHaptic()
             }
         }

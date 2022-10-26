@@ -84,6 +84,8 @@ struct ProgressBar: View {
             return Color("BarRest")
         case .longBreak:
             return Color("BarLongBreak")
+        case .end:
+            return Color("End")
         }
     }
     

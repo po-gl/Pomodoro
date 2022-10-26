@@ -35,6 +35,8 @@ struct TimerDisplay: View {
             return Color("BarRest")
         case .longBreak:
             return Color("BarLongBreak")
+        case .end:
+            return .accentColor
         }
     }
 }

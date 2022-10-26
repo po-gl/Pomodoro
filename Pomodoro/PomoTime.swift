@@ -8,10 +8,11 @@
 import Foundation
 
 
-enum PomoStatus: Codable {
-    case work
-    case rest
-    case longBreak
+enum PomoStatus: String, Codable {
+    case work = "Work"
+    case rest = "Rest"
+    case longBreak = "Long Break"
+    case end = "Finished"
 }
 
 
@@ -33,14 +34,7 @@ class PomoTime: Codable {
     }
     
     func getStatusString() -> String {
-        switch status {
-        case .work:
-            return "Work"
-        case .rest:
-            return "Rest"
-        case .longBreak:
-            return "Long Break"
-        }
+        return getStatus().rawValue
     }
     
     enum CodingKeys: String, CodingKey {
