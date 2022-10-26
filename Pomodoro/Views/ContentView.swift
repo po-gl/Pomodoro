@@ -12,9 +12,6 @@ struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
     @ObservedObject var pomoTimer: PomoTimer
     
-    @State var backgroundActiveColor = Color("BackgroundWork")
-    
-    
     @State private var engine: CHHapticEngine?
     
     init() {
