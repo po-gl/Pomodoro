@@ -13,36 +13,29 @@ struct MenuButton: View {
     @ObservedObject var pomoTimer: PomoTimer
     
     var body: some View {
-        Menu {
-            Section {
-                Button(action: {showingManageTimer.toggle()}) {
-                    Label("Manage Timer", systemImage: "clock.arrow.2.circlepath")
-                }
-            }
-            Button(action: {}) {
-                Label("About", systemImage: "sparkles")
-                    .symbolRenderingMode(.multicolor)
-            }
-        }
-        label: {
-            TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
-                Button(action: {}) {
-                    ZStack {
-                        Circle()
-                            .frame(maxWidth: 40)
-                            .foregroundColor(.white)
-                            .opacity(0.0)
-                        Text(getIconForStatus(status: pomoTimer.getStatus(atDate: context.date)))
-                            .font(.system(size: 20))
-                            .shadow(radius: 20)
+        TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
+            Menu {
+                Section {
+                    Button(action: {showingManageTimer.toggle()}) {
+                        Label("Manage Timer", systemImage: "clock.arrow.2.circlepath")
                     }
                 }
+                Button(action: {}) {
+                    Label("About", systemImage: "sparkles")
+                        .symbolRenderingMode(.multicolor)
+                }
+            } label: {
+                Button(action: {}) {
+                    Text(getIconForStatus(status: pomoTimer.getStatus(atDate: context.date)))
+                        .font(.system(size: 20))
+                        .shadow(radius: 20)
+                }
             }
+            .sheet(isPresented: $showingManageTimer) {
+                Text("Managing saved timers")
+            }
+            .disabled(true)
         }
-        .sheet(isPresented: $showingManageTimer) {
-            Text("Managing saved timers")
-        }
-        .disabled(true)
     }
     
     
@@ -51,7 +44,7 @@ struct MenuButton: View {
         case .work:
             return "🌶️"
         case .rest:
-            return "🍉🍇🍌"
+            return "🍈"
         case .longBreak:
             return "🏖️"
         case .end:
