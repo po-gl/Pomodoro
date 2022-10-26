@@ -8,6 +8,22 @@
 import Foundation
 import SwiftUI
 
+#if os(watchOS)
+import WatchKit
+import UserNotifications
+#endif
+    
+    
+func getNotificationPermissions() {
+    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { success, error in
+        if success {
+            print("All set on permissions!")
+        } else if let error = error {
+            print("There was an error requesting permissions: \(error.localizedDescription)")
+        }
+    }
+}
+
 func setupNotifications(_ pomoTimer: PomoTimer) {
     guard !pomoTimer.isPaused else { return }
     let now = Date()

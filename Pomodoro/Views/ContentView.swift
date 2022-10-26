@@ -96,18 +96,6 @@ struct ContentView: View {
             return Color("BackgroundLongBreak")
         }
     }
-    
-    
-    func getNotificationPermissions() {
-        // Asking permission
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { success, error in
-            if success {
-                print("All set on permissions!")
-            } else if let error = error {
-                print("There was an error requesting permissions: \(error.localizedDescription)")
-            }
-        }
-    }
 }
 
 struct ContentView_Previews: PreviewProvider {
