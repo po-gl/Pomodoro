@@ -19,10 +19,12 @@ struct ButtonCluster: View {
             if pomoTimer.isPaused {
                 Stepper {
                 } onIncrement: {
+                    basicHaptic()
                     withAnimation(.easeInOut(duration: 0.2)) {
                         pomoTimer.incrementPomos()
                     }
                 } onDecrement: {
+                    basicHaptic()
                     withAnimation(.easeInOut(duration: 0.2)) {
                         pomoTimer.decrementPomos()
                     }
@@ -32,6 +34,7 @@ struct ButtonCluster: View {
             HStack {
                 Spacer()
                 Button(action: {
+                    basicHaptic()
                     withAnimation(.easeIn(duration: 0.2)){
                         pomoTimer.reset()
                     }
@@ -44,6 +47,7 @@ struct ButtonCluster: View {
                 Spacer()
 
                 Button(action: {
+                    basicHaptic()
                     withAnimation(.easeIn(duration: 0.2)){
                         pomoTimer.toggle()
                     }

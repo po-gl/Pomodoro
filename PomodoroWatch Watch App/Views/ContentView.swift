@@ -91,10 +91,12 @@ struct ContentView: View {
                 Spacer()
                 Stepper {
                 } onIncrement: {
+                    basicHaptic()
                     withAnimation(.easeInOut(duration: 0.2)) {
                         pomoTimer.incrementPomos()
                     }
                 } onDecrement: {
+                    basicHaptic()
                     withAnimation(.easeInOut(duration: 0.2)) {
                         pomoTimer.decrementPomos()
                     }

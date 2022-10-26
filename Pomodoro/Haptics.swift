@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreHaptics
+import UIKit
 
 
 class Haptics {
@@ -61,4 +62,10 @@ class Haptics {
             print("Failed to play pattern: \(error.localizedDescription)")
         }
     }
+}
+
+
+public func basicHaptic() {
+    let generator = UIImpactFeedbackGenerator(style: .medium)
+    generator.impactOccurred()
 }

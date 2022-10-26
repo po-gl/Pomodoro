@@ -19,3 +19,7 @@ func restHaptic() {
 func breakHaptic() {
     WKInterfaceDevice.current().play(.success)
 }
+
+func basicHaptic() {
+    WKInterfaceDevice.current().play(.click)
+}
