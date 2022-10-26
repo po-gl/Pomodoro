@@ -81,6 +81,7 @@ class SequenceTimer: ObservableObject {
         }
         pause()
         pauseOffset = 0.0
+        pauseStart = Date()
         startTime = Date()
     }
     
