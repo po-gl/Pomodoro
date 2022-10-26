@@ -34,7 +34,7 @@ struct ContentView: View {
                 VStack {
                     HStack {
                         Spacer()
-                        MenuButton()
+                        MenuButton(pomoTimer: pomoTimer)
                             .padding(.horizontal)
                             .padding(.top)
                             .foregroundColor(.black)
@@ -71,7 +71,7 @@ struct ContentView: View {
     }
     
     
-    func handleTimerEnd(status: PomoStatus) {
+    private func handleTimerEnd(status: PomoStatus) {
         switch status {
         case .work:
             haptics.workHaptic()
@@ -85,7 +85,7 @@ struct ContentView: View {
     }
     
     
-    func getColorForStatus(_ status: PomoStatus) -> Color {
+    private func getColorForStatus(_ status: PomoStatus) -> Color {
         switch status {
         case .work:
             return Color("BackgroundWork")
