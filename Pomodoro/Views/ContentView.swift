@@ -48,6 +48,7 @@ struct ContentView: View {
                     Spacer()
                 }
                 .background(pomoTimer.isPaused ? Color("BackgroundStopped") : getColorForStatus(pomoTimer.getStatus(atDate: context.date)))
+                .animation(.easeInOut(duration: 0.3), value: pomoTimer.isPaused)
                 .animation(.easeInOut(duration: 0.3), value: getColorForStatus(pomoTimer.getStatus(atDate: context.date)))
                 .onAppear {
                     getNotificationPermissions()
