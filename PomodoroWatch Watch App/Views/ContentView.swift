@@ -32,31 +32,73 @@ struct ContentView: View {
     }
     
     var body: some View {
-        GeometryReader { metrics in
-            VStack {
-                TimerDisplay(pomoTimer: pomoTimer)
-                Spacer()
-                ProgressBar(pomoTimer: pomoTimer, metrics: metrics)
-                Spacer()
-                Spacer()
-                ButtonCluster(pomoTimer: pomoTimer)
-                    .padding(.bottom)
+        TabView {
+            mainPage()
+            pomoChanger()
+        }
+    }
+    
+    
+    func mainPage() -> some View {
+        VStack {
+            GeometryReader { metrics in
+                VStack {
+                    TimerDisplay(pomoTimer: pomoTimer)
+                    Spacer()
+                    ProgressBar(pomoTimer: pomoTimer, metrics: metrics)
+                    Spacer()
+                    Spacer()
+                    ButtonCluster(pomoTimer: pomoTimer)
+                        .padding(.bottom)
+                }
+                .ignoresSafeArea()
+                .padding(.top)
             }
-            .ignoresSafeArea()
-            .padding(.top)
+            .onAppear {
+                getNotificationPermissions()
+            }
+            .onChange(of: scenePhase) { newPhase in
+                if newPhase == .active {
+                    print("\nActive")
+                    pomoTimer.restoreFromUserDefaults()
+                    cancelPendingNotifications()
+                } else if newPhase == .inactive {
+                    print("\nInactive")
+                    pomoTimer.saveToUserDefaults()
+                    setupNotifications(pomoTimer)
+                }
+            }
         }
-        .onAppear {
-            getNotificationPermissions()
-        }
-        .onChange(of: scenePhase) { newPhase in
-            if newPhase == .active {
-                print("\nActive")
-                pomoTimer.restoreFromUserDefaults()
-                cancelPendingNotifications()
-            } else if newPhase == .inactive {
-                print("\nInactive")
-                pomoTimer.saveToUserDefaults()
-                setupNotifications(pomoTimer)
+    }
+    
+    
+    func pomoChanger() -> some View {
+        VStack {
+            Spacer()
+            VStack(alignment: .center) {
+                Text("Pomos")
+                    .foregroundColor(Color("BarWork"))
+                    .font(.system(size: 26))
+                    .fontWeight(.light)
+                Divider()
+                Text("\(Array(repeating: "🍅", count: pomoTimer.pomoCount).joined(separator: ""))")
+                    .font(.system(size: 24))
+                    .fontWeight(.regular)
+            }
+            Spacer()
+            HStack {
+                Spacer()
+                Stepper {
+                } onIncrement: {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        pomoTimer.incrementPomos()
+                    }
+                } onDecrement: {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        pomoTimer.decrementPomos()
+                    }
+                }
+                Spacer()
             }
         }
     }
