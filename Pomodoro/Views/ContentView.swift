@@ -9,72 +9,78 @@ import SwiftUI
 import CoreHaptics
 
 struct ContentView: View {
+    @Environment(\.scenePhase) private var scenePhase
     @ObservedObject var pomoTimer: PomoTimer
     
     @State var backgroundActiveColor = Color("BackgroundWork")
     
     
+    @State private var engine: CHHapticEngine?
+    
     init() {
-        pomoTimer = PomoTimer(pomos: 4, longBreak: PomoTimer.defaultBreakTime)
-        pomoTimer.restoreFromUserDefaults()
+        var selfInstance: ContentView?
+        pomoTimer = PomoTimer(pomos: 4, longBreak: PomoTimer.defaultBreakTime) { status in
+            print("Performed action! \(Date()) \(status)")
+            selfInstance?.handleTimerEnd(status: status)
+        }
+        selfInstance = self
+        
+        print(self)
+        pomoTimer.saveToUserDefaults()
     }
 
     
     var body: some View {
         GeometryReader { metrics in
-            VStack {
-                HStack {
+            TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
+                VStack {
+                    HStack {
+                        Spacer()
+                        MenuButton()
+                            .padding(.horizontal)
+                            .padding(.top)
+                            .foregroundColor(.black)
+                    }
                     Spacer()
-                    MenuButton()
-                        .padding(.horizontal)
-                        .padding(.top)
-                        .foregroundColor(.black)
+                    TimerDisplay(pomoTimer: pomoTimer)
+                    Spacer()
+                    ProgressBar(pomoTimer: pomoTimer, metrics: metrics)
+                        .frame(maxHeight: 130)
+                    Spacer()
+                    ButtonCluster(pomoTimer: pomoTimer, metrics: metrics)
+                    Spacer()
                 }
-                Spacer()
-                TimerDisplay(pomoTimer: pomoTimer)
-                Spacer()
-                ProgressBar(pomoTimer: pomoTimer, metrics: metrics)
-                    .frame(maxHeight: 130)
-                Spacer()
-                ButtonCluster(pomoTimer: pomoTimer, metrics: metrics)
-                Spacer()
-            }
-            .background(pomoTimer.isPaused ? Color("BackgroundStopped") : backgroundActiveColor)
-            .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification), perform: {_ in
-//                pomoTimer.saveToUserDefaults()
-            })
-            .onAppear {
-                getNotificationPermissions()
-                prepareHaptics(engine: &engine)
-            }
-            .onChange(of: pomoTimer.status) { _ in
-                handleTimerEnd()
+                .background(pomoTimer.isPaused ? Color("BackgroundStopped") : getColorForStatus(pomoTimer.getStatus(atDate: context.date)))
+                .animation(.easeInOut(duration: 0.3), value: getColorForStatus(pomoTimer.getStatus(atDate: context.date)))
+                .onAppear {
+                    getNotificationPermissions()
+                    prepareHaptics(engine: &engine)
+                }
+                .onChange(of: scenePhase) { newPhase in
+                    if newPhase == .active {
+                        print("\nActive")
+                        pomoTimer.restoreFromUserDefaults()
+                    } else if newPhase == .inactive {
+                        print("\nInactive")
+                        print(self)
+                        pomoTimer.saveToUserDefaults()
+                    }
+                }
             }
         }
     }
     
     
-    func handleTimerEnd() {
-        withAnimation(.easeInOut(duration: 0.3)) {
-            switch pomoTimer.status {
-            case .work:
-                backgroundActiveColor = Color("BackgroundWork")
-            case .rest:
-                backgroundActiveColor = Color("BackgroundRest")
-            case .longBreak:
-                backgroundActiveColor = Color("BackgroundLongBreak")
-            }
-        }
-        
-        if !pomoTimer.isPaused {
-            switch pomoTimer.status {
-            case .work:
-                workHaptic(engine: engine)
-            case .rest:
-                restHaptic(engine: engine)
-            case .longBreak:
-                breakHaptic(engine: engine)
-            }
+    func handleTimerEnd(status: PomoStatus) {
+        switch status {
+        case .work:
+            workHaptic(engine: engine)
+        case .rest:
+            restHaptic(engine: engine)
+        case .longBreak:
+            breakHaptic(engine: engine)
+        case .end:
+            breakHaptic(engine: engine)
         }
         
         // Notification
@@ -91,6 +97,20 @@ struct ContentView: View {
 
         // add our notification request
         UNUserNotificationCenter.current().add(request)
+    }
+    
+    
+    func getColorForStatus(_ status: PomoStatus) -> Color {
+        switch status {
+        case .work:
+            return Color("BackgroundWork")
+        case .rest:
+            return Color("BackgroundRest")
+        case .longBreak:
+            return Color("BackgroundLongBreak")
+        case .end:
+            return Color("BackgroundLongBreak")
+        }
     }
     
     

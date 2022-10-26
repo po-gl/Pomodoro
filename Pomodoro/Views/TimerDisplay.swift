@@ -13,22 +13,24 @@ struct TimerDisplay: View {
     @ObservedObject var pomoTimer: PomoTimer
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text("\(pomoTimer.statusString)")
-                .font(.system(size: 30))
-                .fontWeight(.light)
-            Text("\(pomoTimer.timeRemaining.timerFormatted())")
-                .font(.system(size: 70))
-                .fontWeight(.light)
-                .monospacedDigit()
-                .shadow(radius: 20)
-            HStack {
-                Spacer()
-                Text("\(pomoTimer.pomoCount) Pomos")
+        TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
+            VStack(alignment: .leading) {
+                Text("\(pomoTimer.getStatusString(atDate: context.date))")
                     .font(.system(size: 30))
-                    .fontWeight(.ultraLight)
+                    .fontWeight(.light)
+                Text("\(pomoTimer.timeRemaining(atDate: context.date).timerFormatted())")
+                    .font(.system(size: 70))
+                    .fontWeight(.light)
+                    .monospacedDigit()
+                    .shadow(radius: 20)
+                HStack {
+                    Spacer()
+                    Text("\(pomoTimer.pomoCount) Pomos")
+                        .font(.system(size: 30))
+                        .fontWeight(.ultraLight)
+                }
             }
+            .frame(width: 285)
         }
-        .frame(width: 285)
     }
 }

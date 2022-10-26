@@ -13,53 +13,50 @@ struct ProgressBar: View {
     
     var metrics: GeometryProxy
     
-    @State var colorBarIndicatorProgress = 0.0
-    
     var body: some View {
-        VStack (alignment: .leading, spacing: 0) {
-            downIndicator()
-                .offset(x: getBarWidth() * colorBarIndicatorProgress)
-            ZStack {
-                HStack(spacing: 0) {
-                    ForEach(0..<pomoTimer.order.count, id: \.self) { i in
-                        ZStack {
-                            Rectangle()
-                                .foregroundColor(getColorForStatus(pomoTimer.order[i].getStatus()))
-                                .frame(width: getBarWidth() * getProportion(i), height: 16)
-                            
-                            HStack(spacing: 0) {
+        TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
+            VStack (alignment: .leading, spacing: 0) {
+                downIndicator()
+                    .offset(x: getBarWidth() * getTimerProgress(atDate: context.date))
+                ZStack {
+                    HStack(spacing: 0) {
+                        ForEach(0..<pomoTimer.order.count, id: \.self) { i in
+                            ZStack {
                                 Rectangle()
-                                    .foregroundColor(.clear)
-                                    .frame(width: getBarWidth() * getProportion(i) - 2.0, height: 16)
-                                Rectangle()
-                                    .frame(width: 2, height: 16)
+                                    .foregroundColor(getColorForStatus(pomoTimer.order[i].getStatus()))
+                                    .frame(width: getBarWidth() * getProportion(i), height: 16)
+                                
+                                HStack(spacing: 0) {
+                                    Rectangle()
+                                        .foregroundColor(.clear)
+                                        .frame(width: getBarWidth() * getProportion(i) - 2.0, height: 16)
+                                    Rectangle()
+                                        .frame(width: 2, height: 16)
+                                }
                             }
                         }
                     }
+                    startEdge()
+                    lowerEdge()
                 }
-                startEdge()
-                lowerEdge()
-            }
-            upIndicator()
-                .offset(x: getBarWidth() * colorBarIndicatorProgress)
-        }
-        .onChange(of: pomoTimer.timeRemaining) { _ in
-            withAnimation(.easeInOut(duration: 0.2)) {
-                colorBarIndicatorProgress = getTimerProgress()
+                upIndicator()
+                    .offset(x: getBarWidth() * getTimerProgress(atDate: context.date))
             }
         }
     }
     
     
-    func getTimerProgress() -> TimeInterval {
+    func getTimerProgress(atDate: Date = Date()) -> TimeInterval {
+        let index = pomoTimer.getIndex(atDate: atDate)
         let intervals = pomoTimer.order.map { $0.getTime() }
         let total = intervals.reduce(0, +)
         var cumulative = 0.0
-        for i in 0..<pomoTimer.currentIndex {
+        for i in 0..<index {
            cumulative += intervals[i]
         }
-        let currentTime = intervals[pomoTimer.currentIndex] - pomoTimer.timeRemaining
-        return (cumulative + currentTime) / total
+        let currentTime = intervals[index] - floor(pomoTimer.timeRemaining(atDate: atDate))
+        let progress = (cumulative + currentTime) / total
+        return progress <= 1.0 ? progress : 1.0
     }
     
     func getProportion(_ index: Int) -> Double {
@@ -77,6 +74,8 @@ struct ProgressBar: View {
             return Color("BarRest")
         case .longBreak:
             return Color("BarLongBreak")
+        case .end:
+            return Color("End")
         }
     }
     
