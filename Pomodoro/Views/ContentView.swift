@@ -57,12 +57,12 @@ struct ContentView: View {
                     if newPhase == .active {
                         print("\nActive")
                         pomoTimer.restoreFromUserDefaults()
-                        pomoTimer.cancelPendingNotifications()
+                        cancelPendingNotifications()
                         haptics.prepareHaptics()
                     } else if newPhase == .inactive {
                         print("\nInactive")
                         pomoTimer.saveToUserDefaults()
-                        pomoTimer.setupNotification()
+                        setupNotification(pomoTimer)
                     }
                 }
             }
