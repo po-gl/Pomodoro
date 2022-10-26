@@ -52,16 +52,17 @@ struct ContentView: View {
                 .animation(.easeInOut(duration: 0.3), value: getColorForStatus(pomoTimer.getStatus(atDate: context.date)))
                 .onAppear {
                     getNotificationPermissions()
-                    haptics.prepareHaptics()
                 }
                 .onChange(of: scenePhase) { newPhase in
                     if newPhase == .active {
                         print("\nActive")
                         pomoTimer.restoreFromUserDefaults()
+                        pomoTimer.cancelPendingNotifications()
+                        haptics.prepareHaptics()
                     } else if newPhase == .inactive {
                         print("\nInactive")
-                        print(self)
                         pomoTimer.saveToUserDefaults()
+                        pomoTimer.setupNotification()
                     }
                 }
             }
@@ -80,21 +81,6 @@ struct ContentView: View {
         case .end:
             haptics.breakHaptic()
         }
-        
-        // Notification
-        let content = UNMutableNotificationContent()
-        content.title = "Time is up."
-        content.subtitle = "\(Date().formatted(date: .abbreviated, time: .shortened)) it happens to everyone"
-        content.sound = UNNotificationSound.default
-
-        // show this notification five seconds from now
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-
-        // choose a random identifier
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-
-        // add our notification request
-        UNUserNotificationCenter.current().add(request)
     }
     
     

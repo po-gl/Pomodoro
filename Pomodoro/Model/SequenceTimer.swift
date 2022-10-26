@@ -38,7 +38,7 @@ class SequenceTimer: ObservableObject {
     }
     
     
-    private func timeRemaining(for index: Int, atDate now: Date = Date()) -> TimeInterval {
+    public func timeRemaining(for index: Int, atDate now: Date = Date()) -> TimeInterval {
         let sinceStartOffset = now.timeIntervalSince(startTime)
         let pauseOffset = (isPaused ? now.timeIntervalSince(pauseStart) : 0.0) + pauseOffset
         let startOffset = timeAmounts[0..<index].reduce(0.0, +)
