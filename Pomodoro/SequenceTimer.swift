@@ -139,6 +139,8 @@ class SequenceTimer: ObservableObject {
         
         if !isPaused {
             createTimer(index: getIndex())
+        } else {
+            timer.invalidate()
         }
     }
 }
