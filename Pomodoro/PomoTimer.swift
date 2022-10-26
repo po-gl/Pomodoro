@@ -17,14 +17,12 @@ class PomoTimer: SequenceTimer {
     
     private let maxPomos: Int = 6
     
-    static let defaultWorkTime: Double = 25.0 * 60.0
-    static let defaultRestTime: Double = 5.0 * 60.0
-    static let defaultBreakTime: Double = 30.0 * 60.0
-
+    private var pomoAction: (PomoStatus) -> Void
     
     init(pomos: Int, longBreak: Double, perform action: @escaping (PomoStatus) -> Void) {
         pomoCount = pomos
         longBreakTime = longBreak
+        pomoAction = action
         let pomoTimes = getPomoTimes(pomos, longBreak)
         let timeIntervals = pomoTimes.map { $0.getTime() }
         order = pomoTimes
@@ -73,15 +71,19 @@ class PomoTimer: SequenceTimer {
         let pomoTimes = getPomoTimes(pomos, longBreak)
         let timeIntervals = pomoTimes.map { $0.getTime() }
         order = pomoTimes
-        super.reset(timeIntervals)
+        
+        super.reset(timeIntervals) { index in
+            if index < pomoTimes.count {
+                self.pomoAction(pomoTimes[index].getStatus())
+            } else {
+                self.toggle()
+                self.pomoAction(.end)
+            }
+        }
     }
     
-    override func reset(_ sequenceOfIntervals: [TimeInterval] = []) {
+    func reset() {
         super.reset([])
-    }
-    
-    override func start(_ sequenceOfIntervals: [TimeInterval]) {
-        super.start()
     }
     
     override func saveToUserDefaults() {

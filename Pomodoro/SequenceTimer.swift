@@ -17,7 +17,7 @@ class SequenceTimer: ObservableObject {
     private var pauseStart = Date()
     private var pauseOffset: TimeInterval = 0.0
     
-    private var action: (Int) -> Void
+    public private(set) var action: (Int) -> Void
     private var timer = Timer()
     private var timerProvider = Timer.self
     
@@ -82,6 +82,11 @@ class SequenceTimer: ObservableObject {
         pause()
         pauseOffset = 0.0
         startTime = Date()
+    }
+    
+    public func reset(_ sequenceOfIntervals: [TimeInterval] = [], perform: @escaping (Int) -> Void) {
+        action = perform
+        reset(sequenceOfIntervals)
     }
     
     
