@@ -27,7 +27,9 @@ struct TimerDisplay: View {
                     .shadow(radius: 20)
                 HStack {
                     Spacer()
-                    Text("\(pomoTimer.pomoCount) Pomos")
+                    Text("\(Array(repeating: "🍅", count: pomoTimer.pomoCount).joined(separator: ""))")
+                        .font(.system(size: 22))
+                    Text("Pomos")
                         .font(.system(size: 30))
                         .fontWeight(.ultraLight)
                 }
