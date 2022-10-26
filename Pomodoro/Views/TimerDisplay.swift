@@ -33,12 +33,33 @@ struct TimerDisplay: View {
                         .font(.system(size: 30))
                         .fontWeight(.ultraLight)
                 }
+                
+                if pomoTimer.isPaused {
+                    pomoStepper()
+                }
             }
             .frame(width: 285)
         }
     }
     
-    func getColorForStatus(_ status: PomoStatus) -> Color {
+    
+    private func pomoStepper() -> some View {
+        return Stepper {
+            } onIncrement: {
+                basicHaptic()
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    pomoTimer.incrementPomos()
+                }
+            } onDecrement: {
+                basicHaptic()
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    pomoTimer.decrementPomos()
+                }
+            }
+    }
+    
+    
+    private func getColorForStatus(_ status: PomoStatus) -> Color {
         switch status {
         case .work:
             return Color("BarWork")

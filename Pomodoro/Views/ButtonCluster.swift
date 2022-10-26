@@ -16,21 +16,7 @@ struct ButtonCluster: View {
     
     var body: some View {
         ZStack {
-            if pomoTimer.isPaused {
-                Stepper {
-                } onIncrement: {
-                    basicHaptic()
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        pomoTimer.incrementPomos()
-                    }
-                } onDecrement: {
-                    basicHaptic()
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        pomoTimer.decrementPomos()
-                    }
-                }
-                .offset(x: getPomoStepperOffsetX() ,y: -245)
-            }
+
             HStack {
                 Spacer()
                 Button(action: {
