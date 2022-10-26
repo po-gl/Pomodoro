@@ -23,7 +23,6 @@ struct ContentView: View {
         }
         selfInstance = self
         
-        print(self)
         pomoTimer.saveToUserDefaults()
     }
 
