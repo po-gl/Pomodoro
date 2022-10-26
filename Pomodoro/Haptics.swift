@@ -69,3 +69,8 @@ public func basicHaptic() {
     let generator = UIImpactFeedbackGenerator(style: .medium)
     generator.impactOccurred()
 }
+
+public func resetHaptic() {
+    let generator = UINotificationFeedbackGenerator()
+    generator.notificationOccurred(.success)
+}

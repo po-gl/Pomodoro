@@ -16,11 +16,10 @@ struct ButtonCluster: View {
     
     var body: some View {
         ZStack {
-
             HStack {
                 Spacer()
                 Button(action: {
-                    basicHaptic()
+                    resetHaptic()
                     withAnimation(.easeIn(duration: 0.2)){
                         pomoTimer.reset()
                     }
