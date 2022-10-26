@@ -45,13 +45,18 @@ struct ContentView: View {
             .ignoresSafeArea()
             .padding(.top)
         }
+        .onAppear {
+            getNotificationPermissions()
+        }
         .onChange(of: scenePhase) { newPhase in
             if newPhase == .active {
                 print("\nActive")
                 pomoTimer.restoreFromUserDefaults()
+                cancelPendingNotifications()
             } else if newPhase == .inactive {
                 print("\nInactive")
                 pomoTimer.saveToUserDefaults()
+                setupNotifications(pomoTimer)
             }
         }
     }
