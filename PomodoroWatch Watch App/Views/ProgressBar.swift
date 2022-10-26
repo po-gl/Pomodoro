@@ -13,8 +13,6 @@ struct ProgressBar: View {
     
     var metrics: GeometryProxy
     
-    @State var colorBarIndicatorProgress = 0.0
-    
     var body: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
             VStack (alignment: .leading, spacing: 0) {
@@ -43,7 +41,6 @@ struct ProgressBar: View {
                         }
                     }
                     startEdge()
-                    //                lowerEdge()
                 }
                 if context.cadence == .live {
                     upIndicator()
