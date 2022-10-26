@@ -83,7 +83,7 @@ struct ContentView: View {
                     .fontWeight(.light)
                 Divider()
                 Text("\(Array(repeating: "🍅", count: pomoTimer.pomoCount).joined(separator: ""))")
-                    .font(.system(size: 24))
+                    .font(.system(size: 22))
                     .fontWeight(.regular)
             }
             Spacer()
