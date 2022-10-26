@@ -10,12 +10,14 @@ import SwiftUI
 
 
 struct TimerDisplay: View {
+    @Environment(\.colorScheme) private var colorScheme
     @ObservedObject var pomoTimer: PomoTimer
     
     var body: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
             VStack(alignment: .leading) {
                 Text("\(pomoTimer.getStatusString(atDate: context.date))")
+                    .foregroundColor(colorScheme == .dark ? getColorForStatus(pomoTimer.getStatus(atDate: context.date)) : .primary)
                     .font(.system(size: 30))
                     .fontWeight(.light)
                 Text("\(pomoTimer.timeRemaining(atDate: context.date).timerFormatted())")
@@ -31,6 +33,19 @@ struct TimerDisplay: View {
                 }
             }
             .frame(width: 285)
+        }
+    }
+    
+    func getColorForStatus(_ status: PomoStatus) -> Color {
+        switch status {
+        case .work:
+            return Color("BarWork")
+        case .rest:
+            return Color("BarRest")
+        case .longBreak:
+            return Color("BarLongBreak")
+        case .end:
+            return .accentColor
         }
     }
 }
