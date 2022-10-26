@@ -216,9 +216,6 @@
 				61BEBD812856B17A00987514 /* Views */,
 				61BEBD822856B1D400987514 /* Model */,
 				612B9085285CC80D003F1990 /* Extensions */,
-				613D6D9B285C82FD0020C194 /* SequenceTimer.swift */,
-				619255B02901F4CB00D399B8 /* PomoTimer.swift */,
-				619255B3290204AB00D399B8 /* PomoTime.swift */,
 				619ED26829072E00004E344D /* Haptics.swift */,
 				617789B52856A1F300BD43D7 /* Assets.xcassets */,
 				617789B72856A1F300BD43D7 /* Pomodoro.entitlements */,
@@ -279,6 +276,9 @@
 		61BEBD822856B1D400987514 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				613D6D9B285C82FD0020C194 /* SequenceTimer.swift */,
+				619255B02901F4CB00D399B8 /* PomoTimer.swift */,
+				619255B3290204AB00D399B8 /* PomoTime.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
