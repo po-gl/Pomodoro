@@ -12,7 +12,8 @@ struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
     @ObservedObject var pomoTimer: PomoTimer
     
-    @State private var engine: CHHapticEngine?
+    @State private var haptics = Haptics()
+    
     
     init() {
         var selfInstance: ContentView?
@@ -51,7 +52,7 @@ struct ContentView: View {
                 .animation(.easeInOut(duration: 0.3), value: getColorForStatus(pomoTimer.getStatus(atDate: context.date)))
                 .onAppear {
                     getNotificationPermissions()
-                    prepareHaptics(engine: &engine)
+                    haptics.prepareHaptics()
                 }
                 .onChange(of: scenePhase) { newPhase in
                     if newPhase == .active {
@@ -71,13 +72,13 @@ struct ContentView: View {
     func handleTimerEnd(status: PomoStatus) {
         switch status {
         case .work:
-            workHaptic(engine: engine)
+            haptics.workHaptic()
         case .rest:
-            restHaptic(engine: engine)
+            haptics.restHaptic()
         case .longBreak:
-            breakHaptic(engine: engine)
+            haptics.breakHaptic()
         case .end:
-            breakHaptic(engine: engine)
+            haptics.breakHaptic()
         }
         
         // Notification
