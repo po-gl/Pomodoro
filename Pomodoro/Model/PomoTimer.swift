@@ -12,8 +12,8 @@ import SwiftUI
 class PomoTimer: SequenceTimer {
     @Published var order: [PomoTime]
     
-    var pomoCount: Int
-    var longBreakTime: Double
+    public var pomoCount: Int
+    private var longBreakTime: Double
     
     private let maxPomos: Int = 6
          
@@ -60,19 +60,19 @@ class PomoTimer: SequenceTimer {
     }
     
     
-    func incrementPomos() {
+    public func incrementPomos() {
         pomoCount += 1
         if pomoCount > maxPomos { pomoCount = maxPomos }
         reset(pomos: pomoCount, longBreak: longBreakTime)
     }
     
-    func decrementPomos() {
+    public func decrementPomos() {
         pomoCount -= 1
         if pomoCount < 1 { pomoCount = 1 }
         reset(pomos: pomoCount, longBreak: longBreakTime)
     }
     
-    func reset(pomos: Int, longBreak: Double) {
+    public func reset(pomos: Int, longBreak: Double) {
         pomoCount = pomos
         longBreakTime = longBreak
         let pomoTimes = getPomoTimes(pomos, longBreak)
@@ -89,7 +89,7 @@ class PomoTimer: SequenceTimer {
         }
     }
     
-    func reset() {
+    public func reset() {
         super.reset([])
     }
     
