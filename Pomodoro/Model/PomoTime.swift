@@ -16,7 +16,7 @@ enum PomoStatus: String, Codable {
 }
 
 
-class PomoTime: Codable {
+struct PomoTime: Codable {
     private var timeInterval: TimeInterval
     private var status: PomoStatus
     
@@ -42,7 +42,7 @@ class PomoTime: Codable {
         case status
     }
     
-    required init (from decoder: Decoder) throws {
+    init (from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         timeInterval = try values.decode(TimeInterval.self, forKey: .timeInterval)
         status = try values.decode(PomoStatus.self, forKey: .status)
