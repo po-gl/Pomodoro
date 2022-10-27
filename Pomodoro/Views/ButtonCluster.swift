@@ -40,6 +40,7 @@ struct ButtonCluster: View {
                     Text(pomoTimer.isPaused ? "Start" : "Stop")
                         .font(.system(size: 30).monospaced())
                 })
+                .disabled(pomoTimer.getStatus() == .end)
                 .foregroundColor(pomoTimer.isPaused ? .blue : .accentColor)
                 Spacer()
             }

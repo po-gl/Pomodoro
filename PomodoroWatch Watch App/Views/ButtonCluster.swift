@@ -36,6 +36,7 @@ struct ButtonCluster: View {
                         pomoTimer.toggle()
                     }
                 }
+                .disabled(pomoTimer.getStatus() == .end)
         }
     }
 }
