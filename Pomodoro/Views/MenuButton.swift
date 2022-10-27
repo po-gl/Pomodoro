@@ -26,7 +26,7 @@ struct MenuButton: View {
                 }
             } label: {
                 Button(action: {}) {
-                    Text(getIconForStatus(status: pomoTimer.getStatus(atDate: context.date)))
+                    Text("🥕")
                         .font(.system(size: 20))
                         .shadow(radius: 20)
                 }
@@ -35,20 +35,6 @@ struct MenuButton: View {
                 Text("Managing saved timers")
             }
             .disabled(true)
-        }
-    }
-    
-    
-    private func getIconForStatus(status: PomoStatus) -> String {
-        switch status {
-        case .work:
-            return "🌶️"
-        case .rest:
-            return "🍈"
-        case .longBreak:
-            return "🏖️"
-        case .end:
-            return "🎉"
         }
     }
 }

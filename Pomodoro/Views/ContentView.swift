@@ -38,6 +38,7 @@ struct ContentView: View {
                             .padding(.horizontal)
                             .padding(.top)
                             .foregroundColor(.black)
+                            .hidden()
                     }
                     Spacer()
                     TimerDisplay(pomoTimer: pomoTimer)
