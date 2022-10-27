@@ -14,10 +14,16 @@ struct TimerDisplay: View {
     var body: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
             VStack(alignment: .leading) {
-                Text("\(pomoTimer.getStatusString(atDate: context.date))")
-                    .foregroundColor(getColorForStatus(pomoTimer.getStatus(atDate: context.date)))
-                    .font(.system(size: 26))
-                    .fontWeight(.light)
+                HStack {
+                    Text("\(pomoTimer.getStatusString(atDate: context.date))")
+                        .foregroundColor(getColorForStatus(pomoTimer.getStatus(atDate: context.date)))
+                        .font(.system(size: 26))
+                        .fontWeight(.light)
+                    Spacer()
+                    Text(getIconForStatus(status: pomoTimer.getStatus(atDate: context.date)))
+                        .font(.system(size: 20))
+                }
+                    .frame(width: 145)
                 Text("\(pomoTimer.timeRemaining(atDate: context.date).timerFormatted())")
                     .font(.system(size: 40))
                     .fontWeight(.regular)
@@ -37,6 +43,19 @@ struct TimerDisplay: View {
             return Color("BarLongBreak")
         case .end:
             return .accentColor
+        }
+    }
+    
+    private func getIconForStatus(status: PomoStatus) -> String {
+        switch status {
+        case .work:
+            return "🌶️"
+        case .rest:
+            return "🍈"
+        case .longBreak:
+            return "🏖️"
+        case .end:
+            return "🎉"
         }
     }
 }
