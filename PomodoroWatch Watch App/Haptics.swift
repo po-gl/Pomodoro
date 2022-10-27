@@ -9,11 +9,11 @@ import Foundation
 import WatchKit
 
 func workHaptic() {
-    WKInterfaceDevice.current().play(.start)
+    WKInterfaceDevice.current().play(.notification)
 }
 
 func restHaptic() {
-    WKInterfaceDevice.current().play(.stop)
+    WKInterfaceDevice.current().play(.notification)
 }
 
 func breakHaptic() {
@@ -22,4 +22,16 @@ func breakHaptic() {
 
 func basicHaptic() {
     WKInterfaceDevice.current().play(.click)
+}
+
+func startHaptic() {
+    WKInterfaceDevice.current().play(.start)
+}
+
+func stopHaptic() {
+    WKInterfaceDevice.current().play(.stop)
+}
+
+func resetHaptic() {
+    WKInterfaceDevice.current().play(.directionUp)
 }

@@ -18,7 +18,7 @@ struct ButtonCluster: View {
                 .foregroundColor(pomoTimer.isPaused ? .orange : Color(hex: 0x333333))
                 .font(.system(size: 40))
                 .onTapGesture {
-                    basicHaptic()
+                    resetHaptic()
                     withAnimation(.easeIn(duration: 0.2)){
                         pomoTimer.pause()
                         pomoTimer.reset()
@@ -31,7 +31,7 @@ struct ButtonCluster: View {
                 .foregroundColor(.accentColor)
                 .font(.system(size: 40))
                 .onTapGesture {
-                    basicHaptic()
+                    pomoTimer.isPaused ? startHaptic() : stopHaptic()
                     withAnimation(.easeIn(duration: 0.2)){
                         pomoTimer.toggle()
                     }
