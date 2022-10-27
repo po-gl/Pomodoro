@@ -17,7 +17,7 @@ struct TimerDisplay: View {
                 HStack {
                     Text("\(pomoTimer.getStatusString(atDate: context.date))")
                         .foregroundColor(getColorForStatus(pomoTimer.getStatus(atDate: context.date)))
-                        .font(.system(size: 26))
+                        .font(.system(size: 24))
                         .fontWeight(.light)
                     Spacer()
                     Text(getIconForStatus(status: pomoTimer.getStatus(atDate: context.date)))
