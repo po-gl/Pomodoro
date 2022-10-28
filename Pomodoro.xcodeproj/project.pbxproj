@@ -22,6 +22,8 @@
 		612D8F95290B67E50089CDD1 /* PomoTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619255B02901F4CB00D399B8 /* PomoTimer.swift */; };
 		612D8F96290B67E80089CDD1 /* SequenceTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613D6D9B285C82FD0020C194 /* SequenceTimer.swift */; };
 		612D8F97290B67EB0089CDD1 /* PomoTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619255B3290204AB00D399B8 /* PomoTime.swift */; };
+		6139AE4F290C643B00C5CB19 /* MainPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6139AE4E290C643B00C5CB19 /* MainPage.swift */; };
+		6139AE51290C64D000C5CB19 /* ChangerPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6139AE50290C64D000C5CB19 /* ChangerPage.swift */; };
 		613D6D9C285C82FD0020C194 /* SequenceTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613D6D9B285C82FD0020C194 /* SequenceTimer.swift */; };
 		613D6D9E285C85FE0020C194 /* SequenceTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613D6D9D285C85FE0020C194 /* SequenceTimerTests.swift */; };
 		613D6D9F285C890F0020C194 /* SequenceTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613D6D9B285C82FD0020C194 /* SequenceTimer.swift */; };
@@ -130,6 +132,8 @@
 		612D8F88290B63180089CDD1 /* WatchWidget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = WatchWidget.intentdefinition; sourceTree = "<group>"; };
 		612D8F89290B63190089CDD1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		612D8F8B290B63190089CDD1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6139AE4E290C643B00C5CB19 /* MainPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPage.swift; sourceTree = "<group>"; };
+		6139AE50290C64D000C5CB19 /* ChangerPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangerPage.swift; sourceTree = "<group>"; };
 		613D6D9B285C82FD0020C194 /* SequenceTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceTimer.swift; sourceTree = "<group>"; };
 		613D6D9D285C85FE0020C194 /* SequenceTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceTimerTests.swift; sourceTree = "<group>"; };
 		614A86C2290A4B74008DFA26 /* PomoTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomoTimerTests.swift; sourceTree = "<group>"; };
@@ -408,6 +412,8 @@
 			isa = PBXGroup;
 			children = (
 				61FAEAB229065FDC00CACF78 /* ContentView.swift */,
+				6139AE4E290C643B00C5CB19 /* MainPage.swift */,
+				6139AE50290C64D000C5CB19 /* ChangerPage.swift */,
 				619ED26629072C4C004E344D /* TimerDisplay.swift */,
 				619ED26A29073299004E344D /* ButtonCluster.swift */,
 				611A3CA429076BEF00B7AFD3 /* ProgressBar.swift */,
@@ -731,6 +737,7 @@
 				61FAEADA290689A200CACF78 /* SequenceTimer.swift in Sources */,
 				612D8F8D290B63190089CDD1 /* WatchWidget.intentdefinition in Sources */,
 				619ED26E29073A7E004E344D /* Haptics.swift in Sources */,
+				6139AE4F290C643B00C5CB19 /* MainPage.swift in Sources */,
 				61FAEAB329065FDC00CACF78 /* ContentView.swift in Sources */,
 				61FAEADB290689A200CACF78 /* PomoTime.swift in Sources */,
 				61FAEAE0290689A200CACF78 /* TimeInterval+formatter.swift in Sources */,
@@ -738,6 +745,7 @@
 				619ED26729072C4C004E344D /* TimerDisplay.swift in Sources */,
 				611A3CA529076BEF00B7AFD3 /* ProgressBar.swift in Sources */,
 				61F425412908EAE300300C83 /* PomoTimer.swift in Sources */,
+				6139AE51290C64D000C5CB19 /* ChangerPage.swift in Sources */,
 				61FAEAB129065FDC00CACF78 /* PomodoroWatchApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
