@@ -16,12 +16,9 @@ struct ProgressBar: View {
     var body: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
             VStack (alignment: .leading, spacing: 0) {
-                if context.cadence == .live {
-                    downIndicator()
-                        .offset(x: getBarWidth() * getTimerProgress(atDate: context.date))
-                } else {
-                    Spacer(minLength: 6)
-                }
+                downIndicator()
+                    .offset(x: getBarWidth() * getTimerProgress(atDate: context.date))
+                    .opacity(context.cadence == .live ? 1.0 : 0.0)
                 ZStack {
                     HStack(spacing: 0) {
                         ForEach(0..<pomoTimer.order.count, id: \.self) { i in
@@ -42,12 +39,9 @@ struct ProgressBar: View {
                     }
                     startEdge()
                 }
-                if context.cadence == .live {
-                    upIndicator()
-                        .offset(x: getBarWidth() * getTimerProgress(atDate: context.date))
-                } else {
-                    Spacer(minLength: 6)
-                }
+                upIndicator()
+                    .offset(x: getBarWidth() * getTimerProgress(atDate: context.date))
+                    .opacity(context.cadence == .live ? 1.0 : 0.0)
             }
         }
     }
