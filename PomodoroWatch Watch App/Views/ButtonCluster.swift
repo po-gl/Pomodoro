@@ -19,9 +19,10 @@ struct ButtonCluster: View {
                 .font(.system(size: 40))
                 .onTapGesture {
                     resetHaptic()
+                    pomoTimer.unpause() // to update crown scroll progress
                     withAnimation(.easeIn(duration: 0.2)){
-                        pomoTimer.pause()
                         pomoTimer.reset()
+                        pomoTimer.pause()
                     }
                 }
                 .disabled(!pomoTimer.isPaused)
