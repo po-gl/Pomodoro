@@ -30,7 +30,6 @@ struct ContentView: View {
         }
         
         pomoTimer.pause()
-        pomoTimer.saveToUserDefaults()
     }
     
     var body: some View {
