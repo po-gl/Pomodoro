@@ -34,26 +34,54 @@ struct Provider: IntentTimelineProvider {
         let pomoTimer = PomoTimer()
         pomoTimer.restoreFromUserDefaults()
 
+        addTransitionEntries(&entries, configuration, pomoTimer)
+        addByMinuteEntries(&entries, configuration, pomoTimer)
+
+        let timeline = Timeline(entries: entries, policy: .atEnd)
+        completion(timeline)
+    }
+    
+    
+    private let work = PomoTimer.defaultWorkTime
+    private let rest = PomoTimer.defaultRestTime
+    private let breakTime = PomoTimer.defaultBreakTime
+    
+    
+    private func addTransitionEntries(_ entries: inout [SimpleEntry], _ configuration: ConfigurationIntent, _ pomoTimer: PomoTimer) {
+        let currentDate = Date()
+        var runningTime = 0.0
+        for i in 0..<pomoTimer.pomoCount * 2 {
+            let workOrRest = i % 2 == 0 ? work : rest
+            runningTime += workOrRest + 1.0
+            
+            let entryDate = currentDate.addingTimeInterval(runningTime)
+            addEntry(for: entryDate, &entries, configuration, pomoTimer)
+        }
         
-        let work = PomoTimer.defaultWorkTime
-        let rest = PomoTimer.defaultRestTime
-        let breakTime = PomoTimer.defaultBreakTime
-        
+        runningTime += breakTime
+        let entryDate = currentDate.addingTimeInterval(runningTime)
+        addEntry(for: entryDate, &entries, configuration, pomoTimer)
+    }
+    
+    
+    private func addByMinuteEntries(_ entries: inout [SimpleEntry], _ configuration: ConfigurationIntent, _ pomoTimer: PomoTimer) {
         let totalSeconds = (work + 1.0) * Double(pomoTimer.pomoCount) + (rest + 1.0) * Double(pomoTimer.pomoCount) + (breakTime + 1.0)
         let totalMinutes = totalSeconds / 60.0
         
         let currentDate = Date()
         for timeOffset in 0 ..< Int(totalMinutes)+1 {
             let entryDate = Calendar.current.date(byAdding: .minute, value: timeOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate,
-                                    status: pomoTimer.getStatus(atDate: entryDate),
-                                    timeRemaining: pomoTimer.timeRemaining(atDate: entryDate),
-                                    configuration: configuration)
-            entries.append(entry)
+            addEntry(for: entryDate, &entries, configuration, pomoTimer)
         }
-
-        let timeline = Timeline(entries: entries, policy: .atEnd)
-        completion(timeline)
+    }
+    
+    
+    private func addEntry(for entryDate: Date, _ entries: inout [SimpleEntry], _ configuration: ConfigurationIntent, _ pomoTimer: PomoTimer) {
+        let entry = SimpleEntry(date: entryDate,
+                                status: pomoTimer.getStatus(atDate: entryDate),
+                                timeRemaining: pomoTimer.timeRemaining(atDate: entryDate),
+                                configuration: configuration)
+        entries.append(entry)
     }
 
     func recommendations() -> [IntentRecommendation<ConfigurationIntent>] {
