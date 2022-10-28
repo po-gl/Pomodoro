@@ -13,7 +13,6 @@ struct ContentView: View {
     
     init() {
         pomoTimer = PomoTimer(pomos: 4, longBreak: PomoTimer.defaultBreakTime) { status in
-            print("Performed action! \(Date()) \(status)")
             switch status {
             case .work:
                 workHaptic()
