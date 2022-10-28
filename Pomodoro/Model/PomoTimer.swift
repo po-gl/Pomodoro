@@ -26,7 +26,7 @@ class PomoTimer: SequenceTimer {
     
     private var pomoAction: (PomoStatus) -> Void
     
-    init(pomos: Int, longBreak: Double, perform action: @escaping (PomoStatus) -> Void) {
+    init(pomos: Int, longBreak: Double, perform action: @escaping (PomoStatus) -> Void, timeProvider: Timer.Type = Timer.self) {
         pomoCount = pomos
         longBreakTime = longBreak
         pomoAction = action
@@ -35,14 +35,14 @@ class PomoTimer: SequenceTimer {
         order = pomoTimes
         
         weak var selfInstance: PomoTimer?
-        super.init(timeIntervals) { index in
+        super.init(timeIntervals, perform: { index in
             if index < pomoTimes.count {
                 action(pomoTimes[index].getStatus())
             } else {
                 selfInstance?.toggle()
                 action(.end)
             }
-        }
+        }, timerProvider: timeProvider)
         selfInstance = self
     }
     
