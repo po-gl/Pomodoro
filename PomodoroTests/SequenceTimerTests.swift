@@ -74,15 +74,20 @@ final class SequenceTimerTests: XCTestCase {
     }
     
     
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
+    func testSequenceTimerPerformance() throws {
+        let sequenceOfIntervals: [TimeInterval] = Array(repeating: 10.0*60.0, count: 100)
+        let sequenceTimer = SequenceTimer(sequenceOfIntervals, perform: { _ in return }, timerProvider: MockTimer.self)
+        
+        let index = 97.0
+        let now = Date().addingTimeInterval((10.0 * 60.0)*index + 1.0*index)
         self.measure {
-            // Put the code you want to measure the time of here.
+            XCTAssertEqual(sequenceTimer.getIndex(atDate: now), Int(index))
+            XCTAssertEqual(sequenceTimer.timeRemaining(atDate: now), 10.0 * 60.0)
         }
     }
 
     
-    func passTime(seconds: Int) {
+    private func passTime(seconds: Int) {
         for _ in 0..<seconds {
             MockTimer.currentTimer.fire()
         }
