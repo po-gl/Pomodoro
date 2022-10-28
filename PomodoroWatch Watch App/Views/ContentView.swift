@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
@@ -67,6 +68,7 @@ struct ContentView: View {
                     print("\nInactive")
                     pomoTimer.saveToUserDefaults()
                     setupNotifications(pomoTimer)
+                    WidgetCenter.shared.reloadAllTimelines()
                 }
             }
         }
