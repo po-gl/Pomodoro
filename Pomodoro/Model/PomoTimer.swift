@@ -26,7 +26,7 @@ class PomoTimer: SequenceTimer {
     
     private var pomoAction: (PomoStatus) -> Void
     
-    init(pomos: Int, longBreak: Double, perform action: @escaping (PomoStatus) -> Void, timeProvider: Timer.Type = Timer.self) {
+    init(pomos: Int = 4, longBreak: Double = defaultBreakTime, perform action: @escaping (PomoStatus) -> Void = { _ in return }, timeProvider: Timer.Type = Timer.self) {
         pomoCount = pomos
         longBreakTime = longBreak
         pomoAction = action
