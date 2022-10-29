@@ -28,6 +28,7 @@ struct ProgressBar: View {
                                   sensitivity: .medium,
                                   isHapticFeedbackEnabled: true,
                                   onChange: { event in
+                guard event.velocity != 0.0 else { return }
                 isScrolling = true
                 pomoTimer.setPercentage(to: event.offset.rounded() / 100)
             })
