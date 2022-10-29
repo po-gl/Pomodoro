@@ -29,7 +29,27 @@ struct ContentView: View {
 
     
     var body: some View {
-        GeometryReader { metrics in
+        mainPage()
+            .onAppear {
+                getNotificationPermissions()
+            }
+            .onChange(of: scenePhase) { newPhase in
+                if newPhase == .active {
+                    print("\nActive")
+                    pomoTimer.restoreFromUserDefaults()
+                    cancelPendingNotifications()
+                    haptics.prepareHaptics()
+                } else if newPhase == .inactive {
+                    print("\nInactive")
+                    pomoTimer.saveToUserDefaults()
+                    setupNotifications(pomoTimer)
+                }
+            }
+    }
+    
+    
+    private func mainPage() -> some View {
+        return GeometryReader { metrics in
             TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
                 VStack {
                     Spacer()
@@ -44,21 +64,6 @@ struct ContentView: View {
                 .background(pomoTimer.isPaused ? Color("BackgroundStopped") : getColorForStatus(pomoTimer.getStatus(atDate: context.date)))
                 .animation(.easeInOut(duration: 0.3), value: pomoTimer.isPaused)
                 .animation(.easeInOut(duration: 0.3), value: getColorForStatus(pomoTimer.getStatus(atDate: context.date)))
-                .onAppear {
-                    getNotificationPermissions()
-                }
-                .onChange(of: scenePhase) { newPhase in
-                    if newPhase == .active {
-                        print("\nActive")
-                        pomoTimer.restoreFromUserDefaults()
-                        cancelPendingNotifications()
-                        haptics.prepareHaptics()
-                    } else if newPhase == .inactive {
-                        print("\nInactive")
-                        pomoTimer.saveToUserDefaults()
-                        setupNotifications(pomoTimer)
-                    }
-                }
             }
         }
     }

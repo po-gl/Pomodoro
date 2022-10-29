@@ -9,6 +9,7 @@ import SwiftUI
 import WidgetKit
 
 struct ContentView: View {
+    @Environment(\.scenePhase) private var scenePhase
     @ObservedObject var pomoTimer: PomoTimer
     
     init() {
@@ -33,6 +34,21 @@ struct ContentView: View {
             MainPage(pomoTimer: pomoTimer)
             ChangerPage(pomoTimer: pomoTimer)
         }
+            .onAppear {
+                getNotificationPermissions()
+            }
+            .onChange(of: scenePhase) { newPhase in
+                if newPhase == .active {
+                    print("\nActive")
+                    pomoTimer.restoreFromUserDefaults()
+                    cancelPendingNotifications()
+                } else if newPhase == .inactive {
+                    print("\nInactive")
+                    pomoTimer.saveToUserDefaults()
+                    setupNotifications(pomoTimer)
+                    WidgetCenter.shared.reloadAllTimelines()
+                }
+            }
     }
 }
 
