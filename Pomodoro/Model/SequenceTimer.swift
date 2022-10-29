@@ -107,11 +107,12 @@ class SequenceTimer: ObservableObject {
         let total = timeAmounts.reduce(0, +)
         var cumulative = 0.0, i = 0
         while cumulative < total {
-            cumulative += timeAmounts[i] + startDelay(i)
+            cumulative += timeAmounts[i]
             if cumulative / total >= percent { break }
             i += 1
         }
         cumulative = min(max(cumulative, 0.0), total + Double(timeAmounts.count-1))
+        cumulative += Double(i)
         // remove extra
         while cumulative / total > percent {
             cumulative -= 1.0 * 60.0
