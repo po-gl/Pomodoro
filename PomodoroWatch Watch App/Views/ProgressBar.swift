@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 struct ProgressBar: View {
+    @Environment(\.isLuminanceReduced) private var isLuminanceReduced
     @ObservedObject var pomoTimer: PomoTimer
     
     var metrics: GeometryProxy
@@ -19,7 +20,6 @@ struct ProgressBar: View {
     var body: some View {
         scrollableTimeLineColorBars()
     }
-    
     
     func scrollableTimeLineColorBars() -> some View {
         return timeLineColorBars()
@@ -43,10 +43,9 @@ struct ProgressBar: View {
             }
     }
     
-    
     func timeLineColorBars() -> some View {
         return TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
-            VStack (alignment: .leading, spacing: 0) {
+            VStack(alignment: .leading, spacing: 0) {
                 downIndicator()
                     .offset(x: getBarWidth() * getTimerProgress(atDate: context.date))
                     .opacity(context.cadence == .live ? 1.0 : 0.0)
@@ -54,9 +53,22 @@ struct ProgressBar: View {
                     HStack(spacing: 0) {
                         ForEach(0..<pomoTimer.order.count, id: \.self) { i in
                             ZStack {
-                                Rectangle()
-                                    .foregroundColor(getColorForStatus(pomoTimer.order[i].getStatus()))
-                                    .frame(width: getBarWidth() * getProportion(i), height: 6)
+                                ZStack {
+                                    Rectangle()
+                                        .foregroundColor(getColorForStatus(pomoTimer.order[i].getStatus()))
+                                        .frame(width: getBarWidth() * getProportion(i), height: 6)
+                                    VStack(spacing: 0) {
+                                        if !isLuminanceReduced && !pomoTimer.isPaused {
+                                            Rectangle()
+                                                .opacity(0.0)
+                                                .frame(width: getBarWidth() * getProportion(i), height: 6)
+                                            Rectangle()
+                                                .foregroundColor(getColorForStatus(pomoTimer.order[i].getStatus()))
+                                                .frame(width: getBarWidth() * getProportion(i), height: 5)
+                                                .blur(radius: 2)
+                                        }
+                                    }
+                                }
                                 
                                 HStack(spacing: 0) {
                                     Rectangle()
