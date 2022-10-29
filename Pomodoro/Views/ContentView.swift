@@ -32,14 +32,6 @@ struct ContentView: View {
         GeometryReader { metrics in
             TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
                 VStack {
-                    HStack {
-                        Spacer()
-                        MenuButton(pomoTimer: pomoTimer)
-                            .padding(.horizontal)
-                            .padding(.top)
-                            .foregroundColor(.black)
-                            .hidden()
-                    }
                     Spacer()
                     TimerDisplay(pomoTimer: pomoTimer)
                     Spacer()
