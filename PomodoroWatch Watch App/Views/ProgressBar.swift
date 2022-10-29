@@ -13,8 +13,38 @@ struct ProgressBar: View {
     
     var metrics: GeometryProxy
     
+    @State var scrollValue = 0.0
+    @State var isScrolling = false
+    
     var body: some View {
-        TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
+        scrollableTimeLineColorBars()
+    }
+    
+    
+    func scrollableTimeLineColorBars() -> some View {
+        return timeLineColorBars()
+            .focusable(pomoTimer.isPaused)
+            .digitalCrownRotation($scrollValue, from: 0.0, through: 100,
+                                  sensitivity: .medium,
+                                  isHapticFeedbackEnabled: true,
+                                  onChange: { event in
+                isScrolling = true
+                pomoTimer.setPercentage(to: event.offset.rounded() / 100)
+            })
+            .onChange(of: pomoTimer.isPaused) { _ in
+                isScrolling = false
+                scrollValue = pomoTimer.getCurrentPercentage() * 100.0
+            }
+            .onChange(of: pomoTimer.getStatus()) { _ in
+                if isScrolling {
+                    basicHaptic()
+                }
+            }
+    }
+    
+    
+    func timeLineColorBars() -> some View {
+        return TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
             VStack (alignment: .leading, spacing: 0) {
                 downIndicator()
                     .offset(x: getBarWidth() * getTimerProgress(atDate: context.date))
