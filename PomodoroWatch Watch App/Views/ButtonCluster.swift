@@ -10,11 +10,12 @@ import SwiftUI
     
 
 struct ButtonCluster: View {
+    @Environment(\.isLuminanceReduced) private var isLuminanceReduced
     @ObservedObject var pomoTimer: PomoTimer
     
     var body: some View {
         HStack {
-            Image(systemName: "arrow.counterclockwise.circle.fill")
+            Image(systemName: withFill("arrow.counterclockwise.circle"))
                 .foregroundColor(pomoTimer.isPaused ? .orange : Color(hex: 0x333333))
                 .font(.system(size: 40))
                 .onTapGesture {
@@ -28,7 +29,7 @@ struct ButtonCluster: View {
                 .disabled(!pomoTimer.isPaused)
             Spacer()
             
-            Image(systemName: pomoTimer.isPaused ? "play.circle.fill" : "pause.circle.fill")
+            Image(systemName: pomoTimer.isPaused ? withFill("play.circle") : withFill("pause.circle"))
                 .foregroundColor(.accentColor)
                 .font(.system(size: 40))
                 .onTapGesture {
@@ -39,5 +40,9 @@ struct ButtonCluster: View {
                 }
                 .disabled(pomoTimer.getStatus() == .end)
         }
+    }
+    
+    private func withFill(_ systemName: String) -> String {
+        return isLuminanceReduced ? systemName : systemName + ".fill"
     }
 }
