@@ -16,6 +16,7 @@ struct ButtonCluster: View {
     var body: some View {
         HStack {
             Image(systemName: withFill("arrow.counterclockwise.circle"))
+                .accessibilityIdentifier("resetButton")
                 .foregroundColor(pomoTimer.isPaused ? .orange : Color(hex: 0x333333))
                 .font(.system(size: 40))
                 .onTapGesture {
@@ -30,6 +31,7 @@ struct ButtonCluster: View {
             Spacer()
             
             Image(systemName: pomoTimer.isPaused ? withFill("play.circle") : withFill("pause.circle"))
+                .accessibilityIdentifier("playPauseButton")
                 .foregroundColor(.accentColor)
                 .font(.system(size: 40))
                 .onTapGesture {

@@ -16,6 +16,7 @@ struct TimerDisplay: View {
             VStack(alignment: .leading) {
                 HStack {
                     Text("\(pomoTimer.getStatusString(atDate: context.date))")
+                        .accessibilityIdentifier("statusString")
                         .foregroundColor(getColorForStatus(pomoTimer.getStatus(atDate: context.date)))
                         .font(.system(size: 24))
                         .fontWeight(.light)
@@ -25,6 +26,7 @@ struct TimerDisplay: View {
                 }
                     .frame(width: 145)
                 Text("\(pomoTimer.timeRemaining(atDate: context.date).timerFormatted())")
+                    .accessibilityIdentifier("timeRemaining")
                     .font(.system(size: 40))
                     .fontWeight(.regular)
                     .monospacedDigit()
