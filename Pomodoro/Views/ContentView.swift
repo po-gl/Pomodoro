@@ -58,7 +58,7 @@ struct ContentView: View {
                     ProgressBar(pomoTimer: pomoTimer, metrics: metrics)
                         .frame(maxHeight: 130)
                     Spacer()
-                    ButtonCluster(pomoTimer: pomoTimer, metrics: metrics)
+                    ButtonCluster(pomoTimer: pomoTimer)
                     Spacer()
                 }
                 .background(pomoTimer.isPaused ? Color("BackgroundStopped") : getColorForStatus(pomoTimer.getStatus(atDate: context.date)))

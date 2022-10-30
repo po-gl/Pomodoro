@@ -12,8 +12,6 @@ import SwiftUI
 struct ButtonCluster: View {
     @ObservedObject var pomoTimer: PomoTimer
     
-    var metrics: GeometryProxy
-    
     var body: some View {
         ZStack {
             HStack {
@@ -24,9 +22,14 @@ struct ButtonCluster: View {
                         pomoTimer.reset()
                     }
                 }, label: {
-                    Text("Reset")
-                        .font(.system(size: 20).monospaced())
-                        .foregroundColor(pomoTimer.isPaused ? .orange : .secondary)
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 60)
+                            .foregroundColor(pomoTimer.isPaused ? .orange : Color("GrayedOut"))
+                            .frame(width: 130, height: 60)
+                        Text("Reset")
+                            .font(.system(size: 20).monospaced())
+                            .foregroundColor(.white)
+                    }
                 })
                 .disabled(!pomoTimer.isPaused)
                 Spacer()
@@ -37,19 +40,18 @@ struct ButtonCluster: View {
                         pomoTimer.toggle()
                     }
                 }, label: {
-                    Text(pomoTimer.isPaused ? "Start" : "Stop")
-                        .font(.system(size: 30).monospaced())
+                    RoundedRectangle(cornerRadius: 60)
+                        .foregroundColor(pomoTimer.isPaused ? Color("BarWork") : Color("BarLongBreak"))
+                        .frame(width: 130, height: 60)
+                        .reverseMask {
+                            Text(pomoTimer.isPaused ? "Start" : "Stop")
+                                .font(.system(size: 20).monospaced())
+                        }
                 })
                 .disabled(pomoTimer.getStatus() == .end)
                 .foregroundColor(pomoTimer.isPaused ? .blue : .accentColor)
                 Spacer()
             }
         }
-    }
-    
-    private func getPomoStepperOffsetX() -> Double {
-        let intervals = pomoTimer.order.map { $0.getTime() }
-        let total = intervals.reduce(0, +)
-        return -(intervals[pomoTimer.order.count-1] / total * (metrics.size.width - 32.0)) + 30
     }
 }
