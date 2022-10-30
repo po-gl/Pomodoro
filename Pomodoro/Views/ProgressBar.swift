@@ -25,6 +25,17 @@ struct ProgressBar: View {
                                 Rectangle()
                                     .foregroundColor(getColorForStatus(pomoTimer.order[i].getStatus()))
                                     .frame(width: getBarWidth() * getProportion(i), height: 16)
+                                VStack(spacing: 0) {
+                                    if !pomoTimer.isPaused {
+                                        Rectangle()
+                                            .opacity(0.0)
+                                            .frame(width: getBarWidth() * getProportion(i), height: 16)
+                                        Rectangle()
+                                            .foregroundColor(getColorForStatus(pomoTimer.order[i].getStatus()))
+                                            .frame(width: getBarWidth() * getProportion(i), height: 10)
+                                            .blur(radius: 2)
+                                    }
+                                }
                                 
                                 HStack(spacing: 0) {
                                     Rectangle()
