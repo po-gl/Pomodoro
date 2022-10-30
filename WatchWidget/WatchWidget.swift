@@ -108,6 +108,26 @@ struct SimpleEntry: TimelineEntry {
 }
 
 
+@main
+struct PomoWidgets: WidgetBundle {
+    var body: some Widget {
+        StatusWatchWidget()
+        ProgressWatchWidget()
+    }
+}
+
+struct ProgressWatchWidget: Widget {
+    let kind: String = "ProgressWatchWidget"
+
+    var body: some WidgetConfiguration {
+        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider(shouldAddMinuteByMinuteEntries: true)) { entry in
+            ProgressWidgetView(entry: entry)
+        }
+        .configurationDisplayName("Pomodoro Progress")
+        .description("Track your pomodoro timer.")
+    }
+}
+
 struct ProgressWidgetView : View {
     var entry: Provider.Entry
 
@@ -121,6 +141,19 @@ struct ProgressWidgetView : View {
             .progressViewStyle(.circular)
             .widgetAccentable()
         }
+    }
+}
+
+
+struct StatusWatchWidget: Widget {
+    let kind: String = "StatusWatchWidget"
+
+    var body: some WidgetConfiguration {
+        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider(shouldAddMinuteByMinuteEntries: false)) { entry in
+            StatusWidgetView(entry: entry)
+        }
+        .configurationDisplayName("Pomodoro Status")
+        .description("See your pomodoro timer status.")
     }
 }
 
@@ -162,40 +195,6 @@ fileprivate func getTotalForStatus(_ status: PomoStatus) -> Double {
         return PomoTimer.defaultBreakTime
     case .end:
         return 1.0
-    }
-}
-
-
-@main
-struct PomoWidgets: WidgetBundle {
-    var body: some Widget {
-        StatusWatchWidget()
-        ProgressWatchWidget()
-    }
-}
-
-struct ProgressWatchWidget: Widget {
-    let kind: String = "ProgressWatchWidget"
-
-    var body: some WidgetConfiguration {
-        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider(shouldAddMinuteByMinuteEntries: true)) { entry in
-            ProgressWidgetView(entry: entry)
-        }
-        .configurationDisplayName("Pomodoro Progress")
-        .description("Track your pomodoro timer.")
-    }
-}
-
-
-struct StatusWatchWidget: Widget {
-    let kind: String = "StatusWatchWidget"
-
-    var body: some WidgetConfiguration {
-        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider(shouldAddMinuteByMinuteEntries: false)) { entry in
-            StatusWidgetView(entry: entry)
-        }
-        .configurationDisplayName("Pomodoro Status")
-        .description("See your pomodoro timer status.")
     }
 }
 
