@@ -11,13 +11,20 @@ import WidgetKit
 struct MainPage: View {
     @ObservedObject var pomoTimer: PomoTimer
     
+    @State var buddyOffset: Double = 0
+    
     var body: some View {
         VStack {
             GeometryReader { metrics in
                 VStack {
                     TimerDisplay(pomoTimer: pomoTimer)
                     Spacer()
-                    ProgressBar(pomoTimer: pomoTimer, metrics: metrics)
+                    ZStack {
+                        ProgressBar(pomoTimer: pomoTimer, metrics: metrics)
+                        BuddyView(pomoTimer: pomoTimer)
+                            .frame(width: 20, height: 20)
+                            .offset(x: buddyOffset, y: -13)
+                    }
                     Spacer()
                     Spacer()
                     ButtonCluster(pomoTimer: pomoTimer)
@@ -26,6 +33,9 @@ struct MainPage: View {
                 .ignoresSafeArea()
                 .padding(.top)
             }
+        }
+        .onAppear {
+            buddyOffset = Double.random(in: -30...30)
         }
     }
 }

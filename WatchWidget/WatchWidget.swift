@@ -133,7 +133,6 @@ struct ProgressWidgetView : View {
 
     var body: some View {
         ZStack {
-            AccessoryWidgetBackground()
             ProgressView(value: entry.timeRemaining, total: getTotalForStatus(entry.status)) {
                 Text("\(getIconForStatus(entry.status))")
                     .font(.system(size: 20))

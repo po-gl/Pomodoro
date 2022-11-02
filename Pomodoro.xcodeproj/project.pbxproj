@@ -22,6 +22,14 @@
 		612D8F95290B67E50089CDD1 /* PomoTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619255B02901F4CB00D399B8 /* PomoTimer.swift */; };
 		612D8F96290B67E80089CDD1 /* SequenceTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613D6D9B285C82FD0020C194 /* SequenceTimer.swift */; };
 		612D8F97290B67EB0089CDD1 /* PomoTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619255B3290204AB00D399B8 /* PomoTime.swift */; };
+		6131C0A52911F38300D1E6F1 /* WalkAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6131C0A22911EEA100D1E6F1 /* WalkAnimation.swift */; };
+		6131C0AA2911F6E200D1E6F1 /* BuddyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6131C0A92911F6E200D1E6F1 /* BuddyView.swift */; };
+		6131C0AB2911F6E200D1E6F1 /* BuddyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6131C0A92911F6E200D1E6F1 /* BuddyView.swift */; };
+		6131C0AC291200EE00D1E6F1 /* WalkAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6131C0A22911EEA100D1E6F1 /* WalkAnimation.swift */; };
+		6131C0AE291204C300D1E6F1 /* AnimatedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6131C0AD291204C300D1E6F1 /* AnimatedImage.swift */; };
+		6131C0AF291204C300D1E6F1 /* AnimatedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6131C0AD291204C300D1E6F1 /* AnimatedImage.swift */; };
+		6131C0B129120DC900D1E6F1 /* SitAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6131C0B029120DC900D1E6F1 /* SitAnimation.swift */; };
+		6131C0B229120DC900D1E6F1 /* SitAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6131C0B029120DC900D1E6F1 /* SitAnimation.swift */; };
 		6139AE4F290C643B00C5CB19 /* MainPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6139AE4E290C643B00C5CB19 /* MainPage.swift */; };
 		6139AE51290C64D000C5CB19 /* ChangerPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6139AE50290C64D000C5CB19 /* ChangerPage.swift */; };
 		613D6D9C285C82FD0020C194 /* SequenceTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613D6D9B285C82FD0020C194 /* SequenceTimer.swift */; };
@@ -132,6 +140,10 @@
 		612D8F88290B63180089CDD1 /* WatchWidget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = WatchWidget.intentdefinition; sourceTree = "<group>"; };
 		612D8F89290B63190089CDD1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		612D8F8B290B63190089CDD1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6131C0A22911EEA100D1E6F1 /* WalkAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkAnimation.swift; sourceTree = "<group>"; };
+		6131C0A92911F6E200D1E6F1 /* BuddyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuddyView.swift; sourceTree = "<group>"; };
+		6131C0AD291204C300D1E6F1 /* AnimatedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedImage.swift; sourceTree = "<group>"; };
+		6131C0B029120DC900D1E6F1 /* SitAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SitAnimation.swift; sourceTree = "<group>"; };
 		6139AE4E290C643B00C5CB19 /* MainPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPage.swift; sourceTree = "<group>"; };
 		6139AE50290C64D000C5CB19 /* ChangerPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangerPage.swift; sourceTree = "<group>"; };
 		613D6D9B285C82FD0020C194 /* SequenceTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceTimer.swift; sourceTree = "<group>"; };
@@ -263,6 +275,15 @@
 			path = WatchWidget;
 			sourceTree = "<group>";
 		};
+		6131C0A12911EE7300D1E6F1 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				6131C0A22911EEA100D1E6F1 /* WalkAnimation.swift */,
+				6131C0B029120DC900D1E6F1 /* SitAnimation.swift */,
+			);
+			path = Animations;
+			sourceTree = "<group>";
+		};
 		617789A52856A1F200BD43D7 = {
 			isa = PBXGroup;
 			children = (
@@ -301,6 +322,7 @@
 				61BEBD822856B1D400987514 /* Model */,
 				612B9085285CC80D003F1990 /* Extensions */,
 				619ED26829072E00004E344D /* Haptics.swift */,
+				6131C0A12911EE7300D1E6F1 /* Animations */,
 				61F4253D2908E8FD00300C83 /* Notifications.swift */,
 				617789B52856A1F300BD43D7 /* Assets.xcassets */,
 				617789B72856A1F300BD43D7 /* Pomodoro.entitlements */,
@@ -342,6 +364,7 @@
 			children = (
 				61B17255285CFD5C001C8245 /* AlwaysPopoverModifier.swift */,
 				61B17257285CFE26001C8245 /* PopoverContentViewController.swift */,
+				6131C0AD291204C300D1E6F1 /* AnimatedImage.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -354,6 +377,7 @@
 				619255AC290121DA00D399B8 /* TimerDisplay.swift */,
 				61F5C21F285CE482002BE18E /* TimePicker.swift */,
 				611AE62D2903A9AF00FA24F0 /* ButtonCluster.swift */,
+				6131C0A92911F6E200D1E6F1 /* BuddyView.swift */,
 				611AE62F2903AB1800FA24F0 /* MenuButton.swift */,
 				61F4220E2900AC350036400A /* ProgressBar.swift */,
 			);
@@ -687,6 +711,7 @@
 				619255AD290121DA00D399B8 /* TimerDisplay.swift in Sources */,
 				61B17258285CFE26001C8245 /* PopoverContentViewController.swift in Sources */,
 				619ED26929072E00004E344D /* Haptics.swift in Sources */,
+				6131C0A52911F38300D1E6F1 /* WalkAnimation.swift in Sources */,
 				61F4220F2900AC350036400A /* ProgressBar.swift in Sources */,
 				61F5C220285CE482002BE18E /* TimePicker.swift in Sources */,
 				613D6D9C285C82FD0020C194 /* SequenceTimer.swift in Sources */,
@@ -694,12 +719,15 @@
 				612B908A285CD2E4003F1990 /* Color+hex.swift in Sources */,
 				61B17253285CFCF8001C8245 /* UIView+ClosestVC.swift in Sources */,
 				61B17251285CFCBB001C8245 /* View+Modifier.swift in Sources */,
+				6131C0AE291204C300D1E6F1 /* AnimatedImage.swift in Sources */,
 				617789DE2856A38C00BD43D7 /* ContentView.swift in Sources */,
+				6131C0B129120DC900D1E6F1 /* SitAnimation.swift in Sources */,
 				611AE62E2903A9AF00FA24F0 /* ButtonCluster.swift in Sources */,
 				61F4253E2908E8FD00300C83 /* Notifications.swift in Sources */,
 				612B9088285CC863003F1990 /* TimeInterval+formatter.swift in Sources */,
 				611AE6302903AB1800FA24F0 /* MenuButton.swift in Sources */,
 				617789B22856A1F300BD43D7 /* PomodoroApp.swift in Sources */,
+				6131C0AA2911F6E200D1E6F1 /* BuddyView.swift in Sources */,
 				619255B12901F4CB00D399B8 /* PomoTimer.swift in Sources */,
 				619255B4290204AB00D399B8 /* PomoTime.swift in Sources */,
 			);
@@ -734,10 +762,14 @@
 			files = (
 				61F425422908EB9700300C83 /* Notifications.swift in Sources */,
 				619ED26B29073299004E344D /* ButtonCluster.swift in Sources */,
+				6131C0AC291200EE00D1E6F1 /* WalkAnimation.swift in Sources */,
+				6131C0B229120DC900D1E6F1 /* SitAnimation.swift in Sources */,
 				61FAEADA290689A200CACF78 /* SequenceTimer.swift in Sources */,
+				6131C0AB2911F6E200D1E6F1 /* BuddyView.swift in Sources */,
 				612D8F8D290B63190089CDD1 /* WatchWidget.intentdefinition in Sources */,
 				619ED26E29073A7E004E344D /* Haptics.swift in Sources */,
 				6139AE4F290C643B00C5CB19 /* MainPage.swift in Sources */,
+				6131C0AF291204C300D1E6F1 /* AnimatedImage.swift in Sources */,
 				61FAEAB329065FDC00CACF78 /* ContentView.swift in Sources */,
 				61FAEADB290689A200CACF78 /* PomoTime.swift in Sources */,
 				61FAEAE0290689A200CACF78 /* TimeInterval+formatter.swift in Sources */,
