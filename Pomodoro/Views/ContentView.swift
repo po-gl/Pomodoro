@@ -18,7 +18,6 @@ struct ContentView: View {
     init() {
         var selfInstance: ContentView?
         pomoTimer = PomoTimer(pomos: 4, longBreak: PomoTimer.defaultBreakTime) { status in
-            print("Performed action! \(Date()) \(status)")
             selfInstance?.handleTimerEnd(status: status)
         }
         selfInstance = self
@@ -35,12 +34,10 @@ struct ContentView: View {
             }
             .onChange(of: scenePhase) { newPhase in
                 if newPhase == .active {
-                    print("\nActive")
                     pomoTimer.restoreFromUserDefaults()
                     cancelPendingNotifications()
                     haptics.prepareHaptics()
                 } else if newPhase == .inactive {
-                    print("\nInactive")
                     pomoTimer.saveToUserDefaults()
                     setupNotifications(pomoTimer)
                 }
