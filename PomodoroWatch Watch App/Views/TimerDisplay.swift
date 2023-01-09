@@ -53,7 +53,7 @@ struct TimerDisplay: View {
         case .work:
             return "🌶️"
         case .rest:
-            return "🍈"
+            return "🍇"
         case .longBreak:
             return "🏖️"
         case .end:
