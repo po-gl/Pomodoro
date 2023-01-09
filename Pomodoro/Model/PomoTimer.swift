@@ -11,8 +11,8 @@ import SwiftUI
 
 class PomoTimer: SequenceTimer {
     @Published var order: [PomoTime]
+    @Published var pomoCount: Int
     
-    public var pomoCount: Int
     private var longBreakTime: Double
     
     private let maxPomos: Int = 6
@@ -97,6 +97,7 @@ class PomoTimer: SequenceTimer {
         if let encoded = try? PropertyListEncoder().encode(order) {
             UserDefaults(suiteName: "group.com.po-gl.pomodoro")!.set(encoded, forKey: "order")
         }
+        UserDefaults(suiteName: "group.com.po-gl.pomodoro")!.set(pomoCount, forKey: "pomoCount")
         super.saveToUserDefaults()
     }
     
@@ -104,9 +105,10 @@ class PomoTimer: SequenceTimer {
         if let data = UserDefaults(suiteName: "group.com.po-gl.pomodoro")!.object(forKey: "order") as? Data {
             if let orderDecoded = try? PropertyListDecoder().decode([PomoTime].self, from: data) {
                 order = orderDecoded
-                print("RESTORE::order=\(order.map { $0.getStatusString() })")
             }
         }
+        pomoCount = UserDefaults(suiteName: "group.com.po-gl.pomodoro")!.object(forKey: "pomoCount") as? Int ?? pomoCount
+        print("RESTORE::order=\(order.map { $0.getStatusString() })  pomoCount=\(pomoCount)")
         super.restoreFromUserDefaults()
     }
 }
