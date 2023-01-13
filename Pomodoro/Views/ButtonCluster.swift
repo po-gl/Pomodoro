@@ -24,7 +24,7 @@ struct ButtonCluster: View {
                 }, label: {
                     ZStack {
                         RoundedRectangle(cornerRadius: 60)
-                            .foregroundColor(pomoTimer.isPaused ? .orange : Color("GrayedOut"))
+                            .foregroundStyle(pomoTimer.isPaused ? Color.orange.gradient : Color("GrayedOut").gradient)
                             .frame(width: 130, height: 60)
                         Text("Reset")
                             .font(.system(size: 20).monospaced())
@@ -41,7 +41,7 @@ struct ButtonCluster: View {
                     }
                 }, label: {
                     RoundedRectangle(cornerRadius: 60)
-                        .foregroundColor(pomoTimer.isPaused ? Color("BarWork") : Color("BarLongBreak"))
+                        .foregroundStyle(pomoTimer.isPaused ? Color("BarWork").gradient : Color("BarLongBreak").gradient)
                         .frame(width: 130, height: 60)
                         .reverseMask {
                             Text(pomoTimer.isPaused ? "Start" : "Stop")
