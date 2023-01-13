@@ -19,16 +19,14 @@ struct TimerDisplay: View {
                 HStack {
                     Text("\(pomoTimer.getStatusString(atDate: context.date))")
                         .foregroundColor(colorScheme == .dark ? getColorForStatus(pomoTimer.getStatus(atDate: context.date)) : .primary)
-                        .font(.system(size: 30))
-                        .fontWeight(.light)
+                        .font(.system(size: 30, weight: .light, design: .monospaced))
                     Spacer()
                     Text(getIconForStatus(status: pomoTimer.getStatus(atDate: context.date)))
                         .font(.system(size: 30))
                         .shadow(radius: 20)
                 }
                 Text("\(pomoTimer.timeRemaining(atDate: context.date).timerFormatted())")
-                    .font(.system(size: 70))
-                    .fontWeight(.light)
+                    .font(.system(size: 70, weight: .light))
                     .monospacedDigit()
                     .shadow(radius: 20)
                 HStack {
@@ -36,8 +34,7 @@ struct TimerDisplay: View {
                     Text("\(Array(repeating: "🍅", count: pomoTimer.pomoCount).joined(separator: ""))")
                         .font(.system(size: 22))
                     Text("Pomos")
-                        .font(.system(size: 30))
-                        .fontWeight(.ultraLight)
+                        .font(.system(size: 30, weight: .ultraLight))
                 }
                 
                 pomoStepper()
