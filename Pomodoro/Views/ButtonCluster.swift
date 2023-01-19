@@ -26,9 +26,11 @@ struct ButtonCluster: View {
                         RoundedRectangle(cornerRadius: 60)
                             .foregroundStyle(pomoTimer.isPaused ? Color.orange.gradient : Color("GrayedOut").gradient)
                             .frame(width: 130, height: 60)
-                        Text("Reset")
-                            .font(.system(size: 20).monospaced())
-                            .foregroundColor(.white)
+                            .reverseMask {
+                                Text("Reset")
+                                    .font(.system(size: 20).monospaced())
+                                    .foregroundColor(.white)
+                            }
                     }
                 })
                 .disabled(!pomoTimer.isPaused)
