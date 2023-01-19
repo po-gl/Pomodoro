@@ -29,7 +29,6 @@ struct ButtonCluster: View {
                             .reverseMask {
                                 Text("Reset")
                                     .font(.system(size: 20).monospaced())
-                                    .foregroundColor(.white)
                             }
                     }
                 })
