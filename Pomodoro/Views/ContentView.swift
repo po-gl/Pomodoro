@@ -47,10 +47,12 @@ struct ContentView: View {
     
     private func mainPage() -> some View {
         return GeometryReader { metrics in
-            TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
+            ZStack {
+                Background(pomoTimer: pomoTimer)
                 VStack {
                     Spacer()
                     TimerDisplay(pomoTimer: pomoTimer)
+                    Spacer()
                     Spacer()
                     ProgressBar(pomoTimer: pomoTimer, metrics: metrics)
                         .frame(maxHeight: 130)
@@ -58,10 +60,8 @@ struct ContentView: View {
                     ButtonCluster(pomoTimer: pomoTimer)
                     Spacer()
                 }
-                .background(pomoTimer.isPaused ? Color("BackgroundStopped") : getColorForStatus(pomoTimer.getStatus(atDate: context.date)))
-                .animation(.easeInOut(duration: 0.3), value: pomoTimer.isPaused)
-                .animation(.easeInOut(duration: 0.3), value: getColorForStatus(pomoTimer.getStatus(atDate: context.date)))
             }
+            .animation(.easeInOut(duration: 0.3), value: pomoTimer.isPaused)
         }
     }
     
@@ -76,20 +76,6 @@ struct ContentView: View {
             haptics.breakHaptic()
         case .end:
             haptics.breakHaptic()
-        }
-    }
-    
-    
-    private func getColorForStatus(_ status: PomoStatus) -> Color {
-        switch status {
-        case .work:
-            return Color("BackgroundWork")
-        case .rest:
-            return Color("BackgroundRest")
-        case .longBreak:
-            return Color("BackgroundLongBreak")
-        case .end:
-            return Color("BackgroundLongBreak")
         }
     }
 }
