@@ -37,7 +37,7 @@ struct ProgressBar: View {
                 .padding(.vertical, 2)
                 .padding(.horizontal, barOutlinePadding)
                 .background {
-                    RoundedRectangle(cornerRadius: 16)
+                    RoundedRectangle(cornerRadius: 8)
                         .foregroundColor(colorScheme == .dark ? .black : .black)
                 }
             }
@@ -89,7 +89,7 @@ struct ProgressBar: View {
         HStack(spacing: 0) {
             ForEach(0..<pomoTimer.order.count, id: \.self) { i in
                 ZStack {
-                    RoundedRectangle(cornerRadius: 8)
+                    RoundedRectangle(cornerRadius: 6)
                         .foregroundColor(getColorForStatus(pomoTimer.order[i].getStatus()))
                         .frame(width: getBarWidth() * getProportion(i) - 2, height: 16)
                         .padding(.horizontal, 1)
