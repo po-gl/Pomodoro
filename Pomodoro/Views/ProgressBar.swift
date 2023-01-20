@@ -66,16 +66,24 @@ struct ProgressBar: View {
     }
     
     
-    func getColorForStatus(_ status: PomoStatus) -> Color {
+    func getColorForStatus(_ status: PomoStatus) -> LinearGradient {
         switch status {
         case .work:
-            return Color("BarWork")
+            return LinearGradient(stops: [.init(color: Color("BarWork"), location: 0.5),
+                                          .init(color: Color(hex: 0xD3EDDD), location: 1.1)],
+                                  startPoint: .leading, endPoint: .trailing)
         case .rest:
-            return Color("BarRest")
+            return LinearGradient(stops: [.init(color: Color("BarRest"), location: 0.2),
+                                          .init(color: Color(hex: 0xE8BEB1), location: 1.0)],
+                                  startPoint: .leading, endPoint: .trailing)
         case .longBreak:
-            return Color("BarLongBreak")
+            return LinearGradient(stops: [.init(color: Color("BarLongBreak"), location: 0.5),
+                                          .init(color: Color(hex: 0xF5E1E1), location: 1.3)],
+                                  startPoint: .leading, endPoint: .trailing)
         case .end:
-            return Color("End")
+            return LinearGradient(stops: [.init(color: Color("End"), location: 0.5),
+                                          .init(color: Color(hex: 0xD3EDDD), location: 1.1)],
+                                  startPoint: .leading, endPoint: .trailing)
         }
     }
     
@@ -90,7 +98,7 @@ struct ProgressBar: View {
             ForEach(0..<pomoTimer.order.count, id: \.self) { i in
                 ZStack {
                     RoundedRectangle(cornerRadius: 6)
-                        .foregroundColor(getColorForStatus(pomoTimer.order[i].getStatus()))
+                        .foregroundStyle(getColorForStatus(pomoTimer.order[i].getStatus()))
                         .frame(width: getBarWidth() * getProportion(i) - 2, height: 16)
                         .padding(.horizontal, 1)
                 }
@@ -102,7 +110,7 @@ struct ProgressBar: View {
         HStack(spacing: 0) {
             Spacer(minLength: 0)
             Rectangle()
-                .foregroundColor(colorScheme == .dark ? .black.opacity(0.5) : .white.opacity(0.35))
+                .foregroundColor(colorScheme == .dark ? .black.opacity(0.5) : .white.opacity(0.5))
                 .blendMode(colorScheme == .dark ? .colorBurn : .colorDodge)
                 .frame(width: getBarWidth() * (1 - getTimerProgress(atDate: date)), height: 16)
         }.mask {
