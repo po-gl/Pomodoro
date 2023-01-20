@@ -17,12 +17,10 @@ struct ChangerPage: View {
             VStack(alignment: .center) {
                 Text("Pomos")
                     .foregroundColor(Color("BarWork"))
-                    .font(.system(size: 26))
-                    .fontWeight(.light)
+                    .font(.system(size: 26, weight: .light, design: .monospaced))
                 Divider()
                 Text("\(Array(repeating: "🍅", count: pomoTimer.pomoCount).joined(separator: ""))")
-                    .font(.system(size: 22))
-                    .fontWeight(.regular)
+                    .font(.system(size: 22, weight: .regular))
             }
             Spacer()
             HStack {
