@@ -15,6 +15,7 @@ struct ProgressBar: View {
     var metrics: GeometryProxy
     
     private let barOutlinePadding: Double = 2.0
+    private let barHeight: Double = 16.0
     
     var body: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
@@ -99,7 +100,7 @@ struct ProgressBar: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 6)
                         .foregroundStyle(getColorForStatus(pomoTimer.order[i].getStatus()))
-                        .frame(width: getBarWidth() * getProportion(i) - barOutlinePadding, height: 16)
+                        .frame(width: getBarWidth() * getProportion(i) - barOutlinePadding, height: barHeight)
                         .padding(.horizontal, 1)
                 }
             }
@@ -112,7 +113,7 @@ struct ProgressBar: View {
             Rectangle()
                 .foregroundColor(colorScheme == .dark ? .black.opacity(0.5) : .white.opacity(0.5))
                 .blendMode(colorScheme == .dark ? .colorBurn : .colorDodge)
-                .frame(width: getBarWidth() * (1 - getTimerProgress(atDate: date)), height: 16)
+                .frame(width: getBarWidth() * (1 - getTimerProgress(atDate: date)), height: barHeight)
         }.mask {
             colorBars()
         }
