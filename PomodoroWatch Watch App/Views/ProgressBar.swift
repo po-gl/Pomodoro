@@ -17,12 +17,15 @@ struct ProgressBar: View {
     @State var scrollValue = 0.0
     @State var isScrolling = false
     
+    private let barOutlinePadding: Double = 2.0
+    private let barHeight: Double = 8.0
+    
     var body: some View {
         scrollableTimeLineColorBars()
     }
     
     func scrollableTimeLineColorBars() -> some View {
-        return timeLineColorBars()
+        timeLineColorBars()
             .focusable(pomoTimer.isPaused)
             .digitalCrownRotation($scrollValue, from: 0.0, through: 100,
                                   sensitivity: .medium,
@@ -44,47 +47,23 @@ struct ProgressBar: View {
     }
     
     func timeLineColorBars() -> some View {
-        return TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
-            VStack(alignment: .leading, spacing: 0) {
-                downIndicator()
-                    .offset(x: getBarWidth() * getTimerProgress(atDate: context.date))
-                    .opacity(context.cadence == .live ? 1.0 : 0.0)
-                ZStack {
-                    HStack(spacing: 0) {
-                        ForEach(0..<pomoTimer.order.count, id: \.self) { i in
-                            ZStack {
-                                ZStack {
-                                    Rectangle()
-                                        .foregroundColor(getColorForStatus(pomoTimer.order[i].getStatus()))
-                                        .frame(width: getBarWidth() * getProportion(i), height: 6)
-                                    VStack(spacing: 0) {
-                                        if !isLuminanceReduced && !pomoTimer.isPaused {
-                                            Rectangle()
-                                                .opacity(0.0)
-                                                .frame(width: getBarWidth() * getProportion(i), height: 6)
-                                            Rectangle()
-                                                .foregroundColor(getColorForStatus(pomoTimer.order[i].getStatus()))
-                                                .frame(width: getBarWidth() * getProportion(i), height: 5)
-                                                .blur(radius: 2)
-                                        }
-                                    }
-                                }
-                                
-                                HStack(spacing: 0) {
-                                    Rectangle()
-                                        .foregroundColor(.clear)
-                                        .frame(width: getBarWidth() * getProportion(i) - 1.0, height: 6)
-                                    Rectangle()
-                                        .frame(width: 1, height: 6)
-                                }
-                            }
-                        }
-                    }
-                    startEdge()
+        TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
+            VStack(spacing: 0) {
+                HStack {
+                    Spacer()
+                    Text("\(Int(getTimerProgress(atDate: context.date) * 100))%")
+                        .font(.system(size: 14, design: .monospaced))
                 }
-                upIndicator()
-                    .offset(x: getBarWidth() * getTimerProgress(atDate: context.date))
-                    .opacity(context.cadence == .live ? 1.0 : 0.0)
+                .padding(.bottom, 3)
+                .padding(.horizontal, 15)
+                
+                ZStack {
+                    colorBars()
+                    if getTimerProgress(atDate: context.date) != 0.0 || !pomoTimer.isPaused {
+                        progressIndicator(at: context.date)
+                    }
+                }
+                .padding(.horizontal, 10)
             }
         }
     }
@@ -123,37 +102,54 @@ struct ProgressBar: View {
         }
     }
     
+    func getGradientForStatus(_ status: PomoStatus) -> LinearGradient {
+        switch status {
+        case .work:
+            return LinearGradient(stops: [.init(color: Color("BarWork"), location: 0.5),
+                                          .init(color: Color(hex: 0xD3EDDD), location: 1.1)],
+                                  startPoint: .leading, endPoint: .trailing)
+        case .rest:
+            return LinearGradient(stops: [.init(color: Color("BarRest"), location: 0.2),
+                                          .init(color: Color(hex: 0xE8BEB1), location: 1.0)],
+                                  startPoint: .leading, endPoint: .trailing)
+        case .longBreak:
+            return LinearGradient(stops: [.init(color: Color("BarLongBreak"), location: 0.5),
+                                          .init(color: Color(hex: 0xF5E1E1), location: 1.3)],
+                                  startPoint: .leading, endPoint: .trailing)
+        case .end:
+            return LinearGradient(stops: [.init(color: Color("End"), location: 0.5),
+                                          .init(color: Color(hex: 0xD3EDDD), location: 1.1)],
+                                  startPoint: .leading, endPoint: .trailing)
+        }
+    }
+    
     
     func getBarWidth() -> Double {
-        return metrics.size.width - 32.0
+        return metrics.size.width - 20.0
     }
     
-    
-    func downIndicator() -> some View {
-        return Rectangle()
-            .foregroundColor(.primary)
-            .frame(width: 2, height: 6)
-            .offset(x: -2, y: -2)
+    func colorBars() -> some View {
+        HStack(spacing: 0) {
+            ForEach(0..<pomoTimer.order.count, id: \.self) { i in
+                ZStack {
+                    RoundedRectangle(cornerRadius: 3)
+                        .foregroundStyle(getGradientForStatus(pomoTimer.order[i].getStatus()))
+                        .frame(width: getBarWidth() * getProportion(i) - 2, height: barHeight)
+                        .padding(.horizontal, 1)
+                }
+            }
+        }
     }
     
-    func upIndicator() -> some View {
-        return Rectangle()
-            .foregroundColor(.secondary)
-            .frame(width: 2, height: 6)
-            .offset(x: -2, y: 2)
-    }
-    
-    func startEdge() -> some View {
-        return Rectangle()
-            .foregroundColor(.clear)
-            .background(LinearGradient(gradient: Gradient(colors: [.primary, .secondary]), startPoint: .top, endPoint: .bottom))
-            .frame(width: 2, height: 12)
-            .offset(x:  -getBarWidth()/2.0 - 1.0, y: 0.0)
-    }
-    
-    func lowerEdge() -> some View {
-        return Rectangle()
-            .frame(width: getBarWidth(), height: 1)
-            .offset(y: 4)
+    func progressIndicator(at date: Date) -> some View {
+        HStack(spacing: 0) {
+            Spacer(minLength: 0)
+            Rectangle()
+                .foregroundColor(.black.opacity(0.5))
+                .blendMode(.colorBurn)
+                .frame(width: getBarWidth() * (1 - getTimerProgress(atDate: date)), height: barHeight)
+        }.mask {
+            colorBars()
+        }
     }
 }

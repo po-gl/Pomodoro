@@ -23,7 +23,7 @@ struct MainPage: View {
                         ProgressBar(pomoTimer: pomoTimer, metrics: metrics)
                         BuddyView(pomoTimer: pomoTimer)
                             .frame(width: 20, height: 20)
-                            .offset(x: buddyOffset, y: -13)
+                            .offset(x: buddyOffset, y: -6)
                     }
                     Spacer()
                     Spacer()
