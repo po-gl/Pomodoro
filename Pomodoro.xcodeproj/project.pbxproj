@@ -393,8 +393,8 @@
 				619255AC290121DA00D399B8 /* TimerDisplay.swift */,
 				61F4220E2900AC350036400A /* ProgressBar.swift */,
 				611AE62D2903A9AF00FA24F0 /* ButtonCluster.swift */,
-				61F5C21F285CE482002BE18E /* TimePicker.swift */,
 				6131C0A92911F6E200D1E6F1 /* BuddyView.swift */,
+				61F5C21F285CE482002BE18E /* TimePicker.swift */,
 				611AE62F2903AB1800FA24F0 /* MenuButton.swift */,
 			);
 			path = Views;
@@ -455,8 +455,8 @@
 				6139AE4E290C643B00C5CB19 /* MainPage.swift */,
 				6139AE50290C64D000C5CB19 /* ChangerPage.swift */,
 				619ED26629072C4C004E344D /* TimerDisplay.swift */,
-				619ED26A29073299004E344D /* ButtonCluster.swift */,
 				611A3CA429076BEF00B7AFD3 /* ProgressBar.swift */,
+				619ED26A29073299004E344D /* ButtonCluster.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
