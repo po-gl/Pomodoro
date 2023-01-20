@@ -19,7 +19,7 @@ struct TimerDisplay: View {
                 HStack {
                     Text("\(pomoTimer.getStatusString(atDate: context.date))")
                         .font(.system(size: 30, weight: .light, design: .monospaced))
-                        .colorScheme(.dark)
+                        .foregroundColor(colorScheme == .dark ? getColorForStatus(pomoTimer.getStatus(atDate: context.date)) : .black)
                         .padding(.horizontal, 4)
                         .background(Rectangle().foregroundColor(colorScheme == .dark ? .black : getColorForStatus(pomoTimer.getStatus(atDate: context.date))))
                     Spacer()
