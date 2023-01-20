@@ -21,10 +21,10 @@ struct ProgressBar: View {
             VStack (spacing: 0) {
                 HStack {
                     Text("progress")
-                        .font(.system(size: 14, design: .monospaced))
+                        .font(.system(size: 15, design: .monospaced))
                     Spacer()
                     Text("\(Int(getTimerProgress(atDate: context.date) * 100))%")
-                        .font(.system(size: 14, design: .monospaced))
+                        .font(.system(size: 15, design: .monospaced))
                 }
                 .padding(.bottom, 8)
                 
