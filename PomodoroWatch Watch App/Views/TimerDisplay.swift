@@ -9,17 +9,19 @@ import Foundation
 import SwiftUI
 
 struct TimerDisplay: View {
+    @Environment(\.isLuminanceReduced) private var isLuminanceReduced
     @ObservedObject var pomoTimer: PomoTimer
     
     var body: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
             VStack(alignment: .leading) {
                 HStack {
-                    Text("\(pomoTimer.getStatusString(atDate: context.date))")
+                    Text("\(getStringForStatus(pomoTimer.getStatus(atDate: context.date)))")
                         .accessibilityIdentifier("statusString")
-                        .foregroundColor(getColorForStatus(pomoTimer.getStatus(atDate: context.date)))
-                        .font(.system(size: 24))
-                        .fontWeight(.light)
+                        .foregroundColor(isLuminanceReduced ? getColorForStatus(pomoTimer.getStatus(atDate: context.date)) : .black)
+                        .padding(.horizontal, 4)
+                        .background(Rectangle().foregroundColor(isLuminanceReduced ? .black : getColorForStatus(pomoTimer.getStatus(atDate: context.date))))
+                        .font(.system(size: 21, weight: .light, design: .monospaced))
                     Spacer()
                     Text(getIconForStatus(status: pomoTimer.getStatus(atDate: context.date)))
                         .font(.system(size: 20))
@@ -27,11 +29,22 @@ struct TimerDisplay: View {
                     .frame(width: 145)
                 Text("\(pomoTimer.timeRemaining(atDate: context.date).timerFormatted())")
                     .accessibilityIdentifier("timeRemaining")
-                    .font(.system(size: 40))
-                    .fontWeight(.regular)
+                    .font(.system(size: 40, weight: .regular))
                     .monospacedDigit()
-                    .shadow(radius: 20)
             }
+        }
+    }
+    
+    func getStringForStatus(_ status: PomoStatus) -> String {
+        switch status {
+        case .work:
+            return "Work"
+        case .rest:
+            return "Rest"
+        case .longBreak:
+            return "Break"
+        case .end:
+            return "Finished"
         }
     }
     
