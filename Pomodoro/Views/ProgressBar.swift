@@ -14,10 +14,44 @@ struct ProgressBar: View {
     
     var metrics: GeometryProxy
     
+    @State var dragValue = 0.0
+    @State var isDragging = false
+    
+    private let barPadding: Double = 16.0
     private let barOutlinePadding: Double = 2.0
     private let barHeight: Double = 16.0
     
     var body: some View {
+        timeLineColorBars()
+            .gesture(drag)
+            .onChange(of: pomoTimer.isPaused) { _ in
+                isDragging = false
+            }
+            .onChange(of: pomoTimer.getStatus()) { _ in
+                if isDragging {
+                    basicHaptic()
+                }
+            }
+    }
+    
+    var drag: some Gesture {
+        DragGesture(coordinateSpace: .local)
+            .onChanged { event in
+                guard pomoTimer.isPaused else { return }
+                
+                isDragging = true
+                let padding = barPadding + barOutlinePadding
+                
+                var x = event.location.x.rounded()
+                x = min(max(x, padding), metrics.size.width - padding)
+                x -= padding
+                
+                let percent = x / getBarWidth()
+                pomoTimer.setPercentage(to: percent)
+            }
+    }
+    
+    func timeLineColorBars() -> some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
             VStack (spacing: 0) {
                 HStack {
@@ -31,7 +65,7 @@ struct ProgressBar: View {
                 
                 ZStack {
                     colorBars()
-                    if getTimerProgress(atDate: context.date) != 0.0 || !pomoTimer.isPaused {
+                    if getTimerProgress(atDate: context.date) != 0.0 || !pomoTimer.isPaused || isDragging {
                         progressIndicator(at: context.date)
                     }
                 }
@@ -90,7 +124,7 @@ struct ProgressBar: View {
     
     
     func getBarWidth() -> Double {
-        return metrics.size.width - 32.0 - barOutlinePadding*2
+        return metrics.size.width - barPadding*2 - barOutlinePadding*2
     }
     
     
