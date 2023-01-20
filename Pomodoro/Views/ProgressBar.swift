@@ -99,7 +99,7 @@ struct ProgressBar: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 6)
                         .foregroundStyle(getColorForStatus(pomoTimer.order[i].getStatus()))
-                        .frame(width: getBarWidth() * getProportion(i) - 2, height: 16)
+                        .frame(width: getBarWidth() * getProportion(i) - barOutlinePadding, height: 16)
                         .padding(.horizontal, 1)
                 }
             }
