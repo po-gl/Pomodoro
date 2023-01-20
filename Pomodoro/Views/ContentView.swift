@@ -14,6 +14,7 @@ struct ContentView: View {
     
     @State private var haptics = Haptics()
     
+    @State var buddyOffset: Double = 0
     
     init() {
         var selfInstance: ContentView?
@@ -54,14 +55,23 @@ struct ContentView: View {
                     TimerDisplay(pomoTimer: pomoTimer)
                     Spacer()
                     Spacer()
-                    ProgressBar(pomoTimer: pomoTimer, metrics: metrics)
-                        .frame(maxHeight: 130)
+                    ZStack {
+                        ProgressBar(pomoTimer: pomoTimer, metrics: metrics)
+                            .frame(maxHeight: 130)
+                        BuddyView(pomoTimer: pomoTimer)
+                            .brightness(-0.1)
+                            .frame(width: 20, height: 20)
+                            .offset(x: buddyOffset, y: -8)
+                    }
                     Spacer()
                     ButtonCluster(pomoTimer: pomoTimer)
                     Spacer()
                 }
             }
             .animation(.easeInOut(duration: 0.3), value: pomoTimer.isPaused)
+            .onAppear {
+                buddyOffset = Double.random(in: -60...100)
+            }
         }
     }
     
