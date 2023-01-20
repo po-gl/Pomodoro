@@ -35,11 +35,11 @@ func setupNotifications(_ pomoTimer: PomoTimer) {
         switch pomoTimer.getStatus(atDate: now.addingTimeInterval(timeToNext)) {
         case .work:
             content.title = "\(PomoStatus.work.rawValue) is over."
-            content.subtitle = "🍅🍅🍅 Time to rest 🍅🍅🍅"
+            content.subtitle = "time to rest 🍅🍅🍅"
             content.sound = UNNotificationSound.default
         case .rest:
             content.title = "\(PomoStatus.rest.rawValue) is over."
-            content.subtitle = index == pomoTimer.order.count-2 ? "🍉🍇🍌 Take a long break 🍐🍊🍒" : "🌶️🌶️🌶️ Time to work 🌶️🌶️🌶️"
+            content.subtitle = index == pomoTimer.order.count-2 ? "take a long break 🍉🏖️🍒" : "time to work 🌶️🌶️🌶️"
             content.sound = UNNotificationSound.default
         case .longBreak:
             content.title = "\(PomoStatus.longBreak.rawValue) is over."
@@ -47,7 +47,7 @@ func setupNotifications(_ pomoTimer: PomoTimer) {
             content.sound = UNNotificationSound.default
         case .end:
             content.title = "\(PomoStatus.longBreak.rawValue) is over."
-            content.subtitle = "🎉🎉🎉 Finished 🎉🎉🎉"
+            content.subtitle = "finished! 🎉🎉🎉"
             content.sound = UNNotificationSound.default
         }
 
