@@ -16,6 +16,7 @@ struct ProgressBar: View {
     
     @State var dragValue = 0.0
     @State var isDragging = false
+    @State var dragStarted = false
     
     private let barPadding: Double = 16.0
     private let barOutlinePadding: Double = 2.0
@@ -35,11 +36,12 @@ struct ProgressBar: View {
     }
     
     var drag: some Gesture {
-        DragGesture(coordinateSpace: .local)
+        DragGesture(minimumDistance: 0.0, coordinateSpace: .local)
             .onChanged { event in
                 guard pomoTimer.isPaused else { return }
+                if !dragStarted { heavyHaptic() }
                 
-                isDragging = true
+                isDragging = true; dragStarted = true
                 let padding = barPadding + barOutlinePadding
                 
                 var x = event.location.x.rounded()
@@ -49,6 +51,7 @@ struct ProgressBar: View {
                 let percent = x / getBarWidth()
                 pomoTimer.setPercentage(to: percent)
             }
+            .onEnded { _ in dragStarted = false }
     }
     
     func timeLineColorBars() -> some View {
