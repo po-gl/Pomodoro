@@ -10,6 +10,7 @@ import CoreHaptics
 
 struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.colorScheme) private var colorScheme
     @ObservedObject var pomoTimer: PomoTimer
     
     @State private var haptics = Haptics()
@@ -29,6 +30,7 @@ struct ContentView: View {
     
     var body: some View {
         mainPage()
+            .statusBarStyle(colorScheme == .dark ? .darkContent : .lightContent)
             .onAppear {
                 getNotificationPermissions()
             }
