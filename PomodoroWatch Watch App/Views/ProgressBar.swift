@@ -59,7 +59,7 @@ struct ProgressBar: View {
                 
                 ZStack {
                     colorBars()
-                    if getTimerProgress(atDate: context.date) != 0.0 || !pomoTimer.isPaused {
+                    if getTimerProgress(atDate: context.date) != 0.0 || !pomoTimer.isPaused || isScrolling {
                         progressIndicator(at: context.date)
                     }
                 }
