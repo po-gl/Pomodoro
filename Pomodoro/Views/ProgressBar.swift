@@ -9,39 +9,39 @@ import Foundation
 import SwiftUI
 
 struct ProgressBar: View {
+    @Environment(\.colorScheme) var colorScheme
     @ObservedObject var pomoTimer: PomoTimer
     
     var metrics: GeometryProxy
     
+    private let barOutlinePadding: Double = 2.0
+    
     var body: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
-            VStack (alignment: .leading, spacing: 0) {
-                downIndicator()
-                    .offset(x: getBarWidth() * getTimerProgress(atDate: context.date))
-                ZStack {
-                    HStack(spacing: 0) {
-                        ForEach(0..<pomoTimer.order.count, id: \.self) { i in
-                            ZStack {
-                                Rectangle()
-                                    .foregroundColor(getColorForStatus(pomoTimer.order[i].getStatus()))
-                                    .frame(width: getBarWidth() * getProportion(i), height: 16)
-                                
-                                HStack(spacing: 0) {
-                                    Rectangle()
-                                        .foregroundColor(.clear)
-                                        .frame(width: getBarWidth() * getProportion(i) - 2.0, height: 16)
-                                    Rectangle()
-                                        .frame(width: 2, height: 16)
-                                }
-                            }
-                        }
-                    }
-                    startEdge()
-                    lowerEdge()
+            VStack (spacing: 0) {
+                HStack {
+                    Text("progress")
+                        .font(.system(size: 14, design: .monospaced))
+                    Spacer()
+                    Text("\(Int(getTimerProgress(atDate: context.date) * 100))%")
+                        .font(.system(size: 14, design: .monospaced))
                 }
-                upIndicator()
-                    .offset(x: getBarWidth() * getTimerProgress(atDate: context.date))
+                .padding(.bottom, 8)
+                
+                ZStack {
+                    colorBars()
+                    if getTimerProgress(atDate: context.date) != 0.0 || !pomoTimer.isPaused {
+                        progressIndicator(at: context.date)
+                    }
+                }
+                .padding(.vertical, 2)
+                .padding(.horizontal, barOutlinePadding)
+                .background {
+                    RoundedRectangle(cornerRadius: 16)
+                        .foregroundColor(colorScheme == .dark ? .black : .black)
+                }
             }
+            .padding(.horizontal)
         }
     }
     
@@ -81,35 +81,32 @@ struct ProgressBar: View {
     
     
     func getBarWidth() -> Double {
-        return metrics.size.width - 32.0
+        return metrics.size.width - 32.0 - barOutlinePadding*2
     }
     
     
-    func downIndicator() -> some View {
-        return Rectangle()
-            .foregroundColor(.primary)
-            .frame(width: 2, height: 16)
-            .offset(x: -2, y: -2)
+    func colorBars() -> some View {
+        HStack(spacing: 0) {
+            ForEach(0..<pomoTimer.order.count, id: \.self) { i in
+                ZStack {
+                    RoundedRectangle(cornerRadius: 8)
+                        .foregroundColor(getColorForStatus(pomoTimer.order[i].getStatus()))
+                        .frame(width: getBarWidth() * getProportion(i) - 2, height: 16)
+                        .padding(.horizontal, 1)
+                }
+            }
+        }
     }
     
-    func upIndicator() -> some View {
-        return Rectangle()
-            .foregroundColor(.secondary)
-            .frame(width: 2, height: 16)
-            .offset(x: -2, y: 4)
-    }
-    
-    func startEdge() -> some View {
-        return Rectangle()
-            .foregroundColor(.clear)
-            .background(LinearGradient(gradient: Gradient(colors: [.primary, .secondary]), startPoint: .top, endPoint: .bottom))
-            .frame(width: 2, height: 30)
-            .offset(x:  -getBarWidth()/2.0 - 1.0, y: 1.0)
-    }
-    
-    func lowerEdge() -> some View {
-        return Rectangle()
-            .frame(width: getBarWidth(), height: 2)
-            .offset(y: 8)
+    func progressIndicator(at date: Date) -> some View {
+        HStack(spacing: 0) {
+            Spacer(minLength: 0)
+            Rectangle()
+                .foregroundColor(colorScheme == .dark ? .black.opacity(0.5) : .white.opacity(0.35))
+                .blendMode(colorScheme == .dark ? .colorBurn : .colorDodge)
+                .frame(width: getBarWidth() * (1 - getTimerProgress(atDate: date)), height: 16)
+        }.mask {
+            colorBars()
+        }
     }
 }
