@@ -30,7 +30,7 @@ struct ContentView: View {
     
     var body: some View {
         mainPage()
-            .statusBarStyle(colorScheme == .dark ? .darkContent : .lightContent)
+            .statusBarStyle(.lightContent)
             .onAppear {
                 getNotificationPermissions()
             }
