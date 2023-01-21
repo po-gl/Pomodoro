@@ -72,6 +72,9 @@
 		61E22AA7297B31500080CA6E /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F4253D2908E8FD00300C83 /* Notifications.swift */; };
 		61E22AA9297B4D5B0080CA6E /* HostingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E22AA8297B4D5B0080CA6E /* HostingView.swift */; };
 		61E22AAA297B4D5B0080CA6E /* HostingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E22AA8297B4D5B0080CA6E /* HostingView.swift */; };
+		61E22AAB297B975B0080CA6E /* Color+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9089285CD2E4003F1990 /* Color+hex.swift */; };
+		61E22AAC297B975D0080CA6E /* Color+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9089285CD2E4003F1990 /* Color+hex.swift */; };
+		61E22AAD297B97CC0080CA6E /* Color+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9089285CD2E4003F1990 /* Color+hex.swift */; };
 		61ED2E06297A682F0080C29F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617789B32856A1F300BD43D7 /* ContentView.swift */; };
 		61F4220F2900AC350036400A /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F4220E2900AC350036400A /* ProgressBar.swift */; };
 		61F4253E2908E8FD00300C83 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F4253D2908E8FD00300C83 /* Notifications.swift */; };
@@ -719,6 +722,7 @@
 				612D8F96290B67E80089CDD1 /* SequenceTimer.swift in Sources */,
 				612D8F8C290B63190089CDD1 /* WatchWidget.intentdefinition in Sources */,
 				612D8F97290B67EB0089CDD1 /* PomoTime.swift in Sources */,
+				61E22AAD297B97CC0080CA6E /* Color+hex.swift in Sources */,
 				612D8F95290B67E50089CDD1 /* PomoTimer.swift in Sources */,
 				612D8F87290B63180089CDD1 /* WatchWidget.swift in Sources */,
 			);
@@ -773,6 +777,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61E22AAB297B975B0080CA6E /* Color+hex.swift in Sources */,
 				61E22AA7297B31500080CA6E /* Notifications.swift in Sources */,
 				61E22AA5297B31270080CA6E /* Haptics.swift in Sources */,
 				61E22A9F297B31070080CA6E /* TimePicker.swift in Sources */,
@@ -830,6 +835,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61E22AAC297B975D0080CA6E /* Color+hex.swift in Sources */,
 				61FAEACC29065FDE00CACF78 /* PomodoroWatch_Watch_AppUITests.swift in Sources */,
 				61FAEACE29065FDE00CACF78 /* PomodoroWatch_Watch_AppUITestsLaunchTests.swift in Sources */,
 			);
