@@ -133,13 +133,34 @@ struct ProgressWidgetView : View {
 
     var body: some View {
         ZStack {
-            ProgressView(value: entry.timeRemaining, total: getTotalForStatus(entry.status)) {
+            progressGradient().mask(
+            ProgressView(value: entry.timeRemaining, total: getTotalForStatus(entry.status)) { }
+            .progressViewStyle(.circular))
+            .widgetAccentable()
+            .overlay {
                 Text("\(getIconForStatus(entry.status))")
                     .font(.system(size: 20))
             }
-            .progressViewStyle(.circular)
-            .widgetAccentable()
         }
+    }
+    
+    func progressGradient() -> AngularGradient {
+        AngularGradient(stops: [
+            .init(color: Color(hex: 0xD3EDDD), location: 0.0),
+            .init(color: Color(hex: 0xF52431), location: 0.1),
+            .init(color: Color(hex: 0xCB2C6C), location: 0.2),
+            
+            .init(color: Color(hex: 0x9BE28A), location: 0.3),
+            .init(color: Color(hex: 0x43D37B), location: 0.35),
+            .init(color: Color(hex: 0xD56868), location: 0.5),
+            
+            .init(color: Color(hex: 0xFD6958), location: 0.6),
+            .init(color: Color(hex: 0xC83282), location: 0.85),
+            
+            .init(color: Color(hex: 0xD3EDDD), location: 0.9),
+            .init(color: Color(hex: 0xD8F9EC), location: 0.95),
+            .init(color: Color(hex: 0xFDEDD5), location: 1.0),
+        ], center: .center, startAngle: .degrees(0-130), endAngle: .degrees(360-130))
     }
 }
 
