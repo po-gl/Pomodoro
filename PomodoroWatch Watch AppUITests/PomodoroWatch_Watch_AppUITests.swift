@@ -48,7 +48,7 @@ final class PomodoroWatch_Watch_AppUITests: XCTestCase {
         app.launch()
         
         XCUIDevice.shared.rotateDigitalCrown(delta: 9.0, velocity: 30.0)
-        XCTAssert(app.staticTexts["Long Break"].exists)
+        XCTAssert(app.staticTexts["Break"].exists)
         XCTAssert(app.staticTexts["🏖️"].exists)
         XCTAssert(app.staticTexts["00:01:00"].exists)
     }
