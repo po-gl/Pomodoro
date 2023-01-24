@@ -319,12 +319,12 @@
 			children = (
 				615E7F2E290B7DB0005BD3AE /* WatchWidgetExtension.entitlements */,
 				617789B02856A1F300BD43D7 /* Pomodoro */,
+				61FAEAAF29065FDC00CACF78 /* PomodoroWatch Watch App */,
+				612D8F85290B63180089CDD1 /* WatchWidget */,
 				617789C22856A1F400BD43D7 /* PomodoroTests */,
 				617789CC2856A1F400BD43D7 /* PomodoroUITests */,
-				61FAEAAF29065FDC00CACF78 /* PomodoroWatch Watch App */,
 				61FAEAC029065FDE00CACF78 /* PomodoroWatch Watch AppTests */,
 				61FAEACA29065FDE00CACF78 /* PomodoroWatch Watch AppUITests */,
-				612D8F85290B63180089CDD1 /* WatchWidget */,
 				612D8F80290B63180089CDD1 /* Frameworks */,
 				617789AF2856A1F300BD43D7 /* Products */,
 			);
