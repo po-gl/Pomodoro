@@ -18,23 +18,23 @@ struct TimerDisplay: View {
             VStack(alignment: .leading, spacing: 0) {
                 HStack {
                     Text("\(pomoTimer.getStatusString(atDate: context.date))")
-                        .font(.system(size: 30, weight: .light, design: .monospaced))
+                        .font(.system(size: 30, weight: .thin, design: .serif))
                         .foregroundColor(colorScheme == .dark ? getColorForStatus(pomoTimer.getStatus(atDate: context.date)) : .black)
-                        .padding(.horizontal, 4)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 2)
                         .background(Rectangle().foregroundColor(colorScheme == .dark ? .black : getColorForStatus(pomoTimer.getStatus(atDate: context.date))))
                     Spacer()
                 }
                 Text("\(pomoTimer.timeRemaining(atDate: context.date).timerFormatted())")
                     .font(.system(size: 70, weight: .light))
                     .monospacedDigit()
-                    .shadow(radius: 20)
                     .colorScheme(colorScheme == .dark ? .light : .dark)
                 HStack(spacing: 0) {
                     Spacer()
                     Text("\(Array(repeating: "🍅", count: pomoTimer.pomoCount).joined(separator: ""))")
                         .font(.system(size: 12))
                     Text("Pomos")
-                        .font(.system(size: 25, weight: .ultraLight))
+                        .font(.system(size: 23, weight: .light))
                         .colorScheme(colorScheme == .dark ? .light : .dark)
                         .padding(.horizontal, 5)
                     if pomoTimer.isPaused {
