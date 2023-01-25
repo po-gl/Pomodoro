@@ -51,7 +51,7 @@ struct ProgressBar: View {
             VStack(spacing: 0) {
                 HStack {
                     Spacer()
-                    Text("\(Int(getTimerProgress(atDate: context.date) * 100))%")
+                    Text("\(Int(pomoTimer.getProgress(atDate: context.date) * 100))%")
                         .font(.system(size: 14, design: .monospaced))
                 }
                 .padding(.bottom, 3)
@@ -59,7 +59,7 @@ struct ProgressBar: View {
                 
                 ZStack {
                     colorBars()
-                    if getTimerProgress(atDate: context.date) != 0.0 || !pomoTimer.isPaused || isScrolling {
+                    if pomoTimer.getProgress(atDate: context.date) != 0.0 || !pomoTimer.isPaused || isScrolling {
                         progressIndicator(at: context.date)
                     }
                 }
@@ -67,20 +67,7 @@ struct ProgressBar: View {
             }
         }
     }
-    
-    
-    func getTimerProgress(atDate: Date = Date()) -> TimeInterval {
-        let index = pomoTimer.getIndex(atDate: atDate)
-        let intervals = pomoTimer.order.map { $0.getTime() }
-        let total = intervals.reduce(0, +)
-        var cumulative = 0.0
-        for i in 0..<index {
-           cumulative += intervals[i]
-        }
-        let currentTime = intervals[index] - floor(pomoTimer.timeRemaining(atDate: atDate))
-        let progress = (cumulative + currentTime) / total
-        return progress <= 1.0 ? progress : 1.0
-    }
+
     
     func getProportion(_ index: Int) -> Double {
         let intervals = pomoTimer.order.map { $0.getTime() }
@@ -147,7 +134,7 @@ struct ProgressBar: View {
             Rectangle()
                 .foregroundColor(.black.opacity(0.5))
                 .blendMode(.colorBurn)
-                .frame(width: getBarWidth() * (1 - getTimerProgress(atDate: date)), height: barHeight)
+                .frame(width: getBarWidth() * (1 - pomoTimer.getProgress(atDate: date)), height: barHeight)
         }.mask {
             colorBars()
         }
