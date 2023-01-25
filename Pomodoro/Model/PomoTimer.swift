@@ -55,6 +55,19 @@ class PomoTimer: SequenceTimer {
         return order[index].getStatus()
     }
     
+    public func getProgress(atDate: Date = Date()) -> Double {
+        let index = getIndex(atDate: atDate)
+        let intervals = order.map { $0.getTime() }
+        let total = intervals.reduce(0, +)
+        var cumulative = 0.0
+        for i in 0..<index {
+           cumulative += intervals[i]
+        }
+        let currentTime = intervals[index] - floor(timeRemaining(atDate: atDate))
+        let progress = (cumulative + currentTime) / total
+        return progress <= 1.0 ? progress : 1.0
+    }
+    
     public func getStatusString(atDate: Date = Date()) -> String {
         return getStatus(atDate: atDate).rawValue
     }
