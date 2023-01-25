@@ -13,6 +13,8 @@ struct ContentView: View {
     @Environment(\.colorScheme) private var colorScheme
     @ObservedObject var pomoTimer: PomoTimer
     
+    @State private var stoppedFromURL = false
+    
     @State private var haptics = Haptics()
     
     @State var buddyOffset: Double = 0
@@ -35,12 +37,23 @@ struct ContentView: View {
             }
             .onChange(of: scenePhase) { newPhase in
                 if newPhase == .active {
-                    pomoTimer.restoreFromUserDefaults()
+                    if !stoppedFromURL {
+                        pomoTimer.restoreFromUserDefaults()
+                    }
+                    stoppedFromURL = true
                     cancelPendingNotifications()
+                    cancelLiveActivity()
                     haptics.prepareHaptics()
                 } else if newPhase == .inactive {
                     pomoTimer.saveToUserDefaults()
                     setupNotifications(pomoTimer)
+                    setupLiveActivity(pomoTimer)
+                }
+            }
+            .onOpenURL { url in
+                if url.absoluteString == "com.po-gl.stop" {
+                    pomoTimer.pause()
+                    stoppedFromURL = true
                 }
             }
     }

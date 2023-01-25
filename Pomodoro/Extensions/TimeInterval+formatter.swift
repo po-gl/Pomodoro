@@ -15,4 +15,10 @@ extension TimeInterval {
         TimeInterval.formatter.zeroFormattingBehavior = .pad
         return TimeInterval.formatter.string(from: self)!
     }
+    
+    func compactTimerFormatted() -> String {
+        TimeInterval.formatter.allowedUnits = [.minute, .second]
+        TimeInterval.formatter.zeroFormattingBehavior = .dropLeading
+        return TimeInterval.formatter.string(from: self)!
+    }
 }

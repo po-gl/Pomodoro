@@ -55,7 +55,6 @@ func setupNotifications(_ pomoTimer: PomoTimer) {
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request)
     }
-    
 }
 
 func cancelPendingNotifications() {
