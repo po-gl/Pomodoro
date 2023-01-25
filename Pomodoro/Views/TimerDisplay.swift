@@ -28,7 +28,8 @@ struct TimerDisplay: View {
                     HStack(alignment: .bottom, spacing: 5) {
                         Text("\(context.date.addingTimeInterval(pomoTimer.timeRemaining(atDate: context.date)), formatter: timeFormatter)")
                             .colorScheme(colorScheme == .dark ? .light : .dark)
-                            .font(.system(size: 19, weight: .regular, design: .serif))
+                            .font(.system(size: 17, weight: .regular, design: .serif))
+                            .monospacedDigit()
                             .opacity(pomoTimer.isPaused ? 0.5 : 1.0)
                         Text("\(getIconForStatus(status: pomoTimer.getStatus(atDate: context.date)))")
                             .font(.system(size: 15))
