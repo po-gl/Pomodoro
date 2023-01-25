@@ -56,7 +56,7 @@ struct ButtonCluster: View {
                 .opacity(pomoTimer.getStatus() == .end ? 0.5 : 1.0)
                 .frame(width: 130, height: 60)
                 .reverseMask {
-                    Text(pomoTimer.isPaused ? "Start" : "Stop")
+                    Text(pomoTimer.isPaused ? (pomoTimer.getProgress() == 0.0 ? "Start" : "Resume") : "Stop")
                         .font(.system(size: 20).monospaced())
                 }
         })
