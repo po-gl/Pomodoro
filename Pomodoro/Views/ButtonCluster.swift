@@ -14,45 +14,52 @@ struct ButtonCluster: View {
     
     var body: some View {
         ZStack {
-            HStack {
+            HStack(spacing: 0) {
                 Spacer()
-                Button(action: {
-                    resetHaptic()
-                    withAnimation(.easeIn(duration: 0.2)){
-                        pomoTimer.reset()
-                    }
-                }, label: {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 60)
-                            .foregroundStyle(pomoTimer.isPaused ? Color.orange : Color("GrayedOut"))
-                            .frame(width: 130, height: 60)
-                            .reverseMask {
-                                Text("Reset")
-                                    .font(.system(size: 20).monospaced())
-                            }
-                    }
-                })
-                .disabled(!pomoTimer.isPaused)
+                resetButton()
                 Spacer()
-
-                Button(action: {
-                    basicHaptic()
-                    withAnimation(.easeIn(duration: 0.2)){
-                        pomoTimer.toggle()
-                    }
-                }, label: {
-                    RoundedRectangle(cornerRadius: 60)
-                        .foregroundStyle(pomoTimer.isPaused ? Color("BarWork") : Color("BarLongBreak"))
-                        .frame(width: 130, height: 60)
-                        .reverseMask {
-                            Text(pomoTimer.isPaused ? "Start" : "Stop")
-                                .font(.system(size: 20).monospaced())
-                        }
-                })
-                .disabled(pomoTimer.getStatus() == .end)
-                .foregroundColor(pomoTimer.isPaused ? .blue : .accentColor)
+                startStopButton()
                 Spacer()
             }
         }
+    }
+    
+    private func resetButton() -> some View {
+        Button(action: {
+            resetHaptic()
+            withAnimation(.easeIn(duration: 0.2)){
+                pomoTimer.reset()
+            }
+        }, label: {
+            ZStack {
+                RoundedRectangle(cornerRadius: 60)
+                    .foregroundStyle(pomoTimer.isPaused ? Color.orange : Color("GrayedOut"))
+                    .frame(width: 130, height: 60)
+                    .reverseMask {
+                        Text("Reset")
+                            .font(.system(size: 20).monospaced())
+                    }
+            }
+        })
+        .disabled(!pomoTimer.isPaused)
+    }
+    
+    private func startStopButton() -> some View {
+        Button(action: {
+            basicHaptic()
+            withAnimation(.easeIn(duration: 0.2)){
+                pomoTimer.toggle()
+            }
+        }, label: {
+            RoundedRectangle(cornerRadius: 60)
+                .foregroundStyle(pomoTimer.isPaused ? Color("BarWork") : Color("BarLongBreak"))
+                .opacity(pomoTimer.getStatus() == .end ? 0.5 : 1.0)
+                .frame(width: 130, height: 60)
+                .reverseMask {
+                    Text(pomoTimer.isPaused ? "Start" : "Stop")
+                        .font(.system(size: 20).monospaced())
+                }
+        })
+        .disabled(pomoTimer.getStatus() == .end)
     }
 }
