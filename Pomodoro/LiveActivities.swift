@@ -24,9 +24,6 @@ func setupLiveActivity(_ pomoTimer: PomoTimer) {
     } catch {
         print("Error requesting live activity \(error.localizedDescription).")
     }
-    
-    print("\(Date())")
-    scheduleAppRefresh(at: Date(timeIntervalSinceNow: pomoTimer.timeRemaining()))
 }
 
 fileprivate func getLiveActivityContent(_ pomoTimer: PomoTimer) -> ActivityContent<PomoAttributes.LivePomoState> {
@@ -37,38 +34,6 @@ fileprivate func getLiveActivityContent(_ pomoTimer: PomoTimer) -> ActivityConte
         pomoCount: pomoTimer.pomoCount)
     return ActivityContent(state: state, staleDate: nil)
 }
-
-
-fileprivate func scheduleAppRefresh(at date: Date) {
-    let request = BGAppRefreshTaskRequest(identifier: "com.po-gl.Pomodoro.LiveActivityRefresh")
-    request.earliestBeginDate = date
-    
-    do {
-        try BGTaskScheduler.shared.submit(request)
-    } catch {
-        print("Could not schedule app refresh: \(error)")
-    }
-}
-
-func handleAppRefresh(task: BGProcessingTask) {
-    task.expirationHandler = {
-        task.setTaskCompleted(success: false)
-    }
-    
-    let pomoTimer = PomoTimer()
-    pomoTimer.restoreFromUserDefaults()
-    
-    let content = getLiveActivityContent(pomoTimer)
-    Task {
-        for activity in Activity<PomoAttributes>.activities {
-            await activity.update(content)
-        }
-    }
-    task.setTaskCompleted(success: true)
-    
-    scheduleAppRefresh(at: Date(timeIntervalSinceNow: pomoTimer.timeRemaining()))
-}
-
 
 @available(iOS 16.2, *)
 func cancelLiveActivity() {
