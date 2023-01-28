@@ -108,7 +108,7 @@ struct LockScreenLiveActivityView: View {
     }
     
     private func statusView() -> some View {
-        Text("\(context.state.status.rawValue)")
+        Text("\(getString(for: context.state.status))")
             .font(.system(size: 20, weight: .thin, design: .serif))
             .foregroundColor(.black)
             .padding(.horizontal, 5)
@@ -152,6 +152,15 @@ struct LockScreenLiveActivityView: View {
             return "🏖️"
         case .end:
             return "🎉"
+        }
+    }
+    
+    private func getString(for status: PomoStatus) -> String {
+        switch status {
+        case .longBreak:
+            return "Break"
+        default:
+            return status.rawValue
         }
     }
     

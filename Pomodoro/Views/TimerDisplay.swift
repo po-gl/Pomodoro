@@ -26,7 +26,7 @@ struct TimerDisplay: View {
                         .background(Rectangle().foregroundColor(colorScheme == .dark ? .black : getColorForStatus(pomoTimer.getStatus(atDate: context.date))))
                     Spacer()
                     HStack(alignment: .bottom, spacing: 5) {
-                        Text("until \(context.date.addingTimeInterval(pomoTimer.timeRemaining(atDate: context.date)), formatter: timeFormatter)")
+                        Text("\(pomoTimer.getStatus(atDate: context.date) == .longBreak ? "" : "until ")\(context.date.addingTimeInterval(pomoTimer.timeRemaining(atDate: context.date)), formatter: timeFormatter)")
                             .colorScheme(colorScheme == .dark ? .light : .dark)
                             .font(.system(size: 17, weight: .regular, design: .serif))
                             .monospacedDigit()
