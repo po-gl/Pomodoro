@@ -63,41 +63,17 @@ struct LockScreenLiveActivityView: View {
     
     var body: some View {
         VStack {
-            HStack(alignment: .center, spacing: 0) {
-                HStack(spacing: 10) {
-                    Link(destination: URL(string: "com.po-gl.stop")!) {
-                        Image(systemName: "pause.circle.fill")
-                            .foregroundColor(Color("AccentColor"))
-                            .font(.system(size: 56))
-                            .frame(width: 50)
-                    }
-                    Text("🍅")
-                        .font(.system(size: 34))
-                        .padding(10)
-                        .background(Circle().foregroundColor(.black).opacity(0.2))
-                }
+            HStack(spacing: 10) {
+                pauseButton()
+                tomatoFiller()
                 Spacer()
-                HStack {
-                    VStack(alignment: .trailing) {
-                        Text(timerInterval: context.state.timer, countsDown: true)
-                            .multilineTextAlignment(.trailing)
-                            .font(.system(size: 42, weight: .light))
-                            .monospacedDigit()
-                        HStack(spacing: 4) {
-                            Text("\(context.state.status.rawValue)")
-                                .font(.system(size: 20, weight: .thin, design: .serif))
-                                .foregroundColor(.black)
-                                .padding(.horizontal, 5)
-                                .background(Rectangle().foregroundColor(getColorForStatus(context.state.status)))
-                            Text("until \(context.state.timer.upperBound, formatter: timeFormatter)")
-                                .font(.system(size: 17, weight: .regular, design: .serif))
-                                .monospacedDigit()
-                                .opacity(0.5)
-                        }
-                        Text("Pomo \(context.state.currentPomo)/\(context.state.pomoCount)")
-                            .font(.system(size: 17, weight: .thin, design: .serif))
-                            .opacity(0.5)
+                VStack(alignment: .trailing) {
+                    timerView()
+                    HStack(spacing: 4) {
+                        statusView()
+                        timerEndView()
                     }
+                    pomoView()
                 }
             }
             .padding(.horizontal)
@@ -106,6 +82,52 @@ struct LockScreenLiveActivityView: View {
         .activitySystemActionForegroundColor(.white.opacity(0.8))
         .activityBackgroundTint(.black.opacity(0.8))
     }
+    
+    
+    private func pauseButton() -> some View {
+        Link(destination: URL(string: "com.po-gl.stop")!) {
+            Image(systemName: "pause.circle.fill")
+                .foregroundColor(Color("AccentColor"))
+                .font(.system(size: 56))
+                .frame(width: 50)
+        }
+    }
+    
+    private func tomatoFiller() -> some View {
+        Text("🍅")
+            .font(.system(size: 34))
+            .padding(10)
+            .background(Circle().foregroundColor(.black).opacity(0.2))
+    }
+    
+    private func timerView() -> some View {
+        Text(timerInterval: context.state.timer, countsDown: true)
+            .multilineTextAlignment(.trailing)
+            .font(.system(size: 42, weight: .light))
+            .monospacedDigit()
+    }
+    
+    private func statusView() -> some View {
+        Text("\(context.state.status.rawValue)")
+            .font(.system(size: 20, weight: .thin, design: .serif))
+            .foregroundColor(.black)
+            .padding(.horizontal, 5)
+            .background(Rectangle().foregroundColor(getColorForStatus(context.state.status)))
+    }
+    
+    private func timerEndView() -> some View {
+        Text("until \(context.state.timer.upperBound, formatter: timeFormatter)")
+            .font(.system(size: 17, weight: .regular, design: .serif))
+            .monospacedDigit()
+            .opacity(0.5)
+    }
+    
+    private func pomoView() -> some View {
+        Text("Pomo \(context.state.currentPomo)/\(context.state.pomoCount)")
+            .font(.system(size: 17, weight: .thin, design: .serif))
+            .opacity(0.5)
+    }
+    
     
     private func getColorForStatus(_ status: PomoStatus) -> Color {
         switch status {
