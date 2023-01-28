@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 
-class PomoTimer: SequenceTimer {
+class PomoTimer: SequenceTimer, Codable {
     @Published var order: [PomoTime]
     @Published var pomoCount: Int
     
@@ -123,6 +123,31 @@ class PomoTimer: SequenceTimer {
         pomoCount = UserDefaults(suiteName: "group.com.po-gl.pomodoro")!.object(forKey: "pomoCount") as? Int ?? pomoCount
         print("RESTORE::order=\(order.map { $0.getStatusString() })  pomoCount=\(pomoCount)")
         super.restoreFromUserDefaults()
+    }
+    
+    
+    required init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        pomoCount = try values.decode(Int.self, forKey: .pomoCount)
+        longBreakTime = try values.decode(Double.self, forKey: .longBreak)
+        let pomoTimes = try values.decode([PomoTime].self, forKey: .order)
+        order = pomoTimes
+        pomoAction = { _ in }
+        super.init(pomoTimes.map { $0.getTime() }, perform: { _ in })
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(order, forKey: .order)
+        try container.encode(pomoCount, forKey: .pomoCount)
+        try container.encode(longBreakTime, forKey: .longBreak)
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case order
+        case pomoCount
+        case longBreak
+        case action
     }
 }
 
