@@ -16,6 +16,8 @@ struct PomoAttributes: ActivityAttributes {
         // Dynamic stateful properties about your activity go here!
         var status: PomoStatus
         var timer: ClosedRange<Date>
+        var currentPomo: Int
+        var pomoCount: Int
     }
 
     // Fixed non-changing properties about your activity go here!
@@ -60,41 +62,46 @@ struct LockScreenLiveActivityView: View {
     let context: ActivityViewContext<PomoAttributes>
     
     var body: some View {
-        VStack(alignment: .trailing) {
-            HStack(alignment: .bottom, spacing: 0) {
-                HStack(spacing: 0) {
+        VStack {
+            HStack(alignment: .center, spacing: 0) {
+                HStack(spacing: 10) {
                     Link(destination: URL(string: "com.po-gl.stop")!) {
                         Image(systemName: "pause.circle.fill")
                             .foregroundColor(Color("AccentColor"))
-                            .font(.system(size: 44))
-                            .scaleEffect(1.1)
+                            .font(.system(size: 56))
                             .frame(width: 50)
-                            .padding(.leading).padding(.vertical)
-                            .padding(.trailing, 8)
                     }
-//                    Text("\(getIcon(for: context.state.status))")
                     Text("🍅")
-                        .font(.system(size: 26))
+                        .font(.system(size: 34))
                         .padding(10)
                         .background(Circle().foregroundColor(.black).opacity(0.2))
                 }
                 Spacer()
                 HStack {
-                    Text("\(context.state.status.rawValue)")
-                        .font(.system(size: 20, weight: .thin, design: .serif))
-                        .foregroundColor(.black)
-                        .padding(.horizontal, 5)
-                        .background(Rectangle().foregroundColor(getColorForStatus(context.state.status)))
-                        .offset(y: 3)
-                    Text(timerInterval: context.state.timer, countsDown: true)
-                        .foregroundColor(getColorForStatus(context.state.status))
-                        .font(.system(size: 42, weight: .light))
-                        .frame(width: 120, alignment: .trailing)
-                        .monospacedDigit()
+                    VStack(alignment: .trailing) {
+                        Text(timerInterval: context.state.timer, countsDown: true)
+                            .multilineTextAlignment(.trailing)
+                            .font(.system(size: 42, weight: .light))
+                            .monospacedDigit()
+                        HStack(spacing: 4) {
+                            Text("\(context.state.status.rawValue)")
+                                .font(.system(size: 20, weight: .thin, design: .serif))
+                                .foregroundColor(.black)
+                                .padding(.horizontal, 5)
+                                .background(Rectangle().foregroundColor(getColorForStatus(context.state.status)))
+                            Text("until \(context.state.timer.upperBound, formatter: timeFormatter)")
+                                .font(.system(size: 17, weight: .regular, design: .serif))
+                                .monospacedDigit()
+                                .opacity(0.5)
+                        }
+                        Text("Pomo \(context.state.currentPomo)/\(context.state.pomoCount)")
+                            .font(.system(size: 17, weight: .thin, design: .serif))
+                            .opacity(0.5)
+                    }
                 }
-                .padding(.trailing)
-                .padding(.bottom)
             }
+            .padding(.horizontal)
+            .padding(.vertical, 8)
         }
         .activitySystemActionForegroundColor(.white.opacity(0.8))
         .activityBackgroundTint(.black.opacity(0.8))
@@ -125,4 +132,10 @@ struct LockScreenLiveActivityView: View {
             return "🎉"
         }
     }
+    
+    private let timeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.setLocalizedDateFormatFromTemplate("hh:mm")
+        return formatter
+    }()
 }

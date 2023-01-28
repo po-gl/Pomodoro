@@ -14,7 +14,11 @@ func setupLiveActivity(_ pomoTimer: PomoTimer) {
     guard !pomoTimer.isPaused else { return }
     
     let attributes = PomoAttributes()
-    let state = PomoAttributes.LivePomoState(status: pomoTimer.getStatus(), timer: Date.now...Date.now.addingTimeInterval(pomoTimer.timeRemaining()))
+    let state = PomoAttributes.LivePomoState(
+        status: pomoTimer.getStatus(),
+        timer: Date.now...Date.now.addingTimeInterval(pomoTimer.timeRemaining()),
+        currentPomo: min((pomoTimer.getIndex()+1)/2 + 1, pomoTimer.pomoCount),
+        pomoCount: pomoTimer.pomoCount)
     let content = ActivityContent(state: state, staleDate: nil)
     
     do {
@@ -29,7 +33,7 @@ func setupLiveActivity(_ pomoTimer: PomoTimer) {
 func cancelLiveActivity() {
     guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
     
-    let finalStatus = PomoAttributes.LivePomoState(status: .end, timer: Date.now...Date())
+    let finalStatus = PomoAttributes.LivePomoState(status: .end, timer: Date.now...Date(), currentPomo: 4, pomoCount: 4)
     let finalContent = ActivityContent(state: finalStatus, staleDate: nil)
     Task {
         for activity in Activity<PomoAttributes>.activities {
