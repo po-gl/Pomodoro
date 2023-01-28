@@ -101,7 +101,7 @@ struct LockScreenLiveActivityView: View {
                 }
             }
             .padding(.horizontal)
-            .padding(.vertical, 8)
+            .padding(.vertical, 10)
         }
         .activitySystemActionForegroundColor(.white.opacity(0.8))
         .activityBackgroundTint(.black.opacity(0.8))
