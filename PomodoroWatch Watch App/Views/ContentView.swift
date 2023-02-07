@@ -27,7 +27,7 @@ struct ContentView: View {
             }
         }
         
-        pomoTimer.pause()
+        pomoTimer.restoreFromUserDefaults()
     }
     
     var body: some View {

@@ -24,7 +24,7 @@ struct ContentView: View {
         }
         selfInstance = self
         
-        pomoTimer.pause()
+        pomoTimer.restoreFromUserDefaults()
     }
 
     
