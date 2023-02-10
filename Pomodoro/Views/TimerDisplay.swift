@@ -54,13 +54,13 @@ struct TimerDisplay: View {
                         .font(.system(size: 23, weight: .light))
                         .colorScheme(colorScheme == .dark ? .light : .dark)
                         .padding(.horizontal, 5)
-                    if pomoTimer.isPaused {
-                        pomoStepper()
-                            .colorScheme(colorScheme == .dark ? .light : .dark)
-                            .scaleEffect(0.8)
-                            .frame(width: 80)
-                    }
+                    pomoStepper()
+                        .colorScheme(colorScheme == .dark ? .light : .dark)
+                        .scaleEffect(0.8)
+                        .frame(width: pomoTimer.isPaused ? 0 : 80)
+                        .opacity(pomoTimer.isPaused ? 0 : 1)
                 }
+                .animation(.interpolatingSpring(stiffness: 270, damping: 24), value: pomoTimer.isPaused)
                 .frame(height: 30)
                 .padding(.trailing, 6)
             }
