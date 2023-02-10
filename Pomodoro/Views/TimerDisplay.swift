@@ -13,6 +13,8 @@ struct TimerDisplay: View {
     @Environment(\.colorScheme) private var colorScheme
     @ObservedObject var pomoTimer: PomoTimer
     
+    var pomoChangeAnimation: Animation = .interpolatingSpring(stiffness: 190, damping: 13)
+    
     var body: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
             VStack(alignment: .leading, spacing: 0) {
@@ -72,12 +74,12 @@ struct TimerDisplay: View {
         return Stepper {
             } onIncrement: {
                 basicHaptic()
-                withAnimation(.easeInOut(duration: 0.2)) {
+                withAnimation(pomoChangeAnimation) {
                     pomoTimer.incrementPomos()
                 }
             } onDecrement: {
                 basicHaptic()
-                withAnimation(.easeInOut(duration: 0.2)) {
+                withAnimation(pomoChangeAnimation) {
                     pomoTimer.decrementPomos()
                 }
             }

@@ -68,6 +68,7 @@ struct ProgressBar: View {
                 
                 ZStack {
                     colorBars()
+                        .mask { RoundedRectangle(cornerRadius: 8) }
                     if pomoTimer.getProgress(atDate: context.date) != 0.0 || !pomoTimer.isPaused || isDragging {
                         progressIndicator(at: context.date)
                     }
