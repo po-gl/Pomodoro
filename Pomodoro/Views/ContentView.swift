@@ -23,6 +23,7 @@ struct ContentView: View {
             selfInstance?.handleTimerEnd(status: status)
         }
         selfInstance = self
+        pomoTimer.pause()
         
         pomoTimer.restoreFromUserDefaults()
     }
