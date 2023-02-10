@@ -57,8 +57,8 @@ struct TimerDisplay: View {
                     pomoStepper()
                         .colorScheme(colorScheme == .dark ? .light : .dark)
                         .scaleEffect(0.8)
-                        .frame(width: pomoTimer.isPaused ? 0 : 80)
-                        .opacity(pomoTimer.isPaused ? 0 : 1)
+                        .frame(width: pomoTimer.isPaused ? 80 : 0)
+                        .opacity(pomoTimer.isPaused ? 1 : 0)
                 }
                 .animation(.interpolatingSpring(stiffness: 270, damping: 24), value: pomoTimer.isPaused)
                 .frame(height: 30)
