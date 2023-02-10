@@ -47,7 +47,7 @@ struct ButtonCluster: View {
     private func startStopButton() -> some View {
         Button(action: {
             basicHaptic()
-            withAnimation(.easeIn(duration: 0.2)){
+            withAnimation(.interpolatingSpring(stiffness: 270, damping: 24)){
                 pomoTimer.toggle()
             }
         }, label: {
