@@ -37,6 +37,22 @@
 		613D6D9F285C890F0020C194 /* SequenceTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613D6D9B285C82FD0020C194 /* SequenceTimer.swift */; };
 		614A86C3290A4B74008DFA26 /* PomoTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614A86C2290A4B74008DFA26 /* PomoTimerTests.swift */; };
 		614A86C5290A4E1E008DFA26 /* PomoTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614A86C4290A4E1E008DFA26 /* PomoTimeTests.swift */; };
+		614DA2A72997BE3C00EFC91C /* PopStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2A62997BE3C00EFC91C /* PopStyle.swift */; };
+		614DA2A82997BE3C00EFC91C /* PopStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2A62997BE3C00EFC91C /* PopStyle.swift */; };
+		614DA2A92997BE3C00EFC91C /* PopStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2A62997BE3C00EFC91C /* PopStyle.swift */; };
+		614DA2AA2997BE3C00EFC91C /* PopStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2A62997BE3C00EFC91C /* PopStyle.swift */; };
+		614DA2AB2997BE3C00EFC91C /* PopStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2A62997BE3C00EFC91C /* PopStyle.swift */; };
+		614DA2AC2997BE3C00EFC91C /* PopStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2A62997BE3C00EFC91C /* PopStyle.swift */; };
+		614DA2AD2997BE3C00EFC91C /* PopStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2A62997BE3C00EFC91C /* PopStyle.swift */; };
+		614DA2AE2997BE3C00EFC91C /* PopStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2A62997BE3C00EFC91C /* PopStyle.swift */; };
+		614DA2B02997BE6C00EFC91C /* Color+isDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */; };
+		614DA2B12997BE6C00EFC91C /* Color+isDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */; };
+		614DA2B22997BE6C00EFC91C /* Color+isDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */; };
+		614DA2B32997BE6C00EFC91C /* Color+isDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */; };
+		614DA2B42997BE6C00EFC91C /* Color+isDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */; };
+		614DA2B52997BE6C00EFC91C /* Color+isDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */; };
+		614DA2B62997BE6C00EFC91C /* Color+isDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */; };
+		614DA2B72997BE6C00EFC91C /* Color+isDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */; };
 		6172B49D297F56DB00E53D8F /* WalkAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6131C0A22911EEA100D1E6F1 /* WalkAnimation.swift */; };
 		6172B49E297F56DD00E53D8F /* SitAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6131C0B029120DC900D1E6F1 /* SitAnimation.swift */; };
 		6172B49F297F57C100E53D8F /* View+Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B17250285CFCBB001C8245 /* View+Modifier.swift */; };
@@ -215,6 +231,8 @@
 		613D6D9D285C85FE0020C194 /* SequenceTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceTimerTests.swift; sourceTree = "<group>"; };
 		614A86C2290A4B74008DFA26 /* PomoTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomoTimerTests.swift; sourceTree = "<group>"; };
 		614A86C4290A4E1E008DFA26 /* PomoTimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomoTimeTests.swift; sourceTree = "<group>"; };
+		614DA2A62997BE3C00EFC91C /* PopStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopStyle.swift; sourceTree = "<group>"; };
+		614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+isDark.swift"; sourceTree = "<group>"; };
 		615E7F2D290B7DA9005BD3AE /* PomodoroWatch Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "PomodoroWatch Watch App.entitlements"; sourceTree = "<group>"; };
 		615E7F2E290B7DB0005BD3AE /* WatchWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WatchWidgetExtension.entitlements; sourceTree = "<group>"; };
 		6172B4AA297F5EC600E53D8F /* iOSWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = iOSWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -337,6 +355,7 @@
 				612B9089285CD2E4003F1990 /* Color+hex.swift */,
 				61B17250285CFCBB001C8245 /* View+Modifier.swift */,
 				61B17252285CFCF8001C8245 /* UIView+ClosestVC.swift */,
+				614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -470,6 +489,7 @@
 				61B17257285CFE26001C8245 /* PopoverContentViewController.swift */,
 				6131C0AD291204C300D1E6F1 /* AnimatedImage.swift */,
 				61E22AA8297B4D5B0080CA6E /* HostingView.swift */,
+				614DA2A62997BE3C00EFC91C /* PopStyle.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -837,7 +857,9 @@
 				612D8F96290B67E80089CDD1 /* SequenceTimer.swift in Sources */,
 				612D8F8C290B63190089CDD1 /* WatchWidget.intentdefinition in Sources */,
 				612D8F97290B67EB0089CDD1 /* PomoTime.swift in Sources */,
+				614DA2AD2997BE3C00EFC91C /* PopStyle.swift in Sources */,
 				61E22AAD297B97CC0080CA6E /* Color+hex.swift in Sources */,
+				614DA2B62997BE6C00EFC91C /* Color+isDark.swift in Sources */,
 				612D8F95290B67E50089CDD1 /* PomoTimer.swift in Sources */,
 				612D8F87290B63180089CDD1 /* WatchWidget.swift in Sources */,
 			);
@@ -854,7 +876,9 @@
 				6172B4B8297F5EC700E53D8F /* iOSWidget.intentdefinition in Sources */,
 				6172B4C2297F621400E53D8F /* PomoTimer.swift in Sources */,
 				6172B4AF297F5EC600E53D8F /* iOSWidgetBundle.swift in Sources */,
+				614DA2AE2997BE3C00EFC91C /* PopStyle.swift in Sources */,
 				6172B4C3297F621700E53D8F /* PomoTime.swift in Sources */,
+				614DA2B72997BE6C00EFC91C /* Color+isDark.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -876,9 +900,11 @@
 				61B17253285CFCF8001C8245 /* UIView+ClosestVC.swift in Sources */,
 				61B17251285CFCBB001C8245 /* View+Modifier.swift in Sources */,
 				6131C0AE291204C300D1E6F1 /* AnimatedImage.swift in Sources */,
+				614DA2B02997BE6C00EFC91C /* Color+isDark.swift in Sources */,
 				617789DE2856A38C00BD43D7 /* ContentView.swift in Sources */,
 				6131C0B129120DC900D1E6F1 /* SitAnimation.swift in Sources */,
 				618D67DD2979ECD7000A9D8A /* Background.swift in Sources */,
+				614DA2A72997BE3C00EFC91C /* PopStyle.swift in Sources */,
 				611AE62E2903A9AF00FA24F0 /* ButtonCluster.swift in Sources */,
 				61F4253E2908E8FD00300C83 /* Notifications.swift in Sources */,
 				612B9088285CC863003F1990 /* TimeInterval+formatter.swift in Sources */,
@@ -903,8 +929,10 @@
 				613D6D9E285C85FE0020C194 /* SequenceTimerTests.swift in Sources */,
 				619255B5290204AB00D399B8 /* PomoTime.swift in Sources */,
 				619255B22901F4CB00D399B8 /* PomoTimer.swift in Sources */,
+				614DA2A82997BE3C00EFC91C /* PopStyle.swift in Sources */,
 				614A86C3290A4B74008DFA26 /* PomoTimerTests.swift in Sources */,
 				613D6D9F285C890F0020C194 /* SequenceTimer.swift in Sources */,
+				614DA2B12997BE6C00EFC91C /* Color+isDark.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -926,9 +954,11 @@
 				61E22AA0297B310B0080CA6E /* BuddyView.swift in Sources */,
 				617789D02856A1F400BD43D7 /* PomodoroUITestsLaunchTests.swift in Sources */,
 				617789CE2856A1F400BD43D7 /* PomodoroUITests.swift in Sources */,
+				614DA2B22997BE6C00EFC91C /* Color+isDark.swift in Sources */,
 				6172B4A3297F57E100E53D8F /* AnimatedImage.swift in Sources */,
 				61E22AA2297B31130080CA6E /* SequenceTimer.swift in Sources */,
 				61ED2E06297A682F0080C29F /* ContentView.swift in Sources */,
+				614DA2A92997BE3C00EFC91C /* PopStyle.swift in Sources */,
 				6172B4A1297F57C900E53D8F /* TimeInterval+formatter.swift in Sources */,
 				61F21DA0299233F400C3DACC /* LiveActivities.swift in Sources */,
 				6172B4A4297F57F100E53D8F /* PopoverContentViewController.swift in Sources */,
@@ -957,12 +987,14 @@
 				6139AE4F290C643B00C5CB19 /* MainPage.swift in Sources */,
 				6131C0AF291204C300D1E6F1 /* AnimatedImage.swift in Sources */,
 				61FAEAB329065FDC00CACF78 /* ContentView.swift in Sources */,
+				614DA2B32997BE6C00EFC91C /* Color+isDark.swift in Sources */,
 				61FAEADB290689A200CACF78 /* PomoTime.swift in Sources */,
 				61FAEAE0290689A200CACF78 /* TimeInterval+formatter.swift in Sources */,
 				61FAEADC290689A200CACF78 /* Color+hex.swift in Sources */,
 				619ED26729072C4C004E344D /* TimerDisplay.swift in Sources */,
 				611A3CA529076BEF00B7AFD3 /* ProgressBar.swift in Sources */,
 				61F425412908EAE300300C83 /* PomoTimer.swift in Sources */,
+				614DA2AA2997BE3C00EFC91C /* PopStyle.swift in Sources */,
 				6139AE51290C64D000C5CB19 /* ChangerPage.swift in Sources */,
 				61FAEAB129065FDC00CACF78 /* PomodoroWatchApp.swift in Sources */,
 			);
@@ -973,6 +1005,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				61FAEAC229065FDE00CACF78 /* PomodoroWatch_Watch_AppTests.swift in Sources */,
+				614DA2AB2997BE3C00EFC91C /* PopStyle.swift in Sources */,
+				614DA2B42997BE6C00EFC91C /* Color+isDark.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -981,8 +1015,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				61E22AAC297B975D0080CA6E /* Color+hex.swift in Sources */,
+				614DA2AC2997BE3C00EFC91C /* PopStyle.swift in Sources */,
 				61FAEACC29065FDE00CACF78 /* PomodoroWatch_Watch_AppUITests.swift in Sources */,
 				61FAEACE29065FDE00CACF78 /* PomodoroWatch_Watch_AppUITestsLaunchTests.swift in Sources */,
+				614DA2B52997BE6C00EFC91C /* Color+isDark.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

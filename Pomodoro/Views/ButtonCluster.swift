@@ -25,41 +25,23 @@ struct ButtonCluster: View {
     }
     
     private func resetButton() -> some View {
-        Button(action: {
+        Button("Reset") {
             resetHaptic()
-            withAnimation(.easeIn(duration: 0.2)){
-                pomoTimer.reset()
-            }
-        }, label: {
-            ZStack {
-                RoundedRectangle(cornerRadius: 60)
-                    .foregroundStyle(pomoTimer.isPaused ? Color("BarRest") : Color("GrayedOut"))
-                    .frame(width: 130, height: 60)
-                    .reverseMask {
-                        Text("Reset")
-                            .font(.system(size: 20, weight: .medium, design: .monospaced))
-                    }
-            }
-        })
+            withAnimation(.easeIn(duration: 0.2)){ pomoTimer.reset() }
+        }
+        .frame(width: 130, height: 60)
+        .buttonStyle(PopStyle(color: pomoTimer.isPaused ? Color("BarRest") : Color("GrayedOut")))
         .disabled(!pomoTimer.isPaused)
     }
     
     private func startStopButton() -> some View {
-        Button(action: {
+        Button(pomoTimer.isPaused ? (pomoTimer.getProgress() == 0.0 ? "Start" : "Resume") : "Stop") {
             basicHaptic()
-            withAnimation {
-                pomoTimer.toggle()
-            }
-        }, label: {
-            RoundedRectangle(cornerRadius: 60)
-                .foregroundStyle(pomoTimer.isPaused ? Color("BarWork") : Color("BarLongBreak"))
-                .opacity(pomoTimer.getStatus() == .end ? 0.5 : 1.0)
-                .frame(width: 130, height: 60)
-                .reverseMask {
-                    Text(pomoTimer.isPaused ? (pomoTimer.getProgress() == 0.0 ? "Start" : "Resume") : "Stop")
-                        .font(.system(size: 20, weight: .medium, design: .monospaced))
-                }
-        })
+            withAnimation { pomoTimer.toggle() }
+        }
+        .frame(width: 130, height: 60)
+        .buttonStyle(PopStyle(color: pomoTimer.isPaused ? Color("BarWork") : Color("BarLongBreak")))
+        .opacity(pomoTimer.getStatus() == .end ? 0.5 : 1.0)
         .disabled(pomoTimer.getStatus() == .end)
     }
 }
