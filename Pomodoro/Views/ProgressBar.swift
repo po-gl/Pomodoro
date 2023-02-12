@@ -38,7 +38,7 @@ struct ProgressBar: View {
     var drag: some Gesture {
         DragGesture(minimumDistance: 0.0, coordinateSpace: .local)
             .onChanged { event in
-                guard pomoTimer.isPaused else { return }
+                guard pomoTimer.isPaused || pomoTimer.getStatus() == .end else { return }
                 if !dragStarted { heavyHaptic() }
                 
                 isDragging = true; dragStarted = true
