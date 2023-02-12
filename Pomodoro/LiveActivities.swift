@@ -30,7 +30,7 @@ fileprivate func getLiveActivityContent(_ pomoTimer: PomoTimer) -> ActivityConte
     let state = PomoAttributes.LivePomoState(
         status: pomoTimer.getStatus(),
         timer: Date.now...Date.now.addingTimeInterval(pomoTimer.timeRemaining()),
-        currentPomo: min((pomoTimer.getIndex()+1)/2 + 1, pomoTimer.pomoCount),
+        currentPomo: pomoTimer.currentPomo(),
         pomoCount: pomoTimer.pomoCount)
     return ActivityContent(state: state, staleDate: nil)
 }

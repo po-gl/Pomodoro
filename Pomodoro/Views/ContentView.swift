@@ -71,7 +71,11 @@ struct ContentView: View {
                             .offset(x: buddyOffset, y: -8)
                     }
                     Spacer()
-                    ButtonCluster(pomoTimer: pomoTimer)
+                    VStack {
+                        PomoStepper(pomoTimer: pomoTimer)
+                            .offset(x: 40, y: -30)
+                        ButtonCluster(pomoTimer: pomoTimer)
+                    }
                     Spacer()
                 }
             }

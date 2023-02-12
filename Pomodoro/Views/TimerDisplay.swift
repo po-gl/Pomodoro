@@ -13,8 +13,6 @@ struct TimerDisplay: View {
     @Environment(\.colorScheme) private var colorScheme
     @ObservedObject var pomoTimer: PomoTimer
     
-    var pomoChangeAnimation: Animation = .interpolatingSpring(stiffness: 190, damping: 13)
-    
     var body: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
             VStack(alignment: .leading, spacing: 0) {
@@ -26,18 +24,17 @@ struct TimerDisplay: View {
                         .padding(.horizontal, 8)
                         .padding(.vertical, 2)
                         .background(Rectangle().foregroundColor(colorScheme == .dark ? .black : getColorForStatus(pomoTimer.getStatus(atDate: context.date))))
-                    Spacer()
-                    HStack(alignment: .bottom, spacing: 5) {
-                        Text("\(pomoTimer.getStatus(atDate: context.date) == .longBreak ? "" : "until ")\(context.date.addingTimeInterval(pomoTimer.timeRemaining(atDate: context.date)), formatter: timeFormatter)")
-                            .colorScheme(colorScheme == .dark ? .light : .dark)
-                            .font(.system(size: 17, weight: .regular, design: .serif))
-                            .monospacedDigit()
-                            .opacity(pomoTimer.isPaused ? 0.5 : 1.0)
-                        Text("\(getIconForStatus(status: pomoTimer.getStatus(atDate: context.date)))")
-                            .font(.system(size: 15))
-                            .offset(y: -3)
-                    }
-                    .offset(x: -5, y: 4)
+                        .padding(.trailing, 5)
+                    Text("\(pomoTimer.getStatus(atDate: context.date) == .longBreak ? "" : "until ")\(context.date.addingTimeInterval(pomoTimer.timeRemaining(atDate: context.date)), formatter: timeFormatter)")
+                        .colorScheme(colorScheme == .dark ? .light : .dark)
+                        .font(.system(size: 17, weight: .regular, design: .serif))
+                        .monospacedDigit()
+                        .opacity(pomoTimer.isPaused ? 0.5 : 1.0)
+                        .offset(y: -3)
+                    Spacer(minLength: 0)
+                    Text("\(getIconForStatus(status: pomoTimer.getStatus(atDate: context.date)))")
+                        .font(.system(size: 15))
+                        .offset(x: -5, y: -3)
                 }
                 // MIDDLE
                 Text("\(pomoTimer.timeRemaining(atDate: context.date).timerFormatted())")
@@ -46,19 +43,16 @@ struct TimerDisplay: View {
                     .colorScheme(colorScheme == .dark ? .light : .dark)
                 
                 // BOTTOM
-                HStack(spacing: 0) {
+                HStack (spacing: 0) {
                     Spacer()
-                    Text("\(Array(repeating: "🍅", count: pomoTimer.pomoCount).joined(separator: ""))")
-                        .font(.system(size: 12))
-                    Text("Pomos")
-                        .font(.system(size: 23, weight: .light))
-                        .colorScheme(colorScheme == .dark ? .light : .dark)
-                        .padding(.horizontal, 5)
-                    pomoStepper()
-                        .colorScheme(colorScheme == .dark ? .light : .dark)
-                        .scaleEffect(0.8)
-                        .frame(width: pomoTimer.isPaused ? 80 : 0)
-                        .opacity(pomoTimer.isPaused ? 1 : 0)
+                    HStack(spacing: 0){
+                        ForEach(0..<pomoTimer.pomoCount, id: \.self) { i in
+                            Text("🍅")
+                                .font(.system(size: 23))
+                                .opacity(pomoTimer.currentPomo(atDate: context.date) <= i+1 ? 1.0 : 0.6)
+                        }
+                    }
+                    .offset(y: -5)
                 }
                 .animation(.interpolatingSpring(stiffness: 270, damping: 24), value: pomoTimer.isPaused)
                 .frame(height: 30)
@@ -68,23 +62,6 @@ struct TimerDisplay: View {
             .animation(.easeInOut(duration: 0.2), value: pomoTimer.getStatus(atDate: context.date))
         }
     }
-    
-    
-    private func pomoStepper() -> some View {
-        return Stepper {
-            } onIncrement: {
-                basicHaptic()
-                withAnimation(pomoChangeAnimation) {
-                    pomoTimer.incrementPomos()
-                }
-            } onDecrement: {
-                basicHaptic()
-                withAnimation(pomoChangeAnimation) {
-                    pomoTimer.decrementPomos()
-                }
-            }
-    }
-    
     
     private func getColorForStatus(_ status: PomoStatus) -> Color {
         switch status {
