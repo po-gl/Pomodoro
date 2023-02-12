@@ -146,13 +146,6 @@
 			remoteGlobalIDString = 612D8F7E290B63180089CDD1;
 			remoteInfo = WatchWidgetExtension;
 		};
-		6172B4BA297F5EC700E53D8F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 617789A62856A1F300BD43D7 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 6172B4A9297F5EC600E53D8F;
-			remoteInfo = iOSWidgetExtension;
-		};
 		617789C02856A1F400BD43D7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 617789A62856A1F300BD43D7 /* Project object */;
@@ -620,7 +613,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				6172B4BB297F5EC700E53D8F /* PBXTargetDependency */,
 			);
 			name = Pomodoro;
 			productName = Pomodoro;
@@ -1029,11 +1021,6 @@
 			isa = PBXTargetDependency;
 			target = 612D8F7E290B63180089CDD1 /* WatchWidgetExtension */;
 			targetProxy = 612D8F8E290B63190089CDD1 /* PBXContainerItemProxy */;
-		};
-		6172B4BB297F5EC700E53D8F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 6172B4A9297F5EC600E53D8F /* iOSWidgetExtension */;
-			targetProxy = 6172B4BA297F5EC700E53D8F /* PBXContainerItemProxy */;
 		};
 		617789C12856A1F400BD43D7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
