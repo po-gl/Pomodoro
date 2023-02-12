@@ -73,7 +73,7 @@ class PomoTimer: SequenceTimer, Codable {
     }
     
     public func currentPomo(atDate date: Date = Date()) -> Int {
-        return min((getIndex(atDate: date)+1)/2 + 1, pomoCount)
+        return min((getIndex(atDate: date))/2 + 1, pomoCount)
     }
     
     
