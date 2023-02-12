@@ -34,20 +34,28 @@ func setupNotifications(_ pomoTimer: PomoTimer) {
         
         switch pomoTimer.getStatus(atDate: now.addingTimeInterval(timeToNext)) {
         case .work:
-            content.title = "\(PomoStatus.work.rawValue) is over."
-            content.subtitle = "time to rest 🍅🍅🍅"
+            let endOfNext = now.addingTimeInterval(pomoTimer.timeRemaining(for: index+1, atDate: now))
+            content.title = "Time to rest! 🍅"
+            content.body = "Work is over, take a breather until \(timeFormatter.string(from: endOfNext))."
             content.sound = UNNotificationSound.default
         case .rest:
-            content.title = "\(PomoStatus.rest.rawValue) is over."
-            content.subtitle = index == pomoTimer.order.count-2 ? "take a long break 🍉🏖️🍒" : "time to work 🌶️🌶️🌶️"
+            let endOfNext = now.addingTimeInterval(pomoTimer.timeRemaining(for: index+1, atDate: now))
+            if index == pomoTimer.order.count-2 {
+                content.title = "Take a long break 🏖️"
+                content.body = "Relax until \(timeFormatter.string(from: endOfNext))."
+            } else {
+                content.title = "Time to work 🌶️"
+                content.body = "Your rest is over, work until \(timeFormatter.string(from: endOfNext))."
+            }
             content.sound = UNNotificationSound.default
         case .longBreak:
             content.title = "\(PomoStatus.longBreak.rawValue) is over."
-            content.subtitle = "🍅🍅🍅"
+            content.body = "🍅🍅🍅"
             content.sound = UNNotificationSound.default
         case .end:
-            content.title = "\(PomoStatus.longBreak.rawValue) is over."
-            content.subtitle = "finished! 🎉🎉🎉"
+            let celebration: [String] = ["hike", "walk", "favorite snack"]
+            content.title = "Your pomodoros are done! 🎉"
+            content.body = "Celebrate with a \(celebration.randomElement()!) 🎉🎉🎉"
             content.sound = UNNotificationSound.default
         }
 
@@ -61,3 +69,10 @@ func cancelPendingNotifications() {
     UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     UNUserNotificationCenter.current().removeAllDeliveredNotifications()
 }
+
+
+fileprivate let timeFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.setLocalizedDateFormatFromTemplate("hh:mm")
+    return formatter
+}()
