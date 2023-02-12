@@ -13,18 +13,13 @@ struct ContentView: View {
     @Environment(\.colorScheme) private var colorScheme
     @ObservedObject var pomoTimer: PomoTimer
     
-    @State private var haptics = Haptics()
-    
     @State var buddyOffset: Double = 0
     
     init() {
-        var selfInstance: ContentView?
         pomoTimer = PomoTimer(pomos: 4, longBreak: PomoTimer.defaultBreakTime) { status in
-            selfInstance?.handleTimerEnd(status: status)
+            EndTimerHandler.shared.handle(status: status)
         }
-        selfInstance = self
         pomoTimer.pause()
-        
         pomoTimer.restoreFromUserDefaults()
     }
 
@@ -38,7 +33,7 @@ struct ContentView: View {
                 if newPhase == .active {
                     pomoTimer.restoreFromUserDefaults()
                     cancelPendingNotifications()
-                    haptics.prepareHaptics()
+                    EndTimerHandler.shared.haptics.prepareHaptics()
                 } else if newPhase == .inactive {
                     pomoTimer.saveToUserDefaults()
                     setupNotifications(pomoTimer)
@@ -83,20 +78,6 @@ struct ContentView: View {
             .onAppear {
                 buddyOffset = Double.random(in: -60...100)
             }
-        }
-    }
-    
-    
-    private func handleTimerEnd(status: PomoStatus) {
-        switch status {
-        case .work:
-            haptics.workHaptic()
-        case .rest:
-            haptics.restHaptic()
-        case .longBreak:
-            haptics.breakHaptic()
-        case .end:
-            haptics.breakHaptic()
         }
     }
 }

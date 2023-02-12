@@ -68,6 +68,11 @@ class PomoTimer: SequenceTimer, Codable {
         return progress <= 1.0 ? progress : 1.0
     }
     
+    public override func setPercentage(to percent: Double) {
+        self.reset(pomos: pomoCount, longBreak: longBreakTime)
+        super.setPercentage(to: percent)
+    }
+    
     public func getStatusString(atDate: Date = Date()) -> String {
         return getStatus(atDate: atDate).rawValue
     }
