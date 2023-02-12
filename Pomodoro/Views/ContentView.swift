@@ -38,12 +38,10 @@ struct ContentView: View {
                 if newPhase == .active {
                     pomoTimer.restoreFromUserDefaults()
                     cancelPendingNotifications()
-                    cancelLiveActivity()
                     haptics.prepareHaptics()
                 } else if newPhase == .inactive {
                     pomoTimer.saveToUserDefaults()
                     setupNotifications(pomoTimer)
-                    setupLiveActivity(pomoTimer)
                 }
             }
             .onOpenURL { url in
