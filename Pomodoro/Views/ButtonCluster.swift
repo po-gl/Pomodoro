@@ -13,35 +13,59 @@ struct ButtonCluster: View {
     @ObservedObject var pomoTimer: PomoTimer
     
     var body: some View {
-        ZStack {
-            HStack(spacing: 0) {
-                Spacer()
-                resetButton()
-                Spacer()
-                startStopButton()
-                Spacer()
+        TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
+            ZStack {
+                HStack(spacing: 0) {
+                    Spacer()
+                    ResetButton()
+                    Spacer()
+                    StartStopButton()
+                    Spacer()
+                }
             }
         }
     }
     
-    private func resetButton() -> some View {
+    @ViewBuilder
+    private func ResetButton() -> some View {
         Button("Reset") {
+            guard pomoTimer.isPaused || pomoTimer.getStatus() == .end else { return }
             resetHaptic()
             withAnimation(.easeIn(duration: 0.2)){ pomoTimer.reset() }
         }
         .frame(width: 130, height: 60)
-        .buttonStyle(PopStyle(color: pomoTimer.isPaused ? Color("BarRest") : Color("GrayedOut")))
-        .disabled(!pomoTimer.isPaused)
+        .buttonStyle(PopStyle(color: pomoTimer.isPaused || pomoTimer.getStatus() == .end ? Color("BarRest") : Color("GrayedOut")))
     }
     
-    private func startStopButton() -> some View {
-        Button(pomoTimer.isPaused ? (pomoTimer.getProgress() == 0.0 ? "Start" : "Resume") : "Stop") {
+    @ViewBuilder
+    private func StartStopButton() -> some View {
+        Button(getStartStopButtonString()) {
+            guard pomoTimer.getStatus() != .end else { return }
             basicHaptic()
             withAnimation { pomoTimer.toggle() }
         }
         .frame(width: 130, height: 60)
-        .buttonStyle(PopStyle(color: pomoTimer.isPaused ? Color("BarWork") : Color("BarLongBreak")))
-        .opacity(pomoTimer.getStatus() == .end ? 0.5 : 1.0)
-        .disabled(pomoTimer.getStatus() == .end)
+        .buttonStyle(PopStyle(color: getStartStopButtonColor()))
+    }
+    
+    private func getStartStopButtonString() -> String {
+        if pomoTimer.getStatus() == .end {
+            return "Start"
+        } else if pomoTimer.isPaused {
+            if pomoTimer.getProgress() == 0.0 {
+               return "Start"
+            }
+            return "Resume"
+        }
+        return "Stop"
+    }
+    
+    private func getStartStopButtonColor() -> Color {
+        if pomoTimer.getStatus() == .end {
+            return Color("GrayedOut")
+        } else if pomoTimer.isPaused {
+            return Color("BarWork")
+        }
+        return Color("BarLongBreak")
     }
 }
