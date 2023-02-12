@@ -26,15 +26,15 @@ class Haptics {
     
     
     public func workHaptic() {
-        multiHaptic(5, 0.2, 0.05, 0.8, 0.65)
+        multiHaptic(8, 0.2, 0.05, 0.8, 0.65)
     }
     
     public func restHaptic() {
-        multiHaptic(5, 0.25, 0.05, 0.8, 0.5)
+        multiHaptic(8, 0.25, 0.05, 0.8, 0.5)
     }
     
     public func breakHaptic() {
-        multiHaptic(7, 0.3, 0.05, 0.8, 0.5)
+        multiHaptic(8, 0.3, 0.05, 0.8, 0.5)
     }
     
     
@@ -54,8 +54,12 @@ class Haptics {
                                         duration: duration))
         }
         
+        let start = CHHapticParameterCurve.ControlPoint(relativeTime: 0, value: 0)
+        let end = CHHapticParameterCurve.ControlPoint(relativeTime: 1, value: 1)
+        let parameter = CHHapticParameterCurve(parameterID: .hapticIntensityControl, controlPoints: [start, end], relativeTime: 0)
+        
         do {
-            let pattern = try CHHapticPattern(events: events, parameters: [])
+            let pattern = try CHHapticPattern(events: events, parameterCurves: [parameter])
             let player = try engine?.makePlayer(with: pattern)
             try player?.start(atTime: 0.0)
         } catch {
