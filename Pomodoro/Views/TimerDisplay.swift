@@ -49,7 +49,8 @@ struct TimerDisplay: View {
                         ForEach(0..<pomoTimer.pomoCount, id: \.self) { i in
                             Text("🍅")
                                 .font(.system(size: 23))
-                                .opacity(pomoTimer.currentPomo(atDate: context.date) <= i+1 ? 1.0 : 0.6)
+                                .opacity(pomoTimer.currentPomo(atDate: context.date) <= i+1 ? 1.0 : 0.3)
+                                .background(Text("🍅").font(.system(size: 23)).scaleEffect(1.1).brightness(-1.0))
                         }
                     }
                     .offset(y: -5)
