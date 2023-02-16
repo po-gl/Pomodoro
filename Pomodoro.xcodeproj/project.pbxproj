@@ -11,6 +11,10 @@
 		6101A6F529998C4A00DC5FC5 /* EndTimerHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6101A6F429998C4A00DC5FC5 /* EndTimerHandler.swift */; };
 		6101A6F629998C4A00DC5FC5 /* EndTimerHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6101A6F429998C4A00DC5FC5 /* EndTimerHandler.swift */; };
 		6101A6F729998C4A00DC5FC5 /* EndTimerHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6101A6F429998C4A00DC5FC5 /* EndTimerHandler.swift */; };
+		610F7023299ED99900F1BE72 /* StatusIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610F7022299ED99900F1BE72 /* StatusIconView.swift */; };
+		610F7024299ED99900F1BE72 /* StatusIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610F7022299ED99900F1BE72 /* StatusIconView.swift */; };
+		610F7025299ED99900F1BE72 /* StatusIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610F7022299ED99900F1BE72 /* StatusIconView.swift */; };
+		610F7026299ED99900F1BE72 /* StatusIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610F7022299ED99900F1BE72 /* StatusIconView.swift */; };
 		611A3CA529076BEF00B7AFD3 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611A3CA429076BEF00B7AFD3 /* ProgressBar.swift */; };
 		611AE62E2903A9AF00FA24F0 /* ButtonCluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611AE62D2903A9AF00FA24F0 /* ButtonCluster.swift */; };
 		611AE6302903AB1800FA24F0 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611AE62F2903AB1800FA24F0 /* MenuButton.swift */; };
@@ -208,6 +212,7 @@
 /* Begin PBXFileReference section */
 		6101A6F229996B5F00DC5FC5 /* PomoStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomoStepper.swift; sourceTree = "<group>"; };
 		6101A6F429998C4A00DC5FC5 /* EndTimerHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndTimerHandler.swift; sourceTree = "<group>"; };
+		610F7022299ED99900F1BE72 /* StatusIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusIconView.swift; sourceTree = "<group>"; };
 		611A3CA429076BEF00B7AFD3 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		611AE62D2903A9AF00FA24F0 /* ButtonCluster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCluster.swift; sourceTree = "<group>"; };
 		611AE62F2903AB1800FA24F0 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
@@ -486,6 +491,7 @@
 			isa = PBXGroup;
 			children = (
 				61B17255285CFD5C001C8245 /* AlwaysPopoverModifier.swift */,
+				610F7022299ED99900F1BE72 /* StatusIconView.swift */,
 				61B17257285CFE26001C8245 /* PopoverContentViewController.swift */,
 				6131C0AD291204C300D1E6F1 /* AnimatedImage.swift */,
 				61E22AA8297B4D5B0080CA6E /* HostingView.swift */,
@@ -869,6 +875,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				610F7026299ED99900F1BE72 /* StatusIconView.swift in Sources */,
 				6172B4B1297F5EC600E53D8F /* iOSWidgetLiveActivity.swift in Sources */,
 				6172B4B3297F5EC600E53D8F /* iOSWidget.swift in Sources */,
 				6172B4C5297F646800E53D8F /* TimeInterval+formatter.swift in Sources */,
@@ -909,6 +916,7 @@
 				6101A6F529998C4A00DC5FC5 /* EndTimerHandler.swift in Sources */,
 				611AE62E2903A9AF00FA24F0 /* ButtonCluster.swift in Sources */,
 				61F4253E2908E8FD00300C83 /* Notifications.swift in Sources */,
+				610F7023299ED99900F1BE72 /* StatusIconView.swift in Sources */,
 				612B9088285CC863003F1990 /* TimeInterval+formatter.swift in Sources */,
 				611AE6302903AB1800FA24F0 /* MenuButton.swift in Sources */,
 				61E22AA9297B4D5B0080CA6E /* HostingView.swift in Sources */,
@@ -926,6 +934,7 @@
 			files = (
 				6172B4CB297F848C00E53D8F /* iOSWidgetLiveActivity.swift in Sources */,
 				617789C42856A1F400BD43D7 /* PomodoroTests.swift in Sources */,
+				610F7024299ED99900F1BE72 /* StatusIconView.swift in Sources */,
 				614A86C5290A4E1E008DFA26 /* PomoTimeTests.swift in Sources */,
 				6172B4A2297F57D000E53D8F /* TimeInterval+formatter.swift in Sources */,
 				613D6D9E285C85FE0020C194 /* SequenceTimerTests.swift in Sources */,
@@ -972,6 +981,7 @@
 				6172B4A5297F57F300E53D8F /* AlwaysPopoverModifier.swift in Sources */,
 				61E22AA3297B311E0080CA6E /* PomoTimer.swift in Sources */,
 				6172B4CC297F848C00E53D8F /* iOSWidgetLiveActivity.swift in Sources */,
+				610F7025299ED99900F1BE72 /* StatusIconView.swift in Sources */,
 				61E22A9C297B30FA0080CA6E /* TimerDisplay.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

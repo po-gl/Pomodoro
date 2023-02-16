@@ -52,6 +52,15 @@ struct ContentView: View {
         return GeometryReader { metrics in
             ZStack {
                 Background(pomoTimer: pomoTimer)
+                HStack {
+                    Spacer()
+                    VStack {
+                        StatusIconView(pomoTimer: pomoTimer)
+                            .padding(.top, 10)
+                            .padding(.trailing, 30)
+                        Spacer()
+                    }
+                }
                 VStack {
                     Spacer()
                     TimerDisplay(pomoTimer: pomoTimer)
