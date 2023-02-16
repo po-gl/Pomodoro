@@ -22,6 +22,7 @@ struct StatusIconView: View {
                 Text("\(getIconForStatus(status: pomoTimer.getStatus(atDate: context.date)))")
                     .font(.system(size: 15))
             }
+            .animation(.easeInOut(duration: 0.2), value: pomoTimer.getStatus(atDate: context.date))
         }
     }
     
