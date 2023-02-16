@@ -19,12 +19,10 @@ struct TimerDisplay: View {
                 // TOP
                 HStack(alignment: .bottom, spacing: 0) {
                     StatusBox(at: context.date)
-                        .padding(.trailing, 5)
+                        .padding(.trailing, 8)
                     EndingTime(at: context.date)
                         .offset(y: -3)
                     Spacer(minLength: 0)
-                    StatusIcon(at: context.date)
-                        .offset(x: -5, y: -3)
                 }
                 // MIDDLE
                 TimerView(at: context.date)
@@ -43,27 +41,22 @@ struct TimerDisplay: View {
     
     @ViewBuilder
     private func StatusBox(at date: Date) -> some View {
+        let color = colorScheme == .dark ? .black : getColorForStatus(pomoTimer.getStatus(atDate: date))
         Text("\(pomoTimer.getStatusString(atDate: date))")
             .font(.system(size: 30, weight: .thin, design: .serif))
             .foregroundColor(colorScheme == .dark ? getColorForStatus(pomoTimer.getStatus(atDate: date)) : .black)
             .padding(.horizontal, 8)
             .padding(.vertical, 2)
-            .background(Rectangle().foregroundColor(colorScheme == .dark ? .black : getColorForStatus(pomoTimer.getStatus(atDate: date))))
+            .background(RoundedRectangle(cornerRadius: 5).shadow(color: color, radius: 2, x: 2, y: 2).foregroundColor( color))
     }
     
     @ViewBuilder
     private func EndingTime(at date: Date) -> some View {
-        Text("\(pomoTimer.getStatus(atDate: date) == .longBreak ? "" : "until ")\(date.addingTimeInterval(pomoTimer.timeRemaining(atDate: date)), formatter: timeFormatter)")
+        Text("until \(date.addingTimeInterval(pomoTimer.timeRemaining(atDate: date)), formatter: timeFormatter)")
             .colorScheme(colorScheme == .dark ? .light : .dark)
             .font(.system(size: 17, weight: .regular, design: .serif))
             .monospacedDigit()
             .opacity(pomoTimer.isPaused ? 0.5 : 1.0)
-    }
-    
-    @ViewBuilder
-    private func StatusIcon(at date: Date) -> some View {
-        Text("\(getIconForStatus(status: pomoTimer.getStatus(atDate: date)))")
-            .font(.system(size: 15))
     }
     
     @ViewBuilder
@@ -97,20 +90,6 @@ struct TimerDisplay: View {
             return Color("BarLongBreak")
         case .end:
             return .accentColor
-        }
-    }
-    
-    
-    private func getIconForStatus(status: PomoStatus) -> String {
-        switch status {
-        case .work:
-            return "🌶️"
-        case .rest:
-            return "🍇"
-        case .longBreak:
-            return "🏖️"
-        case .end:
-            return "🎉"
         }
     }
     
