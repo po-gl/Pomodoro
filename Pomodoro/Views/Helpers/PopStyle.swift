@@ -17,7 +17,7 @@ struct PopStyle: ButtonStyle {
     
     func makeBody(configuration: Configuration) -> some View {
         RoundedRectangle(cornerRadius: radius)
-            .foregroundColor(color)
+            .foregroundStyle(LinearGradient(stops: [.init(color: color, location: 0.0), .init(color: color, location: 0.5), .init(color: .white, location: 1.4)], startPoint: .leading, endPoint: .trailing))
             .overlay(RoundedRectangle(cornerRadius: radius).stroke(colorScheme == .dark ? Color("Gray") : .black, lineWidth: 2))
             .overlay(
                 configuration.label
