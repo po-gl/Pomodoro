@@ -47,7 +47,7 @@ struct TimerDisplay: View {
             .foregroundColor(colorScheme == .dark ? getColorForStatus(pomoTimer.getStatus(atDate: date)) : .black)
             .padding(.horizontal, 8)
             .padding(.vertical, 2)
-            .background(RoundedRectangle(cornerRadius: 5).shadow(color: color, radius: 2, x: 2, y: 2).foregroundColor( color))
+            .background(RoundedRectangle(cornerRadius: 5).foregroundColor(color).background(RoundedRectangle(cornerRadius: 5).offset(x: 3, y: 3).foregroundColor(color).brightness(-0.3)))
     }
     
     @ViewBuilder

@@ -17,8 +17,8 @@ struct StatusIconView: View {
                 let color = colorScheme == .dark ? .black : getColorForStatus(pomoTimer.getStatus(atDate: context.date))
                 RoundedRectangle(cornerRadius: 14)
                     .fill(color)
-                    .shadow(color: color, radius: 2, x: 2, y: 2)
                     .frame(width: 40, height: 40)
+                    .background(RoundedRectangle(cornerRadius: 14).fill(color).offset(x: 2, y: 2).brightness(-0.3))
                 Text("\(getIconForStatus(status: pomoTimer.getStatus(atDate: context.date)))")
                     .font(.system(size: 15))
             }
