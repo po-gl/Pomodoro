@@ -66,27 +66,31 @@ struct ContentView: View {
                     TimerDisplay(pomoTimer: pomoTimer)
                     Spacer()
                     Spacer()
-                    ZStack {
-                        ProgressBar(pomoTimer: pomoTimer, metrics: metrics)
-                            .frame(maxHeight: 130)
-                        BuddyView(pomoTimer: pomoTimer)
-                            .brightness(-0.1)
-                            .frame(width: 20, height: 20)
-                            .offset(x: buddyOffset, y: -8)
+                    VStack {
+                        ZStack {
+                            ProgressBar(pomoTimer: pomoTimer, metrics: metrics)
+                                .frame(maxHeight: 130)
+                            BuddyView(pomoTimer: pomoTimer)
+                                .brightness(-0.1)
+                                .frame(width: 20, height: 20)
+                                .offset(x: buddyOffset, y: -8)
+                                .onAppear {
+                                    buddyOffset = Double.random(in: -60...100)
+                                }
+                        }
+                        HStack {
+                            Spacer()
+                            PomoStepper(pomoTimer: pomoTimer)
+                                .offset(y: -20)
+                                .padding(.trailing, 20)
+                        }
                     }
                     Spacer()
-                    VStack {
-                        PomoStepper(pomoTimer: pomoTimer)
-                            .offset(x: 40, y: -30)
-                        ButtonCluster(pomoTimer: pomoTimer)
-                    }
+                    ButtonCluster(pomoTimer: pomoTimer)
                     Spacer()
                 }
             }
             .animation(.easeInOut(duration: 0.3), value: pomoTimer.isPaused)
-            .onAppear {
-                buddyOffset = Double.random(in: -60...100)
-            }
         }
     }
 }
