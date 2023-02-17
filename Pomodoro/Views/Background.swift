@@ -40,6 +40,7 @@ struct Background: View {
                         }
                     }
                 }
+                .ignoresSafeArea()
                 .animation(.easeInOut(duration: 0.3), value: pomoTimer.getStatus(atDate: context.date))
             }
         }
