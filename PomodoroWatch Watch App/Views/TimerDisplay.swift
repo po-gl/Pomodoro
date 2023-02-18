@@ -14,26 +14,62 @@ struct TimerDisplay: View {
     
     var body: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
-            VStack(alignment: .leading) {
-                HStack {
-                    Text("\(getStringForStatus(pomoTimer.getStatus(atDate: context.date)))")
-                        .accessibilityIdentifier("statusString")
-                        .foregroundColor(isLuminanceReduced ? getColorForStatus(pomoTimer.getStatus(atDate: context.date)) : .black)
-                        .padding(.horizontal, 4)
-                        .background(Rectangle().foregroundColor(isLuminanceReduced ? .black : getColorForStatus(pomoTimer.getStatus(atDate: context.date))))
-                        .font(.system(size: 21, weight: .light, design: .monospaced))
-                    Spacer()
-                    Text(getIconForStatus(status: pomoTimer.getStatus(atDate: context.date)))
-                        .font(.system(size: 20))
+            VStack(alignment: .center) {
+                ZStack {
+                    HStack {
+                        StatusBox(at: context.date)
+                        EndingTime(at: context.date)
+                            .offset(y: 4)
+                        
+                    }
+                    HStack {
+                        Spacer()
+                        StatusIcon(at: context.date)
+                            .padding(.trailing, 15)
+                            .offset(y: -15)
+                    }
                 }
-                    .frame(width: 145)
-                Text("\(pomoTimer.timeRemaining(atDate: context.date).timerFormatted())")
-                    .accessibilityIdentifier("timeRemaining")
-                    .font(.system(size: 40, weight: .regular))
-                    .monospacedDigit()
+                TimerView(at: context.date)
             }
         }
     }
+    
+    
+    @ViewBuilder func StatusBox(at date: Date) -> some View {
+        let color = isLuminanceReduced ? .black : getColorForStatus(pomoTimer.getStatus(atDate: date))
+        
+        Text("\(getStringForStatus(pomoTimer.getStatus(atDate: date)))")
+            .accessibilityIdentifier("statusString")
+            .foregroundColor(isLuminanceReduced ? getColorForStatus(pomoTimer.getStatus(atDate: date)) : .black)
+            .padding(.horizontal, 4)
+            .background(RoundedRectangle(cornerRadius: 5).foregroundColor(color).background(RoundedRectangle(cornerRadius: 5).offset(x: 3, y: 3).foregroundColor(color).brightness(-0.3)))
+            .font(.system(size: 20, weight: .regular, design: .monospaced))
+    }
+    
+    @ViewBuilder
+    private func EndingTime(at date: Date) -> some View {
+        if pomoTimer.getStatus(atDate: date) != .end {
+            Text("until \(date.addingTimeInterval(pomoTimer.timeRemaining(atDate: date)), formatter: timeFormatter)")
+                .font(.system(size: 12, weight: .regular))
+                .monospacedDigit()
+                .opacity(pomoTimer.isPaused ? 0.5 : 0.8)
+        }
+    }
+    
+    @ViewBuilder
+    private func StatusIcon(at date: Date) -> some View {
+        Text(getIconForStatus(status: pomoTimer.getStatus(atDate: date)))
+            .font(.system(size: 14))
+    }
+    
+    @ViewBuilder
+    private func TimerView(at date: Date) -> some View {
+        Text("\(pomoTimer.timeRemaining(atDate: date).timerFormatted())")
+            .accessibilityIdentifier("timeRemaining")
+            .font(.system(size: 40, weight: .regular))
+            .monospacedDigit()
+    }
+    
     
     func getStringForStatus(_ status: PomoStatus) -> String {
         switch status {
@@ -73,4 +109,10 @@ struct TimerDisplay: View {
             return "🎉"
         }
     }
+    
+    private let timeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.setLocalizedDateFormatFromTemplate("hh:mm")
+        return formatter
+    }()
 }
