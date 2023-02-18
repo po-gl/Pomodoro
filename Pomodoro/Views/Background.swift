@@ -30,7 +30,7 @@ struct Background: View {
                             Rectangle()
                                 .foregroundColor(getTopColor(at: context.date))
                                 .frame(height: colorScheme == .dark ? geometry.size.height / 2 + 100 : geometry.size.height / 2 - 100)
-                                .overlay(Rectangle().foregroundStyle(LinearGradient(stops: [.init(color: .white, location: 0.0), .init(color: .clear, location: 1.0)], startPoint: .top, endPoint: .bottom)).blendMode(.softLight))
+                                .overlay(Rectangle().foregroundStyle(LinearGradient(stops: [.init(color: .white, location: 0.0), .init(color: .clear, location: 1.0)], startPoint: .top, endPoint: .bottom)).opacity(0.8).blendMode(.softLight))
                                 .ignoresSafeArea()
                             Spacer()
                         }
