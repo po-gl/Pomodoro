@@ -11,6 +11,7 @@ import SwiftUI
 import BackgroundTasks
 
 
+@available(iOS 16.2, *)
 func setupLiveActivity(_ pomoTimer: PomoTimer) {
     guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
     guard !pomoTimer.isPaused else { return }
@@ -26,6 +27,7 @@ func setupLiveActivity(_ pomoTimer: PomoTimer) {
     }
 }
 
+@available(iOS 16.2, *)
 fileprivate func getLiveActivityContent(_ pomoTimer: PomoTimer) -> ActivityContent<PomoAttributes.LivePomoState> {
     let state = PomoAttributes.LivePomoState(
         status: pomoTimer.getStatus(),
