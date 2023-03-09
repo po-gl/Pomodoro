@@ -15,7 +15,7 @@ struct TimerDisplay: View {
     
     var body: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
-            VStack(alignment: .leading, spacing: 0) {
+            VStack(alignment: .center, spacing: 0) {
                 // TOP
                 HStack(alignment: .bottom, spacing: 0) {
                     StatusBox(at: context.date)
@@ -24,17 +24,20 @@ struct TimerDisplay: View {
                         .offset(y: -3)
                     Spacer(minLength: 0)
                 }
+                .offset(x: 10)
+                
                 // MIDDLE
                 TimerView(at: context.date)
                 
                 // BOTTOM
                 HStack (spacing: 0) {
-                    Spacer()
+                    Spacer(minLength: 0)
                     CurrentPomoView(at: context.date)
-                        .offset(x: -6, y: -5)
+                        .offset(y: -5)
                 }
+                .offset(x: -10)
             }
-            .frame(width: 285, height: 160)
+            .frame(width: 300, height: 160)
             .animation(.easeInOut(duration: 0.2), value: pomoTimer.getStatus(atDate: context.date))
         }
     }
@@ -42,7 +45,7 @@ struct TimerDisplay: View {
     @ViewBuilder
     private func StatusBox(at date: Date) -> some View {
         let color = colorScheme == .dark ? .black : getColorForStatus(pomoTimer.getStatus(atDate: date))
-        Text("\(pomoTimer.getStatusString(atDate: date))")
+        Text(pomoTimer.getStatusString(atDate: date))
             .font(.system(size: 30, weight: .thin, design: .serif))
             .foregroundColor(colorScheme == .dark ? getColorForStatus(pomoTimer.getStatus(atDate: date)) : .black)
             .padding(.horizontal, 8)
@@ -61,7 +64,7 @@ struct TimerDisplay: View {
     
     @ViewBuilder
     private func TimerView(at date: Date) -> some View {
-        Text("\(pomoTimer.timeRemaining(atDate: date).timerFormatted())")
+        Text(pomoTimer.timeRemaining(atDate: date).timerFormatted())
             .font(.system(size: 70, weight: .light))
             .monospacedDigit()
             .colorScheme(colorScheme == .dark ? .light : .dark)
