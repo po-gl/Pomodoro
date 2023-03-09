@@ -35,6 +35,11 @@ struct ProgressBar: View {
                 guard event.velocity != 0.0 else { return }
                 isScrolling = true
                 pomoTimer.setPercentage(to: event.offset.rounded() / 100)
+            }, onIdle: {
+                Task {
+                    try? await Task.sleep(for: .seconds(1.5))
+                    withAnimation { isScrolling = false }
+                }
             })
             .onChange(of: pomoTimer.isPaused) { _ in
                 isScrolling = false
@@ -61,15 +66,17 @@ struct ProgressBar: View {
                 
                 ZStack {
                     ColorBars()
-                    if pomoTimer.getProgress(atDate: context.date) != 0.0 || !pomoTimer.isPaused || isScrolling {
-                        ProgressIndicator(at: context.date)
-                    }
+                    ProgressIndicator(at: context.date)
+                        .opacity(shouldShowProgressIndicator(at: context.date) ? 1.0 : 0.0)
                 }
                 .padding(.horizontal, 10)
             }
         }
     }
-
+    
+    private func shouldShowProgressIndicator(at date: Date) -> Bool {
+        return pomoTimer.getProgress(atDate: date) != 0.0 || !pomoTimer.isPaused || isScrolling
+    }
     
     private func getProportion(_ index: Int) -> Double {
         let intervals = pomoTimer.order.map { $0.getTime() }

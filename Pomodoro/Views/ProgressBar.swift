@@ -115,6 +115,10 @@ struct ProgressBar: View {
             }
             .onEnded { _ in
                 dragStarted = false
+                Task {
+                    try? await Task.sleep(for: .seconds(1.5))
+                    withAnimation { isDragging = false }
+                }
             }
     }
     
