@@ -45,7 +45,7 @@ struct ProgressBar: View {
                 let padding = barPadding + barOutlinePadding
                 
                 var x = event.location.x.rounded()
-                x = min(max(x, padding), metrics.size.width - padding)
+                x = x.clamped(to: padding...metrics.size.width - padding)
                 x -= padding
                 
                 let percent = x / getBarWidth()
