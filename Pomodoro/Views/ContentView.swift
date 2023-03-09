@@ -25,7 +25,7 @@ struct ContentView: View {
 
     
     var body: some View {
-        mainPage()
+        MainPage()
             .onAppear {
                 getNotificationPermissions()
             }
@@ -48,8 +48,9 @@ struct ContentView: View {
     }
     
     
-    private func mainPage() -> some View {
-        return GeometryReader { metrics in
+    @ViewBuilder
+    private func MainPage() -> some View {
+        GeometryReader { metrics in
             ZStack {
                 Background(pomoTimer: pomoTimer)
                 VStack {

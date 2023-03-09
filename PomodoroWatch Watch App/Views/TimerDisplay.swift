@@ -35,7 +35,8 @@ struct TimerDisplay: View {
     }
     
     
-    @ViewBuilder func StatusBox(at date: Date) -> some View {
+    @ViewBuilder
+    private func StatusBox(at date: Date) -> some View {
         let color = isLuminanceReduced ? .black : getColorForStatus(pomoTimer.getStatus(atDate: date))
         
         Text("\(getStringForStatus(pomoTimer.getStatus(atDate: date)))")

@@ -23,7 +23,7 @@ struct ProgressBar: View {
     private let barHeight: Double = 16.0
     
     var body: some View {
-        timeLineColorBars()
+        TimeLineColorBars()
             .gesture(drag)
             .onChange(of: pomoTimer.isPaused) { _ in
                 isDragging = false
@@ -54,7 +54,8 @@ struct ProgressBar: View {
             .onEnded { _ in dragStarted = false }
     }
     
-    func timeLineColorBars() -> some View {
+    @ViewBuilder
+    private func TimeLineColorBars() -> some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
             VStack (spacing: 0) {
                 HStack {
@@ -67,10 +68,10 @@ struct ProgressBar: View {
                 .padding(.bottom, 8)
                 
                 ZStack {
-                    colorBars()
+                    ColorBars()
                         .mask { RoundedRectangle(cornerRadius: 8) }
                     if pomoTimer.getProgress(atDate: context.date) != 0.0 || !pomoTimer.isPaused || isDragging {
-                        progressIndicator(at: context.date)
+                        ProgressIndicator(at: context.date)
                     }
                 }
                 .padding(.vertical, 2)
@@ -119,7 +120,8 @@ struct ProgressBar: View {
     }
     
     
-    func colorBars() -> some View {
+    @ViewBuilder
+    private func ColorBars() -> some View {
         HStack(spacing: 0) {
             ForEach(0..<pomoTimer.order.count, id: \.self) { i in
                 ZStack {
@@ -132,7 +134,8 @@ struct ProgressBar: View {
         }
     }
     
-    func progressIndicator(at date: Date) -> some View {
+    @ViewBuilder
+    private func ProgressIndicator(at date: Date) -> some View {
         HStack(spacing: 0) {
             Spacer(minLength: 0)
             Rectangle()
@@ -140,7 +143,7 @@ struct ProgressBar: View {
                 .blendMode(colorScheme == .dark ? .colorBurn : .colorDodge)
                 .frame(width: getBarWidth() * (1 - pomoTimer.getProgress(atDate: date)), height: barHeight)
         }.mask {
-            colorBars()
+            ColorBars()
         }
     }
 }

@@ -21,11 +21,12 @@ struct ProgressBar: View {
     private let barHeight: Double = 8.0
     
     var body: some View {
-        scrollableTimeLineColorBars()
+        ScrollableTimeLineColorBars()
     }
     
-    func scrollableTimeLineColorBars() -> some View {
-        timeLineColorBars()
+    @ViewBuilder
+    private func ScrollableTimeLineColorBars() -> some View {
+        TimeLineColorBars()
             .focusable(pomoTimer.isPaused)
             .digitalCrownRotation($scrollValue, from: 0.0, through: 100,
                                   sensitivity: .medium,
@@ -46,7 +47,8 @@ struct ProgressBar: View {
             }
     }
     
-    func timeLineColorBars() -> some View {
+    @ViewBuilder
+    private func TimeLineColorBars() -> some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
             VStack(spacing: 0) {
                 HStack {
@@ -58,9 +60,9 @@ struct ProgressBar: View {
                 .padding(.horizontal, 15)
                 
                 ZStack {
-                    colorBars()
+                    ColorBars()
                     if pomoTimer.getProgress(atDate: context.date) != 0.0 || !pomoTimer.isPaused || isScrolling {
-                        progressIndicator(at: context.date)
+                        ProgressIndicator(at: context.date)
                     }
                 }
                 .padding(.horizontal, 10)
@@ -69,14 +71,14 @@ struct ProgressBar: View {
     }
 
     
-    func getProportion(_ index: Int) -> Double {
+    private func getProportion(_ index: Int) -> Double {
         let intervals = pomoTimer.order.map { $0.getTime() }
         let total = intervals.reduce(0, +)
         return intervals[index] / total
     }
     
     
-    func getColorForStatus(_ status: PomoStatus) -> Color {
+    private func getColorForStatus(_ status: PomoStatus) -> Color {
         switch status {
         case .work:
             return Color("BarWork")
@@ -89,7 +91,7 @@ struct ProgressBar: View {
         }
     }
     
-    func getGradientForStatus(_ status: PomoStatus) -> LinearGradient {
+    private func getGradientForStatus(_ status: PomoStatus) -> LinearGradient {
         switch status {
         case .work:
             return LinearGradient(stops: [.init(color: Color("BarWork"), location: 0.5),
@@ -111,11 +113,12 @@ struct ProgressBar: View {
     }
     
     
-    func getBarWidth() -> Double {
+    private func getBarWidth() -> Double {
         return metrics.size.width - 20.0
     }
     
-    func colorBars() -> some View {
+    @ViewBuilder
+    private func ColorBars() -> some View {
         HStack(spacing: 0) {
             ForEach(0..<pomoTimer.order.count, id: \.self) { i in
                 ZStack {
@@ -128,7 +131,8 @@ struct ProgressBar: View {
         }
     }
     
-    func progressIndicator(at date: Date) -> some View {
+    @ViewBuilder
+    private func ProgressIndicator(at date: Date) -> some View {
         HStack(spacing: 0) {
             Spacer(minLength: 0)
             Rectangle()
@@ -136,7 +140,7 @@ struct ProgressBar: View {
                 .blendMode(.colorBurn)
                 .frame(width: getBarWidth() * (1 - pomoTimer.getProgress(atDate: date)), height: barHeight)
         }.mask {
-            colorBars()
+            ColorBars()
         }
     }
 }
