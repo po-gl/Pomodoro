@@ -19,6 +19,7 @@ struct PopStyle: ButtonStyle {
             .overlay(
                 LinearGradient(colors: [.clear, .white],
                                startPoint: .leading, endPoint: .trailing)
+                .clipShape(RoundedRectangle(cornerRadius: radius))
                 .blendMode(.softLight)
             )
             .overlay(
