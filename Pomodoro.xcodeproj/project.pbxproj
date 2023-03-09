@@ -510,7 +510,6 @@
 		61BEBD812856B17A00987514 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				61B17254285CFD40001C8245 /* Helpers */,
 				617789B32856A1F300BD43D7 /* ContentView.swift */,
 				618D67DC2979ECD7000A9D8A /* Background.swift */,
 				619255AC290121DA00D399B8 /* TimerDisplay.swift */,
@@ -520,6 +519,7 @@
 				6131C0A92911F6E200D1E6F1 /* BuddyView.swift */,
 				61F5C21F285CE482002BE18E /* TimePicker.swift */,
 				611AE62F2903AB1800FA24F0 /* MenuButton.swift */,
+				61B17254285CFD40001C8245 /* Helpers */,
 			);
 			path = Views;
 			sourceTree = "<group>";

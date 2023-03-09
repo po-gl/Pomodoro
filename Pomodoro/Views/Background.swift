@@ -15,37 +15,48 @@ struct Background: View {
     var body: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
             GeometryReader { geometry in
-                ZStack {
-                    Rectangle()
-                        .foregroundColor(getBottomColor(at: context.date))
-                        .overlay(Rectangle().foregroundStyle(LinearGradient(stops: [.init(color: .white, location: 0.0), .init(color: .clear, location: 1.0)], startPoint: .bottom, endPoint: .top)).opacity(0.6).blendMode(.softLight))
-                        .ignoresSafeArea()
-                    if colorScheme == .light {
-                        Image("PickGradient")
-                            .scaleEffect(1.1)
-                            .offset(y: -50)
-                    }
-                    ZStack {
-                        VStack {
-                            Rectangle()
-                                .foregroundColor(getTopColor(at: context.date))
-                                .frame(height: colorScheme == .dark ? geometry.size.height / 2 + 100 : geometry.size.height / 2 - 100)
-                                .overlay(Rectangle().foregroundStyle(LinearGradient(stops: [.init(color: .white, location: 0.0), .init(color: .clear, location: 1.0)], startPoint: .top, endPoint: .bottom)).opacity(0.8).blendMode(.softLight))
-                                .ignoresSafeArea()
-                            Spacer()
-                        }
-                        if colorScheme == .dark {
-                            Image("PickGradient")
-                                .rotationEffect(.degrees(180))
-                                .scaleEffect(1.1)
-                                .offset(y: -50)
-                        }
-                    }
+                VStack (spacing: 0) {
+                    Top(at: context.date)
+                        .frame(height: geometry.size.height / 2.5 + (colorScheme == .dark ? 15 : -15))
+                    PickGradient().zIndex(1)
+                    Bottom(at: context.date)
+                    
                 }
                 .ignoresSafeArea()
                 .animation(.easeInOut(duration: 0.3), value: pomoTimer.getStatus(atDate: context.date))
             }
         }
+    }
+    
+    @ViewBuilder
+    private func Top(at date: Date) -> some View {
+        Rectangle()
+            .foregroundColor(getTopColor(at: date))
+            .overlay(
+                Rectangle()
+                    .fill(LinearGradient(colors: [colorScheme == .dark ? .white : .clear, .clear], startPoint: .top, endPoint: .bottom))
+                    .blendMode(.softLight)
+            )
+    }
+    
+    @ViewBuilder
+    private func Bottom(at date: Date) -> some View {
+        Rectangle()
+            .foregroundColor(getBottomColor(at: date))
+            .overlay(
+                Rectangle()
+                    .fill(LinearGradient(colors: [colorScheme == .light ? .white : .clear, .clear], startPoint: .top, endPoint: .bottom))
+                    .opacity(0.6)
+                    .blendMode(.softLight)
+            )
+    }
+    
+    @ViewBuilder
+    private func PickGradient() -> some View {
+        Image("PickGradient")
+            .frame(width: 0, height: 0)
+            .offset(y: 20)
+            .rotationEffect(.degrees(colorScheme == .dark ? 180 : 0))
     }
     
     
