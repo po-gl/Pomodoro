@@ -17,7 +17,7 @@ struct Background: View {
             GeometryReader { geometry in
                 VStack (spacing: 0) {
                     Top(at: context.date)
-                        .frame(height: geometry.size.height / 2.5 + (colorScheme == .dark ? 15 : -15))
+                        .frame(height: geometry.size.height / 2.5 + (colorScheme == .dark ? 15 : -25))
                     PickGradient().zIndex(1)
                     Bottom(at: context.date)
                     

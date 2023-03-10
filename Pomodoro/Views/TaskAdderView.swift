@@ -12,7 +12,7 @@ struct TaskAdderView: View {
     
     @ObservedObject var taskNotes: TaskNotes
     
-    var startLocation: CGPoint = CGPoint(x: 40, y: -30)
+    var startLocation: CGPoint = CGPoint(x: 40, y: -20)
     
     @GestureState private var gestureStartLocation: CGPoint?
     @GestureState private var isDragging = false
