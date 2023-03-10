@@ -15,6 +15,9 @@ struct ContentView: View {
     
     @State var buddyOffset: Double = 0
     
+    @StateObject var taskNotes = TaskNotes()
+    
+    
     init() {
         pomoTimer = PomoTimer(pomos: 4, longBreak: PomoTimer.defaultBreakTime) { status in
             EndTimerHandler.shared.handle(status: status)
@@ -32,10 +35,12 @@ struct ContentView: View {
             .onChange(of: scenePhase) { newPhase in
                 if newPhase == .active {
                     pomoTimer.restoreFromUserDefaults()
+                    taskNotes.restoreFromUserDefaults()
                     cancelPendingNotifications()
                     EndTimerHandler.shared.haptics.prepareHaptics()
                 } else if newPhase == .inactive {
                     pomoTimer.saveToUserDefaults()
+                    taskNotes.saveToUserDefaults()
                     setupNotifications(pomoTimer)
                 }
             }
@@ -53,15 +58,22 @@ struct ContentView: View {
         GeometryReader { metrics in
             ZStack {
                 Background(pomoTimer: pomoTimer)
+                
+                TaskAdderView(taskNotes: taskNotes)
+                    .zIndex(1)
+                
                 VStack {
-                    Spacer()
                     TimerDisplay(pomoTimer: pomoTimer)
+                        .padding(.top, 50)
+                            
                     Spacer()
-                    Spacer()
+                    
                     VStack {
                         ZStack {
-                            ProgressBar(pomoTimer: pomoTimer, metrics: metrics)
-                                .frame(maxHeight: 130)
+                            ProgressBar(pomoTimer: pomoTimer,
+                                        metrics: metrics,
+                                        taskNotes: taskNotes)
+                            .frame(maxHeight: 130)
                             BuddyView(pomoTimer: pomoTimer)
                                 .brightness(-0.1)
                                 .frame(width: 20, height: 20)
@@ -77,13 +89,15 @@ struct ContentView: View {
                                 .padding(.trailing, 20)
                         }
                     }
-                    Spacer()
+                    .padding(.bottom, 30)
+                    
                     ButtonCluster(pomoTimer: pomoTimer)
-                    Spacer()
+                        .padding(.bottom, 60)
                 }
             }
             .animation(.easeInOut(duration: 0.3), value: pomoTimer.isPaused)
         }
+        .ignoresSafeArea(.keyboard)
     }
 }
 

@@ -14,6 +14,8 @@ struct ProgressBar: View {
     
     var metrics: GeometryProxy
     
+    @ObservedObject var taskNotes: TaskNotes
+    
     @State var dragValue = 0.0
     @State var isDragging = false
     @State var dragStarted = false
@@ -24,7 +26,6 @@ struct ProgressBar: View {
     
     var body: some View {
         TimeLineColorBars()
-            .gesture(drag)
             .onChange(of: pomoTimer.isPaused) { _ in
                 isDragging = false
             }
@@ -32,6 +33,12 @@ struct ProgressBar: View {
                 if isDragging {
                     basicHaptic()
                 }
+            }
+            .onAppear {
+                taskNotes.setTaskAmount(for: pomoTimer)
+            }
+            .onChange(of: pomoTimer.order.count) { _ in
+                taskNotes.setTaskAmount(for: pomoTimer)
             }
     }
     
@@ -42,6 +49,7 @@ struct ProgressBar: View {
                 HStack {
                     Text("progress")
                         .font(.system(size: 15, design: .monospaced))
+                        .opacity(0)
                     Spacer()
                     Text("\(Int(pomoTimer.getProgress(atDate: context.date) * 100))%")
                         .font(.system(size: 15, design: .monospaced))
@@ -49,10 +57,15 @@ struct ProgressBar: View {
                 .padding(.bottom, 8)
                 
                 ZStack {
-                    ColorBars()
-                        .mask { RoundedRectangle(cornerRadius: 8) }
-                    ProgressIndicator(at: context.date)
-                        .opacity(shouldShowProgressIndicator(at: context.date) ? 1.0 : 0.0)
+                    Group {
+                        ColorBars(isMask: false)
+                            .mask { RoundedRectangle(cornerRadius: 8) }
+                        ProgressIndicator(at: context.date)
+                            .opacity(shouldShowProgressIndicator(at: context.date) ? 1.0 : 0.0)
+                    }
+                    .gesture(drag)
+                    
+                    TasksView(at: context.date)
                 }
                 .padding(.vertical, 2)
                 .padding(.horizontal, barOutlinePadding)
@@ -66,18 +79,61 @@ struct ProgressBar: View {
     }
     
     @ViewBuilder
-    private func ColorBars() -> some View {
+    private func ColorBars(isMask: Bool) -> some View {
         HStack(spacing: 0) {
             ForEach(0..<pomoTimer.order.count, id: \.self) { i in
-                ZStack {
+                GeometryReader { geometry in
+                    let status = pomoTimer.order[i].getStatus()
+                    
                     RoundedRectangle(cornerRadius: 6)
-                        .foregroundStyle(getColorForStatus(pomoTimer.order[i].getStatus()))
-                        .frame(width: getBarWidth() * getProportion(i) - barOutlinePadding, height: barHeight)
-                        .padding(.horizontal, 1)
+                        .position(x: geometry.size.width/2, y: geometry.size.height/2)
+                        .foregroundStyle(getColorForStatus(status))
+                        .brightness(i<taskNotes.pomoHighlight.count && taskNotes.pomoHighlight[i] ? 0.18 : 0.0)
+                    
+                        .onChange(of: taskNotes.dragHasEnded) { _ in
+                            guard taskNotes.dragHasEnded && taskNotes.dragLocation != nil && !isMask else { return }
+                            taskNotes.pomoHighlight[i] = false
+                                    
+                            let taskDragLocation = taskNotes.dragLocation!.adjusted(for: metrics)
+                            let dropRect = getDropRect(geometry: geometry)
+                            
+                            if taskDragLocation.within(rect: dropRect) {
+                                if i < taskNotes.tasks.count {
+                                    taskNotes.tasks[i] = taskNotes.dragText
+                                    taskNotes.dragText = ""
+                                }
+                                resetHaptic()
+                            }
+                        }
+                    
+                        .onChange(of: taskNotes.dragLocation) { _ in
+                            guard taskNotes.dragLocation != nil && !isMask else { return }
+                            
+                            let taskDragLocation = taskNotes.dragLocation!.adjusted(for: metrics)
+                            let dropRect = getDropRect(geometry: geometry)
+                            if taskDragLocation.within(rect: dropRect) {
+                                if status == .work {
+                                    if !taskNotes.pomoHighlight[i] { basicHaptic() }
+                                    taskNotes.pomoHighlight[i] = true
+                                }
+                            } else {
+                                taskNotes.pomoHighlight[i] = false
+                            }
+                        }
                 }
+                .frame(width: getBarWidth() * getProportion(i) - barOutlinePadding, height: barHeight)
+                .padding(.horizontal, 1)
             }
         }
     }
+    
+    private func getDropRect(geometry: GeometryProxy) -> CGRect {
+        var rect: CGRect = geometry.frame(in: .global)
+        rect.origin.y -= 50
+        rect.size.height += 100
+        return rect
+    }
+    
     
     @ViewBuilder
     private func ProgressIndicator(at date: Date) -> some View {
@@ -88,12 +144,30 @@ struct ProgressBar: View {
                 .blendMode(colorScheme == .dark ? .colorBurn : .colorDodge)
                 .frame(width: getBarWidth() * (1 - pomoTimer.getProgress(atDate: date)), height: barHeight)
         }.mask {
-            ColorBars()
+            ColorBars(isMask: true)
         }
     }
     
     private func shouldShowProgressIndicator(at date: Date) -> Bool {
         return pomoTimer.getProgress(atDate: date) != 0.0 || !pomoTimer.isPaused || isDragging
+    }
+    
+    
+    @ViewBuilder
+    private func TasksView(at date: Date) -> some View {
+        HStack(spacing: 0) {
+            ForEach(0..<pomoTimer.order.count, id: \.self) { i in
+                ZStack (alignment: .leading) {
+                    let status = pomoTimer.order[i].getStatus()
+                    
+                    if status == .work {
+                        TaskLabel(index: i, taskNotes: taskNotes, pomoTimer: pomoTimer)
+                    }
+                }
+                .frame(width: getBarWidth() * getProportion(i) - barOutlinePadding, height: barHeight)
+                .padding(.horizontal, 1)
+            }
+        }
     }
     
     
