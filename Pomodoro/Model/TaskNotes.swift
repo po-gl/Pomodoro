@@ -17,9 +17,13 @@ class TaskNotes: ObservableObject {
     
     
     func setTaskAmount(for pomoTimer: PomoTimer) {
-        var newTasks = Array(repeating: "", count: pomoTimer.order.count)
-        newTasks.insert(contentsOf: tasks, at: 0)
-        tasks = newTasks
+        if pomoTimer.order.count > tasks.count {
+            var newTasks = Array(repeating: "", count: pomoTimer.order.count)
+            if !tasks.isEmpty {
+                newTasks.replaceSubrange(0...tasks.count-1, with: tasks)
+            }
+            tasks = newTasks
+        }
         
         pomoHighlight = Array(repeating: false, count: pomoTimer.order.count)
     }
