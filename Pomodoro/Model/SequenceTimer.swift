@@ -181,24 +181,24 @@ class SequenceTimer: ObservableObject {
     
     
     public func saveToUserDefaults() {
-        UserDefaults(suiteName: "group.com.po-gl.pomodoro")!.set(Date(), forKey: "timeSinceAppSuspended")
+        UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.set(Date(), forKey: "timeSinceAppSuspended")
         
-        UserDefaults(suiteName: "group.com.po-gl.pomodoro")!.set(isPaused, forKey: "isPaused")
-        UserDefaults(suiteName: "group.com.po-gl.pomodoro")!.set(startTime, forKey: "startTime")
-        UserDefaults(suiteName: "group.com.po-gl.pomodoro")!.set(timeAmounts, forKey: "timeAmounts")
-        UserDefaults(suiteName: "group.com.po-gl.pomodoro")!.set(pauseStart, forKey: "pauseStart")
-        UserDefaults(suiteName: "group.com.po-gl.pomodoro")!.set(pauseOffset, forKey: "pauseOffset")
-        UserDefaults(suiteName: "group.com.po-gl.pomodoro")!.set(scrubOffset, forKey: "scrubOffset")
+        UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.set(isPaused, forKey: "isPaused")
+        UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.set(startTime, forKey: "startTime")
+        UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.set(timeAmounts, forKey: "timeAmounts")
+        UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.set(pauseStart, forKey: "pauseStart")
+        UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.set(pauseOffset, forKey: "pauseOffset")
+        UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.set(scrubOffset, forKey: "scrubOffset")
         timer.invalidate()
     }
     
     public func restoreFromUserDefaults() {
-        isPaused = UserDefaults(suiteName: "group.com.po-gl.pomodoro")!.object(forKey: "isPaused") as? Bool ?? isPaused
-        startTime = UserDefaults(suiteName: "group.com.po-gl.pomodoro")!.object(forKey: "startTime") as? Date ?? startTime
-        timeAmounts = UserDefaults(suiteName: "group.com.po-gl.pomodoro")!.object(forKey: "timeAmounts") as? [TimeInterval] ?? timeAmounts
-        pauseStart = UserDefaults(suiteName: "group.com.po-gl.pomodoro")!.object(forKey: "pauseStart") as? Date ?? pauseStart
-        pauseOffset = UserDefaults(suiteName: "group.com.po-gl.pomodoro")!.object(forKey: "pauseOffset") as? TimeInterval ?? pauseOffset
-        scrubOffset = UserDefaults(suiteName: "group.com.po-gl.pomodoro")!.object(forKey: "scrubOffset") as? TimeInterval ?? scrubOffset
+        isPaused = UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.object(forKey: "isPaused") as? Bool ?? isPaused
+        startTime = UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.object(forKey: "startTime") as? Date ?? startTime
+        timeAmounts = UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.object(forKey: "timeAmounts") as? [TimeInterval] ?? timeAmounts
+        pauseStart = UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.object(forKey: "pauseStart") as? Date ?? pauseStart
+        pauseOffset = UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.object(forKey: "pauseOffset") as? TimeInterval ?? pauseOffset
+        scrubOffset = UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.object(forKey: "scrubOffset") as? TimeInterval ?? scrubOffset
         print("RESTORE::isPaused=\(isPaused)   startTime=\(startTime)   pauseStart=\(pauseStart)   pauseOffset=\(pauseOffset)   timeAmounts=\(timeAmounts)")
         
         if !isPaused {

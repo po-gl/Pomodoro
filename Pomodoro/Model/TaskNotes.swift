@@ -29,11 +29,11 @@ class TaskNotes: ObservableObject {
     }
     
     func saveToUserDefaults() {
-        UserDefaults(suiteName: "group.com.po-gl.pomodoro")!.set(tasks, forKey: "taskNotes")
+        UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.set(tasks, forKey: "taskNotes")
     }
     
     func restoreFromUserDefaults() {
-        tasks = UserDefaults(suiteName: "group.com.po-gl.pomodoro")!.object(forKey: "taskNotes") as? [String] ?? tasks
+        tasks = UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.object(forKey: "taskNotes") as? [String] ?? tasks
         print("RESTORE::tasks=\(tasks)")
     }
     
