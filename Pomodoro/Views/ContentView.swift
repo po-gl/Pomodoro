@@ -61,6 +61,7 @@ struct ContentView: View {
                     Background(pomoTimer: pomoTimer)
                     
                     TaskAdderView(taskNotes: taskNotes)
+                        .opacity(pomoTimer.isPaused ? 1.0 : 0.7)
                         .zIndex(1)
                     
                     VStack {
