@@ -15,18 +15,8 @@ struct ContentView: View {
     
     init() {
         pomoTimer = PomoTimer(pomos: 4, longBreak: PomoTimer.defaultBreakTime) { status in
-            switch status {
-            case .work:
-                workHaptic()
-            case .rest:
-                restHaptic()
-            case .longBreak:
-                breakHaptic()
-            case .end:
-                breakHaptic()
-            }
+            EndTimerHandler.shared.handle(status: status)
         }
-        
         pomoTimer.pause()
         pomoTimer.restoreFromUserDefaults()
     }

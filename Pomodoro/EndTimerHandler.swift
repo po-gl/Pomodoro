@@ -10,6 +10,7 @@ import Foundation
 class EndTimerHandler {
     static let shared = EndTimerHandler()
     
+#if os(iOS)
     var haptics = Haptics()
     
     public func handle(status: PomoStatus) {
@@ -24,4 +25,19 @@ class EndTimerHandler {
             haptics.breakHaptic()
         }
     }
+    
+#elseif os(watchOS)
+    public func handle(status: PomoStatus) {
+        switch status {
+        case .work:
+            workHaptic()
+        case .rest:
+            restHaptic()
+        case .longBreak:
+            breakHaptic()
+        case .end:
+            breakHaptic()
+        }
+    }
+#endif
 }
