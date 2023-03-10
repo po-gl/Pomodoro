@@ -20,11 +20,13 @@ struct TaskLabel: View {
             .overlay(AngledLines(text))
         
             .onTapGesture {
+                basicHaptic()
                 presentingNoteOptions = true
             }
         
             .confirmationDialog("Task note options.", isPresented: $presentingNoteOptions) {
                 Button(role: .destructive) {
+                    resetHaptic()
                     withAnimation { taskNotes.tasks[index] = "" }
                 } label: {
                     Text("Delete task")
