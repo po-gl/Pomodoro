@@ -130,8 +130,6 @@
 		61E22AA4297B31210080CA6E /* PomoTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619255B3290204AB00D399B8 /* PomoTime.swift */; };
 		61E22AA5297B31270080CA6E /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619ED26829072E00004E344D /* Haptics.swift */; };
 		61E22AA7297B31500080CA6E /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F4253D2908E8FD00300C83 /* Notifications.swift */; };
-		61E22AA9297B4D5B0080CA6E /* HostingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E22AA8297B4D5B0080CA6E /* HostingView.swift */; };
-		61E22AAA297B4D5B0080CA6E /* HostingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E22AA8297B4D5B0080CA6E /* HostingView.swift */; };
 		61E22AAB297B975B0080CA6E /* Color+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9089285CD2E4003F1990 /* Color+hex.swift */; };
 		61E22AAC297B975D0080CA6E /* Color+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9089285CD2E4003F1990 /* Color+hex.swift */; };
 		61E22AAD297B97CC0080CA6E /* Color+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9089285CD2E4003F1990 /* Color+hex.swift */; };
@@ -288,7 +286,6 @@
 		61B17252285CFCF8001C8245 /* UIView+ClosestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ClosestVC.swift"; sourceTree = "<group>"; };
 		61D5808729BA5E5B006F0BB0 /* Comparable+Clamped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+Clamped.swift"; sourceTree = "<group>"; };
 		61D5809029BA5F81006F0BB0 /* TaskAdderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAdderView.swift; sourceTree = "<group>"; };
-		61E22AA8297B4D5B0080CA6E /* HostingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingView.swift; sourceTree = "<group>"; };
 		61F4220E2900AC350036400A /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		61F4253D2908E8FD00300C83 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		61FAEAAE29065FDC00CACF78 /* PomodoroWatch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PomodoroWatch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -509,7 +506,6 @@
 			children = (
 				618750FC29BB7A0B0017BF8E /* TaskLabel.swift */,
 				6131C0AD291204C300D1E6F1 /* AnimatedImage.swift */,
-				61E22AA8297B4D5B0080CA6E /* HostingView.swift */,
 				614DA2A62997BE3C00EFC91C /* PopStyle.swift */,
 			);
 			path = Helpers;
@@ -934,7 +930,6 @@
 				611AE62E2903A9AF00FA24F0 /* ButtonCluster.swift in Sources */,
 				61F4253E2908E8FD00300C83 /* Notifications.swift in Sources */,
 				612B9088285CC863003F1990 /* TimeInterval+formatter.swift in Sources */,
-				61E22AA9297B4D5B0080CA6E /* HostingView.swift in Sources */,
 				617789B22856A1F300BD43D7 /* PomodoroApp.swift in Sources */,
 				6172B4B9297F5EC700E53D8F /* iOSWidget.intentdefinition in Sources */,
 				618750F529BABCFE0017BF8E /* Point+Extensions.swift in Sources */,
@@ -979,7 +974,6 @@
 				6172B49E297F56DD00E53D8F /* SitAnimation.swift in Sources */,
 				6172B49D297F56DB00E53D8F /* WalkAnimation.swift in Sources */,
 				618750FB29BB69400017BF8E /* TaskNotes.swift in Sources */,
-				61E22AAA297B4D5B0080CA6E /* HostingView.swift in Sources */,
 				6172B49F297F57C100E53D8F /* View+Modifier.swift in Sources */,
 				61E22A9E297B31040080CA6E /* ButtonCluster.swift in Sources */,
 				61E22AA4297B31210080CA6E /* PomoTime.swift in Sources */,

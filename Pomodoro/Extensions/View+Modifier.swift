@@ -20,4 +20,12 @@ extension View {
                 }
         }
     }
+    
+    @inlinable
+    func avoidKeyboard() -> some View {
+        GeometryReader { _ in
+            self
+        }
+        .ignoresSafeArea(.keyboard)
+    }
 }

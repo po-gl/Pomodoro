@@ -94,9 +94,10 @@ struct TaskAdderView: View {
                 .opacity(animate ? 0.4 : 0.0)
         }
         .onAppear {
-            animate = true
+            withAnimation (.easeInOut(duration: 3).repeatForever()) {
+                animate = true
+            }
         }
-        .animation(.easeInOut(duration: 3).repeatForever(), value: animate)
         .offset(x: 44)
         .frame(width: 160)
     }
