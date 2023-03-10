@@ -62,6 +62,7 @@ struct ProgressBar: View {
                             .mask { RoundedRectangle(cornerRadius: 8) }
                         ProgressIndicator(at: context.date)
                             .opacity(shouldShowProgressIndicator(at: context.date) ? 1.0 : 0.0)
+                            .accessibilityIdentifier("DraggableProgressBar")
                     }
                     .gesture(drag)
                     

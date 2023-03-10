@@ -28,22 +28,26 @@ struct ButtonCluster: View {
     
     @ViewBuilder
     private func ResetButton() -> some View {
+        let isEnabled = pomoTimer.isPaused || pomoTimer.getStatus() == .end
         Button("Reset") {
-            guard pomoTimer.isPaused || pomoTimer.getStatus() == .end else { return }
+            guard isEnabled else { return }
             resetHaptic()
             withAnimation(.easeIn(duration: 0.2)){ pomoTimer.reset() }
         }
+        .accessibilityIdentifier("resetButton\(isEnabled ? "On" : "Off")")
         .frame(width: 130, height: 60)
         .buttonStyle(PopStyle(color: pomoTimer.isPaused || pomoTimer.getStatus() == .end ? Color("BarRest") : Color("GrayedOut")))
     }
     
     @ViewBuilder
     private func StartStopButton() -> some View {
+        let isEnabled = pomoTimer.getStatus() != .end
         Button(getStartStopButtonString()) {
-            guard pomoTimer.getStatus() != .end else { return }
+            guard isEnabled else { return }
             basicHaptic()
             withAnimation { pomoTimer.toggle() }
         }
+        .accessibilityIdentifier("playPauseButton\(isEnabled ? "On" : "Off")")
         .frame(width: 130, height: 60)
         .buttonStyle(PopStyle(color: getStartStopButtonColor()))
     }

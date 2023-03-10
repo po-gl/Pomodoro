@@ -17,6 +17,8 @@ struct TaskLabel: View {
     var body: some View {
         let text: String = index < taskNotes.tasks.count ? taskNotes.tasks[index] : ""
         AngledText(text)
+            .accessibilityIdentifier("TaskLabel_\(text)")
+            .accessibilityAddTraits(.isButton)
             .overlay(AngledLines(text))
         
             .onTapGesture {
@@ -31,6 +33,7 @@ struct TaskLabel: View {
                 } label: {
                     Text("Delete task")
                 }
+                .accessibilityIdentifier("DeleteTask")
             } message: {
                 Text("Task: \(text)")
             }
