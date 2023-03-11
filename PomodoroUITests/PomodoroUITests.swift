@@ -47,8 +47,9 @@ final class PomodoroUITests: XCTestCase {
         
         XCTAssertEqual(progressBar.exists, true)
         progressBar.swipeRight(velocity: 500)
+        progressBar.swipeRight(velocity: 500)
         
-        XCTAssertEqual(app.staticTexts["Work"].exists, false)
+        XCTAssertEqual(app.staticTexts["Work"].exists, false, "Expected false as the progressbar should be scrubbed close to the end")
         XCTAssertEqual(app.staticTexts["Long Break"].exists, true)
     }
     
