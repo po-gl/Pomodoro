@@ -24,7 +24,7 @@ struct PopStyle: ButtonStyle {
             )
             .overlay(
                 RoundedRectangle(cornerRadius: radius)
-                .stroke(colorScheme == .dark ? Color("Gray") : .black, lineWidth: 2)
+                    .stroke(colorScheme == .dark ? Color(hex: 0x1C1C1F) : .black, lineWidth: 2)
             )
         
             .overlay(
