@@ -56,6 +56,7 @@ final class PomodoroUITests: XCTestCase {
     func testiOSUI_createTaskAndDrag() throws {
         let app = XCUIApplication()
         app.launch()
+        PomodoroUITests.resetTimer(app)
         
         // Type task
         let taskText = app.textFields["AddTask"]
