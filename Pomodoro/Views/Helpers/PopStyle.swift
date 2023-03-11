@@ -29,7 +29,6 @@ struct PopStyle: ButtonStyle {
         
             .overlay(
                 configuration.label
-                    .foregroundColor(color.isDarkColor ? .white : .black)
                     .font(.system(size: 20, weight: .medium, design: .monospaced))
             )
             .opacity(configuration.isPressed ? 0.4 : 1.0)
