@@ -59,10 +59,12 @@ struct ProgressBar: View {
                 ZStack {
                     Group {
                         ColorBars(isMask: false)
+                            .accessibilityIdentifier("DraggableProgressBar")
                             .mask { RoundedRectangle(cornerRadius: 8) }
                         ProgressIndicator(at: context.date)
                             .opacity(shouldShowProgressIndicator(at: context.date) ? 1.0 : 0.0)
-                            .accessibilityIdentifier("DraggableProgressBar")
+                            .allowsHitTesting(false)
+                            
                     }
                     .gesture(drag)
                     
