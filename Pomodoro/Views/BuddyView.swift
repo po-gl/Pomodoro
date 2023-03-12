@@ -16,7 +16,7 @@ struct BuddyView: View {
         ZStack {
             ForEach(Array(buddies.enumerated()), id: \.element) { index, buddy in
                 AnimatedBuddy(buddy)
-                    .offset(x: Double(index*17) + Double.random(in: 0...2))
+                    .offset(x: Double(index*18))
             }
         }
         .onAppear {
