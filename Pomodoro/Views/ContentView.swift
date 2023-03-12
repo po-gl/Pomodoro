@@ -29,88 +29,84 @@ struct ContentView: View {
 
     
     var body: some View {
-        MainPage()
-            .onAppear {
-                getNotificationPermissions()
-            }
-            .onChange(of: scenePhase) { newPhase in
-                if newPhase == .active {
-                    pomoTimer.restoreFromUserDefaults()
-                    taskNotes.restoreFromUserDefaults()
-                    cancelPendingNotifications()
-                    EndTimerHandler.shared.haptics.prepareHaptics()
-                } else if newPhase == .inactive {
-                    pomoTimer.saveToUserDefaults()
-                    taskNotes.saveToUserDefaults()
-                    setupNotifications(pomoTimer)
+        HostingView(colorScheme: colorScheme) {
+            MainPage()
+                .onAppear {
+                    getNotificationPermissions()
+                }
+                .onChange(of: scenePhase) { newPhase in
+                    if newPhase == .active {
+                        pomoTimer.restoreFromUserDefaults()
+                        taskNotes.restoreFromUserDefaults()
+                        cancelPendingNotifications()
+                        EndTimerHandler.shared.haptics.prepareHaptics()
+                    } else if newPhase == .inactive {
+                        pomoTimer.saveToUserDefaults()
+                        taskNotes.saveToUserDefaults()
+                        setupNotifications(pomoTimer)
+                        WidgetCenter.shared.reloadAllTimelines()
+                    }
+                }
+            
+                .onChange(of: pomoTimer.isPaused) { _ in
                     WidgetCenter.shared.reloadAllTimelines()
                 }
-            }
-        
-            .onChange(of: pomoTimer.isPaused) { _ in
-                WidgetCenter.shared.reloadAllTimelines()
-            }
-        
-            .onOpenURL { url in
-                if url.absoluteString == "com.po-gl.stop" {
-                    pomoTimer.pause()
-                    pomoTimer.saveToUserDefaults()
+            
+                .onOpenURL { url in
+                    if url.absoluteString == "com.po-gl.stop" {
+                        pomoTimer.pause()
+                        pomoTimer.saveToUserDefaults()
+                    }
                 }
-            }
+        }
+        .ignoresSafeArea()
     }
     
     
     @ViewBuilder
     private func MainPage() -> some View {
         GeometryReader { metrics in
-            NavigationStack {
-                ZStack {
-                    Background(pomoTimer: pomoTimer)
+            ZStack {
+                Background(pomoTimer: pomoTimer)
+                
+                TaskAdderView(taskNotes: taskNotes)
+                    .opacity(pomoTimer.isPaused ? 1.0 : 0.7)
+                    .zIndex(1)
+                
+                VStack {
+                    TimerDisplay(pomoTimer: pomoTimer)
+                        .padding(.top, 50)
                     
-                    TaskAdderView(taskNotes: taskNotes)
-                        .opacity(pomoTimer.isPaused ? 1.0 : 0.7)
-                        .zIndex(1)
+                    Spacer()
                     
                     VStack {
-                        TimerDisplay(pomoTimer: pomoTimer)
-                            .padding(.top, 50)
-                        
-                        Spacer()
-                        
-                        VStack {
-                            ZStack {
-                                ProgressBar(pomoTimer: pomoTimer,
-                                            metrics: metrics,
-                                            taskNotes: taskNotes)
-                                .frame(maxHeight: 130)
-                                BuddyView(pomoTimer: pomoTimer)
-                                    .brightness(-0.1)
-                                    .frame(width: 20, height: 20)
-                                    .offset(x: buddyOffset, y: -8)
-                                    .onAppear {
-                                        buddyOffset = Double.random(in: -60...100)
-                                    }
-                            }
-                            HStack {
-                                Spacer()
-                                PomoStepper(pomoTimer: pomoTimer)
-                                    .offset(y: -20)
-                                    .padding(.trailing, 20)
-                            }
+                        ZStack {
+                            ProgressBar(pomoTimer: pomoTimer,
+                                        metrics: metrics,
+                                        taskNotes: taskNotes)
+                            .frame(maxHeight: 130)
+                            BuddyView(pomoTimer: pomoTimer)
+                                .brightness(-0.1)
+                                .frame(width: 20, height: 20)
+                                .offset(x: buddyOffset, y: -8)
+                                .onAppear {
+                                    buddyOffset = Double.random(in: -60...100)
+                                }
                         }
-                        .padding(.bottom, 30)
-                        
-                        ButtonCluster(pomoTimer: pomoTimer)
-                            .padding(.bottom, 60)
+                        HStack {
+                            Spacer()
+                            PomoStepper(pomoTimer: pomoTimer)
+                                .offset(y: -20)
+                                .padding(.trailing, 20)
+                        }
                     }
+                    .padding(.bottom, 30)
+                    
+                    ButtonCluster(pomoTimer: pomoTimer)
+                        .padding(.bottom, 60)
                 }
-                .animation(.easeInOut(duration: 0.3), value: pomoTimer.isPaused)
-                
-                .toolbarBackground(.visible, for: .navigationBar)
-                .toolbarColorScheme(colorScheme, for: .navigationBar)
-                
-                .avoidKeyboard()
             }
+            .animation(.easeInOut(duration: 0.3), value: pomoTimer.isPaused)
         }
         .ignoresSafeArea(.keyboard)
     }
