@@ -14,8 +14,6 @@ struct ContentView: View {
     @Environment(\.colorScheme) private var colorScheme
     @ObservedObject var pomoTimer: PomoTimer
     
-    @State var buddyOffset: Double = 0
-    
     @StateObject var taskNotes = TaskNotes()
     
     
@@ -88,10 +86,7 @@ struct ContentView: View {
                             BuddyView(pomoTimer: pomoTimer)
                                 .brightness(-0.1)
                                 .frame(width: 20, height: 20)
-                                .offset(x: buddyOffset, y: -8)
-                                .onAppear {
-                                    buddyOffset = Double.random(in: -60...100)
-                                }
+                                .offset(x: Double.random(in: -120...100), y: -8)
                         }
                         HStack {
                             Spacer()

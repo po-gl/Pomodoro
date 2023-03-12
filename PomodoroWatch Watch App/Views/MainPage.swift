@@ -35,7 +35,7 @@ struct MainPage: View {
             }
         }
         .onAppear {
-            buddyOffset = Double.random(in: -30...30)
+            buddyOffset = Double.random(in: -40...30)
         }
     }
 }

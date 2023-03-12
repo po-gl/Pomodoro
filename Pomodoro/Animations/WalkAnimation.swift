@@ -10,8 +10,8 @@ import SwiftUI
 struct WalkAnimation: View {
     var imageNames: [String]
     
-    init() {
-        imageNames = (1...10).map{ "tomato\($0)" }
+    init(buddy: Buddy) {
+        imageNames = (1...10).map{ "\(buddy.rawValue)\($0)" }
     }
     
     var body: some View {
