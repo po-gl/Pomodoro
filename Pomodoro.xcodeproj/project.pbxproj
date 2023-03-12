@@ -1157,7 +1157,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = .a.PomodoroWatch.WatchWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.po-gl-a.PomodoroTests.watchkitapp.watchkitextension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1189,7 +1189,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = .a.PomodoroWatch.WatchWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.po-gl-a.PomodoroTests.watchkitapp.watchkitextension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1573,7 +1573,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = .a.PomodoroWatch;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.po-gl-a.Pomodoro.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1608,7 +1608,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = .a.PomodoroWatch;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.po-gl-a.Pomodoro.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1631,7 +1631,7 @@
 				DEVELOPMENT_TEAM = B5RQ2EJVKL;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ".a.PomodoroWatch-Watch-Tests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.po-gl-a.PomodoroTests.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -1653,7 +1653,7 @@
 				DEVELOPMENT_TEAM = B5RQ2EJVKL;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ".a.PomodoroWatch-Watch-Tests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.po-gl-a.PomodoroTests.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -1675,7 +1675,7 @@
 				DEVELOPMENT_TEAM = B5RQ2EJVKL;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ".a.PomodoroWatch-Watch-AppUITests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.po-gl-a.PomodoroUITests.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -1696,7 +1696,7 @@
 				DEVELOPMENT_TEAM = B5RQ2EJVKL;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ".a.PomodoroWatch-Watch-AppUITests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.po-gl-a.PomodoroUITests.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SWIFT_EMIT_LOC_STRINGS = NO;
