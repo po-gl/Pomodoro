@@ -11,7 +11,9 @@ import SwiftUI
 @main
 struct iOSWidgetBundle: WidgetBundle {
     var body: some Widget {
-//        iOSWidget()
-        iOSWidgetLiveActivity()
+//        iOSWidgetLiveActivity()
+        iOSProgressWatchWidget()
+        StatusWatchWidget()
+        iOSWidget()
     }
 }

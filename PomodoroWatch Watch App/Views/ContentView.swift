@@ -54,6 +54,7 @@ struct ContentView: View {
             } else {
                 BackgroundSession.shared.startIfUnpaused(for: pomoTimer)
             }
+            WidgetCenter.shared.reloadAllTimelines()
         }
         .onChange(of: pomoTimer.getStatus()) { _ in
             Task {

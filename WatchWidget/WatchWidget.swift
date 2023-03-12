@@ -32,7 +32,7 @@ struct Provider: IntentTimelineProvider {
         completion(entry)
     }
 
-    func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
+    func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> ()) {
         var entries: [SimpleEntry] = []
         let pomoTimer = PomoTimer()
         pomoTimer.restoreFromUserDefaults()
@@ -108,14 +108,6 @@ struct SimpleEntry: TimelineEntry {
 }
 
 
-@main
-struct PomoWidgets: WidgetBundle {
-    var body: some Widget {
-        StatusWatchWidget()
-        ProgressWatchWidget()
-    }
-}
-
 struct ProgressWatchWidget: Widget {
     let kind: String = "ProgressWatchWidget"
 
@@ -125,6 +117,7 @@ struct ProgressWatchWidget: Widget {
         }
         .configurationDisplayName("Pomodoro Progress")
         .description("Track your pomodoro timer.")
+        .supportedFamilies([.accessoryCircular])
     }
 }
 
@@ -174,6 +167,7 @@ struct StatusWatchWidget: Widget {
         }
         .configurationDisplayName("Pomodoro Status")
         .description("See your pomodoro timer status.")
+        .supportedFamilies([.accessoryCircular])
     }
 }
 

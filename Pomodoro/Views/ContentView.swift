@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreHaptics
+import WidgetKit
 
 struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
@@ -42,8 +43,14 @@ struct ContentView: View {
                     pomoTimer.saveToUserDefaults()
                     taskNotes.saveToUserDefaults()
                     setupNotifications(pomoTimer)
+                    WidgetCenter.shared.reloadAllTimelines()
                 }
             }
+        
+            .onChange(of: pomoTimer.isPaused) { _ in
+                WidgetCenter.shared.reloadAllTimelines()
+            }
+        
             .onOpenURL { url in
                 if url.absoluteString == "com.po-gl.stop" {
                     pomoTimer.pause()
