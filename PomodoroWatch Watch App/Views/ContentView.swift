@@ -29,15 +29,36 @@ struct ContentView: View {
         .opacity(isLuminanceReduced ? 0.6 : 1.0)
         .onAppear {
             getNotificationPermissions()
+            BackgroundSession.shared.startIfUnpaused(for: pomoTimer)
         }
         .onChange(of: scenePhase) { newPhase in
             if newPhase == .active {
+                print("Active")
                 pomoTimer.restoreFromUserDefaults()
                 cancelPendingNotifications()
+                
+                BackgroundSession.shared.stop()
+                BackgroundSession.shared.startIfUnpaused(for: pomoTimer)
+                
             } else if newPhase == .inactive {
+                print("Inactive")
                 pomoTimer.saveToUserDefaults()
                 setupNotifications(pomoTimer)
                 WidgetCenter.shared.reloadAllTimelines()
+            }
+        }
+        
+        .onChange(of: pomoTimer.isPaused) { _ in
+            if pomoTimer.isPaused {
+                BackgroundSession.shared.stop()
+            } else {
+                BackgroundSession.shared.startIfUnpaused(for: pomoTimer)
+            }
+        }
+        .onChange(of: pomoTimer.getStatus()) { _ in
+            Task {
+                try? await Task.sleep(for: .seconds(1))
+                BackgroundSession.shared.startIfUnpaused(for: pomoTimer)
             }
         }
     }

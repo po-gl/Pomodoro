@@ -25,7 +25,12 @@ func getNotificationPermissions() {
 func setupNotifications(_ pomoTimer: PomoTimer) {
     guard !pomoTimer.isPaused else { return }
     let now = Date()
+#if os(iOS)
     let currentIndex = pomoTimer.getIndex(atDate: now)
+#elseif os(watchOS)
+    // watchOS uses BackgroundSession to handle the first notification
+    let currentIndex = pomoTimer.getIndex(atDate: now) + 1
+#endif
     
     for index in currentIndex..<pomoTimer.order.count {
         let timeToNext = pomoTimer.timeRemaining(for: index, atDate: now)

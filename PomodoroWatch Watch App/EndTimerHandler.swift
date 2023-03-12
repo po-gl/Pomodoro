@@ -1,8 +1,8 @@
 //
 //  EndTimerHandler.swift
-//  Pomodoro
+//  PomodoroWatch Watch App
 //
-//  Created by Porter Glines on 2/12/23.
+//  Created by Porter Glines on 3/11/23.
 //
 
 import Foundation
@@ -10,18 +10,18 @@ import Foundation
 class EndTimerHandler {
     static let shared = EndTimerHandler()
     
-    var haptics = Haptics()
-    
     public func handle(status: PomoStatus) {
+        BackgroundSession.shared.stop()
+        
         switch status {
         case .work:
-            haptics.workHaptic()
+            workHaptic()
         case .rest:
-            haptics.restHaptic()
+            restHaptic()
         case .longBreak:
-            haptics.breakHaptic()
+            breakHaptic()
         case .end:
-            haptics.breakHaptic()
+            breakHaptic()
         }
     }
 }
