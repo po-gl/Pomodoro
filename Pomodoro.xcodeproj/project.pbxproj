@@ -10,6 +10,7 @@
 		6101A6F329996B5F00DC5FC5 /* PomoStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6101A6F229996B5F00DC5FC5 /* PomoStepper.swift */; };
 		6101A6F529998C4A00DC5FC5 /* EndTimerHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6101A6F429998C4A00DC5FC5 /* EndTimerHandler.swift */; };
 		6101A6F729998C4A00DC5FC5 /* EndTimerHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6101A6F429998C4A00DC5FC5 /* EndTimerHandler.swift */; };
+		610F99C329BD736A00608F41 /* iOSWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6172B4AA297F5EC600E53D8F /* iOSWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		611A3CA529076BEF00B7AFD3 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611A3CA429076BEF00B7AFD3 /* ProgressBar.swift */; };
 		611AE62E2903A9AF00FA24F0 /* ButtonCluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611AE62D2903A9AF00FA24F0 /* ButtonCluster.swift */; };
 		612B9088285CC863003F1990 /* TimeInterval+formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9087285CC863003F1990 /* TimeInterval+formatter.swift */; };
@@ -66,7 +67,6 @@
 		6172B4B6297F5EC700E53D8F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6172B4B5297F5EC700E53D8F /* Assets.xcassets */; };
 		6172B4B8297F5EC700E53D8F /* iOSWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 6172B4B4297F5EC600E53D8F /* iOSWidget.intentdefinition */; };
 		6172B4B9297F5EC700E53D8F /* iOSWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 6172B4B4297F5EC600E53D8F /* iOSWidget.intentdefinition */; };
-		6172B4BC297F5EC700E53D8F /* iOSWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6172B4AA297F5EC600E53D8F /* iOSWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		6172B4C1297F621000E53D8F /* SequenceTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613D6D9B285C82FD0020C194 /* SequenceTimer.swift */; };
 		6172B4C2297F621400E53D8F /* PomoTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619255B02901F4CB00D399B8 /* PomoTimer.swift */; };
 		6172B4C3297F621700E53D8F /* PomoTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619255B3290204AB00D399B8 /* PomoTime.swift */; };
@@ -161,6 +161,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		610F99C429BD736A00608F41 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 617789A62856A1F300BD43D7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6172B4A9297F5EC600E53D8F;
+			remoteInfo = iOSWidgetExtension;
+		};
 		612D8F8E290B63190089CDD1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 617789A62856A1F300BD43D7 /* Project object */;
@@ -213,6 +220,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		610F99C629BD736A00608F41 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				610F99C329BD736A00608F41 /* iOSWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		612D8F94290B63190089CDD1 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -220,17 +238,6 @@
 			dstSubfolderSpec = 13;
 			files = (
 				612D8F90290B63190089CDD1 /* WatchWidgetExtension.appex in Embed Foundation Extensions */,
-			);
-			name = "Embed Foundation Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		6172B4C0297F5EC700E53D8F /* Embed Foundation Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				6172B4BC297F5EC700E53D8F /* iOSWidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1098,6 +1105,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		610F99C529BD736A00608F41 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6172B4A9297F5EC600E53D8F /* iOSWidgetExtension */;
+			targetProxy = 610F99C429BD736A00608F41 /* PBXContainerItemProxy */;
+		};
 		612D8F8F290B63190089CDD1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 612D8F7E290B63180089CDD1 /* WatchWidgetExtension */;
@@ -1566,7 +1578,7 @@
 				INFOPLIST_FILE = "PomodoroWatch-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = PomodoroWatch;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "com.po-gl-a.Pomodoro";
 				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1601,7 +1613,7 @@
 				INFOPLIST_FILE = "PomodoroWatch-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = PomodoroWatch;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = "com.po-gl-a.Pomodoro";
 				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
