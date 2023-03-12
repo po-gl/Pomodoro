@@ -1157,7 +1157,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.po-gl-a.PomodoroTests.watchkitapp.watchkitextension";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.po-gl-a.Pomodoro.watchkitapp.watchkitextension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1189,7 +1189,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.po-gl-a.PomodoroTests.watchkitapp.watchkitextension";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.po-gl-a.Pomodoro.watchkitapp.watchkitextension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
