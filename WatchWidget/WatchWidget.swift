@@ -114,6 +114,7 @@ struct ProgressWatchWidget: Widget {
     var body: some WidgetConfiguration {
         IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider(shouldAddMinuteByMinuteEntries: true)) { entry in
             ProgressWidgetView(entry: entry)
+                .unredacted()
         }
         .configurationDisplayName("Pomodoro Progress")
         .description("Track your pomodoro timer.")
@@ -164,6 +165,7 @@ struct StatusWatchWidget: Widget {
     var body: some WidgetConfiguration {
         IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider(shouldAddMinuteByMinuteEntries: false)) { entry in
             StatusWidgetView(entry: entry)
+                .unredacted()
         }
         .configurationDisplayName("Pomodoro Status")
         .description("See your pomodoro timer status.")
