@@ -116,6 +116,7 @@
 		619ED26929072E00004E344D /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619ED26829072E00004E344D /* Haptics.swift */; };
 		619ED26B29073299004E344D /* ButtonCluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619ED26A29073299004E344D /* ButtonCluster.swift */; };
 		619ED26E29073A7E004E344D /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619ED26D29073A7E004E344D /* Haptics.swift */; };
+		61A7FE2729BD5767000137E7 /* PomodoroWatch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 61FAEAAE29065FDC00CACF78 /* PomodoroWatch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		61B17251285CFCBB001C8245 /* View+Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B17250285CFCBB001C8245 /* View+Modifier.swift */; };
 		61B17253285CFCF8001C8245 /* UIView+ClosestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B17252285CFCF8001C8245 /* UIView+ClosestVC.swift */; };
 		61D5808829BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D5808729BA5E5B006F0BB0 /* Comparable+Clamped.swift */; };
@@ -181,6 +182,13 @@
 			remoteGlobalIDString = 617789AD2856A1F300BD43D7;
 			remoteInfo = Pomodoro;
 		};
+		61A7FE2829BD5767000137E7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 617789A62856A1F300BD43D7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 61FAEAAD29065FDC00CACF78;
+			remoteInfo = "PomodoroWatch Watch App";
+		};
 		61D7895529A148E100B296B4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 617789A62856A1F300BD43D7 /* Project object */;
@@ -225,6 +233,17 @@
 				6172B4BC297F5EC700E53D8F /* iOSWidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		61A7FE2A29BD5767000137E7 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				61A7FE2729BD5767000137E7 /* PomodoroWatch Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -647,11 +666,13 @@
 				617789AB2856A1F300BD43D7 /* Frameworks */,
 				617789AC2856A1F300BD43D7 /* Resources */,
 				6172B4C0297F5EC700E53D8F /* Embed Foundation Extensions */,
+				61A7FE2A29BD5767000137E7 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				61D7895629A148E100B296B4 /* PBXTargetDependency */,
+				61A7FE2929BD5767000137E7 /* PBXTargetDependency */,
 			);
 			name = Pomodoro;
 			productName = Pomodoro;
@@ -1091,6 +1112,11 @@
 			isa = PBXTargetDependency;
 			target = 617789AD2856A1F300BD43D7 /* Pomodoro */;
 			targetProxy = 617789CA2856A1F400BD43D7 /* PBXContainerItemProxy */;
+		};
+		61A7FE2929BD5767000137E7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 61FAEAAD29065FDC00CACF78 /* PomodoroWatch Watch App */;
+			targetProxy = 61A7FE2829BD5767000137E7 /* PBXContainerItemProxy */;
 		};
 		61D7895629A148E100B296B4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1554,7 +1580,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 9.1;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = Debug;
 		};
@@ -1590,7 +1616,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				VALIDATE_PRODUCT = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 9.1;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = Release;
 		};
