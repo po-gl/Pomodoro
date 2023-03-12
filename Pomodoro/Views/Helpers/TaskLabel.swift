@@ -37,6 +37,9 @@ struct TaskLabel: View {
             } message: {
                 Text("Task: \(text)")
             }
+        
+            .opacity(text != "" ? 1.0 : 0.0)
+            .animation(.easeInOut, value: taskNotes.tasks)
     }
     
     @ViewBuilder
