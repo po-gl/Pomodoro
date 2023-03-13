@@ -16,6 +16,7 @@ struct ContentView: View {
     
     @StateObject var taskNotes = TaskNotes()
     
+    @State var buddyOffset: Double = 0
     
     init() {
         pomoTimer = PomoTimer(pomos: 4, longBreak: PomoTimer.defaultBreakTime) { status in
@@ -27,39 +28,38 @@ struct ContentView: View {
 
     
     var body: some View {
-        HostingView(colorScheme: colorScheme) {
-            MainPage()
-        }
-        .ignoresSafeArea()
-        .onAppear {
-            getNotificationPermissions()
-        }
+        MainPage()
+            .reverseStatusBarColor()
+            .ignoresSafeArea()
+            .onAppear {
+                getNotificationPermissions()
+            }
         
-        .onChange(of: scenePhase) { newPhase in
-            if newPhase == .active {
-                pomoTimer.restoreFromUserDefaults()
-                taskNotes.restoreFromUserDefaults()
-                cancelPendingNotifications()
-                EndTimerHandler.shared.haptics.prepareHaptics()
-            } else if newPhase == .inactive {
-                pomoTimer.saveToUserDefaults()
-                taskNotes.saveToUserDefaults()
-                setupNotifications(pomoTimer)
+            .onChange(of: scenePhase) { newPhase in
+                if newPhase == .active {
+                    pomoTimer.restoreFromUserDefaults()
+                    taskNotes.restoreFromUserDefaults()
+                    cancelPendingNotifications()
+                    EndTimerHandler.shared.haptics.prepareHaptics()
+                } else if newPhase == .inactive {
+                    pomoTimer.saveToUserDefaults()
+                    taskNotes.saveToUserDefaults()
+                    setupNotifications(pomoTimer)
+                    WidgetCenter.shared.reloadAllTimelines()
+                }
+            }
+        
+            .onChange(of: pomoTimer.isPaused) { _ in
+                print("Reload")
                 WidgetCenter.shared.reloadAllTimelines()
             }
-        }
         
-        .onChange(of: pomoTimer.isPaused) { _ in
-            print("Reload")
-            WidgetCenter.shared.reloadAllTimelines()
-        }
-        
-        .onOpenURL { url in
-            if url.absoluteString == "com.po-gl.stop" {
-                pomoTimer.pause()
-                pomoTimer.saveToUserDefaults()
+            .onOpenURL { url in
+                if url.absoluteString == "com.po-gl.stop" {
+                    pomoTimer.pause()
+                    pomoTimer.saveToUserDefaults()
+                }
             }
-        }
     }
     
     
@@ -88,7 +88,10 @@ struct ContentView: View {
                             BuddyView(pomoTimer: pomoTimer)
                                 .brightness(-0.1)
                                 .frame(width: 20, height: 20)
-                                .offset(x: Double.random(in: -120...100), y: -8)
+                                .offset(x: buddyOffset, y: -8)
+                                .onAppear {
+                                    buddyOffset = Double.random(in: -120...100)
+                                }
                         }
                         HStack {
                             Spacer()

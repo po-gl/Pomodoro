@@ -7,6 +7,22 @@
 
 import SwiftUI
 
+extension View {
+    func reverseStatusBarColor() -> some View {
+        ModifiedContent(content: self, modifier: ReverseStatusBarColorModifier())
+    }
+}
+
+struct ReverseStatusBarColorModifier: ViewModifier {
+    @Environment(\.colorScheme) private var colorScheme
+    
+    func body(content: Content) -> some View {
+        HostingView(colorScheme: colorScheme) {
+            content
+        }
+    }
+}
+
 struct HostingView<Content : View> : UIViewControllerRepresentable {
     var colorScheme: ColorScheme
     var content: Content
