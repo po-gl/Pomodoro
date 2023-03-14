@@ -140,21 +140,16 @@ struct ProgressWidgetView : View {
     
     func progressGradient() -> AngularGradient {
         AngularGradient(stops: [
-            .init(color: Color(hex: 0xD3EDDD), location: 0.0),
-            .init(color: Color(hex: 0xF52431), location: 0.1),
-            .init(color: Color(hex: 0xCB2C6C), location: 0.2),
+            .init(color: Color(hex: 0xE05499), location: 0.0),
+            .init(color: Color(hex: 0xFF6347), location: 0.2),
+            .init(color: Color(hex: 0xD2544F), location: 0.4),
             
-            .init(color: Color(hex: 0x9BE28A), location: 0.3),
-            .init(color: Color(hex: 0x43D37B), location: 0.35),
-            .init(color: Color(hex: 0xD56868), location: 0.5),
+            .init(color: Color(hex: 0x30E277), location: 0.7),
+            .init(color: Color(hex: 0x76E298), location: 0.9),
             
-            .init(color: Color(hex: 0xFD6958), location: 0.6),
-            .init(color: Color(hex: 0xC83282), location: 0.85),
+            .init(color: Color(hex: 0xE05499), location: 1.0),
             
-            .init(color: Color(hex: 0xD3EDDD), location: 0.9),
-            .init(color: Color(hex: 0xD8F9EC), location: 0.95),
-            .init(color: Color(hex: 0xFDEDD5), location: 1.0),
-        ], center: .center, startAngle: .degrees(0-130), endAngle: .degrees(360-130))
+        ], center: .center, startAngle: .degrees(0-60), endAngle: .degrees(360-60))
     }
 }
 
