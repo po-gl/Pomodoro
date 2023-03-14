@@ -33,7 +33,7 @@ struct TaskLabel: View {
                     resetHaptic()
                     withAnimation { taskNotes.tasksOnBar[index] = "" }
                 } label: {
-                    Text("Remove task from progress bar")
+                    Text("Remove from progress bar")
                 }
                 .accessibilityIdentifier("DeleteTask")
             } message: {
