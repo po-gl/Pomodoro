@@ -64,7 +64,7 @@ struct TaskList: View {
                     .saturation(colorScheme == .dark ? 0.0 : 1.3))
 
                 
-                Group {
+                Section("Tasks") {
                     ForEach(todaysTasks) { taskItem in
                         ZStack (alignment: .leading) {
                             // glitches occur on delete without a reference to .order in view
