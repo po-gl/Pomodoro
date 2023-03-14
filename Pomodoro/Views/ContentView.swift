@@ -25,56 +25,65 @@ struct ContentView: View {
         pomoTimer.pause()
         pomoTimer.restoreFromUserDefaults()
     }
-
     
     var body: some View {
-        MainPage()
-            .reverseStatusBarColor()
-            .ignoresSafeArea()
-            .onAppear {
-                getNotificationPermissions()
-            }
-        
-            .onChange(of: scenePhase) { newPhase in
-                if newPhase == .active {
-                    pomoTimer.restoreFromUserDefaults()
-                    taskNotes.restoreFromUserDefaults()
-                    cancelPendingNotifications()
-                    EndTimerHandler.shared.haptics.prepareHaptics()
-                } else if newPhase == .inactive {
-                    pomoTimer.saveToUserDefaults()
-                    taskNotes.saveToUserDefaults()
-                    setupNotifications(pomoTimer)
+        NavigationView {
+            MainPage()
+                .reverseStatusBarColor()
+                .ignoresSafeArea()
+                .onAppear {
+                    getNotificationPermissions()
+                }
+            
+                .onChange(of: scenePhase) { newPhase in
+                    if newPhase == .active {
+                        pomoTimer.restoreFromUserDefaults()
+                        taskNotes.restoreFromUserDefaults()
+                        cancelPendingNotifications()
+                        EndTimerHandler.shared.haptics.prepareHaptics()
+                    } else if newPhase == .inactive {
+                        pomoTimer.saveToUserDefaults()
+                        taskNotes.saveToUserDefaults()
+                        setupNotifications(pomoTimer)
+                        WidgetCenter.shared.reloadAllTimelines()
+                    }
+                }
+            
+                .onChange(of: pomoTimer.isPaused) { _ in
+                    print("Reload")
                     WidgetCenter.shared.reloadAllTimelines()
                 }
-            }
-        
-            .onChange(of: pomoTimer.isPaused) { _ in
-                print("Reload")
-                WidgetCenter.shared.reloadAllTimelines()
-            }
-        
-            .onOpenURL { url in
-                if url.absoluteString == "com.po-gl.stop" {
-                    pomoTimer.pause()
-                    pomoTimer.saveToUserDefaults()
+            
+                .onOpenURL { url in
+                    if url.absoluteString == "com.po-gl.stop" {
+                        pomoTimer.pause()
+                        pomoTimer.saveToUserDefaults()
+                    }
                 }
-            }
+        }
+        .tint(Color("NavigationAccent"))
     }
     
     
     @ViewBuilder
     private func MainPage() -> some View {
         ZStack {
-            Background(pomoTimer: pomoTimer)
-            
-            TaskAdderView(taskNotes: taskNotes)
-                .opacity(pomoTimer.isPaused ? 1.0 : 0.7)
+            TopButton(pomoTimer: pomoTimer)
                 .zIndex(1)
             
-            MainStack()
+            ZStack {
+                Background(pomoTimer: pomoTimer)
+                
+                TaskAdderView(taskNotes: taskNotes)
+                    .opacity(pomoTimer.isPaused ? 1.0 : 0.7)
+                    .zIndex(1)
+                
+                
+                MainStack()
+            }
+            .animation(.easeInOut(duration: 0.3), value: pomoTimer.isPaused)
+            .avoidKeyboard()
         }
-        .animation(.easeInOut(duration: 0.3), value: pomoTimer.isPaused)
     }
     
     
@@ -116,6 +125,11 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ForEach(["iPhone 14 Pro", "iPhone 13 mini"], id: \.self) { device in
+            ContentView()
+                .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+                .previewDevice(PreviewDevice(rawValue: device))
+                .previewDisplayName(device)
+        }
     }
 }

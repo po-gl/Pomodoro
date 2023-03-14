@@ -37,6 +37,7 @@ struct Background: View {
                     .fill(LinearGradient(colors: [colorScheme == .dark ? .white : .clear, .clear], startPoint: .top, endPoint: .bottom))
                     .blendMode(.softLight)
             )
+            .drawingGroup()
     }
     
     @ViewBuilder
@@ -49,6 +50,7 @@ struct Background: View {
                     .opacity(0.6)
                     .blendMode(.softLight)
             )
+            .drawingGroup()
     }
     
     @ViewBuilder

@@ -15,7 +15,7 @@ struct TaskLabel: View {
     @State var presentingNoteOptions = false
     
     var body: some View {
-        let text: String = index < taskNotes.tasks.count ? taskNotes.tasks[index] : ""
+        let text: String = index < taskNotes.tasksOnBar.count ? taskNotes.tasksOnBar[index] : ""
         AngledText(text)
             .accessibilityIdentifier("TaskLabel_\(text)")
             .accessibilityAddTraits(.isButton)
@@ -29,9 +29,9 @@ struct TaskLabel: View {
             .confirmationDialog("Task note options.", isPresented: $presentingNoteOptions) {
                 Button(role: .destructive) {
                     resetHaptic()
-                    withAnimation { taskNotes.tasks[index] = "" }
+                    withAnimation { taskNotes.tasksOnBar[index] = "" }
                 } label: {
-                    Text("Delete task")
+                    Text("Remove task from progress bar")
                 }
                 .accessibilityIdentifier("DeleteTask")
             } message: {
@@ -39,7 +39,7 @@ struct TaskLabel: View {
             }
         
             .opacity(text != "" ? 1.0 : 0.0)
-            .animation(.easeInOut, value: taskNotes.tasks)
+            .animation(.easeInOut, value: taskNotes.tasksOnBar)
     }
     
     @ViewBuilder

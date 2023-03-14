@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 struct ProgressBar: View {
+    @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.colorScheme) var colorScheme
     @ObservedObject var pomoTimer: PomoTimer
     
@@ -101,8 +102,8 @@ struct ProgressBar: View {
                             let dropRect = getDropRect(geometry: geometry)
                             
                             if taskDragLocation.within(rect: dropRect) {
-                                if i < taskNotes.tasks.count {
-                                    taskNotes.tasks[i] = taskNotes.dragText
+                                if i < taskNotes.tasksOnBar.count {
+                                    taskNotes.addTask(taskNotes.dragText, index: i, context: viewContext)
                                     taskNotes.dragText = ""
                                 }
                                 resetHaptic()
