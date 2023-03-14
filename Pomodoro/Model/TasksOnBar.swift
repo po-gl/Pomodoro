@@ -8,15 +8,9 @@
 import SwiftUI
 import CoreData
 
-class TaskNotes: ObservableObject {
-    
+class TasksOnBar: ObservableObject {
     @Published var tasksOnBar: [String] = []
     @Published var pomoHighlight: [Bool] = []
-    
-    @Published var dragText: String = ""
-    @Published var dragLocation: CGPoint?
-    @Published var dragHasEnded: Bool = true
-    
     
     func setTaskAmount(for pomoTimer: PomoTimer) {
         if pomoTimer.order.count > tasksOnBar.count {

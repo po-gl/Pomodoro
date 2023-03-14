@@ -10,7 +10,7 @@ import SwiftUI
 struct TaskAdderView: View {
     @Environment(\.colorScheme) private var colorScheme
     
-    @ObservedObject var taskNotes: TaskNotes
+    @ObservedObject var taskFromAdder: DraggableTask
     
     var startLocation: CGPoint = CGPoint(x: 40, y: -20)
     
@@ -24,18 +24,18 @@ struct TaskAdderView: View {
         ZStack {
             ZStack  {
                 TaskInput()
-                    .position(taskNotes.dragLocation ?? startLocation)
+                    .position(taskFromAdder.dragLocation ?? startLocation)
                 TouchCircle()
-                    .opacity(taskNotes.dragText.isEmpty ? 0.6 : 1.0)
+                    .opacity(taskFromAdder.dragText.isEmpty ? 0.6 : 1.0)
                     .animation(.easeInOut, value: isDragging)
-                    .position(taskNotes.dragLocation ?? startLocation)
+                    .position(taskFromAdder.dragLocation ?? startLocation)
                     .gesture(drag)
                 
                 DragHint()
                     .position(startLocation)
                     .offset(y: 24)
-                    .opacity(taskNotes.dragText.isEmpty || isDragging ? 0.0 : 1.0)
-                    .animation(.easeInOut(duration: 3), value: taskNotes.dragText.isEmpty)
+                    .opacity(taskFromAdder.dragText.isEmpty || isDragging ? 0.0 : 1.0)
+                    .animation(.easeInOut(duration: 3), value: taskFromAdder.dragText.isEmpty)
                     .animation(.easeInOut(duration: 3), value: isDragging)
             }
             .frame(height: 50)
@@ -43,14 +43,14 @@ struct TaskAdderView: View {
         }
         .frame(height: 0)
         .onChange(of: isDragging) { _ in
-            taskNotes.dragHasEnded = !isDragging
+            taskFromAdder.dragHasEnded = !isDragging
         }
     }
     
     
     @ViewBuilder
     private func TaskInput() -> some View {
-        TextField("Add task", text: $taskNotes.dragText)
+        TextField("Add task", text: $taskFromAdder.dragText)
             .accessibilityIdentifier("AddTask")
             .focused($taskFocus)
             .submitLabel(.done)
@@ -108,27 +108,27 @@ struct TaskAdderView: View {
     private var drag: some Gesture {
         DragGesture()
             .onChanged { event in
-                guard !taskNotes.dragText.isEmpty else { return }
+                guard !taskFromAdder.dragText.isEmpty else { return }
                 
-                var newLocation = gestureStartLocation ?? taskNotes.dragLocation ?? startLocation
+                var newLocation = gestureStartLocation ?? taskFromAdder.dragLocation ?? startLocation
                 newLocation.x += event.translation.width
                 newLocation.y += event.translation.height
-                taskNotes.dragLocation = newLocation
+                taskFromAdder.dragLocation = newLocation
             }
             .updating($gestureStartLocation) { _, startLocation, _ in
-                startLocation = startLocation ?? taskNotes.dragLocation
+                startLocation = startLocation ?? taskFromAdder.dragLocation
             }
             .onEnded { _ in
                 Task {
                     // wait so location isn't reset immediately on end
                     try? await Task.sleep(for: .seconds(0.1))
                     withAnimation {
-                        taskNotes.dragLocation = startLocation
+                        taskFromAdder.dragLocation = startLocation
                     }
                 }
             }
             .updating($isDragging) {_, isDragging, _ in
-                guard !taskNotes.dragText.isEmpty else { return }
+                guard !taskFromAdder.dragText.isEmpty else { return }
                 if !isDragging { basicHaptic() }
                 isDragging = true
                 taskFocus = false

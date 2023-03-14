@@ -9,7 +9,9 @@ import SwiftUI
 
 struct TaskLabel: View {
     var index: Int
-    @ObservedObject var taskNotes: TaskNotes
+    @ObservedObject var taskNotes: TasksOnBar
+    @ObservedObject var taskFromAdder: DraggableTask
+    
     @ObservedObject var pomoTimer: PomoTimer
     
     @State var presentingNoteOptions = false
@@ -50,9 +52,9 @@ struct TaskLabel: View {
             .rotationEffect(.degrees(-45))
             .offset(y: -40)
             .opacity(text.isEmpty ? 0.0 : 1.0)
-            .opacity(taskNotes.dragHasEnded ? 1.0 : 0.4)
+            .opacity(taskFromAdder.dragHasEnded ? 1.0 : 0.4)
             .opacity(index == pomoTimer.getIndex() || pomoTimer.isPaused ? 1.0 : 0.4)
-            .animation(.easeInOut, value: taskNotes.dragHasEnded)
+            .animation(.easeInOut, value: taskFromAdder.dragHasEnded)
     }
     
     @ViewBuilder
@@ -70,9 +72,9 @@ struct TaskLabel: View {
                 .offset(y: -40)
         }
         .opacity(text.isEmpty ? 0.0 : 1.0)
-        .opacity(taskNotes.dragHasEnded ? 1.0 : 0.4)
+        .opacity(taskFromAdder.dragHasEnded ? 1.0 : 0.4)
         .opacity(index == pomoTimer.getIndex() || pomoTimer.isPaused ? 1.0 : 0.4)
-        .animation(.easeInOut, value: taskNotes.dragHasEnded)
+        .animation(.easeInOut, value: taskFromAdder.dragHasEnded)
     }
 }
 

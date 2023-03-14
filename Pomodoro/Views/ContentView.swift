@@ -14,7 +14,7 @@ struct ContentView: View {
     @Environment(\.colorScheme) private var colorScheme
     @ObservedObject var pomoTimer: PomoTimer
     
-    @StateObject var taskNotes = TaskNotes()
+    @StateObject var taskFromAdder = DraggableTask()
     
     @State var buddyOffset: Double = 0
     
@@ -38,12 +38,10 @@ struct ContentView: View {
                 .onChange(of: scenePhase) { newPhase in
                     if newPhase == .active {
                         pomoTimer.restoreFromUserDefaults()
-                        taskNotes.restoreFromUserDefaults()
                         cancelPendingNotifications()
                         EndTimerHandler.shared.haptics.prepareHaptics()
                     } else if newPhase == .inactive {
                         pomoTimer.saveToUserDefaults()
-                        taskNotes.saveToUserDefaults()
                         setupNotifications(pomoTimer)
                         WidgetCenter.shared.reloadAllTimelines()
                     }
@@ -74,7 +72,7 @@ struct ContentView: View {
             ZStack {
                 Background(pomoTimer: pomoTimer)
                 
-                TaskAdderView(taskNotes: taskNotes)
+                TaskAdderView(taskFromAdder: taskFromAdder)
                     .opacity(pomoTimer.isPaused ? 1.0 : 0.7)
                     .zIndex(1)
                 
@@ -99,7 +97,7 @@ struct ContentView: View {
                 ZStack {
                     ProgressBar(pomoTimer: pomoTimer,
                                 metrics: proxy,
-                                taskNotes: taskNotes)
+                                taskFromAdder: taskFromAdder)
                     .frame(maxHeight: 130)
                     BuddyView(pomoTimer: pomoTimer)
                         .frame(width: 20, height: 20)

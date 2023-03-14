@@ -10,12 +10,14 @@ import SwiftUI
 
 struct ProgressBar: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.scenePhase) private var scenePhase
     @Environment(\.colorScheme) var colorScheme
     @ObservedObject var pomoTimer: PomoTimer
     
     var metrics: GeometryProxy
     
-    @ObservedObject var taskNotes: TaskNotes
+    @StateObject var taskNotes = TasksOnBar()
+    @ObservedObject var taskFromAdder: DraggableTask
     
     @State var dragValue = 0.0
     @State var isDragging = false
@@ -40,6 +42,14 @@ struct ProgressBar: View {
             }
             .onChange(of: pomoTimer.order.count) { _ in
                 taskNotes.setTaskAmount(for: pomoTimer)
+            }
+        
+            .onChange(of: scenePhase) { newPhase in
+                if newPhase == .active {
+                    taskNotes.restoreFromUserDefaults()
+                } else if newPhase == .inactive {
+                    taskNotes.saveToUserDefaults()
+                }
             }
     }
     
@@ -94,26 +104,26 @@ struct ProgressBar: View {
                         .foregroundStyle(getColorForStatus(status))
                         .brightness(i<taskNotes.pomoHighlight.count && taskNotes.pomoHighlight[i] ? 0.18 : 0.0)
                     
-                        .onChange(of: taskNotes.dragHasEnded) { _ in
-                            guard taskNotes.dragHasEnded && taskNotes.dragLocation != nil && !isMask else { return }
+                        .onChange(of: taskFromAdder.dragHasEnded) { _ in
+                            guard taskFromAdder.dragHasEnded && taskFromAdder.dragLocation != nil && !isMask else { return }
                             taskNotes.pomoHighlight[i] = false
                                     
-                            let taskDragLocation = taskNotes.dragLocation!.adjusted(for: metrics)
+                            let taskDragLocation = taskFromAdder.dragLocation!.adjusted(for: metrics)
                             let dropRect = getDropRect(geometry: geometry)
                             
                             if taskDragLocation.within(rect: dropRect) {
                                 if i < taskNotes.tasksOnBar.count {
-                                    taskNotes.addTask(taskNotes.dragText, index: i, context: viewContext)
-                                    taskNotes.dragText = ""
+                                    taskNotes.addTask(taskFromAdder.dragText, index: i, context: viewContext)
+                                    taskFromAdder.dragText = ""
                                 }
                                 resetHaptic()
                             }
                         }
                     
-                        .onChange(of: taskNotes.dragLocation) { _ in
-                            guard taskNotes.dragLocation != nil && !isMask else { return }
+                        .onChange(of: taskFromAdder.dragLocation) { _ in
+                            guard taskFromAdder.dragLocation != nil && !isMask else { return }
                             
-                            let taskDragLocation = taskNotes.dragLocation!.adjusted(for: metrics)
+                            let taskDragLocation = taskFromAdder.dragLocation!.adjusted(for: metrics)
                             let dropRect = getDropRect(geometry: geometry)
                             if taskDragLocation.within(rect: dropRect) {
                                 if status == .work {
@@ -165,7 +175,9 @@ struct ProgressBar: View {
                     let status = pomoTimer.order[i].getStatus()
                     
                     if status == .work {
-                        TaskLabel(index: i, taskNotes: taskNotes, pomoTimer: pomoTimer)
+                        TaskLabel(index: i, taskNotes: taskNotes,
+                                  taskFromAdder: taskFromAdder,
+                                  pomoTimer: pomoTimer)
                     }
                 }
                 .frame(width: getBarWidth() * getProportion(i) - barOutlinePadding, height: barHeight)

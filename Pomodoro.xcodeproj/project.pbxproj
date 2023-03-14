@@ -89,9 +89,9 @@
 		618750F529BABCFE0017BF8E /* Point+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618750F429BABCFE0017BF8E /* Point+Extensions.swift */; };
 		618750F629BABCFE0017BF8E /* Point+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618750F429BABCFE0017BF8E /* Point+Extensions.swift */; };
 		618750F729BABCFE0017BF8E /* Point+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618750F429BABCFE0017BF8E /* Point+Extensions.swift */; };
-		618750F929BB69400017BF8E /* TaskNotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618750F829BB69400017BF8E /* TaskNotes.swift */; };
-		618750FA29BB69400017BF8E /* TaskNotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618750F829BB69400017BF8E /* TaskNotes.swift */; };
-		618750FB29BB69400017BF8E /* TaskNotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618750F829BB69400017BF8E /* TaskNotes.swift */; };
+		618750F929BB69400017BF8E /* TasksOnBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618750F829BB69400017BF8E /* TasksOnBar.swift */; };
+		618750FA29BB69400017BF8E /* TasksOnBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618750F829BB69400017BF8E /* TasksOnBar.swift */; };
+		618750FB29BB69400017BF8E /* TasksOnBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618750F829BB69400017BF8E /* TasksOnBar.swift */; };
 		618750FD29BB7A0B0017BF8E /* TaskLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618750FC29BB7A0B0017BF8E /* TaskLabel.swift */; };
 		618750FF29BB7A0B0017BF8E /* TaskLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618750FC29BB7A0B0017BF8E /* TaskLabel.swift */; };
 		6187510129BBDD840017BF8E /* PomoStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6101A6F229996B5F00DC5FC5 /* PomoStepper.swift */; };
@@ -127,6 +127,8 @@
 		61B17253285CFCF8001C8245 /* UIView+ClosestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B17252285CFCF8001C8245 /* UIView+ClosestVC.swift */; };
 		61C6BC1329C0364000AF48DE /* View+onSubmitWithVerticalText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6BC1229C0364000AF48DE /* View+onSubmitWithVerticalText.swift */; };
 		61C6BC1429C0364000AF48DE /* View+onSubmitWithVerticalText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6BC1229C0364000AF48DE /* View+onSubmitWithVerticalText.swift */; };
+		61C6BC1629C12D0F00AF48DE /* DraggableTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6BC1529C12D0F00AF48DE /* DraggableTask.swift */; };
+		61C6BC1729C12D0F00AF48DE /* DraggableTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6BC1529C12D0F00AF48DE /* DraggableTask.swift */; };
 		61D5808829BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D5808729BA5E5B006F0BB0 /* Comparable+Clamped.swift */; };
 		61D5808929BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D5808729BA5E5B006F0BB0 /* Comparable+Clamped.swift */; };
 		61D5808A29BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D5808729BA5E5B006F0BB0 /* Comparable+Clamped.swift */; };
@@ -340,7 +342,7 @@
 		617789CD2856A1F400BD43D7 /* PomodoroUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroUITests.swift; sourceTree = "<group>"; };
 		617789CF2856A1F400BD43D7 /* PomodoroUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		618750F429BABCFE0017BF8E /* Point+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Point+Extensions.swift"; sourceTree = "<group>"; };
-		618750F829BB69400017BF8E /* TaskNotes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskNotes.swift; sourceTree = "<group>"; };
+		618750F829BB69400017BF8E /* TasksOnBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksOnBar.swift; sourceTree = "<group>"; };
 		618750FC29BB7A0B0017BF8E /* TaskLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskLabel.swift; sourceTree = "<group>"; };
 		618C796829BCF28A007EADBC /* PomodoroWatch-Watch-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "PomodoroWatch-Watch-App-Info.plist"; sourceTree = SOURCE_ROOT; };
 		618C796929BD096C007EADBC /* EndTimerHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndTimerHandler.swift; sourceTree = "<group>"; };
@@ -357,6 +359,7 @@
 		61B17250285CFCBB001C8245 /* View+Modifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Modifier.swift"; sourceTree = "<group>"; };
 		61B17252285CFCF8001C8245 /* UIView+ClosestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ClosestVC.swift"; sourceTree = "<group>"; };
 		61C6BC1229C0364000AF48DE /* View+onSubmitWithVerticalText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+onSubmitWithVerticalText.swift"; sourceTree = "<group>"; };
+		61C6BC1529C12D0F00AF48DE /* DraggableTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableTask.swift; sourceTree = "<group>"; };
 		61D5808729BA5E5B006F0BB0 /* Comparable+Clamped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+Clamped.swift"; sourceTree = "<group>"; };
 		61D5809029BA5F81006F0BB0 /* TaskAdderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAdderView.swift; sourceTree = "<group>"; };
 		61F4220E2900AC350036400A /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
@@ -627,7 +630,8 @@
 				613D6D9B285C82FD0020C194 /* SequenceTimer.swift */,
 				619255B02901F4CB00D399B8 /* PomoTimer.swift */,
 				619255B3290204AB00D399B8 /* PomoTime.swift */,
-				618750F829BB69400017BF8E /* TaskNotes.swift */,
+				618750F829BB69400017BF8E /* TasksOnBar.swift */,
+				61C6BC1529C12D0F00AF48DE /* DraggableTask.swift */,
 				61F7362629BFEAFA00289149 /* TasksData.swift */,
 				61F7363429C01A5000289149 /* ProjectsData.swift */,
 			);
@@ -1024,9 +1028,10 @@
 				61F7362729BFEAFA00289149 /* TasksData.swift in Sources */,
 				613D6D9C285C82FD0020C194 /* SequenceTimer.swift in Sources */,
 				61F7361B29BFDC1E00289149 /* ProjectItemCell.swift in Sources */,
-				618750F929BB69400017BF8E /* TaskNotes.swift in Sources */,
+				618750F929BB69400017BF8E /* TasksOnBar.swift in Sources */,
 				612B908A285CD2E4003F1990 /* Color+hex.swift in Sources */,
 				61F7360F29BEB60100289149 /* TaskList.swift in Sources */,
+				61C6BC1629C12D0F00AF48DE /* DraggableTask.swift in Sources */,
 				61D5809129BA5F81006F0BB0 /* TaskAdderView.swift in Sources */,
 				61B17253285CFCF8001C8245 /* UIView+ClosestVC.swift in Sources */,
 				61B17251285CFCBB001C8245 /* View+Modifier.swift in Sources */,
@@ -1061,7 +1066,7 @@
 			files = (
 				6172B4CB297F848C00E53D8F /* iOSWidgetLiveActivity.swift in Sources */,
 				61F7363129C00CCE00289149 /* Pomodoro.xcdatamodeld in Sources */,
-				618750FA29BB69400017BF8E /* TaskNotes.swift in Sources */,
+				618750FA29BB69400017BF8E /* TasksOnBar.swift in Sources */,
 				617789C42856A1F400BD43D7 /* PomodoroTests.swift in Sources */,
 				614A86C5290A4E1E008DFA26 /* PomoTimeTests.swift in Sources */,
 				6172B4A2297F57D000E53D8F /* TimeInterval+formatter.swift in Sources */,
@@ -1091,9 +1096,10 @@
 				61E22AA5297B31270080CA6E /* Haptics.swift in Sources */,
 				6172B49E297F56DD00E53D8F /* SitAnimation.swift in Sources */,
 				6187510129BBDD840017BF8E /* PomoStepper.swift in Sources */,
+				61C6BC1729C12D0F00AF48DE /* DraggableTask.swift in Sources */,
 				61F7362929BFEAFA00289149 /* TasksData.swift in Sources */,
 				6172B49D297F56DB00E53D8F /* WalkAnimation.swift in Sources */,
-				618750FB29BB69400017BF8E /* TaskNotes.swift in Sources */,
+				618750FB29BB69400017BF8E /* TasksOnBar.swift in Sources */,
 				61F7361D29BFDC1E00289149 /* ProjectItemCell.swift in Sources */,
 				610F99CA29BE4BC600608F41 /* HostingView.swift in Sources */,
 				6172B49F297F57C100E53D8F /* View+Modifier.swift in Sources */,
