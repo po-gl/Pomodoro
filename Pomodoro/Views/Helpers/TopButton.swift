@@ -22,6 +22,7 @@ struct TopButton: View {
             .padding(.trailing, 40)
             Spacer()
         }
+        .animation(.easeInOut(duration: 0.3), value: pomoTimer.getStatus())
     }
     
     @ViewBuilder
