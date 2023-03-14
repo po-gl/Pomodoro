@@ -28,7 +28,9 @@ class TasksOnBar: ObservableObject {
         tasksOnBar[index] = text
         saveToUserDefaults()
         
-        TasksData.addTask(text, order: -1, context: context)
+        if !TasksData.todaysTasksContains(text, context: context) {
+            TasksData.addTask(text, order: -1, context: context)
+        }
     }
     
     func saveToUserDefaults() {

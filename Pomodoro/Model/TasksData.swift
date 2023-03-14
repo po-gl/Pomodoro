@@ -68,4 +68,17 @@ struct TasksData {
         
         saveContext(context, errorMessage: "CoreData error sorting tasks by completed.")
     }
+    
+    static func todaysTasksContains(_ task: String, context: NSManagedObjectContext) -> Bool {
+        let fetchRequest = TaskNote.fetchRequest()
+        fetchRequest.predicate = NSPredicate(
+            format: "timestamp >= %@ && timestamp <= %@",
+            Calendar.current.startOfDay(for: Date()) as CVarArg,
+            Calendar.current.startOfDay(for: Date() + 86400) as CVarArg
+        )
+        
+        let todaysTasks = try? context.fetch(fetchRequest)
+        
+        return todaysTasks?.contains(where: { $0.text == task }) ?? false
+    }
 }
