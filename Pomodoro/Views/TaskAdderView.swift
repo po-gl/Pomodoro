@@ -29,8 +29,9 @@ struct TaskAdderView: View {
                 TaskInput()
                     .position(taskFromAdder.dragLocation ?? startLocation)
                 TouchCircle()
-                    .opacity(taskFromAdder.dragText.isEmpty ? 0.6 : 1.0)
+                    .opacity(taskFromAdder.dragText.isEmpty ? 0.8 : 1.0)
                     .animation(.easeInOut, value: isDragging)
+                    .animation(.easeInOut, value: taskFromAdder.dragText)
                     .position(taskFromAdder.dragLocation ?? startLocation)
                     .gesture(drag)
                 
@@ -84,8 +85,8 @@ struct TaskAdderView: View {
     @ViewBuilder
     private func TouchCircle() -> some View {
         let width: Double = isDragging ? 15 : 25
-        let strokeWidth: Double = 2
-        let gap: Double = 10
+        let strokeWidth: Double = 1
+        let gap: Double = taskFromAdder.dragText.isEmpty ? 8 : 10
         Circle()
             .strokeBorder(style: StrokeStyle(lineWidth: strokeWidth))
             .frame(width: width)
