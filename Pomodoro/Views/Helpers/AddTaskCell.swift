@@ -19,7 +19,6 @@ struct AddTaskCell: View {
             .onSubmitWithVerticalText(with: $taskText) {
                 addTask()
             }
-            .submitLabel(.done)
             .onChange(of: focus) { _ in
                 guard !focus else { return }
                 addTask()

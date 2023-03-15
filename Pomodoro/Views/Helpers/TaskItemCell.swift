@@ -22,7 +22,6 @@ struct TaskItemCell: View {
                 .onSubmitWithVerticalText(with: $editText) {
                     TasksData.editText(editText, for: taskItem, context: viewContext)
                 }
-                .submitLabel(.done)
                 .onChange(of: focus) { _ in
                     guard !focus else { return }
                     TasksData.editText(editText, for: taskItem, context: viewContext)

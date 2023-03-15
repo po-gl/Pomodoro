@@ -20,7 +20,6 @@ struct AddProjectCell: View {
             .onSubmitWithVerticalText(with: $projectName) {
                 addProject()
             }
-            .submitLabel(.done)
             .onChange(of: focus) { _ in
                 guard !focus else { return }
                 addProject()

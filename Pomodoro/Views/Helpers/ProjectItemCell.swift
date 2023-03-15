@@ -22,7 +22,6 @@ struct ProjectItemCell: View {
                 .onSubmitWithVerticalText(with: $editText) {
                     ProjectsData.editName(editText, for: project, context: viewContext)
                 }
-                .submitLabel(.done)
                 .onChange(of: focus) { _ in
                     guard !focus else { return }
                     ProjectsData.editName(editText, for: project, context: viewContext)

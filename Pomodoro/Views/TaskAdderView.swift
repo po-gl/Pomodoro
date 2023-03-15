@@ -73,7 +73,6 @@ struct TaskAdderView: View {
         TextField("Add task", text: $taskFromAdder.dragText)
             .accessibilityIdentifier("AddTask")
             .focused($taskFocus)
-            .submitLabel(.done)
             .offset(x: 25)
             .rotationEffect(isDragging ? .degrees(-45) : .degrees(0), anchor: .leading)
             .shadow(radius: isDragging ? 5 : 0)
