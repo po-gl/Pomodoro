@@ -20,6 +20,9 @@ struct TaskAdderView: View {
     
     @State private var animate = false
     
+    @State private var showAutoComplete = false
+    
+    
     var body: some View {
         ZStack {
             ZStack  {
@@ -37,6 +40,22 @@ struct TaskAdderView: View {
                     .opacity(taskFromAdder.dragText.isEmpty || isDragging ? 0.0 : 1.0)
                     .animation(.easeInOut(duration: 3), value: taskFromAdder.dragText.isEmpty)
                     .animation(.easeInOut(duration: 3), value: isDragging)
+                
+                AutoCompleteView(text: $taskFromAdder.dragText)
+                    .position(startLocation)
+                    .offset(x: 155, y: -85)
+                    .opacity(showAutoComplete ? 1.0 : 0.0)
+                    .animation(.easeInOut, value: showAutoComplete)
+                    .onChange(of: taskFocus) { focus in
+                        if focus {
+                            Task {
+                                try? await Task.sleep(for: .seconds(0.2))
+                                showAutoComplete = true
+                            }
+                        } else {
+                            showAutoComplete = false
+                        }
+                    }
             }
             .frame(height: 50)
             .padding(.bottom, 60)
