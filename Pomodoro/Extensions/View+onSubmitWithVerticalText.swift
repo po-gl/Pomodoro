@@ -20,12 +20,11 @@ struct OnSubmitWithVerticalTextModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .onChange(of: text) { newValue in
-                guard let lastChar = newValue.last else { return }
-                if lastChar == "\n" {
-                    text.removeLast()
-                    action()
-                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                }
+                guard let newLineIndex = newValue.firstIndex(where: { $0 == "\n" }) else { return }
+                
+                text.remove(at: newLineIndex)
+                action()
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             }
     }
 }
