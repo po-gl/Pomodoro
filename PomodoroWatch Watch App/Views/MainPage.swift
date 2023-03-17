@@ -22,7 +22,6 @@ struct MainPage: View {
                     ZStack {
                         ProgressBar(pomoTimer: pomoTimer, metrics: metrics)
                         BuddyView(pomoTimer: pomoTimer)
-                            .frame(width: 20, height: 20)
                             .offset(x: buddyOffset, y: -6)
                     }
                     Spacer()
@@ -35,7 +34,7 @@ struct MainPage: View {
             }
         }
         .onAppear {
-            buddyOffset = Double.random(in: -40...30)
+            buddyOffset = Double.random(in: -40...15)
         }
     }
 }

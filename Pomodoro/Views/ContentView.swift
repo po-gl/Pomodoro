@@ -48,7 +48,6 @@ struct ContentView: View {
                 }
             
                 .onChange(of: pomoTimer.isPaused) { _ in
-                    print("Reload")
                     WidgetCenter.shared.reloadAllTimelines()
                 }
             
@@ -100,8 +99,7 @@ struct ContentView: View {
                                 taskFromAdder: taskFromAdder)
                     .frame(maxHeight: 130)
                     BuddyView(pomoTimer: pomoTimer)
-                        .frame(width: 20, height: 20)
-                        .offset(x: buddyOffset, y: -8)
+                        .offset(x: buddyOffset, y: -7)
                         .onAppear { buddyOffset = Double.random(in: -120...100) }
                         .brightness(-0.1)
                 }

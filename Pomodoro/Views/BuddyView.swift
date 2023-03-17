@@ -10,13 +10,13 @@ import SwiftUI
 struct BuddyView: View {
     @ObservedObject var pomoTimer: PomoTimer
     
-    @State var buddies: [Buddy] = [.tomato, .blueberry]
+    @State var buddies: [Buddy] = [.tomato, .blueberry, .banana]
     
     var body: some View {
-        ZStack {
+        HStack (spacing: -3) {
             ForEach(Array(buddies.enumerated()), id: \.element) { index, buddy in
                 AnimatedBuddy(buddy)
-                    .offset(x: Double(index*18))
+                    .frame(width: buddy == .banana ? 40 : 20)
             }
         }
         .onAppear {
@@ -37,6 +37,7 @@ struct BuddyView: View {
 enum Buddy: String {
     case tomato = "tomato"
     case blueberry = "blueberry"
+    case banana = "banana"
 }
 
 struct BuddyView_Previews: PreviewProvider {
