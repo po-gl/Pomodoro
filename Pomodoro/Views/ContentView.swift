@@ -101,7 +101,7 @@ struct ContentView: View {
                     BuddyView(pomoTimer: pomoTimer)
                         .offset(x: buddyOffset, y: -7)
                         .onAppear { buddyOffset = Double.random(in: -120...100) }
-                        .brightness(-0.1)
+                        .brightness(colorScheme == .dark ? 0.0 : 0.1)
                 }
                 HStack {
                     Spacer()
