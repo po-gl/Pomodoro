@@ -71,7 +71,7 @@ struct ProgressBar: View {
                     Group {
                         ColorBars(isMask: false)
                             .accessibilityIdentifier("DraggableProgressBar")
-                            .mask { RoundedRectangle(cornerRadius: 8) }
+                            .mask { RoundedRectangle(cornerRadius: 7) }
                         ProgressIndicator(at: context.date)
                             .opacity(shouldShowProgressIndicator(at: context.date) ? 1.0 : 0.0)
                             .allowsHitTesting(false)
@@ -156,13 +156,18 @@ struct ProgressBar: View {
     private func ProgressIndicator(at date: Date) -> some View {
         HStack(spacing: 0) {
             Spacer(minLength: 0)
+            Rectangle().fill(.clear).frame(width: 1, height: barHeight).overlay (
+                AnimatedImage(imageNames: (1...10).map { "PickIndicator\($0)" }, interval: 0.2, loops: true)
+                    .scaleEffect(50)
+                    .opacity(0.7)
+            )
+            
             Rectangle()
                 .foregroundColor(colorScheme == .dark ? .black.opacity(0.5) : .white.opacity(0.5))
                 .blendMode(colorScheme == .dark ? .colorBurn : .colorDodge)
                 .frame(width: getBarWidth() * (1 - pomoTimer.getProgress(atDate: date)), height: barHeight)
-        }.mask {
-            ColorBars(isMask: true)
         }
+        .mask { RoundedRectangle(cornerRadius: 7) }
     }
     
     private func shouldShowProgressIndicator(at date: Date) -> Bool {
