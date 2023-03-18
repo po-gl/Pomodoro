@@ -99,8 +99,10 @@ struct ProgressBar: View {
                 GeometryReader { geometry in
                     let status = pomoTimer.order[i].getStatus()
                     
-                    RoundedRectangle(cornerRadius: 6)
+                    RoundedRectangle(cornerRadius: 4)
                         .position(x: geometry.size.width/2, y: geometry.size.height/2)
+                        .scaleEffect(x: 2.0, anchor: .trailing)
+                        .shadow(radius: 5)
                         .foregroundStyle(getColorForStatus(status))
                         .brightness(i<taskNotes.pomoHighlight.count && taskNotes.pomoHighlight[i] ? 0.18 : 0.0)
                     
@@ -137,6 +139,7 @@ struct ProgressBar: View {
                 }
                 .frame(width: getBarWidth() * getProportion(i) - barOutlinePadding, height: barHeight)
                 .padding(.horizontal, 1)
+                .zIndex(Double(pomoTimer.order.count - i))
             }
         }
     }

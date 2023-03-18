@@ -66,6 +66,7 @@ struct ProgressBar: View {
                 
                 ZStack {
                     ColorBars()
+                        .mask { RoundedRectangle(cornerRadius: 5)}
                     ProgressIndicator(at: context.date)
                         .opacity(shouldShowProgressIndicator(at: context.date) ? 1.0 : 0.0)
                 }
@@ -128,12 +129,13 @@ struct ProgressBar: View {
     private func ColorBars() -> some View {
         HStack(spacing: 0) {
             ForEach(0..<pomoTimer.order.count, id: \.self) { i in
-                ZStack {
-                    RoundedRectangle(cornerRadius: 3)
-                        .foregroundStyle(getGradientForStatus(pomoTimer.order[i].getStatus()))
-                        .frame(width: getBarWidth() * getProportion(i) - 2, height: barHeight)
-                        .padding(.horizontal, 1)
-                }
+                RoundedRectangle(cornerRadius: 3)
+                    .scaleEffect(x: 2.0, anchor: .trailing)
+                    .foregroundStyle(getGradientForStatus(pomoTimer.order[i].getStatus()))
+                    .frame(width: getBarWidth() * getProportion(i) - 2, height: barHeight)
+                    .padding(.horizontal, 1)
+                    .zIndex(Double(pomoTimer.order.count - i))
+                    .shadow(radius: 4)
             }
         }
     }
