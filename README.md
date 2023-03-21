@@ -10,14 +10,15 @@ by Francesco Cirillo in the '80s to *enhance focus*, *increase decision awarenes
 
 Features:
 - Set a sequential timer of up to 6 Pomodoro intervals that notify at each phase change 
-- Label Pomodoro intervals with **tasks** to focus on
+- Label Pomodoro intervals with *tasks* to focus on
+- Maintain a checklist of *tasks* and *projects*
 - View and scrub through timer progress
 - View progress on the watch face with a watchOS widget
-- Pixel buddy 🍅
+- Pixel buddies 🍅🫐🍌
 
 ---
 
 <p align="middle"> 
-  <img align="center" width="280" alt="iOS" src="https://user-images.githubusercontent.com/42399205/224455452-19d407c7-80ea-419e-aeb3-cc2bcfdba179.png">
-  <img align="center" width="200" alt="watchOS" src="https://user-images.githubusercontent.com/42399205/224455430-a425e87b-13ae-423d-a59f-d5c1772c9969.png">
+  <img align="center" width="280" alt="iOS" src="https://user-images.githubusercontent.com/42399205/226493617-7082e935-8979-4c82-b4f4-c06c69660361.png">
+  <img align="center" width="200" alt="watchOS" src="https://user-images.githubusercontent.com/42399205/226493632-c7e81b3e-dba4-47c1-99cc-e41acd872f77.png">
 </p>
