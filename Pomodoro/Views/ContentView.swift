@@ -16,7 +16,6 @@ struct ContentView: View {
     
     @StateObject var taskFromAdder = DraggableTask()
     
-    @State var buddyOffset: Double = 0
     
     init() {
         pomoTimer = PomoTimer(pomos: 4, longBreak: PomoTimer.defaultBreakTime) { status in
@@ -94,13 +93,11 @@ struct ContentView: View {
                 Spacer()
                 
                 ZStack {
-                    ProgressBar(pomoTimer: pomoTimer,
-                                metrics: proxy,
+                    ProgressBar(pomoTimer: pomoTimer, metrics: proxy,
                                 taskFromAdder: taskFromAdder)
                     .frame(maxHeight: 130)
-                    BuddyView(pomoTimer: pomoTimer)
-                        .offset(x: buddyOffset, y: -7)
-                        .onAppear { buddyOffset = Double.random(in: -120...100) }
+                    BuddyView(pomoTimer: pomoTimer, metrics: proxy)
+                        .offset(y: -7)
                         .brightness(colorScheme == .dark ? 0.0 : 0.1)
                 }
                 HStack {

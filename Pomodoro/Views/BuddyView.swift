@@ -10,6 +10,17 @@ import SwiftUI
 struct BuddyView: View {
     @ObservedObject var pomoTimer: PomoTimer
     
+    var metrics: GeometryProxy
+    var barWidth: Double { metrics.size.width - 32.0 }
+    
+#if os(iOS)
+    let startingXOffset: Double = 15
+    var endingXOffset: Double { barWidth - 70 }
+#elseif os(watchOS)
+    let startingXOffset: Double = 5
+    var endingXOffset: Double { barWidth - 55 }
+#endif
+    
     @State var buddies: [Buddy] = [.tomato, .blueberry, .banana]
     
     var body: some View {
@@ -22,6 +33,8 @@ struct BuddyView: View {
         .onAppear {
             buddies.shuffle()
         }
+        .offset(x: -metrics.size.width/2 + startingXOffset)
+        .offset(x: xOffsetForProgress())
     }
     
     @ViewBuilder
@@ -31,6 +44,11 @@ struct BuddyView: View {
         } else {
             WalkAnimation(buddy: buddy)
         }
+    }
+    
+    private func xOffsetForProgress() -> Double {
+        let safeBarWidth = max(endingXOffset, 40)
+        return (barWidth * pomoTimer.getProgress()).clamped(to: 40...safeBarWidth)
     }
 }
 
@@ -43,7 +61,9 @@ enum Buddy: String {
 struct BuddyView_Previews: PreviewProvider {
     static let pomoTimer = PomoTimer()
     static var previews: some View {
-        BuddyView(pomoTimer: pomoTimer)
-            .frame(width: 20)
+        GeometryReader { proxy in
+            BuddyView(pomoTimer: pomoTimer, metrics: proxy)
+                .frame(width: 20)
+        }
     }
 }
