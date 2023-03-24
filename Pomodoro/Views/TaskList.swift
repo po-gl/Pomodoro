@@ -40,7 +40,7 @@ struct TaskList: View {
                     Spacer(minLength: 300)
                         .listRowBackground(Color("BackgroundStopped"))
                 }
-                .background(Color("BackgroundStopped"))
+                .background(Color("BackgroundStopped").ignoresSafeArea())
                 .scrollContentBackground(.hidden)
                 .toolbarBackground(Color("BackgroundStopped").opacity(0.6), for: .navigationBar)
                 
