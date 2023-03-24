@@ -6,10 +6,14 @@
 //
 
 import SwiftUI
+import Combine
 
 struct AddTaskCell: View {
     @Environment(\.managedObjectContext) private var viewContext
     @State var taskText = ""
+    
+    var scrollProxy: ScrollViewProxy
+    let id = ObjectIdentifier(Double.self)
     
     @FocusState var focus
     
@@ -23,6 +27,8 @@ struct AddTaskCell: View {
                 guard !focus else { return }
                 addTask()
             }
+            .id(id)
+            .scrollToOnFocus(proxy: scrollProxy, focus: focus, id: id)
     }
     
     private func addTask() {

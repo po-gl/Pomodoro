@@ -6,10 +6,13 @@
 //
 
 import SwiftUI
+import Combine
 
 struct TaskItemCell: View {
     @Environment(\.managedObjectContext) private var viewContext
     @ObservedObject var taskItem: TaskNote
+    
+    var scrollProxy: ScrollViewProxy
     
     @State var editText = ""
     @FocusState var focus
@@ -17,6 +20,7 @@ struct TaskItemCell: View {
     var body: some View {
         HStack (alignment: .top, spacing: 15) {
             Check().padding(.top, 3)
+            
             TextField("", text: $editText, axis: .vertical)
                 .focused($focus)
                 .onSubmitWithVerticalText(with: $editText) {
@@ -26,6 +30,7 @@ struct TaskItemCell: View {
                     guard !focus else { return }
                     TasksData.editText(editText, for: taskItem, context: viewContext)
                 }
+                .scrollToOnFocus(proxy: scrollProxy, focus: focus, id: taskItem.id)
         }
         .padding(.vertical, 5)
         .onAppear {

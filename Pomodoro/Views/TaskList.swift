@@ -31,79 +31,82 @@ struct TaskList: View {
     
     var body: some View {
         ZStack {
-            List {
-                Section("Projects") {
-                    ForEach(projects) { project in
-                        if !project.archived {
+            ScrollViewReader { scrollProxy in
+                List {
+                    Section("Projects") {
+                        ForEach(projects) { project in
+                            if !project.archived {
+                                ZStack (alignment: .leading) {
+                                    // glitches occur on delete without a reference to .order in view
+                                    Text("\(project.order)").opacity(0)
+                                    
+                                    ProjectItemCell(project: project, scrollProxy: scrollProxy)
+                                        .padding(.vertical, 6)
+                                        .id(project.id)
+                                    
+                                        .swipeActions(edge: .trailing) {
+                                            Button(action: { ProjectsData.archive(project, context: viewContext) }) {
+                                                Label("Archive", systemImage: "archivebox.fill")
+                                            }.tint(Color("End"))
+                                            Button(role: .destructive, action: { ProjectsData.delete(project, context: viewContext) }) {
+                                                Label("Delete", systemImage: "trash")
+                                            }.tint(.red)
+                                        }
+                                }
+                            }
+                        }
+                        .onMove(perform: moveProjects)
+                        
+                        AddProjectCell(scrollProxy: scrollProxy)
+                            .moveDisabled(true)
+                    }
+                    .listRowBackground(Color("BackgroundStopped")
+                        .brightness(colorScheme == .dark ? 0.13 : -0.04)
+                        .saturation(colorScheme == .dark ? 0.0 : 1.3))
+                    
+                    
+                    Section("Tasks") {
+                        ForEach(todaysTasks) { taskItem in
                             ZStack (alignment: .leading) {
                                 // glitches occur on delete without a reference to .order in view
-                                Text("\(project.order)").opacity(0)
+                                Text("\(taskItem.order)").opacity(0)
                                 
-                                ProjectItemCell(project: project)
-                                    .padding(.vertical, 6)
-                                    .id(project.id)
+                                TaskItemCell(taskItem: taskItem, scrollProxy: scrollProxy)
+                                    .padding(.vertical, 3)
+                                    .id(taskItem.id)
                                 
                                     .swipeActions(edge: .trailing) {
-                                        Button(action: { ProjectsData.archive(project, context: viewContext) }) {
-                                            Label("Archive", systemImage: "archivebox.fill")
-                                        }.tint(Color("End"))
-                                        Button(role: .destructive, action: { ProjectsData.delete(project, context: viewContext) }) {
+                                        Button(role: .destructive, action: {
+                                            withAnimation { TasksData.delete(taskItem, context: viewContext) }
+                                        }) {
                                             Label("Delete", systemImage: "trash")
                                         }.tint(.red)
                                     }
+                                
+                                    .onChange(of: taskItem.completed) { completed in
+                                        Task {
+                                            try? await Task.sleep(for: .seconds(1.0))
+                                            sortTasks()
+                                        }
+                                    }
                             }
                         }
+                        .onMove(perform: moveTasks)
+                        
+                        AddTaskCell(scrollProxy: scrollProxy)
+                            .moveDisabled(true)
+                        
+                        Spacer(minLength: 300)
                     }
-                    .onMove(perform: moveProjects)
-
-                    AddProjectCell()
-                        .moveDisabled(true)
-                }
-                .listRowBackground(Color("BackgroundStopped")
-                    .brightness(colorScheme == .dark ? 0.13 : -0.04)
-                    .saturation(colorScheme == .dark ? 0.0 : 1.3))
-
-                
-                Section("Tasks") {
-                    ForEach(todaysTasks) { taskItem in
-                        ZStack (alignment: .leading) {
-                            // glitches occur on delete without a reference to .order in view
-                            Text("\(taskItem.order)").opacity(0)
-                            
-                            TaskItemCell(taskItem: taskItem)
-                                .padding(.vertical, 3)
-                                .id(taskItem)
-                            
-                                .swipeActions(edge: .trailing) {
-                                    Button(role: .destructive, action: {
-                                        withAnimation { TasksData.delete(taskItem, context: viewContext) }
-                                    }) {
-                                        Label("Delete", systemImage: "trash")
-                                    }.tint(.red)
-                                }
-                            
-                                .onChange(of: taskItem.completed) { completed in
-                                    Task {
-                                        try? await Task.sleep(for: .seconds(1.0))
-                                        sortTasks()
-                                    }
-                                }
-                        }
-                    }
-                    .onMove(perform: moveTasks)
+                    .listRowBackground(Color("BackgroundStopped"))
                     
-                    AddTaskCell()
-                        .moveDisabled(true)
-                        .padding(.bottom, 300)
                 }
-                .listRowBackground(Color("BackgroundStopped"))
+                .background(Color("BackgroundStopped"))
+                .scrollContentBackground(.hidden)
+                .toolbarBackground(Color("BackgroundStopped").opacity(0.6), for: .navigationBar)
                 
+                .scrollDismissesKeyboard(.interactively)
             }
-            .background(Color("BackgroundStopped"))
-            .scrollContentBackground(.hidden)
-            .toolbarBackground(Color("BackgroundStopped").opacity(0.6), for: .navigationBar)
-            
-            .scrollDismissesKeyboard(.interactively)
         }
         .onAppear {
             sortTasks()

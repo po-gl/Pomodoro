@@ -6,10 +6,14 @@
 //
 
 import SwiftUI
+import Combine
 
 struct AddProjectCell: View {
     @Environment(\.managedObjectContext) private var viewContext
     @State var projectName = ""
+    
+    var scrollProxy: ScrollViewProxy
+    let id = ObjectIdentifier(Int.self)
     
     @FocusState var focus
     
@@ -24,6 +28,8 @@ struct AddProjectCell: View {
                 guard !focus else { return }
                 addProject()
             }
+            .id(id)
+            .scrollToOnFocus(proxy: scrollProxy, focus: focus, id: id)
     }
     
     private func addProject() {

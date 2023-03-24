@@ -6,10 +6,13 @@
 //
 
 import SwiftUI
+import Combine
 
 struct ProjectItemCell: View {
     @Environment(\.managedObjectContext) private var viewContext
     @ObservedObject var project: Project
+    
+    var scrollProxy: ScrollViewProxy
     
     @State var editText = ""
     @FocusState var focus
@@ -26,6 +29,8 @@ struct ProjectItemCell: View {
                     guard !focus else { return }
                     ProjectsData.editName(editText, for: project, context: viewContext)
                 }
+                .scrollToOnFocus(proxy: scrollProxy, focus: focus, id: project.id)
+            
             ProgressCheck().padding(.top, 3)
         }
         .onAppear {
