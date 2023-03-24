@@ -33,73 +33,12 @@ struct TaskList: View {
         ZStack {
             ScrollViewReader { scrollProxy in
                 List {
-                    Section("Projects") {
-                        ForEach(projects) { project in
-                            if !project.archived {
-                                ZStack (alignment: .leading) {
-                                    // glitches occur on delete without a reference to .order in view
-                                    Text("\(project.order)").opacity(0)
-                                    
-                                    ProjectItemCell(project: project, scrollProxy: scrollProxy)
-                                        .padding(.vertical, 6)
-                                        .id(project.id)
-                                    
-                                        .swipeActions(edge: .trailing) {
-                                            Button(action: { ProjectsData.archive(project, context: viewContext) }) {
-                                                Label("Archive", systemImage: "archivebox.fill")
-                                            }.tint(Color("End"))
-                                            Button(role: .destructive, action: { ProjectsData.delete(project, context: viewContext) }) {
-                                                Label("Delete", systemImage: "trash")
-                                            }.tint(.red)
-                                        }
-                                }
-                            }
-                        }
-                        .onMove(perform: moveProjects)
-                        
-                        AddProjectCell(scrollProxy: scrollProxy)
-                            .moveDisabled(true)
-                    }
-                    .listRowBackground(Color("BackgroundStopped")
-                        .brightness(colorScheme == .dark ? 0.13 : -0.04)
-                        .saturation(colorScheme == .dark ? 0.0 : 1.3))
+                    ProjectSection(scrollProxy: scrollProxy)
                     
+                    TaskSection(scrollProxy: scrollProxy)
                     
-                    Section("Tasks") {
-                        ForEach(todaysTasks) { taskItem in
-                            ZStack (alignment: .leading) {
-                                // glitches occur on delete without a reference to .order in view
-                                Text("\(taskItem.order)").opacity(0)
-                                
-                                TaskItemCell(taskItem: taskItem, scrollProxy: scrollProxy)
-                                    .padding(.vertical, 3)
-                                    .id(taskItem.id)
-                                
-                                    .swipeActions(edge: .trailing) {
-                                        Button(role: .destructive, action: {
-                                            withAnimation { TasksData.delete(taskItem, context: viewContext) }
-                                        }) {
-                                            Label("Delete", systemImage: "trash")
-                                        }.tint(.red)
-                                    }
-                                
-                                    .onChange(of: taskItem.completed) { completed in
-                                        Task {
-                                            try? await Task.sleep(for: .seconds(1.0))
-                                            sortTasks()
-                                        }
-                                    }
-                            }
-                        }
-                        .onMove(perform: moveTasks)
-                        
-                        AddTaskCell(scrollProxy: scrollProxy)
-                            .moveDisabled(true)
-                        
-                        Spacer(minLength: 300)
-                    }
-                    .listRowBackground(Color("BackgroundStopped"))
-                    
+                    Spacer(minLength: 300)
+                        .listRowBackground(Color("BackgroundStopped"))
                 }
                 .background(Color("BackgroundStopped"))
                 .scrollContentBackground(.hidden)
@@ -111,6 +50,77 @@ struct TaskList: View {
         .onAppear {
             sortTasks()
         }
+    }
+    
+    @ViewBuilder
+    private func ProjectSection(scrollProxy: ScrollViewProxy) -> some View {
+        Section("Projects") {
+            ForEach(projects) { project in
+                if !project.archived {
+                    ZStack (alignment: .leading) {
+                        // glitches occur on delete without a reference to .order in view
+                        Text("\(project.order)").opacity(0)
+                        
+                        ProjectItemCell(project: project, scrollProxy: scrollProxy)
+                            .padding(.vertical, 6)
+                            .id(project.id)
+                        
+                            .swipeActions(edge: .trailing) {
+                                Button(action: { ProjectsData.archive(project, context: viewContext) }) {
+                                    Label("Archive", systemImage: "archivebox.fill")
+                                }.tint(Color("End"))
+                                Button(role: .destructive, action: { ProjectsData.delete(project, context: viewContext) }) {
+                                    Label("Delete", systemImage: "trash")
+                                }.tint(.red)
+                            }
+                    }
+                }
+            }
+            .onMove(perform: moveProjects)
+            
+            AddProjectCell(scrollProxy: scrollProxy)
+                .moveDisabled(true)
+        }
+        .listRowBackground(Color("BackgroundStopped")
+            .brightness(colorScheme == .dark ? 0.13 : -0.04)
+            .saturation(colorScheme == .dark ? 0.0 : 1.3))
+    }
+    
+    
+    @ViewBuilder
+    private func TaskSection(scrollProxy: ScrollViewProxy) -> some View {
+        Section("Tasks") {
+            ForEach(todaysTasks) { taskItem in
+                ZStack (alignment: .leading) {
+                    // glitches occur on delete without a reference to .order in view
+                    Text("\(taskItem.order)").opacity(0)
+                    
+                    TaskItemCell(taskItem: taskItem, scrollProxy: scrollProxy)
+                        .padding(.vertical, 3)
+                        .id(taskItem.id)
+                    
+                        .swipeActions(edge: .trailing) {
+                            Button(role: .destructive, action: {
+                                withAnimation { TasksData.delete(taskItem, context: viewContext) }
+                            }) {
+                                Label("Delete", systemImage: "trash")
+                            }.tint(.red)
+                        }
+                    
+                        .onChange(of: taskItem.completed) { completed in
+                            Task {
+                                try? await Task.sleep(for: .seconds(1.0))
+                                sortTasks()
+                            }
+                        }
+                }
+            }
+            .onMove(perform: moveTasks)
+            
+            AddTaskCell(scrollProxy: scrollProxy)
+                .moveDisabled(true)
+        }
+        .listRowBackground(Color("BackgroundStopped"))
     }
     
     
