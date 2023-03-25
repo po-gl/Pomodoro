@@ -17,7 +17,7 @@ struct Background: View {
             GeometryReader { geometry in
                 VStack (spacing: 0) {
                     Top(at: context.date)
-                        .frame(height: geometry.size.height / 2.5 + (colorScheme == .dark ? 15 : -25))
+                        .frame(height: getTopFrameHeight(proxy: geometry))
                     PickGradient().zIndex(1)
                     Bottom(at: context.date)
                     
@@ -96,5 +96,10 @@ struct Background: View {
         case .end:
             return Color("BarLongBreak")
         }
+    }
+    
+    private func getTopFrameHeight(proxy: GeometryProxy) -> Double {
+        let height = proxy.size.height / 2.5 + (colorScheme == .dark ? 15.0 : -25.0)
+        return max(height, 0)
     }
 }
