@@ -14,7 +14,7 @@ class BackgroundSession: NSObject, WKExtendedRuntimeSessionDelegate {
     
     
     func startIfUnpaused(for pomoTimer: PomoTimer) {
-        if !pomoTimer.isPaused {
+        if !pomoTimer.isPaused && pomoTimer.getStatus() != .end {
             // Add 1 second so we can invalidate the session if app is active
             start(at: .now + pomoTimer.timeRemaining() + 1)
         }
