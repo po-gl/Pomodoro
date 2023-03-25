@@ -8,12 +8,6 @@
 import SwiftUI
 import CoreData
 
-struct ProjectItem: Identifiable, Equatable {
-    var name: String
-    var percentCompleted: Double
-    let id = UUID()
-}
-
 
 struct TaskList: View {
     @Environment(\.colorScheme) private var colorScheme
