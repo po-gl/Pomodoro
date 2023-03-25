@@ -77,7 +77,7 @@ struct Background: View {
         case .longBreak:
             return Color("BackgroundLongBreak")
         case .end:
-            return Color("BackgroundLongBreak")
+            return Color("BackgroundStopped")
         }
     }
     
@@ -94,7 +94,7 @@ struct Background: View {
         case .longBreak:
             return Color("BarLongBreak")
         case .end:
-            return Color("BarLongBreak")
+            return Color("End")
         }
     }
     

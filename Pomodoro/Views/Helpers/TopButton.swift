@@ -51,7 +51,7 @@ struct TopButton: View {
         case .longBreak:
             return Color("BarLongBreak")
         case .end:
-            return .accentColor
+            return Color("End")
         }
     }
     
