@@ -36,8 +36,8 @@ final class PomodoroUITestsLaunchTests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
         
-        let progressBar = app.otherElements["DraggableProgressBar"]
-        progressBar.swipeRight(velocity: 500)
+        let barCoords = app.otherElements["DraggableProgressBar"].coordinate(withNormalizedOffset: .zero)
+        barCoords.press(forDuration: 0.1, thenDragTo: barCoords.withOffset(CGVector(dx: 400, dy: 0)))
         
         let attachment = XCTAttachment(screenshot: app.screenshot())
         attachment.name = "Long Break Screen"
@@ -57,9 +57,9 @@ final class PomodoroUITestsLaunchTests: XCTestCase {
         app.menuItems["Paste"].tap()
         
         // Drag to progress bar
-        let task = app.otherElements["DraggableTask"]
-        let progressBar = app.otherElements["DraggableProgressBar"]
-        task.press(forDuration: 0.5, thenDragTo: progressBar)
+        let taskCoords = app.otherElements["DraggableTask"].coordinate(withNormalizedOffset: .zero)
+        let progressBarCoords = app.otherElements["DraggableProgressBar"].coordinate(withNormalizedOffset: .zero)
+        taskCoords.press(forDuration: 0.5, thenDragTo: progressBarCoords.withOffset(CGVector(dx: 100, dy: -20)))
         
         wait(for: 1)
         
@@ -70,7 +70,7 @@ final class PomodoroUITestsLaunchTests: XCTestCase {
         
         // delete task
         let taskLabel = app.buttons["TaskLabel_TestContent"]
-        taskLabel.tap()
+        taskLabel.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
         app.buttons["DeleteTask"].tap()
     }
     

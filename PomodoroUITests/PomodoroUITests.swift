@@ -43,11 +43,8 @@ final class PomodoroUITests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
         
-        let progressBar = app.otherElements["DraggableProgressBar"]
-        
-        XCTAssertEqual(progressBar.exists, true)
-        progressBar.swipeRight(velocity: 500)
-        progressBar.swipeRight(velocity: 500)
+        let barCoords = app.otherElements["DraggableProgressBar"].coordinate(withNormalizedOffset: .zero)
+        barCoords.press(forDuration: 0.1, thenDragTo: barCoords.withOffset(CGVector(dx: 400, dy: 0)))
         
         XCTAssertEqual(app.staticTexts["Work"].exists, false, "Expected false as the progressbar should be scrubbed close to the end")
         XCTAssertEqual(app.staticTexts["Long Break"].exists, true)
@@ -65,15 +62,15 @@ final class PomodoroUITests: XCTestCase {
         app.menuItems["Paste"].tap()
         
         // Drag to progress bar
-        let task = app.otherElements["DraggableTask"]
-        let progressBar = app.otherElements["DraggableProgressBar"]
-        task.press(forDuration: 0.5, thenDragTo: progressBar)
+        let taskCoords = app.otherElements["DraggableTask"].coordinate(withNormalizedOffset: .zero)
+        let progressBarCoords = app.otherElements["DraggableProgressBar"].coordinate(withNormalizedOffset: .zero)
+        taskCoords.press(forDuration: 0.5, thenDragTo: progressBarCoords.withOffset(CGVector(dx: 100, dy: -20)))
         
         // Check if task label exists and delete it
         let taskLabel = app.buttons["TaskLabel_TestContent"]
-        XCTAssertEqual(taskLabel.exists, true)
+        XCTAssertEqual(taskLabel.waitForExistence(timeout: 0.5), true)
         
-        taskLabel.tap()
+        taskLabel.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
         app.buttons["DeleteTask"].tap()
         
         XCTAssertEqual(taskLabel.exists, false)
