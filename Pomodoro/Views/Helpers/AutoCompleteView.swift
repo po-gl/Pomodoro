@@ -39,7 +39,7 @@ struct AutoCompleteView: View {
             } label: {
                 Text(rowText)
                     .lineLimit(1)
-                    .font(.system(size: 16))
+                    .font(.system(.callout, design: .monospaced))
                     .padding(.vertical, 3)
                     .padding(.horizontal, 10)
                     .opacity(0.7)

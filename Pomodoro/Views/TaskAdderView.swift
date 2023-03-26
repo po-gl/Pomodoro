@@ -71,6 +71,7 @@ struct TaskAdderView: View {
     @ViewBuilder
     private func TaskInput() -> some View {
         TextField("Add task", text: $taskFromAdder.dragText)
+            .font(.system(.callout, design: .monospaced, weight: .medium))
             .accessibilityIdentifier("AddTask")
             .focused($taskFocus)
             .offset(x: 25)

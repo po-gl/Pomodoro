@@ -47,8 +47,9 @@ struct TaskLabel: View {
     @ViewBuilder
     private func AngledText(_ text: String) -> some View {
         Text(text)
-            .frame(width: 180, alignment: .leading)
-            .offset(x: 90)
+            .font(.system(.callout, design: .monospaced, weight: .medium))
+            .frame(width: 200, alignment: .leading)
+            .offset(x: 100)
             .rotationEffect(.degrees(-45))
             .offset(y: -40)
             .opacity(text.isEmpty ? 0.0 : 1.0)

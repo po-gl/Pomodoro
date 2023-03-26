@@ -106,10 +106,10 @@ struct ContentView: View {
                         .offset(y: -20)
                         .padding(.trailing, 20)
                 }
-                .padding(.bottom, 30)
+                .padding(.bottom, 20)
                 
                 ButtonCluster(pomoTimer: pomoTimer)
-                    .padding(.bottom, 60)
+                    .padding(.bottom, 50)
             }
         }
         .ignoresSafeArea(.keyboard)
