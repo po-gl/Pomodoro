@@ -32,6 +32,7 @@ struct TaskLabel: View {
                 Button(role: .destructive) {
                     resetHaptic()
                     withAnimation { taskNotes.tasksOnBar[index] = "" }
+                    taskNotes.saveToUserDefaults()
                 } label: {
                     Text("Remove from progress bar")
                 }
