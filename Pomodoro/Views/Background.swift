@@ -19,7 +19,7 @@ struct Background: View {
                     Top(at: context.date)
                         .frame(height: getTopFrameHeight(proxy: geometry))
                     PickGradient().zIndex(1)
-                    Bottom(at: context.date)
+                    Bottom(at: context.date, geometry: geometry)
                     
                 }
                 .ignoresSafeArea()
@@ -30,18 +30,23 @@ struct Background: View {
     
     @ViewBuilder
     private func Top(at date: Date) -> some View {
-        Rectangle()
-            .foregroundColor(getTopColor(at: date))
-            .overlay(
-                Rectangle()
-                    .fill(LinearGradient(colors: [colorScheme == .dark ? .white : .clear, .clear], startPoint: .top, endPoint: .bottom))
-                    .blendMode(.softLight)
-            )
-            .drawingGroup()
+        if colorScheme == .dark {
+            Rectangle()
+                .foregroundColor(getTopColor(at: date))
+                .overlay(
+                    Rectangle()
+                        .fill(LinearGradient(colors: [.white, .clear], startPoint: .top, endPoint: .bottom))
+                        .blendMode(.softLight)
+                )
+                .drawingGroup()
+        } else {
+            Rectangle()
+                .foregroundColor(getTopColor(at: date))
+        }
     }
     
     @ViewBuilder
-    private func Bottom(at date: Date) -> some View {
+    private func Bottom(at date: Date, geometry: GeometryProxy) -> some View {
         Rectangle()
             .foregroundColor(getBottomColor(at: date))
             .overlay(
@@ -49,8 +54,10 @@ struct Background: View {
                     .fill(LinearGradient(colors: [colorScheme == .light ? .white : .clear, .clear], startPoint: .top, endPoint: .bottom))
                     .opacity(0.6)
                     .blendMode(.softLight)
+                    // SwiftUI bug: blendmode flickers to normal if touching
+                    // edges during navigation animations
+                    .frame(maxWidth: geometry.size.width - 2)
             )
-            .drawingGroup()
     }
     
     @ViewBuilder
