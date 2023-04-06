@@ -59,7 +59,7 @@ final class PomodoroUITestsLaunchTests: XCTestCase {
         // Drag to progress bar
         let taskCoords = app.otherElements["DraggableTask"].coordinate(withNormalizedOffset: .zero)
         let progressBarCoords = app.otherElements["DraggableProgressBar"].coordinate(withNormalizedOffset: .zero)
-        taskCoords.press(forDuration: 0.5, thenDragTo: progressBarCoords.withOffset(CGVector(dx: 100, dy: -20)))
+        taskCoords.press(forDuration: 0.5, thenDragTo: progressBarCoords.withOffset(CGVector(dx: 100, dy: 0)))
         
         wait(for: 1)
         
