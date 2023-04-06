@@ -39,7 +39,7 @@ struct ContentView: View {
                         pomoTimer.restoreFromUserDefaults()
                         cancelPendingNotifications()
                         EndTimerHandler.shared.haptics.prepareHaptics()
-                    } else if newPhase == .inactive {
+                    } else if newPhase == .inactive || newPhase == .background {
                         pomoTimer.saveToUserDefaults()
                         setupNotifications(pomoTimer)
                         WidgetCenter.shared.reloadAllTimelines()

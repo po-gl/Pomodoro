@@ -40,7 +40,7 @@ struct ContentView: View {
                 BackgroundSession.shared.stop()
                 BackgroundSession.shared.startIfUnpaused(for: pomoTimer)
                 
-            } else if newPhase == .inactive {
+            } else if newPhase == .inactive || newPhase == .background {
                 print("Inactive")
                 pomoTimer.saveToUserDefaults()
                 setupNotifications(pomoTimer)
