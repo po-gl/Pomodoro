@@ -111,32 +111,12 @@ struct ProgressBar: View {
                         .onChange(of: taskFromAdder.dragHasEnded) { _ in
                             guard taskFromAdder.dragHasEnded && taskFromAdder.dragLocation != nil && !isMask else { return }
                             taskNotes.pomoHighlight[i] = false
-                                    
-                            let taskDragLocation = taskFromAdder.dragLocation!.adjusted(for: metrics)
-                            let dropRect = getDropRect(geometry: geometry)
-                            
-                            if taskDragLocation.within(rect: dropRect) {
-                                if i < taskNotes.tasksOnBar.count {
-                                    taskNotes.addTask(taskFromAdder.dragText, index: i, context: viewContext)
-                                    taskFromAdder.dragText = ""
-                                }
-                                resetHaptic()
-                            }
+                            addTaskToTaskNotesIfWithinDropRect(for: i, geometry: geometry)
                         }
                     
                         .onChange(of: taskFromAdder.dragLocation) { _ in
                             guard taskFromAdder.dragLocation != nil && !isMask else { return }
-                            
-                            let taskDragLocation = taskFromAdder.dragLocation!.adjusted(for: metrics)
-                            let dropRect = getDropRect(geometry: geometry)
-                            if taskDragLocation.within(rect: dropRect) {
-                                if status == .work {
-                                    if !taskNotes.pomoHighlight[i] { basicHaptic() }
-                                    taskNotes.pomoHighlight[i] = true
-                                }
-                            } else {
-                                taskNotes.pomoHighlight[i] = false
-                            }
+                            updateTaskNoteHighlights(for: i, status: status, geometry: geometry)
                         }
                 }
                 .frame(width: getBarWidth() * getProportion(i) - barOutlinePadding, height: barHeight)
@@ -144,13 +124,6 @@ struct ProgressBar: View {
                 .zIndex(Double(pomoTimer.order.count - i))
             }
         }
-    }
-    
-    private func getDropRect(geometry: GeometryProxy) -> CGRect {
-        var rect: CGRect = geometry.frame(in: .global)
-        rect.origin.y -= 50
-        rect.size.height += 100
-        return rect
     }
     
     
@@ -239,6 +212,41 @@ struct ProgressBar: View {
                     withAnimation { isDragging = false }
                 }
             }
+    }
+    
+    
+    private func addTaskToTaskNotesIfWithinDropRect(for i: Int, geometry: GeometryProxy) {
+        if isWithinDropRect(geometry: geometry) {
+            if i < taskNotes.tasksOnBar.count {
+                taskNotes.addTask(taskFromAdder.dragText, index: i, context: viewContext)
+                taskFromAdder.dragText = ""
+            }
+            resetHaptic()
+        }
+    }
+    
+    private func updateTaskNoteHighlights(for i: Int, status: PomoStatus, geometry: GeometryProxy) {
+        if isWithinDropRect(geometry: geometry) {
+            if status == .work {
+                if !taskNotes.pomoHighlight[i] { basicHaptic() }
+                taskNotes.pomoHighlight[i] = true
+            }
+        } else {
+            taskNotes.pomoHighlight[i] = false
+        }
+    }
+    
+    private func isWithinDropRect(geometry: GeometryProxy) -> Bool {
+        let taskDragLocation = taskFromAdder.dragLocation!.adjusted(for: metrics)
+        let dropRect = getDropRect(geometry: geometry)
+        return taskDragLocation.within(rect: dropRect)
+    }
+    
+    private func getDropRect(geometry: GeometryProxy) -> CGRect {
+        var rect: CGRect = geometry.frame(in: .global)
+        rect.origin.y -= 50
+        rect.size.height += 100
+        return rect
     }
     
     
