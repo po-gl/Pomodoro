@@ -80,6 +80,8 @@ struct ProgressBar: View {
                     .gesture(drag)
                     
                     TasksView(at: context.date)
+                    
+                    BreakTimeLabel(at: context.date)
                 }
                 .padding(.vertical, 2)
                 .padding(.horizontal, barOutlinePadding)
@@ -194,6 +196,25 @@ struct ProgressBar: View {
         }
     }
     
+    @ViewBuilder
+    private func BreakTimeLabel(at date: Date) -> some View {
+        let i = pomoTimer.order.count - 1
+        HStack(spacing: 0) {
+            Spacer()
+            
+            ZStack {
+                let breakDate = date.addingTimeInterval(pomoTimer.timeRemaining(for: i-1, atDate: date))
+                AngledText(text: timeFormatter.string(from: breakDate))
+                    .id("BreakTime")
+                    .scaleEffect(0.85)
+                    .offset(x: -(getBarWidth() * getProportion(i) - barOutlinePadding)/2 + 3)
+                    .opacity(0.6)
+            }
+            .frame(width: getBarWidth() * getProportion(i) - barOutlinePadding, height: barHeight)
+            .padding(.horizontal, 1)
+        }
+    }
+    
     
     private var drag: some Gesture {
         DragGesture(minimumDistance: 0.0, coordinateSpace: .local)
@@ -253,3 +274,10 @@ struct ProgressBar: View {
         return metrics.size.width - barPadding*2 - barOutlinePadding*2
     }
 }
+
+
+fileprivate let timeFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.setLocalizedDateFormatFromTemplate("hh:mm")
+    return formatter
+}()
