@@ -57,7 +57,7 @@ struct TopButton: View {
     
     private let dayFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.setLocalizedDateFormatFromTemplate("EEEE M/d")
+        formatter.setLocalizedDateFormatFromTemplate("EEEE MMM d")
         return formatter
     }()
 }
