@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct TaskLabel: View {
+    @Environment(\.managedObjectContext) private var viewContext
+    
     var index: Int
     @ObservedObject var taskNotes: TasksOnBar
     @ObservedObject var taskFromAdder: DraggableTask
@@ -15,6 +17,9 @@ struct TaskLabel: View {
     @ObservedObject var pomoTimer: PomoTimer
     
     @State var presentingNoteOptions = false
+    @State var presentingNoteRename = false
+    @State var renameText = ""
+    
     
     var body: some View {
         let text: String = index < taskNotes.tasksOnBar.count ? taskNotes.tasksOnBar[index] : ""
@@ -32,20 +37,56 @@ struct TaskLabel: View {
             }
         
             .confirmationDialog("Task note options.", isPresented: $presentingNoteOptions) {
-                Button(role: .destructive) {
-                    resetHaptic()
-                    withAnimation { taskNotes.tasksOnBar[index] = "" }
-                    taskNotes.saveToUserDefaults()
-                } label: {
-                    Text("Remove from progress bar")
-                }
-                .accessibilityIdentifier("DeleteTask")
+                ConfirmationDialogButtons()
             } message: {
-                Text("Task: \(text)")
+                Text(text)
+            }
+        
+            .alert("Rename Task Note", isPresented: $presentingNoteRename) {
+                AlertView()
             }
         
             .opacity(text != "" ? 1.0 : 0.0)
             .animation(.easeInOut, value: taskNotes.tasksOnBar)
+    }
+    
+    
+    @ViewBuilder
+    private func ConfirmationDialogButtons() -> some View {
+        Button() {
+            basicHaptic()
+            renameText = taskNotes.tasksOnBar[index]
+            presentingNoteRename = true
+        } label: {
+            Label("Rename", systemImage: "pencil.line")
+        }
+        
+        Button(role: .destructive) {
+            resetHaptic()
+            withAnimation { taskNotes.tasksOnBar[index] = "" }
+            taskNotes.saveToUserDefaults()
+        } label: {
+            Label("Remove from progress bar", systemImage: "trash")
+        }
+        .accessibilityIdentifier("DeleteTask")
+    }
+    
+    
+    @ViewBuilder
+    private func AlertView() -> some View {
+        TextField("" , text: $renameText)
+            // Select whole text immediately
+            .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
+                if let textField = obj.object as? UITextField {
+                    textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
+                }
+            }
+        
+        Button("Cancel", role: .cancel) {}
+        Button("Save") {
+            basicHaptic()
+            taskNotes.renameTask(renameText, index: index, context: viewContext)
+        }
     }
 }
 

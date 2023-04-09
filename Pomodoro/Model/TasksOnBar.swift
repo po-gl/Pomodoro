@@ -33,6 +33,16 @@ class TasksOnBar: ObservableObject {
         }
     }
     
+    func renameTask(_ text: String, index: Int, context: NSManagedObjectContext) {
+        let oldText = tasksOnBar[index]
+        tasksOnBar[index] = text
+        saveToUserDefaults()
+        
+        if let task = TasksData.taskInTodaysTasks(matching: oldText, context: context) {
+            TasksData.editText(text, for: task, context: context)
+        }
+    }
+    
     func saveToUserDefaults() {
         UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.set(tasksOnBar, forKey: "taskNotes")
     }
