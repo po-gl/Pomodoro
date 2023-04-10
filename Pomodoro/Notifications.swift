@@ -22,8 +22,10 @@ func getNotificationPermissions() {
     }
 }
 
-func setupNotifications(_ pomoTimer: PomoTimer) {
+func setupNotifications(_ pomoTimer: PomoTimer) async {
     guard !pomoTimer.isPaused else { return }
+    guard await UNUserNotificationCenter.current().pendingNotificationRequests().isEmpty else { return }
+    
     let now = Date()
 #if os(iOS)
     let currentIndex = pomoTimer.getIndex(atDate: now)
@@ -66,7 +68,12 @@ func setupNotifications(_ pomoTimer: PomoTimer) {
 
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeToNext > 0.0 ? timeToNext : 0.1, repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-        UNUserNotificationCenter.current().add(request)
+        
+        do {
+            try await UNUserNotificationCenter.current().add(request)
+        } catch {
+            print("Error adding notification \(error.localizedDescription)")
+        }
     }
 }
 

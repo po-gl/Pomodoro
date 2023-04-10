@@ -41,8 +41,8 @@ struct ContentView: View {
                         EndTimerHandler.shared.haptics.prepareHaptics()
                     } else if newPhase == .inactive || newPhase == .background {
                         pomoTimer.saveToUserDefaults()
-                        setupNotifications(pomoTimer)
                         WidgetCenter.shared.reloadAllTimelines()
+                        Task { await setupNotifications(pomoTimer) }
                     }
                 }
             

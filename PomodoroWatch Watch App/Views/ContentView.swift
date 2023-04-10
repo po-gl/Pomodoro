@@ -43,7 +43,7 @@ struct ContentView: View {
             } else if newPhase == .inactive || newPhase == .background {
                 print("Inactive")
                 pomoTimer.saveToUserDefaults()
-                setupNotifications(pomoTimer)
+                Task { await setupNotifications(pomoTimer) }
                 WidgetCenter.shared.reloadAllTimelines()
             }
         }
