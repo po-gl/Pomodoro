@@ -47,6 +47,7 @@ struct ButtonCluster: View {
             guard isEnabled else { return }
             basicHaptic()
             withAnimation { pomoTimer.toggle() }
+            EndTimerHandler.shared.hasEndFired = false
         }
         .accessibilityIdentifier("playPauseButton\(isEnabled ? "On" : "Off")")
         .frame(width: 130, height: 60)
