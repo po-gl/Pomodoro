@@ -53,12 +53,23 @@ struct TaskLabel: View {
     
     @ViewBuilder
     private func ConfirmationDialogButtons() -> some View {
+        let text: String = index < taskNotes.tasksOnBar.count ? taskNotes.tasksOnBar[index] : ""
+        
         Button() {
             basicHaptic()
-            renameText = taskNotes.tasksOnBar[index]
+            renameText = text
             presentingNoteRename = true
         } label: {
             Label("Rename", systemImage: "pencil.line")
+        }
+        
+        if text != "" && !TasksData.todaysTasksContains(text, context: viewContext) {
+            Button() {
+                basicHaptic()
+                TasksData.addTask(text, order: -1, context: viewContext)
+            } label: {
+                Label("Add to Today's tasks", systemImage: "clock.arrow.circlepath")
+            }
         }
         
         Button(role: .destructive) {
