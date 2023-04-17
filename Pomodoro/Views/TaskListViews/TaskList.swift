@@ -28,11 +28,7 @@ struct TaskList: View {
             ScrollViewReader { scrollProxy in
                 List {
                     ProjectSection(scrollProxy: scrollProxy)
-                    
                     TaskSection(scrollProxy: scrollProxy)
-                    
-                    Spacer(minLength: 300)
-                        .listRowBackground(Color("BackgroundStopped"))
                 }
                 .background(Color("BackgroundStopped").ignoresSafeArea())
                 .scrollContentBackground(.hidden)
