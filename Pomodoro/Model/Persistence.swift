@@ -23,7 +23,7 @@ struct PersistenceController {
             TasksData.addTask("Task \(i)", completed: i == 3 ? true : false, context: viewContext)
         }
         for i in 0..<3 {
-            TasksData.addTask("Next day \(i)", date: Date() + 90000, context: viewContext)
+            TasksData.addTask("Next day \(i)", date: Date() - 90000, context: viewContext)
         }
         
         return result

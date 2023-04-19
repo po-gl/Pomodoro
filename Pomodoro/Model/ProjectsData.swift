@@ -39,6 +39,11 @@ struct ProjectsData {
         saveContext(context, errorMessage: "CoreData error archiving project.")
     }
     
+    static func toggleArchive(_ project: Project, context: NSManagedObjectContext) {
+        project.archived.toggle()
+        saveContext(context, errorMessage: "CoreData error toggle archive project.")
+    }
+    
     static func delete(_ project: Project, context: NSManagedObjectContext) {
         context.delete(project)
         saveContext(context, errorMessage: "CoreData error deleting project.")

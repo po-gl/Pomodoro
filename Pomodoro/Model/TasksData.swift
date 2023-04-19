@@ -44,6 +44,11 @@ struct TasksData {
         saveContext(context, errorMessage: "CoreData error toggle task completion.")
     }
     
+    static func setCompleted(for task: TaskNote, context: NSManagedObjectContext) {
+        task.completed = true
+        saveContext(context, errorMessage: "CoreData error setting task completion to true.")
+    }
+    
     
     static func delete(_ task: TaskNote, context: NSManagedObjectContext) {
         context.delete(task)
@@ -92,3 +97,21 @@ struct TasksData {
     }
     
 }
+
+
+extension TaskNote {
+    @objc
+    public var section: String {
+        if let timestamp {
+            return dateFormatter.string(from: timestamp)
+        }
+        return "undated"
+    }
+}
+
+fileprivate let dateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.doesRelativeDateFormatting = true
+    formatter.setLocalizedDateFormatFromTemplate("MMM d y")
+    return formatter
+}()
