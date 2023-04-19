@@ -13,6 +13,9 @@ struct TaskList: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.managedObjectContext) private var viewContext
     
+    @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.dismiss) private var dismiss
+    
     @FetchRequest(sortDescriptors: [SortDescriptor(\Project.order), SortDescriptor(\Project.timestamp)])
     private var projects: FetchedResults<Project>
                   
@@ -39,6 +42,12 @@ struct TaskList: View {
         }
         .onAppear {
             sortTasks()
+        }
+        
+        .onChange(of: scenePhase) { scenePhase in
+            // Dismiss to avoid awkard animation due to
+            // hosting view controller reattaching 
+            if scenePhase == .background { dismiss() }
         }
     }
     
