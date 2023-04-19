@@ -24,8 +24,11 @@ struct AddTaskCell: View {
                 addTask()
             }
             .onChange(of: focus) { _ in
-                guard !focus else { return }
-                addTask()
+                if focus {
+                    basicHaptic()
+                } else {
+                    addTask()
+                }
             }
             .id(id)
             .scrollToOnFocus(proxy: scrollProxy, focus: focus, id: id)

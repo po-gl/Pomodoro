@@ -25,8 +25,11 @@ struct AddProjectCell: View {
                 addProject()
             }
             .onChange(of: focus) { _ in
-                guard !focus else { return }
-                addProject()
+                if focus {
+                    basicHaptic()
+                } else {
+                    addProject()
+                }
             }
             .id(id)
             .scrollToOnFocus(proxy: scrollProxy, focus: focus, id: id)
