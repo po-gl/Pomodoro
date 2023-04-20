@@ -191,11 +191,10 @@ struct TaskList: View {
                 .id(taskItem.id)
             
                 .swipeActions(edge: .trailing) {
-                    Button(role: .destructive, action: {
-                        withAnimation { TasksData.delete(taskItem, context: viewContext) }
-                    }) {
-                        Label("Delete", systemImage: "trash")
-                    }.tint(.red)
+                    if taskItem.timestamp! < Calendar.current.startOfDay(for: Date()) {
+                        ReAddToTodaysTasksButton(taskItem)
+                    }
+                    DeleteTaskButton(taskItem)
                 }
             
                 .onChange(of: taskItem.completed) { completed in
@@ -205,6 +204,27 @@ struct TaskList: View {
                     }
                 }
         }
+    }
+    
+    @ViewBuilder
+    private func ReAddToTodaysTasksButton(_ taskItem: TaskNote) -> some View {
+        Button(action: {
+            if let taskText = taskItem.text {
+                guard !TasksData.todaysTasksContains(taskText, context: viewContext) else { return }
+                withAnimation { TasksData.addTask(taskText, context: viewContext) }
+            }
+        }) {
+            Label("Add to Today", systemImage: "arrow.uturn.up")
+        }.tint(.blue)
+    }
+    
+    @ViewBuilder
+    private func DeleteTaskButton(_ taskItem: TaskNote) -> some View {
+        Button(role: .destructive, action: {
+            withAnimation { TasksData.delete(taskItem, context: viewContext) }
+        }) {
+            Label("Delete", systemImage: "trash")
+        }.tint(.red)
     }
     
     
