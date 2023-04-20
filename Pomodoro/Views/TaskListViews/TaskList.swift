@@ -138,16 +138,28 @@ struct TaskList: View {
                 .id(project.id)
             
                 .swipeActions(edge: .trailing) {
-                    Button(action: {
-                        withAnimation { ProjectsData.toggleArchive(project, context: viewContext) }
-                    }) {
-                        Label(project.archived ? "Unarchive" : "Archive", systemImage: "archivebox.fill")
-                    }.tint(project.archived ? Color("BarWork") : Color("End"))
-                    Button(role: .destructive, action: { ProjectsData.delete(project, context: viewContext) }) {
-                        Label("Delete", systemImage: "trash")
-                    }.tint(.red)
+                    ToggleProjectArchiveButton(project)
+                    DeleteProjectButton(project)
                 }
         }
+    }
+    
+    @ViewBuilder
+    private func ToggleProjectArchiveButton(_ project: Project) -> some View {
+        Button(action: {
+            withAnimation { ProjectsData.toggleArchive(project, context: viewContext) }
+        }) {
+            Label(project.archived ? "Unarchive" : "Archive", systemImage: "archivebox.fill")
+        }.tint(project.archived ? Color("BarWork") : Color("End"))
+    }
+    
+    @ViewBuilder
+    private func DeleteProjectButton(_ project: Project) -> some View {
+        Button(role: .destructive, action: {
+            withAnimation { ProjectsData.delete(project, context: viewContext) }
+        }) {
+            Label("Delete", systemImage: "trash")
+        }.tint(.red)
     }
     
     
