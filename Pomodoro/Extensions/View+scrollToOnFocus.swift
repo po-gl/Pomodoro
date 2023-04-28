@@ -25,7 +25,10 @@ struct ScrollToOnFocusModifier: ViewModifier {
         content
             .onReceive(Publishers.keyboardOpened) { isReadable in
                 guard focus else { return }
-                withAnimation { scrollProxy.scrollTo(id, anchor: .bottom) }
+                Task {
+                    try? await Task.sleep(for: .seconds(0.5))
+                    withAnimation { scrollProxy.scrollTo(id, anchor: .bottom) }
+                }
             }
     }
 }
