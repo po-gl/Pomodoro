@@ -77,7 +77,7 @@ struct TasksData {
         for task in tasks {
             if task.completed {
                 if Int(task.order) <= lastUncompleted {
-                    task.order = Int16(lastUncompleted + 1)
+                    task.order = lastUncompleted == Int16.max ? Int16.max : Int16(lastUncompleted + 1)
                 }
             }
         }

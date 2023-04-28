@@ -13,6 +13,7 @@ struct ProjectsData {
     static func addProject(_ name: String,
                            progress: Double = 0.0,
                            archived: Bool = false,
+                           order: Int16 = 0,
                            date: Date = Date(),
                            context: NSManagedObjectContext) {
         let newProject = Project(context: context)
@@ -20,7 +21,7 @@ struct ProjectsData {
         newProject.progress = progress
         newProject.timestamp = date
         newProject.archived = archived
-        newProject.order = 0
+        newProject.order = order
         saveContext(context, errorMessage: "CoreData error adding project.")
     }
     
