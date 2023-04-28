@@ -38,8 +38,8 @@ struct TaskList: View {
     private var pastTasks: SectionedFetchResults<String, TaskNote>
     
     
-    @State private var showArchivedProjects = false
-    @State private var showPastTasks = false
+    @AppStorage("showArchivedProjects") private var showArchivedProjects = false
+    @AppStorage("showPastTasks") private var showPastTasks = false
     
     
     var body: some View {
