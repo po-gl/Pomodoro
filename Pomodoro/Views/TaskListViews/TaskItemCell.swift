@@ -24,11 +24,19 @@ struct TaskItemCell: View {
             TextField("", text: $editText, axis: .vertical)
                 .focused($focus)
                 .onSubmitWithVerticalText(with: $editText) {
-                    TasksData.editText(editText, for: taskItem, context: viewContext)
+                    if editText.isEmpty {
+                        withAnimation { TasksData.delete(taskItem, context: viewContext) }
+                    } else {
+                        TasksData.editText(editText, for: taskItem, context: viewContext)
+                    }
                 }
                 .onChange(of: focus) { _ in
                     guard !focus else { return }
-                    TasksData.editText(editText, for: taskItem, context: viewContext)
+                    if editText.isEmpty {
+                        withAnimation { TasksData.delete(taskItem, context: viewContext) }
+                    } else {
+                        TasksData.editText(editText, for: taskItem, context: viewContext)
+                    }
                 }
                 .scrollToOnFocus(proxy: scrollProxy, focus: focus, id: taskItem.id)
         }
