@@ -56,6 +56,8 @@ struct TaskList: View {
                 .scrollDismissesKeyboard(.interactively)
             }
         }
+        .navigationTitle(dayFormatter.string(from: Date()))
+        .navigationBarTitleDisplayMode(.large)
         
         .toolbar {
             Menu {
@@ -304,11 +306,19 @@ struct TaskList: View {
             Label("Mark Today as Done", systemImage: "checklist.checked")
         }
     }
+    
+    private let dayFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.setLocalizedDateFormatFromTemplate("EEEE MMM d")
+        return formatter
+    }()
 }
 
 
 struct TaskList_Previews: PreviewProvider {
     static var previews: some View {
-        TaskList().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        NavigationView {
+            TaskList().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        }
     }
 }

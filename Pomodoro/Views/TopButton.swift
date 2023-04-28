@@ -32,8 +32,6 @@ struct TopButton: View {
         
         NavigationLink(destination: {
             TaskList()
-                .navigationTitle(dayFormatter.string(from: Date()))
-                .navigationBarTitleDisplayMode(.inline)
         }) {
             Image(systemName: "checklist")
                 .frame(width: 50, height: 32)
@@ -54,11 +52,5 @@ struct TopButton: View {
             return Color("End")
         }
     }
-    
-    private let dayFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.setLocalizedDateFormatFromTemplate("EEEE MMM d")
-        return formatter
-    }()
 }
 
