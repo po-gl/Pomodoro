@@ -62,6 +62,7 @@ struct TaskList: View {
         .toolbar {
             Menu {
                 ShowArchivedProjectsButton()
+                Divider()
                 ShowPastTasksButton()
                 MarkTodaysTasksAsDoneButton()
             } label: {
