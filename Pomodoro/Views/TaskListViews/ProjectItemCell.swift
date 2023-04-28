@@ -23,11 +23,19 @@ struct ProjectItemCell: View {
                 .font(.title3)
                 .focused($focus)
                 .onSubmitWithVerticalText(with: $editText) {
-                    ProjectsData.editName(editText, for: project, context: viewContext)
+                    if editText.isEmpty {
+                        withAnimation { ProjectsData.delete(project, context: viewContext) }
+                    } else {
+                        ProjectsData.editName(editText, for: project, context: viewContext)
+                    }
                 }
                 .onChange(of: focus) { _ in
                     guard !focus else { return }
-                    ProjectsData.editName(editText, for: project, context: viewContext)
+                    if editText.isEmpty {
+                        withAnimation { ProjectsData.delete(project, context: viewContext) }
+                    } else {
+                        ProjectsData.editName(editText, for: project, context: viewContext)
+                    }
                 }
                 .scrollToOnFocus(proxy: scrollProxy, focus: focus, id: project.id)
             
