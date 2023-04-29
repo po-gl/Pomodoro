@@ -12,6 +12,7 @@ import CoreData
 struct TaskList: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.undoManager) private var undoManager
     
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.dismiss) private var dismiss
@@ -215,7 +216,9 @@ struct TaskList: View {
                 .onChange(of: taskItem.completed) { completed in
                     Task {
                         try? await Task.sleep(for: .seconds(1.0))
+                        undoManager?.disableUndoRegistration()
                         sortTasks()
+                        undoManager?.enableUndoRegistration()
                     }
                 }
         }

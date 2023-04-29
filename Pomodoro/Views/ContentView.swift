@@ -12,6 +12,10 @@ import WidgetKit
 struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.colorScheme) private var colorScheme
+    
+    @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.undoManager) private var undoManager
+    
     @ObservedObject var pomoTimer: PomoTimer
     
     @StateObject var taskFromAdder = DraggableTask()
@@ -32,6 +36,7 @@ struct ContentView: View {
                 .ignoresSafeArea()
                 .onAppear {
                     getNotificationPermissions()
+                    viewContext.undoManager = undoManager
                 }
             
                 .onChange(of: scenePhase) { newPhase in
