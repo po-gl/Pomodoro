@@ -97,9 +97,10 @@ struct TimerDisplay: View {
         }
     }
     
-    private let timeFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.setLocalizedDateFormatFromTemplate("hh:mm")
-        return formatter
-    }()
 }
+
+fileprivate let timeFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.setLocalizedDateFormatFromTemplate("hh:mm")
+    return formatter
+}()

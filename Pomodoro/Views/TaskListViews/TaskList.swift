@@ -310,14 +310,13 @@ struct TaskList: View {
             Label("Mark Today as Done", systemImage: "checklist.checked")
         }
     }
-    
-    private let dayFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.setLocalizedDateFormatFromTemplate("EEEE MMM d")
-        return formatter
-    }()
 }
 
+fileprivate let dayFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.setLocalizedDateFormatFromTemplate("EEEE MMM d")
+    return formatter
+}()
 
 struct TaskList_Previews: PreviewProvider {
     static var previews: some View {
