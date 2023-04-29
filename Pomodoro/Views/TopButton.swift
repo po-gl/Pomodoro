@@ -29,8 +29,9 @@ struct TopButton: View {
     
     @ViewBuilder
     private func TaskListButton(at date: Date) -> some View {
-        let backgroundColor = colorScheme == .dark ? .black : getColorForStatus(pomoTimer.getStatus(atDate: date))
-        let foregroundColor = colorScheme == .dark ? getColorForStatus(pomoTimer.getStatus(atDate: date)) : .black
+        let status = pomoTimer.getStatus(atDate: date)
+        let backgroundColor = colorScheme == .dark ? .black : getColorForStatus(status)
+        let foregroundColor = colorScheme == .dark ? getColorForStatus(status) : .black
         
         NavigationLink(destination: {
             TaskList()
