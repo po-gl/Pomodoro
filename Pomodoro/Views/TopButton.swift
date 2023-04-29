@@ -13,22 +13,24 @@ struct TopButton: View {
     
     
     var body: some View {
-        VStack {
-            HStack {
+        TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
+            VStack {
+                HStack {
+                    Spacer()
+                    TaskListButton(at: context.date)
+                }
+                .padding(.top, 20)
+                .padding(.trailing, 40)
                 Spacer()
-                TaskListButton()
             }
-            .padding(.top, 20)
-            .padding(.trailing, 40)
-            Spacer()
+            .animation(.easeInOut(duration: 0.2), value: pomoTimer.getStatus())
         }
-        .animation(.easeInOut(duration: 0.3), value: pomoTimer.getStatus())
     }
     
     @ViewBuilder
-    private func TaskListButton() -> some View {
-        let backgroundColor = colorScheme == .dark ? .black : getColorForStatus(pomoTimer.getStatus())
-        let foregroundColor = colorScheme == .dark ? getColorForStatus(pomoTimer.getStatus()) : .black
+    private func TaskListButton(at date: Date) -> some View {
+        let backgroundColor = colorScheme == .dark ? .black : getColorForStatus(pomoTimer.getStatus(atDate: date))
+        let foregroundColor = colorScheme == .dark ? getColorForStatus(pomoTimer.getStatus(atDate: date)) : .black
         
         NavigationLink(destination: {
             TaskList()
