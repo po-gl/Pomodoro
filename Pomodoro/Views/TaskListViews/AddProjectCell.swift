@@ -21,7 +21,7 @@ struct AddProjectCell: View {
     var body: some View {
         HStack (alignment: .top, spacing: 15) {
             if projectName.isEmpty {
-                Plus()
+                Plus().padding(.top, 3)
             }
             
             TextField("", text: $projectName, axis: .vertical)
@@ -48,7 +48,7 @@ struct AddProjectCell: View {
                 .scrollToOnFocus(proxy: scrollProxy, focus: focus, id: id)
             
             if !projectName.isEmpty {
-                ProgressCheck()
+                ProgressCheck().padding(.top, 3)
             }
         }
     }

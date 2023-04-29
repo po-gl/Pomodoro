@@ -21,9 +21,9 @@ struct AddTaskCell: View {
     var body: some View {
         HStack (alignment: .top, spacing: 15) {
             if taskText.isEmpty {
-                Plus()
+                Plus().padding(.top, 3)
             } else {
-                Check()
+                Check().padding(.top, 3)
             }
             
             TextField("", text: $taskText, axis: .vertical)
