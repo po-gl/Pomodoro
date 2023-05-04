@@ -57,11 +57,14 @@ struct TimerDisplay: View {
     
     @ViewBuilder
     private func EndingTime(at date: Date) -> some View {
+        let color = colorScheme == .dark ? getColorForStatus(pomoTimer.getStatus(atDate: date)) : .white
         Text("until \(date.addingTimeInterval(pomoTimer.timeRemaining(atDate: date)), formatter: timeFormatter)")
             .colorScheme(colorScheme == .dark ? .light : .dark)
             .font(.system(size: 17, weight: .regular, design: .serif))
             .monospacedDigit()
-            .opacity(pomoTimer.isPaused ? 0.5 : 1.0)
+            .foregroundColor(color)
+            .brightness(colorScheme == .dark ? -0.45 : -0.5)
+            .brightness(pomoTimer.isPaused ? 0.0 : (colorScheme == .dark ? -0.2 : 0.3))
     }
     
     @ViewBuilder
