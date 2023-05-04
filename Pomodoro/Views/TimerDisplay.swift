@@ -44,13 +44,15 @@ struct TimerDisplay: View {
     
     @ViewBuilder
     private func StatusBox(at date: Date) -> some View {
-        let color = colorScheme == .dark ? .black : getColorForStatus(pomoTimer.getStatus(atDate: date))
+        let color = getColorForStatus(pomoTimer.getStatus(atDate: date))
+        let fgColor = colorScheme == .dark ? color : .black
+        let bgColor = colorScheme == .dark ? .black : color
         Text(pomoTimer.getStatusString(atDate: date))
             .font(.system(size: 30, weight: .thin, design: .serif))
-            .foregroundColor(colorScheme == .dark ? getColorForStatus(pomoTimer.getStatus(atDate: date)) : .black)
+            .foregroundColor(fgColor)
             .padding(.horizontal, 8)
             .padding(.vertical, 2)
-            .background(RoundedRectangle(cornerRadius: 5).foregroundColor(color).background(RoundedRectangle(cornerRadius: 5).offset(x: 3, y: 3).foregroundColor(color).brightness(-0.3)))
+            .background(RoundedRectangle(cornerRadius: 5).foregroundColor(bgColor).background(RoundedRectangle(cornerRadius: 5).offset(x: 3, y: 3).foregroundColor(bgColor).brightness(-0.3)))
     }
     
     @ViewBuilder
