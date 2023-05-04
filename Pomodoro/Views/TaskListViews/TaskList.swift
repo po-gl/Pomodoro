@@ -124,6 +124,7 @@ struct TaskList: View {
         Section("Archived Projects") {
             ForEach(archivedProjects) { project in
                 ProjectCellWithModifiers(project, scrollProxy: scrollProxy)
+                    .opacity(0.5)
             }
         }
         .listRowBackground(Color("BackgroundStopped")
@@ -189,7 +190,7 @@ struct TaskList: View {
             Section(section.id) {
                 ForEach(section) { taskItem in
                     TaskCellWithModifiers(taskItem, scrollProxy: scrollProxy)
-                        .opacity(0.65)
+                        .opacity(0.5)
                 }
             }
             .listRowBackground(Color("BackgroundStopped"))
