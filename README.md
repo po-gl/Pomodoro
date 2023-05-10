@@ -13,7 +13,7 @@ Features:
 - Label Pomodoro intervals with *tasks* to focus on
 - Maintain a checklist of *tasks* and *projects*
 - View and scrub through timer progress
-- View progress on the watch face with a watchOS widget
+- Check progress with iOS and watchOS widgets
 - Pixel buddies 🍅🫐🍌
 
 ---
