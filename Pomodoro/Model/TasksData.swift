@@ -111,7 +111,6 @@ extension TaskNote {
 
 fileprivate let dateFormatter: DateFormatter = {
     let formatter = DateFormatter()
-    formatter.doesRelativeDateFormatting = true
     formatter.setLocalizedDateFormatFromTemplate("MMM d y")
     return formatter
 }()
