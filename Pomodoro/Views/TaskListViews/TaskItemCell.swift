@@ -20,31 +20,38 @@ struct TaskItemCell: View {
     var body: some View {
         HStack (alignment: .top, spacing: 15) {
             Check().padding(.top, 3)
-            
-            TextField("", text: $editText, axis: .vertical)
-                .focused($focus)
-                .onSubmitWithVerticalText(with: $editText) {
-                    if editText.isEmpty {
-                        withAnimation { TasksData.delete(taskItem, context: viewContext) }
-                    } else {
-                        TasksData.editText(editText, for: taskItem, context: viewContext)
-                    }
-                }
-                .onChange(of: focus) { _ in
-                    guard !focus else { return }
-                    if editText.isEmpty {
-                        withAnimation { TasksData.delete(taskItem, context: viewContext) }
-                    } else {
-                        TasksData.editText(editText, for: taskItem, context: viewContext)
-                    }
-                }
-                .scrollToOnFocus(proxy: scrollProxy, focus: focus, id: taskItem.id)
+            MainTextField()
         }
         .padding(.vertical, 5)
         .onAppear {
             editText = taskItem.text!
         }
     }
+    
+    @ViewBuilder
+    private func MainTextField() -> some View {
+        TextField("", text: $editText, axis: .vertical)
+            .focused($focus)
+            .onChange(of: focus) { _ in
+                guard !focus else { return }
+                deleteOrEditTask()
+            }
+        
+            .onSubmitWithVerticalText(with: $editText) {
+                deleteOrEditTask()
+            }
+        
+            .scrollToOnFocus(proxy: scrollProxy, focus: focus, id: taskItem.id)
+    }
+    
+    private func deleteOrEditTask() {
+        if editText.isEmpty {
+            withAnimation { TasksData.delete(taskItem, context: viewContext) }
+        } else {
+            TasksData.editText(editText, for: taskItem, context: viewContext)
+        }
+    }
+    
     
     @ViewBuilder
     private func Check() -> some View {

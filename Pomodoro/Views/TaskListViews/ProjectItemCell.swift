@@ -19,30 +19,36 @@ struct ProjectItemCell: View {
     
     var body: some View {
         HStack (alignment: .top, spacing: 15) {
-            TextField("", text: $editText, axis: .vertical)
-                .font(.title3)
-                .focused($focus)
-                .onSubmitWithVerticalText(with: $editText) {
-                    if editText.isEmpty {
-                        withAnimation { ProjectsData.delete(project, context: viewContext) }
-                    } else {
-                        ProjectsData.editName(editText, for: project, context: viewContext)
-                    }
-                }
-                .onChange(of: focus) { _ in
-                    guard !focus else { return }
-                    if editText.isEmpty {
-                        withAnimation { ProjectsData.delete(project, context: viewContext) }
-                    } else {
-                        ProjectsData.editName(editText, for: project, context: viewContext)
-                    }
-                }
-                .scrollToOnFocus(proxy: scrollProxy, focus: focus, id: project.id)
-            
+            MainTextField()
             ProgressCheck().padding(.top, 3)
         }
         .onAppear {
             editText = project.name!
+        }
+    }
+    
+    @ViewBuilder
+    private func MainTextField() -> some View {
+        TextField("", text: $editText, axis: .vertical)
+            .font(.title3)
+            .focused($focus)
+            .onChange(of: focus) { _ in
+                guard !focus else { return }
+                deleteOrEditProject()
+            }
+        
+            .onSubmitWithVerticalText(with: $editText) {
+                deleteOrEditProject()
+            }
+        
+            .scrollToOnFocus(proxy: scrollProxy, focus: focus, id: project.id)
+    }
+    
+    private func deleteOrEditProject() {
+        if editText.isEmpty {
+            withAnimation { ProjectsData.delete(project, context: viewContext) }
+        } else {
+            ProjectsData.editName(editText, for: project, context: viewContext)
         }
     }
     
