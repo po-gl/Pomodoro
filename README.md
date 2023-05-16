@@ -19,6 +19,7 @@ Features:
 ---
 
 <p align="middle"> 
-  <img align="center" width="280" alt="iOS" src="https://user-images.githubusercontent.com/42399205/226493617-7082e935-8979-4c82-b4f4-c06c69660361.png">
+  <img align="center" width="280" alt="iOS dark" src="https://github.com/po-gl/Pomodoro/assets/42399205/28a43be6-d6a6-449d-ad30-64057a99e90a">
+  <img align="center" width="280" alt="iOS light" src="https://github.com/po-gl/Pomodoro/assets/42399205/c1f0e300-5fd5-458b-b038-5a7e345857d9">
   <img align="center" width="200" alt="watchOS" src="https://user-images.githubusercontent.com/42399205/226493632-c7e81b3e-dba4-47c1-99cc-e41acd872f77.png">
 </p>
