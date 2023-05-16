@@ -22,12 +22,14 @@ struct TasksData {
     
     
     static func addTask(_ text: String,
+                        note: String = "",
                         completed: Bool = false,
                         order: Int16 = 0,
                         date: Date = Date(),
                         context: NSManagedObjectContext) {
         let newTask = TaskNote(context: context)
         newTask.text = text
+        newTask.note = note
         newTask.completed = completed
         newTask.timestamp = date
         newTask.order = order
@@ -37,6 +39,11 @@ struct TasksData {
     static func editText(_ text: String, for task: TaskNote, context: NSManagedObjectContext) {
         task.text = text
         saveContext(context, errorMessage: "CoreData error editing task.")
+    }
+    
+    static func editNote(_ note: String, for task: TaskNote, context: NSManagedObjectContext) {
+        task.note = note
+        saveContext(context, errorMessage: "CoreData error editing task note.")
     }
     
     static func toggle(for task: TaskNote, context: NSManagedObjectContext) {

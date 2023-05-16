@@ -230,7 +230,7 @@ struct TaskList: View {
         Button(action: {
             if let taskText = taskItem.text {
                 guard !TasksData.todaysTasksContains(taskText, context: viewContext) else { return }
-                withAnimation { TasksData.addTask(taskText, context: viewContext) }
+                withAnimation { TasksData.addTask(taskText, note: taskItem.note ?? "", context: viewContext) }
             }
         }) {
             Label("Add to Today", systemImage: "arrow.uturn.up")

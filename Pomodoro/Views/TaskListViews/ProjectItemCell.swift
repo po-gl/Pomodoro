@@ -20,11 +20,19 @@ struct ProjectItemCell: View {
     var body: some View {
         HStack (alignment: .top, spacing: 15) {
             MainTextField()
-            ProgressCheck().padding(.top, 3)
+            ProgressCheck()
         }
         .onAppear {
             editText = project.name!
         }
+        
+        .onChange(of: focus) { _ in
+            guard !focus else { return }
+            deleteOrEditProject()
+        }
+        .scrollToOnFocus(proxy: scrollProxy, focus: focus, id: project.id)
+        
+        .doneButton(isPresented: focus)
     }
     
     @ViewBuilder
@@ -32,16 +40,9 @@ struct ProjectItemCell: View {
         TextField("", text: $editText, axis: .vertical)
             .font(.title3)
             .focused($focus)
-            .onChange(of: focus) { _ in
-                guard !focus else { return }
-                deleteOrEditProject()
-            }
-        
             .onSubmitWithVerticalText(with: $editText) {
                 deleteOrEditProject()
             }
-        
-            .scrollToOnFocus(proxy: scrollProxy, focus: focus, id: project.id)
     }
     
     private func deleteOrEditProject() {
@@ -55,7 +56,7 @@ struct ProjectItemCell: View {
     
     @ViewBuilder
     private func ProgressCheck() -> some View {
-        let width: Double = 20
+        let width: Double = 24
         ZStack {
             Circle().stroke(style: StrokeStyle(lineWidth: 1))
                 .opacity(project.progress == 1.0 ? 1.0 : 0.5)

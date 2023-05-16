@@ -21,36 +21,43 @@ struct AddProjectCell: View {
     var body: some View {
         HStack (alignment: .top, spacing: 15) {
             if projectName.isEmpty {
-                Plus().padding(.top, 3)
+                Plus()
             }
-            
-            TextField("", text: $projectName, axis: .vertical)
-                .font(.title3)
-                .focused($focus)
-                .onSubmitWithVerticalText(with: $projectName) {
-                    addProject()
-                }
-                .onChange(of: focus) { _ in
-                    if focus {
-                        basicHaptic()
-                    } else {
-                        addProject()
-                    }
-                }
-            
-                .onChange(of: projectName) { taskText in
-                    if taskText.isEmpty {
-                        progress = 0.0
-                    }
-                }
-            
-                .id(id)
-                .scrollToOnFocus(proxy: scrollProxy, focus: focus, id: id)
-            
+            MainTextField()
             if !projectName.isEmpty {
-                ProgressCheck().padding(.top, 3)
+                ProgressCheck()
             }
         }
+        
+        .focused($focus)
+        .onChange(of: focus) { _ in
+            if focus {
+                basicHaptic()
+            } else {
+                addProject()
+            }
+        }
+        
+        .onChange(of: projectName) { taskText in
+            if taskText.isEmpty {
+                progress = 0.0
+            }
+        }
+        
+        .id(id)
+        .scrollToOnFocus(proxy: scrollProxy, focus: focus, id: id)
+        
+        .doneButton(isPresented: focus)
+    }
+    
+    
+    @ViewBuilder
+    private func MainTextField() -> some View {
+        TextField("", text: $projectName, axis: .vertical)
+            .font(.title3)
+            .onSubmitWithVerticalText(with: $projectName) {
+                addProject()
+            }
     }
     
     private func addProject() {
@@ -64,7 +71,7 @@ struct AddProjectCell: View {
     
     @ViewBuilder
     private func Plus() -> some View {
-        let width: Double = 16
+        let width: Double = 24
         Text("+")
             .opacity(0.5)
             .frame(width: width, height: width)
@@ -72,7 +79,7 @@ struct AddProjectCell: View {
     
     @ViewBuilder
     private func ProgressCheck() -> some View {
-        let width: Double = 20
+        let width: Double = 24
         ZStack {
             Circle().stroke(style: StrokeStyle(lineWidth: 1))
                 .opacity(progress == 1.0 ? 1.0 : 0.5)
