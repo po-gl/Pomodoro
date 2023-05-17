@@ -88,6 +88,9 @@ struct AddTaskCell: View {
         Text("+")
             .opacity(0.5)
             .frame(width: width, height: width)
+            .onTapGesture {
+                focus = true
+            }
     }
     
     @ViewBuilder
