@@ -67,7 +67,7 @@ struct AddTaskCell: View {
     
     @ViewBuilder
     private func NoteTextField() -> some View {
-        TextField("Add Note", text: $noteText)
+        TextField("Add Note", text: $noteText, axis: .vertical)
             .font(.footnote)
             .foregroundColor(.secondary)
     }
