@@ -73,19 +73,22 @@ struct TasksData {
         }
     }
     
-    static func sortCompleted(_ tasks: FetchedResults<TaskNote>, context: NSManagedObjectContext) {
-        var lastUncompleted = 0
+    static func separateCompleted(_ tasks: FetchedResults<TaskNote>, context: NSManagedObjectContext) {
+        let countOfUncompleted = tasks.filter{ !$0.completed }.count
+        
+        // O(n) iterate through array, maintain two indexes
+        // - one for noncompleted starting at countOfNoncompleted-1 to 0
+        // - one for completed starting at -1 to -countOfCompleted
+        // 4 3 2 1 0 -1 -2
+        var uncompleteOrder = countOfUncompleted-1  // to 0
+        var completeOrder = -1  // to -countOfCompleted
         for task in tasks {
             if !task.completed {
-                lastUncompleted = max(lastUncompleted, Int(task.order))
-            }
-        }
-        
-        for task in tasks {
-            if task.completed {
-                if Int(task.order) <= lastUncompleted {
-                    task.order = lastUncompleted == Int16.max ? Int16.max : Int16(lastUncompleted + 1)
-                }
+                task.order = Int16(uncompleteOrder)
+                uncompleteOrder -= 1
+            } else {
+                task.order = Int16(completeOrder)
+                completeOrder -= 1
             }
         }
         

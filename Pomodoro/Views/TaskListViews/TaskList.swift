@@ -27,7 +27,7 @@ struct TaskList: View {
     private var archivedProjects: FetchedResults<Project>
                   
     
-    @FetchRequest(sortDescriptors: [SortDescriptor(\TaskNote.order), SortDescriptor(\TaskNote.timestamp, order: .reverse)],
+    @FetchRequest(sortDescriptors: [SortDescriptor(\TaskNote.order, order: .reverse), SortDescriptor(\TaskNote.timestamp, order: .forward)],
                   predicate: NSPredicate(format: "timestamp >= %@ && timestamp <= %@",
                                          Calendar.current.startOfDay(for: Date()) as CVarArg,
                                          Calendar.current.startOfDay(for: Date() + 86400) as CVarArg))
@@ -249,13 +249,13 @@ struct TaskList: View {
     
     private func sortTasks() {
         withAnimation {
-            TasksData.sortCompleted(todaysTasks, context: viewContext)
+            TasksData.separateCompleted(todaysTasks, context: viewContext)
         }
     }
     
     private func moveProjects(from source: IndexSet, to destination: Int) {
         var revisedItems: [Project] = currentProjects.map{ $0 }
-        revisedItems.move(fromOffsets: source, toOffset: destination )
+        revisedItems.move(fromOffsets: source, toOffset: destination)
 
         for reverseIndex in stride(from: revisedItems.count-1, through: 0, by: -1) {
             revisedItems[reverseIndex].order =
@@ -267,10 +267,12 @@ struct TaskList: View {
         var revisedItems: [TaskNote] = todaysTasks.map{ $0 }
         revisedItems.move(fromOffsets: source, toOffset: destination )
 
-        for reverseIndex in stride(from: revisedItems.count-1, through: 0, by: -1) {
-            revisedItems[reverseIndex].order =
+        for reverseIndex in 0..<revisedItems.count {
+            revisedItems[revisedItems.count-1-reverseIndex].order =
                 Int16(reverseIndex)
         }
+        TasksData.saveContext(viewContext)
+        
         sortTasks()
     }
     
