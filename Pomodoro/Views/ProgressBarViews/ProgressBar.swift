@@ -119,7 +119,7 @@ struct ProgressBar: View {
                             updateTaskNoteHighlights(for: i, status: status, geometry: geometry)
                         }
                 }
-                .frame(width: getBarWidth() * getProportion(i) - barOutlinePadding, height: barHeight)
+                .frame(width: max(getBarWidth() * getProportion(i) - barOutlinePadding, 0), height: barHeight)
                 .padding(.horizontal, 1)
                 .zIndex(Double(pomoTimer.order.count - i))
             }
@@ -163,7 +163,7 @@ struct ProgressBar: View {
                                   pomoTimer: pomoTimer)
                     }
                 }
-                .frame(width: getBarWidth() * getProportion(i) - barOutlinePadding, height: barHeight)
+                .frame(width: max(getBarWidth() * getProportion(i) - barOutlinePadding, 0), height: barHeight)
                 .padding(.horizontal, 1)
             }
         }
