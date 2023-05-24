@@ -15,6 +15,7 @@ struct Provider: IntentTimelineProvider {
     
     func placeholder(in context: Context) -> SimpleEntry {
         SimpleEntry(date: Date(),
+                    isPaused: false,
                     status: .work,
                     timeRemaining: PomoTimer.defaultWorkTime,
                     configuration: ConfigurationIntent())
@@ -26,6 +27,7 @@ struct Provider: IntentTimelineProvider {
         
         let now = Date()
         let entry = SimpleEntry(date: now,
+                                isPaused: pomoTimer.isPaused,
                                 status: pomoTimer.getStatus(atDate: now),
                                 timeRemaining: pomoTimer.timeRemaining(atDate: now),
                                 configuration: configuration)
@@ -87,6 +89,7 @@ struct Provider: IntentTimelineProvider {
     
     private func addEntry(for entryDate: Date, _ entries: inout [SimpleEntry], _ configuration: ConfigurationIntent, _ pomoTimer: PomoTimer) {
         let entry = SimpleEntry(date: entryDate,
+                                isPaused: pomoTimer.isPaused,
                                 status: pomoTimer.getStatus(atDate: entryDate),
                                 timeRemaining: pomoTimer.timeRemaining(atDate: entryDate),
                                 configuration: configuration)
@@ -102,6 +105,7 @@ struct Provider: IntentTimelineProvider {
 
 struct SimpleEntry: TimelineEntry {
     var date: Date
+    var isPaused: Bool
     var status: PomoStatus
     var timeRemaining: TimeInterval
     let configuration: ConfigurationIntent
@@ -128,13 +132,14 @@ struct ProgressWidgetView : View {
     var body: some View {
         ZStack {
             progressGradient().mask(
-            ProgressView(value: entry.timeRemaining, total: getTotalForStatus(entry.status)) { }
-            .progressViewStyle(.circular))
-            .widgetAccentable()
+                ProgressView(value: entry.timeRemaining, total: getTotalForStatus(entry.status)) { }
+                    .progressViewStyle(.circular))
             .overlay {
-                Text("\(getIconForStatus(entry.status))")
-                    .font(.system(size: 20))
+                Text(entry.isPaused ? "✨" : getIconForStatus(entry.status))
+                    .font(.system(size: 20, weight: .medium, design: .serif))
+                    .saturation(entry.isPaused ? 0.0 : 1.0)
             }
+            .widgetAccentable()
         }
     }
     
@@ -174,11 +179,11 @@ struct StatusWidgetView : View {
     var body: some View {
         ZStack {
             AccessoryWidgetBackground()
-            Text("\(getIconForStatus(entry.status))")
-                .font(.system(size: 20))
-            .progressViewStyle(.circular)
-            .widgetAccentable()
+            Text(entry.isPaused ? "✨" : getIconForStatus(entry.status))
+                .font(.system(size: 20, weight: .medium, design: .serif))
+                .saturation(entry.isPaused ? 0.0 : 1.0)
         }
+        .widgetAccentable()
     }
 }
 
@@ -186,9 +191,9 @@ struct StatusWidgetView : View {
 fileprivate func getIconForStatus(_ status: PomoStatus) -> String {
     switch status{
     case .work:
-        return "🌶️"
+        return "W"
     case .rest:
-        return "🍇"
+        return "R"
     case .longBreak:
         return "🏖️"
     case .end:
@@ -214,7 +219,7 @@ struct WatchWidget_Previews: PreviewProvider {
     static var pomoTimer = PomoTimer(pomos: 2, longBreak: PomoTimer.defaultBreakTime, perform: { _ in return })
     
     static var previews: some View {
-        ProgressWidgetView(entry: SimpleEntry(date: Date(), status: .work, timeRemaining: PomoTimer.defaultWorkTime, configuration: ConfigurationIntent()))
+        ProgressWidgetView(entry: SimpleEntry(date: Date(), isPaused: false, status: .work, timeRemaining: PomoTimer.defaultWorkTime, configuration: ConfigurationIntent()))
             .previewContext(WidgetPreviewContext(family: .accessoryCircular))
     }
 }
