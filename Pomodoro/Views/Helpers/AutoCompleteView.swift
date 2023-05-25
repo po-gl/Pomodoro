@@ -57,7 +57,11 @@ struct AutoCompleteView: View {
     
     
     private func tasksStartingWith(_ text: String) -> [TaskNote] {
-        return todaysTasks.filter { $0.text!.starts(with: text) && $0.text! != text }
+        let text = text.lowercased()
+        return todaysTasks.filter {
+            let taskText = $0.text!.lowercased()
+            return taskText.starts(with: text) && taskText != text
+        }
     }
 }
 
