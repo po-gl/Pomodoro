@@ -15,28 +15,17 @@ extension View {
 
 
 struct DoneButtonModifier: ViewModifier {
-    
-    @State static var showing = false
-    @State var startedShowing = false
-    
     var predicate = false
     
     func body(content: Content) -> some View {
         content
             .toolbar {
-                if !DoneButtonModifier.showing && startedShowing {
+                if predicate {
                     ToolbarItem(placement: .primaryAction) {
                         Button("Done") {
                             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                         }
                     }
-                }
-            }
-        
-            .onChange(of: predicate) { newValue in
-                if (!DoneButtonModifier.showing) || (DoneButtonModifier.showing && startedShowing) {
-                    DoneButtonModifier.showing = newValue
-                    startedShowing = newValue
                 }
             }
     }
