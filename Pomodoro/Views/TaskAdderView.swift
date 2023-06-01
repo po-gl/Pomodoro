@@ -85,11 +85,16 @@ struct TaskAdderView: View {
     @ViewBuilder
     private func TouchCircle() -> some View {
         let width: Double = isDragging ? 15 : 25
-        let strokeWidth: Double = 1
+        let strokeWidth: Double = 1.2
         let gap: Double = taskFromAdder.dragText.isEmpty ? 8 : 10
         Circle()
             .strokeBorder(style: StrokeStyle(lineWidth: strokeWidth))
             .frame(width: width)
+            .background(
+                Circle()
+                    .opacity(0.25)
+                    .frame(width: width - gap - strokeWidth)
+            )
             .overlay(
                 Circle()
                     .strokeBorder(style: StrokeStyle(lineWidth: strokeWidth))
