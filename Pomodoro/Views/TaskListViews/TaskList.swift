@@ -131,6 +131,8 @@ struct TaskList: View {
             .saturation(colorScheme == .dark ? 0.0 : 1.3))
     }
     
+    // MARK: Archived Projects section
+    
     @ViewBuilder
     private func ArchivedProjects(scrollProxy: ScrollViewProxy) -> some View {
         Section("Archived Projects") {
@@ -193,6 +195,8 @@ struct TaskList: View {
         .listRowBackground(Color("BackgroundStopped"))
         .id(todaysTasksID)
     }
+    
+    // MARK: Past Tasks section
     
     @ViewBuilder
     private func PastTasks(scrollProxy: ScrollViewProxy) -> some View {
