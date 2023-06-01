@@ -276,7 +276,7 @@ struct TaskList: View {
                 withAnimation { TasksData.addTask(taskText, note: taskItem.note ?? "", flagged: taskItem.flagged, context: viewContext) }
             }
         }) {
-            Label("Add to Today", systemImage: "arrow.uturn.up")
+            Label("Re-add", systemImage: "arrow.uturn.up")
         }.tint(.blue)
     }
     
