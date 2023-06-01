@@ -8,17 +8,25 @@
 import Foundation
 
 extension TimeInterval {
-    static var formatter = DateComponentsFormatter()
+    static let formatter: DateComponentsFormatter = {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.zeroFormattingBehavior = .pad
+        return formatter
+    }()
+    
+    static let compactFormatter: DateComponentsFormatter = {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.minute, .second]
+        formatter.zeroFormattingBehavior = .dropLeading
+        return formatter
+    }()
     
     func timerFormatted() -> String {
-        TimeInterval.formatter.allowedUnits = [.hour, .minute, .second]
-        TimeInterval.formatter.zeroFormattingBehavior = .pad
         return TimeInterval.formatter.string(from: self)!
     }
     
     func compactTimerFormatted() -> String {
-        TimeInterval.formatter.allowedUnits = [.minute, .second]
-        TimeInterval.formatter.zeroFormattingBehavior = .dropLeading
-        return TimeInterval.formatter.string(from: self)!
+        return TimeInterval.compactFormatter.string(from: self)!
     }
 }
