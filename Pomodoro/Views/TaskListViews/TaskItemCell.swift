@@ -60,6 +60,7 @@ struct TaskItemCell: View {
     @ViewBuilder
     private func MainTextField() -> some View {
         TextField("", text: $editText, axis: .vertical)
+            .foregroundColor(taskItem.timestamp?.isToday() ?? true ? .primary : .secondary)
             .onSubmitWithVerticalText(with: $editText) {
                 deleteOrEditTask()
             }

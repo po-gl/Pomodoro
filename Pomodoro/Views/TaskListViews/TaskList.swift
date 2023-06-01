@@ -200,7 +200,7 @@ struct TaskList: View {
             Section {
                 ForEach(section) { taskItem in
                     TaskCellWithModifiers(taskItem, scrollProxy: scrollProxy)
-                        .opacity(0.5)
+                        .opacity(0.7)
                 }
             } header: {
                 PastSectionHeader(for: section.id)
