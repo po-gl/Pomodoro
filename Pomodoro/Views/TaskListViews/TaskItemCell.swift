@@ -27,11 +27,16 @@ struct TaskItemCell: View {
                     NoteTextField()
                 }
             }
+            if taskItem.flagged {
+                Flag()
+            }
         }
        
         .onAppear {
             editText = taskItem.text!
             editNoteText = taskItem.note ?? ""
+            
+            focusIfJustAdded()
         }
         
         .focused($focus)
@@ -42,6 +47,14 @@ struct TaskItemCell: View {
         .scrollToOnFocus(proxy: scrollProxy, focus: focus, id: taskItem.id)
         
         .doneButton(isPresented: focus)
+    }
+    
+    private func focusIfJustAdded() {
+        if let date = taskItem.timestamp {
+            if Date.now.timeIntervalSince(date) < 0.5 {
+                focus = true
+            }
+        }
     }
     
     @ViewBuilder
@@ -82,8 +95,15 @@ struct TaskItemCell: View {
         .frame(width: width)
         .onTapGesture {
             basicHaptic()
-            TasksData.toggle(for: taskItem, context: viewContext)
+            TasksData.toggleCompleted(for: taskItem, context: viewContext)
         }
+    }
+    
+    @ViewBuilder
+    private func Flag() -> some View {
+        Image(systemName: "leaf.fill")
+            .foregroundColor(Color("BarWork"))
+            .frame(width: 20, height: 20)
     }
 }
 

@@ -24,6 +24,7 @@ struct TasksData {
     static func addTask(_ text: String,
                         note: String = "",
                         completed: Bool = false,
+                        flagged: Bool = false,
                         order: Int16 = 0,
                         date: Date = Date(),
                         context: NSManagedObjectContext) {
@@ -31,6 +32,7 @@ struct TasksData {
         newTask.text = text
         newTask.note = note
         newTask.completed = completed
+        newTask.flagged = flagged
         newTask.timestamp = date
         newTask.order = order
         saveContext(context, errorMessage: "CoreData error adding task.")
@@ -46,7 +48,7 @@ struct TasksData {
         saveContext(context, errorMessage: "CoreData error editing task note.")
     }
     
-    static func toggle(for task: TaskNote, context: NSManagedObjectContext) {
+    static func toggleCompleted(for task: TaskNote, context: NSManagedObjectContext) {
         task.completed.toggle()
         saveContext(context, errorMessage: "CoreData error toggle task completion.")
     }
@@ -54,6 +56,11 @@ struct TasksData {
     static func setCompleted(for task: TaskNote, context: NSManagedObjectContext) {
         task.completed = true
         saveContext(context, errorMessage: "CoreData error setting task completion to true.")
+    }
+    
+    static func toggleFlagged(for task: TaskNote, context: NSManagedObjectContext) {
+        task.flagged.toggle()
+        saveContext(context, errorMessage: "CoreData error toggle task flagging.")
     }
     
     
@@ -113,14 +120,15 @@ extension TaskNote {
     @objc
     public var section: String {
         if let timestamp {
-            return dateFormatter.string(from: timestamp)
+            return TaskNote.sectionFormatter.string(from: timestamp)
         }
         return "undated"
     }
+    
+    static let sectionFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.setLocalizedDateFormatFromTemplate("MMM d y")
+        return formatter
+    }()
 }
 
-fileprivate let dateFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.setLocalizedDateFormatFromTemplate("MMM d y")
-    return formatter
-}()

@@ -20,7 +20,7 @@ struct PersistenceController {
         ProjectsData.addProject("School", progress: 1.0, archived: true, context: viewContext)
         
         for i in 0..<6 {
-            TasksData.addTask("Task \(i)", completed: i == 3 ? true : false, context: viewContext)
+            TasksData.addTask("Task \(i)", completed: i == 3 ? true : false, date: Date() - 5, context: viewContext)
         }
         for i in 0..<3 {
             TasksData.addTask("Next day \(i)", date: Date() - 90000, context: viewContext)

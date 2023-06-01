@@ -42,6 +42,7 @@ struct TaskList: View {
     @AppStorage("showArchivedProjects") private var showArchivedProjects = false
     @AppStorage("showPastTasks") private var showPastTasks = false
     
+    @State private var todaysTasksID = UUID()
     
     var body: some View {
         ZStack {
@@ -182,6 +183,7 @@ struct TaskList: View {
                 .moveDisabled(true)
         }
         .listRowBackground(Color("BackgroundStopped"))
+        .id(todaysTasksID)
     }
     
     @ViewBuilder
@@ -245,11 +247,14 @@ struct TaskList: View {
                 .padding(.vertical, 3)
                 .id(taskItem.id)
             
+                .swipeActions(edge: .leading) {
+                    DeleteTaskButton(taskItem)
+                }
                 .swipeActions(edge: .trailing) {
                     if taskItem.timestamp! < Calendar.current.startOfDay(for: Date()) {
                         ReAddToTodaysTasksButton(taskItem)
                     }
-                    DeleteTaskButton(taskItem)
+                    FlagTaskButton(taskItem)
                 }
             
                 .onChange(of: taskItem.completed) { completed in
@@ -268,11 +273,20 @@ struct TaskList: View {
         Button(action: {
             if let taskText = taskItem.text {
                 guard !TasksData.todaysTasksContains(taskText, context: viewContext) else { return }
-                withAnimation { TasksData.addTask(taskText, note: taskItem.note ?? "", context: viewContext) }
+                withAnimation { TasksData.addTask(taskText, note: taskItem.note ?? "", flagged: taskItem.flagged, context: viewContext) }
             }
         }) {
             Label("Add to Today", systemImage: "arrow.uturn.up")
         }.tint(.blue)
+    }
+    
+    @ViewBuilder
+    private func FlagTaskButton(_ taskItem: TaskNote) -> some View {
+        Button(action: {
+            withAnimation { TasksData.toggleFlagged(for: taskItem, context: viewContext) }
+        }) {
+            Label(taskItem.flagged ? "Unflag" : "Flag", systemImage: taskItem.flagged ? "flag.slash.fill" : "flag.fill")
+        }.tint(Color("BarWork"))
     }
     
     @ViewBuilder
