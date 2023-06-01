@@ -62,6 +62,7 @@ struct ContentView: View {
                     }
                 }
         }
+        .navigationViewStyle(.stack)
         .tint(Color("NavigationAccent"))
     }
     

@@ -54,8 +54,19 @@ struct TaskList: View {
                 .background(Color("BackgroundStopped").ignoresSafeArea())
                 .scrollContentBackground(.hidden)
                 .toolbarBackground(Color("BackgroundStopped").opacity(0.6), for: .navigationBar)
+                .toolbarBackground(Color("BackgroundStopped").opacity(0.6), for: .bottomBar)
                 
                 .scrollDismissesKeyboard(.interactively)
+                
+                .toolbar {
+                    ToolbarItem(placement: .bottomBar) {
+                        HStack {
+                            AddTaskButton(scrollProxy: scrollProxy, scrollToID: todaysTasksID)
+                            Spacer()
+                        }
+                        .padding(.horizontal, 5)
+                    }
+                }
             }
         }
         .navigationTitle(dayFormatter.string(from: Date()))
@@ -178,9 +189,6 @@ struct TaskList: View {
                 TaskCellWithModifiers(taskItem, scrollProxy: scrollProxy)
             }
             .onMove(perform: moveTasks)
-            
-            AddTaskCell(scrollProxy: scrollProxy)
-                .moveDisabled(true)
         }
         .listRowBackground(Color("BackgroundStopped"))
         .id(todaysTasksID)
