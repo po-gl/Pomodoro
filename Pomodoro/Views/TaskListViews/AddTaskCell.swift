@@ -97,7 +97,7 @@ struct AddTaskCell: View {
     private func Check() -> some View {
         let width: Double = 20
         ZStack {
-            Circle().stroke(style: StrokeStyle(lineWidth: 1))
+            Circle().stroke(style: StrokeStyle(lineWidth: 1.2))
                 .opacity(completed ? 1.0 : 0.5)
             Circle().frame(width: width/1.5)
                 .opacity(completed ? 1.0 : 0.0)

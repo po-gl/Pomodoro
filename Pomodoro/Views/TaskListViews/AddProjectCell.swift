@@ -84,7 +84,7 @@ struct AddProjectCell: View {
     private func ProgressCheck() -> some View {
         let width: Double = 24
         ZStack {
-            Circle().stroke(style: StrokeStyle(lineWidth: 1))
+            Circle().stroke(style: StrokeStyle(lineWidth: 1.2))
                 .opacity(progress == 1.0 ? 1.0 : 0.5)
             ZStack {
                 Circle()
