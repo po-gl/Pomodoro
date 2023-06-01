@@ -191,9 +191,23 @@ struct TaskList: View {
                 TaskCellWithModifiers(taskItem, scrollProxy: scrollProxy)
             }
             .onMove(perform: moveTasks)
+            
+            if todaysTasks.isEmpty {
+                TodaysTasksEmptyState()
+            }
         }
         .listRowBackground(Color("BackgroundStopped"))
         .id(todaysTasksID)
+    }
+    
+    @ViewBuilder
+    private func TodaysTasksEmptyState() -> some View {
+        HStack {
+            Spacer()
+            Text("No New Tasks")
+                .foregroundColor(.secondary)
+            Spacer()
+        }
     }
     
     // MARK: Past Tasks section
