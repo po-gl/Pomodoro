@@ -59,7 +59,7 @@ struct TaskList: View {
             }
         }
         .navigationTitle(dayFormatter.string(from: Date()))
-        .navigationBarTitleDisplayMode(.large)
+//        .navigationBarTitleDisplayMode(.large)
         
         .toolbar {
             Menu {
