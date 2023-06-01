@@ -13,7 +13,7 @@ struct TopButton: View {
     
     
     var body: some View {
-        TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
+        TimelineView(PeriodicTimelineSchedule(from: Date(), by: pomoTimer.isPaused ? 60.0 : 1.0)) { context in
             VStack {
                 HStack {
                     Spacer()
