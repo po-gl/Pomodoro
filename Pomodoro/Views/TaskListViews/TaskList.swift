@@ -155,8 +155,8 @@ struct TaskList: View {
         Button(action: {
             withAnimation { ProjectsData.toggleArchive(project, context: viewContext) }
         }) {
-            Label(project.archived ? "Unarchive" : "Archive", systemImage: "archivebox.fill")
-        }.tint(project.archived ? Color("BarWork") : Color("End"))
+            Label(project.archived ? "Unarchive" : "Archive", systemImage: project.archived ? "arrow.uturn.up" : "archivebox.fill")
+        }.tint(project.archived ? .blue : Color("End"))
     }
     
     @ViewBuilder
