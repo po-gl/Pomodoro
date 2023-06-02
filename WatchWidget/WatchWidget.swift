@@ -15,7 +15,7 @@ struct Provider: IntentTimelineProvider {
     
     func placeholder(in context: Context) -> SimpleEntry {
         SimpleEntry(date: Date(),
-                    isPaused: false,
+                    isPaused: true,
                     status: .work,
                     timeRemaining: PomoTimer.defaultWorkTime,
                     configuration: ConfigurationIntent())
