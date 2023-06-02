@@ -66,12 +66,14 @@ struct Background: View {
             SoftGradient()
                 .frame(height: 30)
                 .rotationEffect(.degrees(colorScheme == .dark ? 180 : 0))
-                .offset(y: colorScheme == .dark ? -25 : 0)
+                .offset(y: colorScheme == .dark ? -10 : 15)
             Image("PickGradient")
                 .frame(width: 0, height: 0)
-                .offset(y: 20)
+                .offset(y: colorScheme == .dark ? 0 : 35)
                 .rotationEffect(.degrees(colorScheme == .dark ? 180 : 0))
         }
+        .compositingGroup()
+        .frame(height: 0)
     }
     
     @ViewBuilder
