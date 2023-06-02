@@ -62,10 +62,22 @@ struct Background: View {
     
     @ViewBuilder
     private func PickGradient() -> some View {
-        Image("PickGradient")
-            .frame(width: 0, height: 0)
-            .offset(y: 20)
-            .rotationEffect(.degrees(colorScheme == .dark ? 180 : 0))
+        ZStack (alignment: .top) {
+            SoftGradient()
+                .frame(height: 30)
+                .rotationEffect(.degrees(colorScheme == .dark ? 180 : 0))
+                .offset(y: colorScheme == .dark ? -25 : 0)
+            Image("PickGradient")
+                .frame(width: 0, height: 0)
+                .offset(y: 20)
+                .rotationEffect(.degrees(colorScheme == .dark ? 180 : 0))
+        }
+    }
+    
+    @ViewBuilder
+    private func SoftGradient() -> some View {
+        Rectangle()
+            .fill(LinearGradient(colors: [.clear, .black], startPoint: .bottom, endPoint: .top))
     }
     
     
