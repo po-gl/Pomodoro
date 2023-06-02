@@ -135,9 +135,12 @@ struct ProgressWidgetView : View {
                 ProgressView(value: entry.timeRemaining, total: getTotalForStatus(entry.status)) { }
                     .progressViewStyle(.circular))
             .overlay {
-                Text(entry.isPaused ? "✨" : getIconForStatus(entry.status))
-                    .font(.system(size: 20, weight: .medium, design: .serif))
-                    .saturation(entry.isPaused ? 0.0 : 1.0)
+                if entry.isPaused {
+                    Leaf(size: 16)
+                } else {
+                    Text(getIconForStatus(entry.status))
+                        .font(.system(size: 20, weight: .medium, design: .serif))
+                }
             }
             .widgetAccentable()
         }
@@ -179,14 +182,25 @@ struct StatusWidgetView : View {
     var body: some View {
         ZStack {
             AccessoryWidgetBackground()
-            Text(entry.isPaused ? "✨" : getIconForStatus(entry.status))
-                .font(.system(size: 20, weight: .medium, design: .serif))
-                .saturation(entry.isPaused ? 0.0 : 1.0)
+            if entry.isPaused {
+                Leaf(size: 16)
+            } else {
+                Text(getIconForStatus(entry.status))
+                    .font(.system(size: 20, weight: .medium, design: .serif))
+            }
         }
         .widgetAccentable()
     }
 }
 
+@ViewBuilder
+func Leaf(size: Double = 16) -> some View {
+    Image(systemName: "leaf.fill")
+        .resizable()
+        .frame(width: size, height: size)
+        .foregroundColor(Color(hex: 0x31E377))
+        .saturation(0.6)
+}
 
 fileprivate func getIconForStatus(_ status: PomoStatus) -> String {
     switch status{
@@ -219,7 +233,7 @@ struct WatchWidget_Previews: PreviewProvider {
     static var pomoTimer = PomoTimer(pomos: 2, longBreak: PomoTimer.defaultBreakTime, perform: { _ in return })
     
     static var previews: some View {
-        ProgressWidgetView(entry: SimpleEntry(date: Date(), isPaused: false, status: .work, timeRemaining: PomoTimer.defaultWorkTime, configuration: ConfigurationIntent()))
+        ProgressWidgetView(entry: SimpleEntry(date: Date(), isPaused: true, status: .work, timeRemaining: PomoTimer.defaultWorkTime, configuration: ConfigurationIntent()))
             .previewContext(WidgetPreviewContext(family: .accessoryCircular))
     }
 }

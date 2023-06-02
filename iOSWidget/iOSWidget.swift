@@ -30,9 +30,12 @@ struct iOSProgressWidgetView : View {
     var body: some View {
         ZStack {
             ProgressView(value: entry.timeRemaining, total: getTotalForStatus(entry.status)) {
-                Text(entry.isPaused ? "✨" : getIconForStatus(entry.status))
-                    .font(.system(size: 22, weight: .medium, design: .serif))
-                    .saturation(entry.isPaused ? 0.0 : 1.0)
+                if entry.isPaused {
+                    Leaf(size: 20)
+                } else {
+                    Text(getIconForStatus(entry.status))
+                        .font(.system(size: 22, weight: .medium, design: .serif))
+                }
             }
             .progressViewStyle(.circular)
             .widgetAccentable()
