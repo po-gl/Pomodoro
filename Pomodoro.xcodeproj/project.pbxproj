@@ -677,8 +677,8 @@
 		61C4F02029DF4CBC00BC70C7 /* ProgressBarViews */ = {
 			isa = PBXGroup;
 			children = (
-				618750FC29BB7A0B0017BF8E /* TaskLabel.swift */,
 				61F4220E2900AC350036400A /* ProgressBar.swift */,
+				618750FC29BB7A0B0017BF8E /* TaskLabel.swift */,
 			);
 			path = ProgressBarViews;
 			sourceTree = "<group>";
