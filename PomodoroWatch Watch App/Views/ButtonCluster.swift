@@ -27,6 +27,7 @@ struct ButtonCluster: View {
         Image(systemName: withFill("arrow.counterclockwise.circle"))
             .accessibilityIdentifier("resetButton")
             .foregroundColor(pomoTimer.isPaused ? .orange : Color(hex: 0x333333))
+            .overlay(softLightOverlay())
             .font(.system(size: 40))
             .onTapGesture {
                 guard isEnabled else { return }
@@ -46,6 +47,7 @@ struct ButtonCluster: View {
         Image(systemName: pomoTimer.isPaused ? withFill("play.circle") : withFill("pause.circle"))
             .accessibilityIdentifier("playPauseButton")
             .foregroundColor(.accentColor)
+            .overlay(softLightOverlay())
             .font(.system(size: 40))
             .onTapGesture {
                 guard isEnabled else { return }
@@ -55,6 +57,13 @@ struct ButtonCluster: View {
                 }
             }
             .disabled(!isEnabled)
+    }
+    
+    @ViewBuilder
+    private func softLightOverlay() -> some View {
+        LinearGradient(colors: [.clear, .white], startPoint: .leading, endPoint: .trailing)
+            .clipShape(Circle())
+            .blendMode(.softLight)
     }
     
     private func withFill(_ systemName: String) -> String {
