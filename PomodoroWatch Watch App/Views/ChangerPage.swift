@@ -17,7 +17,7 @@ struct ChangerPage: View {
             VStack(alignment: .center) {
                 Text("Pomodoros")
                     .foregroundColor(Color("BarWork"))
-                    .font(.system(size: 24, weight: .light, design: .monospaced))
+                    .font(.system(size: 24, weight: .semibold, design: .monospaced))
                 Divider()
                 CurrentPomoCount()
             }
@@ -33,8 +33,12 @@ struct ChangerPage: View {
     
     @ViewBuilder
     private func CurrentPomoCount() -> some View {
-        Text("\(Array(repeating: "🍅", count: pomoTimer.pomoCount).joined(separator: ""))")
-            .font(.system(size: 22, weight: .regular))
+        HStack (spacing: 0) {
+            ForEach(0..<pomoTimer.pomoCount, id: \.self) { _ in
+                Text("🍅")
+                    .font(.system(size: 22, weight: .regular))
+            }
+        }
     }
     
     @ViewBuilder
