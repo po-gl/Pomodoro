@@ -19,15 +19,9 @@ struct TimerDisplay: View {
                     HStack {
                         StatusBox(at: context.date)
                         EndingTime(at: context.date)
-                            .offset(y: 4)
-                        
+                            .offset(y: 5)
                     }
-                    HStack {
-                        Spacer()
-                        StatusIcon(at: context.date)
-                            .padding(.trailing, 15)
-                            .offset(y: -15)
-                    }
+                    .offset(y: -8)
                 }
                 TimerView(at: context.date)
             }
@@ -44,7 +38,7 @@ struct TimerDisplay: View {
             .foregroundColor(isLuminanceReduced ? getColorForStatus(pomoTimer.getStatus(atDate: date)) : .black)
             .padding(.horizontal, 4)
             .background(RoundedRectangle(cornerRadius: 5).foregroundColor(color).background(RoundedRectangle(cornerRadius: 5).offset(x: 3, y: 3).foregroundColor(color).brightness(-0.3)))
-            .font(.system(size: 20, weight: .regular, design: .monospaced))
+            .font(.system(size: 24, weight: .regular, design: .serif))
     }
     
     @ViewBuilder
@@ -55,12 +49,6 @@ struct TimerDisplay: View {
                 .monospacedDigit()
                 .opacity(pomoTimer.isPaused ? 0.5 : 0.8)
         }
-    }
-    
-    @ViewBuilder
-    private func StatusIcon(at date: Date) -> some View {
-        Text(getIconForStatus(status: pomoTimer.getStatus(atDate: date)))
-            .font(.system(size: 14))
     }
     
     @ViewBuilder
