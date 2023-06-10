@@ -14,7 +14,7 @@ struct iOSProgressWidget: Widget {
     let kind: String = "ProgressWatchWidget"
 
     var body: some WidgetConfiguration {
-        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider(shouldAddMinuteByMinuteEntries: true)) { entry in
+        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider(withProgress: true)) { entry in
             iOSProgressWidgetView(entry: entry)
                 .unredacted()
         }
@@ -29,7 +29,7 @@ struct iOSProgressWidgetView : View {
     
     var body: some View {
         ZStack {
-            ProgressView(value: entry.timeRemaining, total: getTotalForStatus(entry.status)) {
+            CircularProgressView(timerInterval: entry.timerInterval, isPaused: entry.isPaused) {
                 if entry.isPaused {
                     Leaf(size: 20)
                 } else {
@@ -41,6 +41,17 @@ struct iOSProgressWidgetView : View {
             .widgetAccentable()
         }
     }
+    
+    @ViewBuilder
+    func CircularProgressView(timerInterval: ClosedRange<Date>, isPaused: Bool, @ViewBuilder label: () -> some View) -> some View {
+        if !isPaused {
+            ProgressView(timerInterval: timerInterval, countsDown: true, label: {}, currentValueLabel: label)
+                .progressViewStyle(.circular)
+        } else {
+            ProgressView(value: 1.0, label: label)
+                .progressViewStyle(.circular)
+        }
+    }
 }
 
 
@@ -49,7 +60,7 @@ struct iOSWidget: Widget {
     let kind: String = "iOSWidget"
 
     var body: some WidgetConfiguration {
-        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider(shouldAddMinuteByMinuteEntries: true)) { entry in
+        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider(withProgress: true)) { entry in
             iOSWidgetEntryView(entry: entry)
                 .unredacted()
         }
@@ -69,7 +80,7 @@ struct iOSWidgetEntryView : View {
                     .font(.title2).fontWeight(.light).fontDesign(.monospaced)
                     .foregroundColor(getColorForStatus(entry.status))
                 HStack(spacing: 8) {
-                    Text("\(entry.timeRemaining.compactTimerFormatted())")
+                    Text(timerInterval: entry.timerInterval, pauseTime: entry.isPaused ? entry.timerInterval.lowerBound : nil)
                         .foregroundColor(.white)
                         .font(.title).fontWeight(.regular)
                         .monospacedDigit()
@@ -126,16 +137,18 @@ fileprivate func getTotalForStatus(_ status: PomoStatus) -> Double {
 
 struct iOSWidget_Previews: PreviewProvider {
     static var pomoTimer = PomoTimer(pomos: 2, longBreak: PomoTimer.defaultBreakTime, perform: { _ in return })
+    static let timerInterval = Date()...Date().addingTimeInterval(60)
     
     static var previews: some View {
+        
         Group {
-            iOSProgressWidgetView(entry: SimpleEntry(date: Date(), isPaused: false, status: .rest, timeRemaining: PomoTimer.defaultWorkTime, configuration: ConfigurationIntent()))
+            iOSProgressWidgetView(entry: PomoEntry(date: Date(), isPaused: false, status: .rest, timerInterval: timerInterval, configuration: ConfigurationIntent()))
                 .previewContext(WidgetPreviewContext(family: .accessoryCircular))
-            iOSWidgetEntryView(entry: SimpleEntry(date: Date(), isPaused: false, status: .work, timeRemaining: PomoTimer.defaultWorkTime, configuration: ConfigurationIntent()))
+            iOSWidgetEntryView(entry: PomoEntry(date: Date(), isPaused: false, status: .work, timerInterval: timerInterval, configuration: ConfigurationIntent()))
                 .previewContext(WidgetPreviewContext(family: .systemSmall))
-            iOSWidgetEntryView(entry: SimpleEntry(date: Date(), isPaused: false, status: .work, timeRemaining: PomoTimer.defaultWorkTime, configuration: ConfigurationIntent()))
+            iOSWidgetEntryView(entry: PomoEntry(date: Date(), isPaused: false, status: .work, timerInterval: timerInterval, configuration: ConfigurationIntent()))
                 .previewContext(WidgetPreviewContext(family: .systemMedium))
-            iOSWidgetEntryView(entry: SimpleEntry(date: Date(), isPaused: false, status: .work, timeRemaining: PomoTimer.defaultWorkTime, configuration: ConfigurationIntent()))
+            iOSWidgetEntryView(entry: PomoEntry(date: Date(), isPaused: false, status: .work, timerInterval: timerInterval, configuration: ConfigurationIntent()))
                 .previewContext(WidgetPreviewContext(family: .systemLarge))
         }
     }

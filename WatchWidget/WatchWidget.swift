@@ -11,104 +11,91 @@ import Intents
 
 struct Provider: IntentTimelineProvider {
     
-    let shouldAddMinuteByMinuteEntries: Bool
+    let withProgress: Bool
     
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(),
-                    isPaused: true,
-                    status: .work,
-                    timeRemaining: PomoTimer.defaultWorkTime,
-                    configuration: ConfigurationIntent())
+    func placeholder(in context: Context) -> PomoEntry {
+        let now = Date()
+        return PomoEntry(date: now,
+                         isPaused: true,
+                         status: .work,
+                         timerInterval: now...now.addingTimeInterval(PomoTimer.defaultWorkTime),
+                         configuration: ConfigurationIntent())
     }
 
-    func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
+    func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (PomoEntry) -> ()) {
         let pomoTimer = PomoTimer()
         pomoTimer.restoreFromUserDefaults()
         
         let now = Date()
-        let entry = SimpleEntry(date: now,
-                                isPaused: pomoTimer.isPaused,
-                                status: pomoTimer.getStatus(atDate: now),
-                                timeRemaining: pomoTimer.timeRemaining(atDate: now),
-                                configuration: configuration)
+        let entry = PomoEntry.new(for: now, pomoTimer, configuration)
         completion(entry)
     }
 
-    func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> ()) {
-        var entries: [SimpleEntry] = []
+    func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<PomoEntry>) -> ()) {
+        var entries: [PomoEntry] = []
         let pomoTimer = PomoTimer()
         pomoTimer.restoreFromUserDefaults()
         
         let now = Date()
-        addEntry(for: now, &entries, configuration, pomoTimer)
+        entries.append(PomoEntry.new(for: now, pomoTimer, configuration))
 
-        addTransitionEntries(&entries, configuration, pomoTimer)
-        
-        if shouldAddMinuteByMinuteEntries {
-            addByMinuteEntries(&entries, configuration, pomoTimer)
+        if !pomoTimer.isPaused {
+            let transitionEntries = addTransitionEntries(pomoTimer, configuration)
+            entries.append(contentsOf: transitionEntries)
         }
-
+        
         let timeline = Timeline(entries: entries, policy: .atEnd)
         completion(timeline)
     }
     
-    
-    private let work = PomoTimer.defaultWorkTime
-    private let rest = PomoTimer.defaultRestTime
-    private let breakTime = PomoTimer.defaultBreakTime
-    
-    
-    private func addTransitionEntries(_ entries: inout [SimpleEntry], _ configuration: ConfigurationIntent, _ pomoTimer: PomoTimer) {
-        let currentDate = Date()
-        var runningTime = 0.0
-        for i in 0..<(pomoTimer.pomoCount-1) * 2 {
-            let workOrRest = i % 2 == 0 ? work : rest
-            runningTime += workOrRest + 1.0
+    private func addTransitionEntries(_ pomoTimer: PomoTimer, _ configuration: ConfigurationIntent) -> [PomoEntry] {
+        var entries: [PomoEntry] = []
+        
+        let now = Date()
+        let offset = 1.0
+        var runningDate = now
+
+        let limit = pomoTimer.pomoCount * 2 + 1
+        var i = 0
+        
+        repeat {
+            runningDate = runningDate.addingTimeInterval(pomoTimer.timeRemaining(atDate: runningDate)+offset)
+            i += 1
+            entries.append(PomoEntry.new(for: runningDate, pomoTimer, configuration))
             
-            let entryDate = currentDate.addingTimeInterval(runningTime)
-            addEntry(for: entryDate, &entries, configuration, pomoTimer)
-        }
+        } while pomoTimer.timeRemaining(atDate: runningDate) > 0  && i < limit
         
-        runningTime += breakTime + 1.0
-        let entryDate = currentDate.addingTimeInterval(runningTime)
-        addEntry(for: entryDate, &entries, configuration, pomoTimer)
-    }
-    
-    
-    private func addByMinuteEntries(_ entries: inout [SimpleEntry], _ configuration: ConfigurationIntent, _ pomoTimer: PomoTimer) {
-        let totalSeconds = (work + 1.0) * Double(pomoTimer.pomoCount) + (rest + 1.0) * Double(pomoTimer.pomoCount) + (breakTime + 1.0)
-        let totalMinutes = totalSeconds / 60.0
-        
-        let currentDate = Date()
-        for timeOffset in 0 ..< Int(totalMinutes)-1 {
-            let entryDate = Calendar.current.date(byAdding: .minute, value: timeOffset, to: currentDate)!
-            addEntry(for: entryDate, &entries, configuration, pomoTimer)
-        }
-    }
-    
-    
-    private func addEntry(for entryDate: Date, _ entries: inout [SimpleEntry], _ configuration: ConfigurationIntent, _ pomoTimer: PomoTimer) {
-        let entry = SimpleEntry(date: entryDate,
-                                isPaused: pomoTimer.isPaused,
-                                status: pomoTimer.getStatus(atDate: entryDate),
-                                timeRemaining: pomoTimer.timeRemaining(atDate: entryDate),
-                                configuration: configuration)
-        entries.append(entry)
+        return entries
     }
 
     func recommendations() -> [IntentRecommendation<ConfigurationIntent>] {
-        let description = shouldAddMinuteByMinuteEntries ? "Status with Progress" : "Status"
+        let description = withProgress ? "Status with Progress" : "Status"
         return [ IntentRecommendation(intent: ConfigurationIntent(), description: description) ]
     }
 }
 
 
-struct SimpleEntry: TimelineEntry {
+struct PomoEntry: TimelineEntry {
     var date: Date
     var isPaused: Bool
     var status: PomoStatus
-    var timeRemaining: TimeInterval
+    var timerInterval: ClosedRange<Date>
     let configuration: ConfigurationIntent
+    
+    static func new(for entryDate: Date, _ pomoTimer: PomoTimer, _ configuration: ConfigurationIntent) -> PomoEntry {
+        let isPaused = pomoTimer.isPaused
+        let status = pomoTimer.getStatus(atDate: entryDate)
+        
+        let timeRemaining = pomoTimer.timeRemaining(atDate: entryDate)
+        let timeStart = entryDate.addingTimeInterval(timeRemaining - getTotalForStatus(status))
+        let timeEnd = entryDate.addingTimeInterval(timeRemaining)
+        
+        return PomoEntry(date: entryDate,
+                         isPaused: isPaused,
+                         status: status,
+                         timerInterval: timeStart...timeEnd,
+                         configuration: configuration)
+    }
 }
 
 
@@ -116,7 +103,7 @@ struct ProgressWatchWidget: Widget {
     let kind: String = "ProgressWatchWidget"
 
     var body: some WidgetConfiguration {
-        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider(shouldAddMinuteByMinuteEntries: true)) { entry in
+        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider(withProgress: true)) { entry in
             ProgressWidgetView(entry: entry)
                 .unredacted()
         }
@@ -132,8 +119,8 @@ struct ProgressWidgetView : View {
     var body: some View {
         ZStack {
             progressGradient().mask(
-                ProgressView(value: entry.timeRemaining, total: getTotalForStatus(entry.status)) { }
-                    .progressViewStyle(.circular))
+                CircularProgressView(timerInterval: entry.timerInterval, isPaused: entry.isPaused)
+            )
             .overlay {
                 if entry.isPaused {
                     Leaf(size: 16)
@@ -143,6 +130,17 @@ struct ProgressWidgetView : View {
                 }
             }
             .widgetAccentable()
+        }
+    }
+    
+    @ViewBuilder
+    func CircularProgressView(timerInterval: ClosedRange<Date>, isPaused: Bool) -> some View {
+        if !isPaused {
+            ProgressView(timerInterval: timerInterval, countsDown: true, label: {}, currentValueLabel: {})
+                .progressViewStyle(.circular)
+        } else {
+            ProgressView(value: 1.0)
+                .progressViewStyle(.circular)
         }
     }
     
@@ -166,7 +164,7 @@ struct StatusWatchWidget: Widget {
     let kind: String = "StatusWatchWidget"
 
     var body: some WidgetConfiguration {
-        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider(shouldAddMinuteByMinuteEntries: false)) { entry in
+        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider(withProgress: false)) { entry in
             StatusWidgetView(entry: entry)
                 .unredacted()
         }
@@ -231,9 +229,10 @@ fileprivate func getTotalForStatus(_ status: PomoStatus) -> Double {
 
 struct WatchWidget_Previews: PreviewProvider {
     static var pomoTimer = PomoTimer(pomos: 2, longBreak: PomoTimer.defaultBreakTime, perform: { _ in return })
+    static let timerInterval = Date()...Date().addingTimeInterval(60)
     
     static var previews: some View {
-        ProgressWidgetView(entry: SimpleEntry(date: Date(), isPaused: true, status: .work, timeRemaining: PomoTimer.defaultWorkTime, configuration: ConfigurationIntent()))
+        ProgressWidgetView(entry: PomoEntry(date: Date(), isPaused: false, status: .work, timerInterval: timerInterval, configuration: ConfigurationIntent()))
             .previewContext(WidgetPreviewContext(family: .accessoryCircular))
     }
 }
