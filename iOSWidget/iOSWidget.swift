@@ -29,7 +29,7 @@ struct iOSProgressWidgetView : View {
     
     var body: some View {
         ZStack {
-            CircularProgressView(timerInterval: entry.timerInterval, isPaused: entry.isPaused) {
+            CircularProgressView() {
                 if entry.isPaused {
                     Leaf(size: 20)
                 } else {
@@ -43,12 +43,13 @@ struct iOSProgressWidgetView : View {
     }
     
     @ViewBuilder
-    func CircularProgressView(timerInterval: ClosedRange<Date>, isPaused: Bool, @ViewBuilder label: () -> some View) -> some View {
-        if !isPaused {
-            ProgressView(timerInterval: timerInterval, countsDown: true, label: {}, currentValueLabel: label)
+    func CircularProgressView(@ViewBuilder label: () -> some View) -> some View {
+        if !entry.isPaused {
+            ProgressView(timerInterval: entry.timerInterval, countsDown: true, label: {}, currentValueLabel: label)
                 .progressViewStyle(.circular)
         } else {
-            ProgressView(value: 1.0, label: label)
+            let progressPercent = (entry.timerInterval.upperBound.timeIntervalSince1970 - entry.date.timeIntervalSince1970) / getTotalForStatus(entry.status)
+            ProgressView(value: progressPercent, label: label)
                 .progressViewStyle(.circular)
         }
     }
