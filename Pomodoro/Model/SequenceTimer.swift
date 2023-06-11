@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-class SequenceTimer: ObservableObject {
+class SequenceTimer: ObservableObject, Codable {
     @Published var isPaused: Bool = true
     
     private var startTime = Date()
@@ -206,6 +206,37 @@ class SequenceTimer: ObservableObject {
         } else {
             timer.invalidate()
         }
+    }
+    
+    // Note that action closure is not encoded/decoded
+    required init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        isPaused = try values.decode(Bool.self, forKey: .isPaused)
+        startTime = try values.decode(Date.self, forKey: .startTime)
+        timeAmounts = try values.decode([TimeInterval].self, forKey: .timeAmounts)
+        pauseStart = try values.decode(Date.self, forKey: .pauseStart)
+        pauseOffset = try values.decode(TimeInterval.self, forKey: .pauseOffset)
+        scrubOffset = try values.decode(TimeInterval.self, forKey: .scrubOffset)
+        action = { _ in }
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(isPaused, forKey: .isPaused)
+        try container.encode(startTime, forKey: .startTime)
+        try container.encode(timeAmounts, forKey: .timeAmounts)
+        try container.encode(pauseStart, forKey: .pauseStart)
+        try container.encode(pauseOffset, forKey: .pauseOffset)
+        try container.encode(scrubOffset, forKey: .scrubOffset)
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case isPaused
+        case startTime
+        case timeAmounts
+        case pauseStart
+        case pauseOffset
+        case scrubOffset
     }
 }
 
