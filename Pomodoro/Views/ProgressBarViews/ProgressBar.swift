@@ -47,6 +47,7 @@ struct ProgressBar: View {
             .onChange(of: scenePhase) { newPhase in
                 if newPhase == .active {
                     taskNotes.restoreFromUserDefaults()
+                    taskNotes.setTaskAmount(for: pomoTimer)
                 } else if newPhase == .inactive {
                     taskNotes.saveToUserDefaults()
                 }
