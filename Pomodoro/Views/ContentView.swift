@@ -8,6 +8,8 @@
 import SwiftUI
 import CoreHaptics
 import WidgetKit
+import WatchConnectivity
+import Combine
 
 struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
@@ -20,6 +22,7 @@ struct ContentView: View {
     
     @StateObject var taskFromAdder = DraggableTask()
     
+    @State var didReceiveSyncFromWatchConnection = false
     
     init() {
         pomoTimer = PomoTimer(pomos: 4, longBreak: PomoTimer.defaultBreakTime) { status in
@@ -40,19 +43,34 @@ struct ContentView: View {
                 }
             
                 .onChange(of: scenePhase) { newPhase in
+                    print("Phase \(newPhase)")
                     if newPhase == .active {
                         pomoTimer.restoreFromUserDefaults()
                         cancelPendingNotifications()
                         EndTimerHandler.shared.haptics.prepareHaptics()
+                        setupWatchConnection()
                     } else if newPhase == .inactive || newPhase == .background {
                         pomoTimer.saveToUserDefaults()
                         WidgetCenter.shared.reloadAllTimelines()
-                        Task { await setupNotifications(pomoTimer) }
+                        if !didReceiveSyncFromWatchConnection {
+                            Task { await setupNotifications(pomoTimer) }
+                        }
                     }
                 }
             
                 .onChange(of: pomoTimer.isPaused) { _ in
                     WidgetCenter.shared.reloadAllTimelines()
+                    let wcSent = updateWatchConnection(pomoTimer)
+                    didReceiveSyncFromWatchConnection = !wcSent
+                }
+            
+                .onReceive(Publishers.wcSessionDataDidFlow) { timer in
+                    if let timer {
+                        print("iOS received pomoTimer.pomoCount=\(timer.pomoCount) isPaused=\(timer.isPaused)")
+                        pomoTimer.sync(with: timer)
+                        pomoTimer.saveToUserDefaults()
+                        didReceiveSyncFromWatchConnection = true
+                    }
                 }
             
                 .onOpenURL { url in

@@ -7,11 +7,15 @@
 
 import SwiftUI
 import WidgetKit
+import WatchConnectivity
+import Combine
 
 struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.isLuminanceReduced) private var isLuminanceReduced
     @ObservedObject var pomoTimer: PomoTimer
+    
+    @State var didReceiveSyncFromWatchConnection = false
     
     init() {
         pomoTimer = PomoTimer(pomos: 4, longBreak: PomoTimer.defaultBreakTime) { status in
@@ -29,22 +33,24 @@ struct ContentView: View {
         .opacity(isLuminanceReduced ? 0.6 : 1.0)
         .onAppear {
             getNotificationPermissions()
-            BackgroundSession.shared.startIfUnpaused(for: pomoTimer)
+            startBackgroundSessionIfDidNotReceiveWCSync()
         }
         .onChange(of: scenePhase) { newPhase in
+            print("Phase \(newPhase)")
             if newPhase == .active {
-                print("Active")
                 pomoTimer.restoreFromUserDefaults()
                 cancelPendingNotifications()
+                setupWatchConnection()
                 
                 BackgroundSession.shared.stop()
-                BackgroundSession.shared.startIfUnpaused(for: pomoTimer)
+                startBackgroundSessionIfDidNotReceiveWCSync()
                 
             } else if newPhase == .inactive || newPhase == .background {
-                print("Inactive")
                 pomoTimer.saveToUserDefaults()
-                Task { await setupNotifications(pomoTimer) }
                 WidgetCenter.shared.reloadAllTimelines()
+                if !didReceiveSyncFromWatchConnection {
+                    Task { await setupNotifications(pomoTimer) }
+                }
             }
         }
         
@@ -52,15 +58,33 @@ struct ContentView: View {
             if pomoTimer.isPaused {
                 BackgroundSession.shared.stop()
             } else {
-                BackgroundSession.shared.startIfUnpaused(for: pomoTimer)
+                startBackgroundSessionIfDidNotReceiveWCSync()
             }
             WidgetCenter.shared.reloadAllTimelines()
+            let wcSent = updateWatchConnection(pomoTimer)
+            didReceiveSyncFromWatchConnection = !wcSent
         }
         .onChange(of: pomoTimer.getStatus()) { _ in
             Task {
                 try? await Task.sleep(for: .seconds(1))
-                BackgroundSession.shared.startIfUnpaused(for: pomoTimer)
+                startBackgroundSessionIfDidNotReceiveWCSync()
             }
+        }
+        
+        .onReceive(Publishers.wcSessionDataDidFlow) { timer in
+            if let timer {
+                print("\(#function): watchOS received pomoTimer.pomoCount=\(timer.pomoCount) isPaused=\(timer.isPaused)")
+                pomoTimer.sync(with: timer)
+                pomoTimer.saveToUserDefaults()
+                didReceiveSyncFromWatchConnection = true
+            }
+        }
+    }
+    
+    
+    private func startBackgroundSessionIfDidNotReceiveWCSync() {
+        if !didReceiveSyncFromWatchConnection {
+            BackgroundSession.shared.startIfUnpaused(for: pomoTimer)
         }
     }
 }
