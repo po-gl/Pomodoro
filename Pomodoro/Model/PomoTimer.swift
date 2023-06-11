@@ -115,6 +115,13 @@ class PomoTimer: SequenceTimer {
         super.reset([])
     }
     
+    public func sync(with otherTimer: PomoTimer) {
+        order = otherTimer.order
+        pomoCount = otherTimer.pomoCount
+        longBreakTime = otherTimer.longBreakTime
+        super.sync(with: otherTimer)
+    }
+    
     override func saveToUserDefaults() {
         if let encoded = try? PropertyListEncoder().encode(order) {
             UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.set(encoded, forKey: "order")

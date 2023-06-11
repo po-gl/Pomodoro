@@ -146,6 +146,19 @@ class SequenceTimer: ObservableObject, Codable {
         reset(sequenceOfIntervals)
     }
     
+    public func sync(with otherTimer: SequenceTimer) {
+        startTime = otherTimer.startTime
+        timeAmounts = otherTimer.timeAmounts
+        pauseStart = otherTimer.pauseStart
+        pauseOffset = otherTimer.pauseOffset
+        scrubOffset = otherTimer.scrubOffset
+        
+        pause()
+        if !otherTimer.isPaused {
+            unpause()
+        }
+    }
+    
     
     public func pause() {
         isPaused = true
