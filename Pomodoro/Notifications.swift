@@ -42,16 +42,16 @@ func setupNotifications(_ pomoTimer: PomoTimer) async {
         switch pomoTimer.getStatus(atDate: now.addingTimeInterval(timeToNext)) {
         case .work:
             let endOfNext = now.addingTimeInterval(pomoTimer.timeRemaining(for: index+1, atDate: now))
-            content.title = "Time to rest! 🍅"
+            content.title = "Time to rest"
             content.body = "Work is over, take a breather until \(timeFormatter.string(from: endOfNext))."
             content.sound = UNNotificationSound.default
         case .rest:
             let endOfNext = now.addingTimeInterval(pomoTimer.timeRemaining(for: index+1, atDate: now))
             if index == pomoTimer.order.count-2 {
-                content.title = "Take a long break 🏖️"
+                content.title = "Take a long break"
                 content.body = "Relax until \(timeFormatter.string(from: endOfNext))."
             } else {
-                content.title = "Time to work 🌶️"
+                content.title = "Time to work"
                 content.body = "Your rest is over, work until \(timeFormatter.string(from: endOfNext))."
             }
             content.sound = UNNotificationSound.default
