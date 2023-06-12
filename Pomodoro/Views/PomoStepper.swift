@@ -25,7 +25,9 @@ struct PomoStepper: View {
                 .scaleEffect(0.8)
                 .frame(width: 80)
         }
-        .opacity(pomoTimer.isPaused ? 1 : 0)
+        .opacity(pomoTimer.isPaused ? 1.0 : 0.0)
+        .frame(maxHeight: pomoTimer.isPaused ? 20 : 0)
+        .animation(.default, value: pomoTimer.isPaused)
     }
     
     @ViewBuilder

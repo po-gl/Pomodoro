@@ -12,6 +12,8 @@ import SwiftUI
 struct ButtonCluster: View {
     @ObservedObject var pomoTimer: PomoTimer
     
+    var startStopAnimation: Animation = .interpolatingSpring(stiffness: 190, damping: 13)
+    
     var body: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: pomoTimer.isPaused ? 60.0 : 1.0)) { context in
             ZStack {
@@ -38,6 +40,7 @@ struct ButtonCluster: View {
         .frame(width: 130, height: 60)
         .buttonStyle(PopStyle(color: isEnabled ? Color("BarRest") : Color("GrayedOut")))
         .foregroundColor(isEnabled ? .black : .white)
+        .animation(.default, value: pomoTimer.isPaused)
     }
     
     @ViewBuilder
@@ -46,13 +49,14 @@ struct ButtonCluster: View {
         Button(getStartStopButtonString()) {
             guard isEnabled else { return }
             basicHaptic()
-            withAnimation { pomoTimer.toggle() }
+            withAnimation(startStopAnimation) { pomoTimer.toggle() }
             EndTimerHandler.shared.hasEndFired = false
         }
         .accessibilityIdentifier("playPauseButton\(isEnabled ? "On" : "Off")")
         .frame(width: 130, height: 60)
         .buttonStyle(PopStyle(color: getStartStopButtonColor()))
         .foregroundColor(isEnabled ? .black : .white)
+        .animation(.default, value: pomoTimer.isPaused)
     }
     
     private func getStartStopButtonString() -> String {

@@ -93,6 +93,7 @@ struct ContentView: View {
             
             ZStack {
                 Background(pomoTimer: pomoTimer)
+                    .animation(.default, value: pomoTimer.isPaused)
                 
                 TaskAdderView(taskFromAdder: taskFromAdder)
                     .zIndex(1)
