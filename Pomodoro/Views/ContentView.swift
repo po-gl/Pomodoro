@@ -47,7 +47,7 @@ struct ContentView: View {
                     if newPhase == .active {
                         pomoTimer.restoreFromUserDefaults()
                         cancelPendingNotifications()
-                        EndTimerHandler.shared.haptics.prepareHaptics()
+                        Haptics.shared.prepareHaptics()
                         setupWatchConnection()
                     } else if newPhase == .inactive || newPhase == .background {
                         pomoTimer.saveToUserDefaults()

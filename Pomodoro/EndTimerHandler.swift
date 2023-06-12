@@ -10,22 +10,20 @@ import SwiftUI
 class EndTimerHandler {
     static let shared = EndTimerHandler()
     
-    var haptics = Haptics()
-    
     @AppStorage("hasEndFired", store: UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")) var hasEndFired = false
     
     
     public func handle(status: PomoStatus) {
         switch status {
         case .work:
-            haptics.workHaptic()
+            Haptics.shared.workHaptic()
         case .rest:
-            haptics.restHaptic()
+            Haptics.shared.restHaptic()
         case .longBreak:
-            haptics.breakHaptic()
+            Haptics.shared.breakHaptic()
         case .end:
             guard !hasEndFired else { return }
-            haptics.breakHaptic()
+            Haptics.shared.breakHaptic()
             hasEndFired = true
         }
     }

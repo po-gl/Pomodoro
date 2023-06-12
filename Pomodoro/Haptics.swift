@@ -11,6 +11,8 @@ import UIKit
 
 
 class Haptics {
+    static public let shared = Haptics()
+    
     private var engine: CHHapticEngine?
     
     public func prepareHaptics() {
