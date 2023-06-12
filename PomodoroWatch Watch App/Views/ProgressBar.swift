@@ -145,7 +145,7 @@ struct ProgressBar: View {
         HStack(spacing: 0) {
             Spacer(minLength: 0)
             Rectangle().fill(.clear).frame(width: 1, height: barHeight).overlay (
-                AnimatedImage(imageNames: (1...10).map { "PickIndicator\($0)" }, interval: 0.25, loops: true)
+                AnimatedImage(data: AnimatedImageData(imageNames: (1...10).map { "PickIndicator\($0)" }, interval: 0.25, loops: true))
                     .scaleEffect(40)
                     .opacity(0.7)
             )

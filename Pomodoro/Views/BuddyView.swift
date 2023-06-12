@@ -39,11 +39,10 @@ struct BuddyView: View {
     
     @ViewBuilder
     private func AnimatedBuddy(_ buddy: Buddy) -> some View {
-        if pomoTimer.isPaused {
-            SitAnimation(buddy: buddy)
-        } else {
-            WalkAnimation(buddy: buddy)
-        }
+        let paused = pomoTimer.isPaused
+        let AnimationData = paused ? AnimatedImageData(imageNames: (19...21).map{ "\(buddy.rawValue)\($0)" }, interval: 0.6)
+                                   : AnimatedImageData(imageNames: (1...10).map{ "\(buddy.rawValue)\($0)" }, loops: true)
+        AnimatedImage(data: AnimationData)
     }
     
     private func xOffsetForProgress() -> Double {

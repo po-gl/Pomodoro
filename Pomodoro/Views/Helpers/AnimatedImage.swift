@@ -7,19 +7,17 @@
 
 import SwiftUI
 
+struct AnimatedImageData: Equatable {
+    var imageNames: [String]
+    var interval = 0.1
+    var loops = false
+}
+
 struct AnimatedImage: View {
+    var data: AnimatedImageData
+    
     @State private var image: Image?
-    private let imageNames: [String]
-    private let interval: Double
-    private let loops: Bool
-    
     @State private var timer: Timer?
-    
-    init(imageNames: [String], interval: Double = 0.1, loops: Bool = false) {
-        self.imageNames = imageNames
-        self.interval = interval
-        self.loops = loops
-    }
     
     var body: some View {
         VStack {
@@ -29,22 +27,26 @@ struct AnimatedImage: View {
                 .scaledToFit()
         }
         .onAppear {
-            animate()
+            animate(images: data.imageNames, interval: data.interval, loops: data.loops)
         }
         .onDisappear {
             timer?.invalidate()
         }
+        .onChange(of: data) { newData in
+            timer?.invalidate()
+            animate(images: newData.imageNames, interval: newData.interval, loops: newData.loops)
+        }
     }
     
-    private func animate() {
+    private func animate(images: [String], interval: Double, loops: Bool) {
         var imageIndex: Int = 0
-        self.image = Image(self.imageNames[0])
+        image = Image(images[0])
         
         timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { timer in
-            self.image = Image(self.imageNames[imageIndex])
-            imageIndex = (imageIndex+1) % self.imageNames.count
+            image = Image(images[imageIndex])
+            imageIndex = (imageIndex+1) % images.count
             
-            if !self.loops && imageIndex == 0 {
+            if !loops && imageIndex == 0 {
                 timer.invalidate()
             }
         }
