@@ -26,39 +26,45 @@ class Haptics {
         }
     }
     
-    
     public func workHaptic() {
-        multiHaptic(8, 0.2, 0.05, 0.8, 0.65)
+        buildUpHaptic(softness: 1.1)
     }
     
     public func restHaptic() {
-        multiHaptic(8, 0.25, 0.05, 0.8, 0.5)
+        buildUpHaptic(softness: 0.9)
     }
     
     public func breakHaptic() {
-        multiHaptic(8, 0.3, 0.05, 0.8, 0.5)
+        buildUpHaptic(softness: 0.9)
     }
     
     
-    private func multiHaptic(_ count: Int,
-                     _ duration: Double, _ seperationDuration: Double,
-                     _ intensity: Float, _ sharpness: Float) {
+    private func buildUpHaptic(softness: Float = 1.0) {
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
-        
+        let duration = 1.6 // 2.2
         var events: [CHHapticEvent] = []
         
-        let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity)
-        let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: sharpness)
-        for i in 0..<count {
-            events.append(CHHapticEvent(eventType: .hapticContinuous,
-                                        parameters: [intensity, sharpness],
-                                        relativeTime: Double(i) * (duration + seperationDuration),
-                                        duration: duration))
+        events.append(CHHapticEvent(eventType: .hapticContinuous,
+                                    parameters: [CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.7 * softness),
+                                                 CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.7 * softness)],
+                                    relativeTime: 0.0, duration: duration))
+        for i in 0..<6 {
+            events.append(CHHapticEvent(eventType: .hapticTransient,
+                                        parameters: [CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.8 * softness),
+                                                     CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.9 * softness)],
+                                        relativeTime: Double(i) * (0.1 + 0.1) + duration, duration: 0.1))
         }
         
-        let start = CHHapticParameterCurve.ControlPoint(relativeTime: 0, value: 0)
-        let end = CHHapticParameterCurve.ControlPoint(relativeTime: 1, value: 1)
-        let parameter = CHHapticParameterCurve(parameterID: .hapticIntensityControl, controlPoints: [start, end], relativeTime: 0)
+        let controlPoints = [
+            CHHapticParameterCurve.ControlPoint(relativeTime: 0.0,           value: 0.1),
+            CHHapticParameterCurve.ControlPoint(relativeTime: duration*0.81, value: 0.4147),
+            CHHapticParameterCurve.ControlPoint(relativeTime: duration*0.95, value: 0.77),
+            CHHapticParameterCurve.ControlPoint(relativeTime: duration,      value: 1),
+            CHHapticParameterCurve.ControlPoint(relativeTime: 5.0,           value: 1),
+        ]
+        let parameter = CHHapticParameterCurve(parameterID: .hapticIntensityControl,
+                                               controlPoints: controlPoints,
+                                               relativeTime: 0)
         
         do {
             let pattern = try CHHapticPattern(events: events, parameterCurves: [parameter])
