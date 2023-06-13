@@ -110,14 +110,15 @@ struct ProgressBar: View {
                         .brightness(i<taskNotes.pomoHighlight.count && taskNotes.pomoHighlight[i] ? 0.18 : 0.0)
                     
                         .onChange(of: taskFromAdder.dragHasEnded) { _ in
-                            guard taskFromAdder.dragHasEnded && taskFromAdder.dragLocation != nil && !isMask else { return }
+                            guard taskFromAdder.dragHasEnded && taskFromAdder.location != nil && !isMask else { return }
                             guard status == .work else { return }
+                            print("Drag has Ended")
                             taskNotes.pomoHighlight[i] = false
                             addTaskToTaskNotesIfWithinDropRect(for: i, geometry: geometry)
                         }
                     
-                        .onChange(of: taskFromAdder.dragLocation) { _ in
-                            guard taskFromAdder.dragLocation != nil && !isMask else { return }
+                        .onChange(of: taskFromAdder.location) { _ in
+                            guard taskFromAdder.location != nil && !isMask else { return }
                             guard status == .work else { return }
                             updateTaskNoteHighlights(for: i, status: status, geometry: geometry)
                         }
@@ -238,7 +239,7 @@ struct ProgressBar: View {
     }
     
     private func isWithinDropRect(geometry: GeometryProxy) -> Bool {
-        let taskDragLocation = taskFromAdder.dragLocation!.adjusted(for: metrics)
+        let taskDragLocation = taskFromAdder.location!.adjusted(for: metrics)
         let dropRect = getDropRect(geometry: geometry)
         return taskDragLocation.within(rect: dropRect)
     }

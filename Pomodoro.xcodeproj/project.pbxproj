@@ -19,6 +19,8 @@
 		61147F052A33CE77000F4BBA /* WatchConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61147F022A33BC9A000F4BBA /* WatchConnection.swift */; };
 		61147F062A33CE78000F4BBA /* WatchConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61147F022A33BC9A000F4BBA /* WatchConnection.swift */; };
 		611A3CA529076BEF00B7AFD3 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611A3CA429076BEF00B7AFD3 /* ProgressBar.swift */; };
+		611A7CE12A380F2D0038AE56 /* View+draggableTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611A7CE02A380F2D0038AE56 /* View+draggableTask.swift */; };
+		611A7CE22A380F2D0038AE56 /* View+draggableTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611A7CE02A380F2D0038AE56 /* View+draggableTask.swift */; };
 		611AE62E2903A9AF00FA24F0 /* ButtonCluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611AE62D2903A9AF00FA24F0 /* ButtonCluster.swift */; };
 		611EE30D2A107CD000DDF171 /* View+doneButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611EE30C2A107CD000DDF171 /* View+doneButton.swift */; };
 		611EE30E2A107CD000DDF171 /* View+doneButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611EE30C2A107CD000DDF171 /* View+doneButton.swift */; };
@@ -310,6 +312,7 @@
 		610F99C729BE4BC600608F41 /* HostingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingView.swift; sourceTree = "<group>"; };
 		61147F022A33BC9A000F4BBA /* WatchConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnection.swift; sourceTree = "<group>"; };
 		611A3CA429076BEF00B7AFD3 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
+		611A7CE02A380F2D0038AE56 /* View+draggableTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+draggableTask.swift"; sourceTree = "<group>"; };
 		611AE62D2903A9AF00FA24F0 /* ButtonCluster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCluster.swift; sourceTree = "<group>"; };
 		611EE30C2A107CD000DDF171 /* View+doneButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+doneButton.swift"; sourceTree = "<group>"; };
 		6126288E2A2768C9004B64C6 /* AddTaskButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskButton.swift; sourceTree = "<group>"; };
@@ -479,6 +482,7 @@
 				611EE30C2A107CD000DDF171 /* View+doneButton.swift */,
 				61C6BC1229C0364000AF48DE /* View+onSubmitWithVerticalText.swift */,
 				61AEA85F29CE59D0007AA1AD /* View+scrollToOnFocus.swift */,
+				611A7CE02A380F2D0038AE56 /* View+draggableTask.swift */,
 				61B17252285CFCF8001C8245 /* UIView+ClosestVC.swift */,
 				614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */,
 				614533CA2A27353B00388136 /* Color+Interpolate.swift */,
@@ -1093,6 +1097,7 @@
 				618750F529BABCFE0017BF8E /* Point+Extensions.swift in Sources */,
 				61147F032A33BC9A000F4BBA /* WatchConnection.swift in Sources */,
 				61D5808829BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */,
+				611A7CE12A380F2D0038AE56 /* View+draggableTask.swift in Sources */,
 				6131C0AA2911F6E200D1E6F1 /* BuddyView.swift in Sources */,
 				619255B12901F4CB00D399B8 /* PomoTimer.swift in Sources */,
 				619255B4290204AB00D399B8 /* PomoTime.swift in Sources */,
@@ -1163,6 +1168,7 @@
 				61D5809329BA5F81006F0BB0 /* TaskAdderView.swift in Sources */,
 				61F21DA0299233F400C3DACC /* LiveActivities.swift in Sources */,
 				618D67DE2979ECD7000A9D8A /* Background.swift in Sources */,
+				611A7CE22A380F2D0038AE56 /* View+draggableTask.swift in Sources */,
 				61AEA85E29CE56F8007AA1AD /* Publishers+Keyboard.swift in Sources */,
 				61147F042A33BC9A000F4BBA /* WatchConnection.swift in Sources */,
 				6172B4A0297F57C400E53D8F /* UIView+ClosestVC.swift in Sources */,
