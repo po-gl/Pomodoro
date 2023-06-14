@@ -62,7 +62,7 @@ func setupNotifications(_ pomoTimer: PomoTimer) async {
         case .end:
             let celebration: [String] = ["hike", "walk", "favorite snack"]
             content.title = "Your pomodoros are done! 🎉"
-            content.body = "Celebrate with a \(celebration.randomElement()!) 🎉🎉🎉"
+            content.body = "Celebrate with a \(celebration.randomElement()!)!"
             content.sound = UNNotificationSound.default
         }
 
