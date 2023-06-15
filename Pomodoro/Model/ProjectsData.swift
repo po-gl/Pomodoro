@@ -82,4 +82,14 @@ struct ProjectsData {
             fatalError("\(errorMessage) \(nsError), \(nsError.userInfo)")
         }
     }
+    
+    static func setAsTopProject(_ project: Project, context: NSManagedObjectContext) {
+        if let currentProjects = try? context.fetch(currentProjectsRequest) {
+            for project in currentProjects {
+                project.order = 1
+            }
+            project.order = 0
+            saveContext(context, errorMessage: "CoreData error setting project as top.")
+        }
+    }
 }
