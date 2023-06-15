@@ -14,10 +14,10 @@ struct PersistenceController {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
         
-        ProjectsData.addProject("Work", progress: 1.0, context: viewContext)
-        ProjectsData.addProject("Cooking", progress: 0.5, context: viewContext)
-        ProjectsData.addProject("Apps", progress: 0.0, context: viewContext)
-        ProjectsData.addProject("School", progress: 1.0, archived: true, context: viewContext)
+        ProjectsData.addProject("Work", note: "Let apple fix Lists not animating row height changes (for collapsible stack list)", progress: 1.0, color: "BarRest", date: Date() - 5, context: viewContext)
+        ProjectsData.addProject("Cooking", progress: 0.5, color: "BarWork", date: Date() - 5, context: viewContext)
+        ProjectsData.addProject("Apps", progress: 0.0, color: "BarLongBreak", date: Date() - 5, context: viewContext)
+        ProjectsData.addProject("School", progress: 1.0, archived: true, date: Date() - 5, context: viewContext)
         
         for i in 0..<6 {
             TasksData.addTask("Task \(i)", completed: i == 3 ? true : false, date: Date() - 5, context: viewContext)

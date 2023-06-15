@@ -10,15 +10,27 @@ import CoreData
 
 struct ProjectsData {
     
+    static var currentProjectsRequest: NSFetchRequest<Project> {
+        let fetchRequest = Project.fetchRequest()
+        fetchRequest.predicate = NSPredicate(
+            format: "archived == false"
+        )
+        return fetchRequest
+    }
+    
     static func addProject(_ name: String,
+                           note: String = "",
                            progress: Double = 0.0,
+                           color: String = "BarRest",
                            archived: Bool = false,
                            order: Int16 = 0,
                            date: Date = Date(),
                            context: NSManagedObjectContext) {
         let newProject = Project(context: context)
         newProject.name = name
+        newProject.note = note
         newProject.progress = progress
+        newProject.color = color
         newProject.timestamp = date
         newProject.archived = archived
         newProject.order = order
@@ -27,7 +39,17 @@ struct ProjectsData {
     
     static func editName(_ name: String, for task: Project, context: NSManagedObjectContext) {
         task.name = name
-        saveContext(context, errorMessage: "CoreData error editing project.")
+        saveContext(context, errorMessage: "CoreData error editing project name.")
+    }
+    
+    static func editNote(_ note: String, for task: Project, context: NSManagedObjectContext) {
+        task.note = note
+        saveContext(context, errorMessage: "CoreData error editing project note.")
+    }
+    
+    static func setColor(_ colorName: String, for project: Project, context: NSManagedObjectContext) {
+        project.color = colorName
+        saveContext(context, errorMessage: "CoreData error setting project color.")
     }
     
     static func setProgress(_ progress: Double, for project: Project, context: NSManagedObjectContext) {
