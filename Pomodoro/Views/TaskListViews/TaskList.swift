@@ -21,10 +21,6 @@ struct TaskList: View {
     @FetchRequest(sortDescriptors: [SortDescriptor(\Project.order), SortDescriptor(\Project.timestamp)],
                   predicate: NSPredicate(format: "archived == false"))
     private var currentProjects: FetchedResults<Project>
-    
-    @FetchRequest(sortDescriptors: [SortDescriptor(\Project.order), SortDescriptor(\Project.timestamp)],
-                  predicate: NSPredicate(format: "archived == true"))
-    private var archivedProjects: FetchedResults<Project>
                   
     
     @FetchRequest(sortDescriptors: [SortDescriptor(\TaskNote.order, order: .reverse), SortDescriptor(\TaskNote.timestamp, order: .forward)],
@@ -38,12 +34,14 @@ struct TaskList: View {
                            predicate: NSPredicate(format: "timestamp < %@", Calendar.current.startOfDay(for: Date()) as CVarArg))
     private var pastTasks: SectionedFetchResults<String, TaskNote>
     
-    
-    @AppStorage("showArchivedProjects") private var showArchivedProjects = false
+    @State var showingArchivedProjects = false
     @AppStorage("showPastTasks") private var showPastTasks = false
     
     @State private var todaysTasksID = UUID()
     
+    @State var isProjectSectionCollapsed = true
+    
+
     var body: some View {
         ZStack {
             ScrollViewReader { scrollProxy in
@@ -51,10 +49,12 @@ struct TaskList: View {
                     ProjectSection(scrollProxy: scrollProxy)
                     TaskSection(scrollProxy: scrollProxy)
                 }
-                .background(Color("BackgroundStopped").ignoresSafeArea())
+                .animation(.spring(), value: isProjectSectionCollapsed)
+                .listStyle(.insetGrouped)
+                .background(Color("Background").ignoresSafeArea())
                 .scrollContentBackground(.hidden)
-                .toolbarBackground(Color("BackgroundStopped").opacity(0.6), for: .navigationBar)
-                .toolbarBackground(Color("BackgroundStopped").opacity(0.6), for: .bottomBar)
+                .toolbarBackground(Color("Background").opacity(0.6), for: .navigationBar)
+                .toolbarBackground(Color("Background").opacity(0.6), for: .bottomBar)
                 
                 .scrollDismissesKeyboard(.interactively)
                 
@@ -69,8 +69,8 @@ struct TaskList: View {
                 }
             }
         }
-        .navigationTitle(dayFormatter.string(from: Date()))
-//        .navigationBarTitleDisplayMode(.large)
+//        .navigationTitle(dayFormatter.string(from: Date()))
+        .navigationBarTitleDisplayMode(.inline)
         
         .toolbar {
             Menu {
@@ -80,6 +80,9 @@ struct TaskList: View {
                 MarkTodaysTasksAsDoneButton()
             } label: {
                 Image(systemName: "ellipsis.circle")
+            }
+            .navigationDestination(isPresented: $showingArchivedProjects) {
+                ArchivedProjectsView()
             }
         }
         
@@ -96,12 +99,118 @@ struct TaskList: View {
     
     @ViewBuilder
     private func ProjectSection(scrollProxy: ScrollViewProxy) -> some View {
-        CurrentProjects(scrollProxy: scrollProxy)
+        Section {
+            if !currentProjects.isEmpty {
+                ProjectStackList(scrollProxy: scrollProxy)
+            } else {
+                EmptyProjectsView()
+            }
+//            .onMove(perform: moveProjects)
+        } header: {
+            ProjectSectionHeader()
+        }
+        .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+        .listRowBackground(Color.clear)
         
-        if showArchivedProjects {
-            ArchivedProjects(scrollProxy: scrollProxy)
+        .onChange(of: currentProjects.count) { count in
+            if count == 0 {
+                isProjectSectionCollapsed = true
+            }
         }
     }
+    
+    @ViewBuilder
+    private func ProjectStackList(scrollProxy: ScrollViewProxy) -> some View {
+        let collapsedRowHeight: Double = 85
+        HStack (alignment: .top) {
+            VStack {
+                ForEach(0..<currentProjects.count, id: \.self) { index in
+                    ProjectCellWithModifiers(currentProjects[index], scrollProxy: scrollProxy, cellHeight: collapsedRowHeight, isFirstProject: index == 0)
+                        .zIndex(-Double(index))
+                        .opacity(isProjectSectionCollapsed ? 1 - (0.3 * Double(index)) : 1.0)
+                        .scaleEffect(isProjectSectionCollapsed ? 1 - (0.08 * Double(index)) : 1.0)
+                        .offset(y: isProjectSectionCollapsed ? -Double(index) * collapsedRowHeight + (Double(index) * 3) : 0.0)
+                }
+            }
+            .frame(maxHeight: isProjectSectionCollapsed ? collapsedRowHeight*1.25 : .infinity, alignment: .top)
+            .padding(.vertical, 3)
+        }
+    }
+    
+    @ViewBuilder
+    private func ProjectSectionHeader() -> some View {
+        HStack (spacing: 20) {
+            Text("PROJECTS")
+            Spacer()
+            Group {
+                ProjectHeaderAddButton()
+                ProjectHeaderChevronButton()
+            }
+            .opacity(isProjectSectionCollapsed ? 0.0 : 1.0)
+        }
+        .padding(.horizontal, 20)
+    }
+    
+    @ViewBuilder
+    private func ProjectHeaderAddButton() -> some View {
+        Button(action: {
+            withAnimation(.spring()) {
+                ProjectsData.addProject("", context: viewContext)
+            }
+        }) {
+            Text("Add Project")
+                .font(.footnote)
+                .foregroundColor(Color("BarRest"))
+                .brightness(colorScheme == .dark ? 0.4 : -0.1)
+                .saturation(colorScheme == .dark ? 1.5 : 0.9)
+//                .padding(.vertical, 2).padding(.horizontal, 4)
+//                .background(
+//                    RoundedRectangle(cornerRadius: 8).fill(Color("BarRest"))
+//                        .brightness(colorScheme == .dark ? -0.5 : 0.3)
+//                        .saturation(colorScheme == .dark ? 0.8 : 0.7)
+//                )
+        }
+    }
+    
+    @ViewBuilder
+    private func ProjectHeaderChevronButton() -> some View {
+        Button(action: {
+            withAnimation(.spring()) {
+                isProjectSectionCollapsed = true
+            }
+        }) {
+            Image(systemName: "chevron.compact.up")
+                .font(.system(size: 26))
+                .foregroundColor(Color("BarRest"))
+                .brightness(colorScheme == .dark ? 0.4 : -0.1)
+                .saturation(colorScheme == .dark ? 1.5 : 0.9)
+                .padding(.vertical, 2).padding(.horizontal, 4)
+                .background(
+                    RoundedRectangle(cornerRadius: 8).fill(Color("BarRest"))
+                        .brightness(colorScheme == .dark ? -0.5 : 0.3)
+                        .saturation(colorScheme == .dark ? 0.8 : 0.7)
+                )
+        }
+    }
+    
+    @ViewBuilder
+    private func ProjectCellWithModifiers(_ project: Project, scrollProxy: ScrollViewProxy, cellHeight: Double, isFirstProject: Bool) -> some View {
+        ZStack (alignment: .leading) {
+            // glitches occur on delete without a reference to .order in view
+            Text("\(project.order)").opacity(0)
+            
+            ProjectItemCell(project: project, isCollapsed: $isProjectSectionCollapsed, scrollProxy: scrollProxy, cellHeight: cellHeight, isFirstProject: isFirstProject)
+                .id(project.id)
+//                .swipeActions(edge: .trailing) {
+//                    ToggleProjectArchiveButton(project)
+//                    DeleteProjectButton(project)
+//                }
+        }
+    }
+    
+
+    
+    // MARK: Tasks section views
     
     @ViewBuilder
     private func TaskSection(scrollProxy: ScrollViewProxy) -> some View {
@@ -112,81 +221,9 @@ struct TaskList: View {
         }
     }
     
-    
-    // MARK: Projects section views
-    
-    @ViewBuilder
-    private func CurrentProjects(scrollProxy: ScrollViewProxy) -> some View {
-        Section("Projects") {
-            ForEach(currentProjects) { project in
-                ProjectCellWithModifiers(project, scrollProxy: scrollProxy)
-            }
-            .onMove(perform: moveProjects)
-            
-            AddProjectCell(scrollProxy: scrollProxy)
-                .moveDisabled(true)
-        }
-        .listRowBackground(Color("BackgroundStopped")
-            .brightness(colorScheme == .dark ? 0.13 : -0.04)
-            .saturation(colorScheme == .dark ? 0.0 : 1.3))
-    }
-    
-    // MARK: Archived Projects section
-    
-    @ViewBuilder
-    private func ArchivedProjects(scrollProxy: ScrollViewProxy) -> some View {
-        Section("Archived Projects") {
-            ForEach(archivedProjects) { project in
-                ProjectCellWithModifiers(project, scrollProxy: scrollProxy)
-                    .opacity(0.5)
-            }
-        }
-        .listRowBackground(Color("BackgroundStopped")
-            .brightness(colorScheme == .dark ? 0.13 : -0.04)
-            .saturation(colorScheme == .dark ? 0.0 : 1.3))
-    }
-    
-    @ViewBuilder
-    private func ProjectCellWithModifiers(_ project: Project, scrollProxy: ScrollViewProxy) -> some View {
-        ZStack (alignment: .leading) {
-            // glitches occur on delete without a reference to .order in view
-            Text("\(project.order)").opacity(0)
-            
-            ProjectItemCell(project: project, scrollProxy: scrollProxy)
-                .padding(.vertical, 6)
-                .id(project.id)
-            
-                .swipeActions(edge: .trailing) {
-                    ToggleProjectArchiveButton(project)
-                    DeleteProjectButton(project)
-                }
-        }
-    }
-    
-    @ViewBuilder
-    private func ToggleProjectArchiveButton(_ project: Project) -> some View {
-        Button(action: {
-            withAnimation { ProjectsData.toggleArchive(project, context: viewContext) }
-        }) {
-            Label(project.archived ? "Unarchive" : "Archive", systemImage: project.archived ? "arrow.uturn.up" : "archivebox.fill")
-        }.tint(project.archived ? .blue : Color("End"))
-    }
-    
-    @ViewBuilder
-    private func DeleteProjectButton(_ project: Project) -> some View {
-        Button(role: .destructive, action: {
-            withAnimation { ProjectsData.delete(project, context: viewContext) }
-        }) {
-            Label("Delete", systemImage: "trash")
-        }.tint(.red)
-    }
-    
-    
-    // MARK: Tasks section views
-    
     @ViewBuilder
     private func TodaysTasks(scrollProxy: ScrollViewProxy) -> some View {
-        Section("Tasks") {
+        Section("Today's Tasks") {
             ForEach(todaysTasks) { taskItem in
                 TaskCellWithModifiers(taskItem, scrollProxy: scrollProxy)
             }
@@ -196,7 +233,7 @@ struct TaskList: View {
                 TodaysTasksEmptyState()
             }
         }
-        .listRowBackground(Color("BackgroundStopped"))
+        .listRowBackground(Color("Background"))
         .id(todaysTasksID)
     }
     
@@ -223,7 +260,7 @@ struct TaskList: View {
             } header: {
                 PastSectionHeader(for: section.id)
             }
-            .listRowBackground(Color("BackgroundStopped"))
+            .listRowBackground(Color("Background"))
         }
     }
     
@@ -359,13 +396,9 @@ struct TaskList: View {
     private func ShowArchivedProjectsButton() -> some View {
         Button(action: {
             basicHaptic()
-            withAnimation { showArchivedProjects.toggle() }
+            showingArchivedProjects = true
         }) {
-            if showArchivedProjects {
-                Label("Hide Archived Projects", systemImage: "eye.slash.fill")
-            } else {
-                Label("Show Archived Projects", systemImage: "eye.fill")
-            }
+            Label("Show Archived Projects", systemImage: "eye.fill")
         }
     }
     
