@@ -19,10 +19,11 @@ struct EmptyProjectsView: View {
     var secondaryBrightness: Double { colorScheme == .dark ? 0.2 : -0.3 }
     var secondarySaturation: Double { colorScheme == .dark ? 1.0 : 1.0 }
     
-    var collapsedBackgroundBrightness: Double { colorScheme == .dark ? -0.09 : 0.1 }
-    var collapsedBackgroundSaturation: Double { colorScheme == .dark ? 0.8 : 1.1 }
-    var backgroundBrightness: Double { colorScheme == .dark ? -0.7 : 0.33 }
+    var collapsedBackgroundBrightness: Double { colorScheme == .dark ? -0.09 : 0.0 }
+    var collapsedBackgroundSaturation: Double { colorScheme == .dark ? 0.85 : 1.1 }
+    var backgroundBrightness: Double { colorScheme == .dark ? -0.5 : 0.1 }
     var backgroundSaturation: Double { colorScheme == .dark ? 0.8 : 0.33 }
+    var backgroundOpacity: Double { colorScheme == .dark ? 0.6 : 0.5 }
     
     
     var body: some View {

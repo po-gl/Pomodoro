@@ -33,13 +33,15 @@ struct ProjectItemCell: View {
     var primarySaturation: Double { colorScheme == .dark ? 1.8 : 1.2 }
     var secondaryBrightness: Double { colorScheme == .dark ? 0.2 : -0.3 }
     var secondarySaturation: Double { colorScheme == .dark ? 1.0 : 1.0 }
+    var checkBrightness: Double { colorScheme == .dark ? 0.2 : 0.0 }
+    var checkSaturation: Double { colorScheme == .dark ? 1.1 : 1.05 }
     
-    var collapsedBackgroundBrightness: Double { colorScheme == .dark ? -0.09 : 0.1 }
-    var collapsedBackgroundSaturation: Double { colorScheme == .dark ? 0.8 : 1.1 }
-    var backgroundBrightness: Double { colorScheme == .dark ? -0.7 : 0.33 }
+    var collapsedBackgroundBrightness: Double { colorScheme == .dark ? -0.09 : 0.0 }
+    var collapsedBackgroundSaturation: Double { colorScheme == .dark ? 0.85 : 1.05 }
+    var backgroundBrightness: Double { colorScheme == .dark ? -0.5 : 0.3 }
     var backgroundSaturation: Double { colorScheme == .dark ? 0.8 : 0.33 }
+    var backgroundOpacity: Double { colorScheme == .dark ? 0.6 : 0.5 }
     
- 
 
     var body: some View {
         Card {
@@ -212,7 +214,7 @@ struct ProjectItemCell: View {
     private func ProgressCheck() -> some View {
         let width: Double = 22
         ZStack {
-            Circle().stroke(style: StrokeStyle(lineWidth: 1.2))
+            Circle().stroke(style: StrokeStyle(lineWidth: 1.8))
                 .opacity(project.progress == 1.0 ? 1.0 : 0.5)
             ZStack {
                 Circle()
@@ -226,6 +228,8 @@ struct ProjectItemCell: View {
             }.frame(width: width/1.5)
         }
         .foregroundColor(color)
+        .brightness(checkBrightness)
+        .saturation(checkSaturation)
         .hueRotation(.degrees(170))
         .contentShape(Circle())
         .onTapGesture {
@@ -261,6 +265,7 @@ struct ProjectItemCell: View {
                 GradientRectangle()
                     .brightness(backgroundBrightness)
                     .saturation(backgroundSaturation)
+                    .opacity(backgroundOpacity)
                     .overlay(
                         GradientBorder()
                             .brightness(collapsedBackgroundBrightness)
