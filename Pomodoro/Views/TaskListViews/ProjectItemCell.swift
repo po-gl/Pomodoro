@@ -225,7 +225,7 @@ struct ProjectItemCell: View {
                     }
             }.frame(width: width/1.5)
         }
-        .foregroundColor(project.progress > 0.0 ? color : .primary)
+        .foregroundColor(color)
         .hueRotation(.degrees(170))
         .contentShape(Circle())
         .onTapGesture {
