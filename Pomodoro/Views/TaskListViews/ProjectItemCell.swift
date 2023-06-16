@@ -114,6 +114,7 @@ struct ProjectItemCell: View {
         TextField("", text: $editText, axis: .vertical)
             .font(.system(size: 22))
             .frame(minHeight: 30)
+            .lineLimit(isCollapsed ? 1 : Int.max, reservesSpace: false)
             .disabled(isCollapsed)
             .onSubmitWithVerticalText(with: $editText) {
                 deleteOrEditProject()
