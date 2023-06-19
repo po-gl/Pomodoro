@@ -142,9 +142,13 @@ struct ProjectItemCell: View {
         if editText.isEmpty {
             ProjectsData.delete(project, context: viewContext)
         } else {
-            ProjectsData.editName(editText, for: project, context: viewContext)
-            ProjectsData.editNote(editNoteText, for: project, context: viewContext)
+            editProject()
         }
+    }
+    
+    private func editProject() {
+        ProjectsData.editName(editText, for: project, context: viewContext)
+        ProjectsData.editNote(editNoteText, for: project, context: viewContext)
     }
     
     
@@ -176,6 +180,7 @@ struct ProjectItemCell: View {
     @ViewBuilder
     private func ShowInfoButton() -> some View {
         Button(action: {
+            editProject()
             withAnimation { showingProjectInfo = true }
         }) {
             Label("Show Project Info", systemImage: "info.circle")
