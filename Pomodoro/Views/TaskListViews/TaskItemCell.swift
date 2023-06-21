@@ -63,6 +63,10 @@ struct TaskItemCell: View {
             .foregroundColor(taskItem.timestamp?.isToday() ?? true ? .primary : .secondary)
             .onSubmitWithVerticalText(with: $editText) {
                 deleteOrEditTask()
+                
+                if !editText.isEmpty {
+                    TasksData.addTask("", context: viewContext)
+                }
             }
     }
     
