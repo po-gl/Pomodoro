@@ -322,7 +322,7 @@ struct TaskList: View {
             
                 .onChange(of: taskItem.completed) { completed in
                     Task {
-                        try? await Task.sleep(for: .seconds(1.0))
+                        try? await Task.sleep(for: .seconds(0.3))
                         undoManager?.disableUndoRegistration()
                         sortTasks()
                         undoManager?.enableUndoRegistration()
