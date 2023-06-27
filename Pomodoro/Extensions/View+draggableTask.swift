@@ -27,7 +27,7 @@ struct DraggableTaskModifier: ViewModifier {
     var dragGesture: some Gesture {
         DragGesture()
             .onChanged { event in
-                guard !task.dragText.isEmpty else { return }
+                guard !task.text.isEmpty else { return }
                 
                 var newLocation = gestureStartLocation ?? task.location ?? task.startLocation ?? CGPoint()
                 newLocation.x += event.translation.width
@@ -62,7 +62,7 @@ struct DraggableTaskModifier: ViewModifier {
                     }
                 }
                 
-                guard !task.dragText.isEmpty else { return }
+                guard !task.text.isEmpty else { return }
                 if !isDragging { basicHaptic() }
                 isDragging = true
             }

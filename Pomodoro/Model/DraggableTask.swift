@@ -8,7 +8,7 @@
 import SwiftUI
 
 class DraggableTask: ObservableObject {
-    @Published var dragText: String = ""
+    @Published var text: String = ""
     @Published var startLocation: CGPoint?
     @Published var location: CGPoint?
     @Published var dragHasEnded: Bool = true

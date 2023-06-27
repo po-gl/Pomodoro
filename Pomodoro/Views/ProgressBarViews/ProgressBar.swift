@@ -222,8 +222,8 @@ struct ProgressBar: View {
     private func addTaskToTaskNotesIfWithinDropRect(for i: Int, geometry: GeometryProxy) {
         if isWithinDropRect(geometry: geometry) {
             if i < taskNotes.tasksOnBar.count {
-                taskNotes.addTask(taskFromAdder.dragText, index: i, context: viewContext)
-                taskFromAdder.dragText = ""
+                taskNotes.addTask(taskFromAdder.text, index: i, context: viewContext)
+                taskFromAdder.text = ""
             }
             resetHaptic()
         }

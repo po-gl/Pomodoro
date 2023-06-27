@@ -26,9 +26,9 @@ struct TaskAdderView: View {
                 TaskInput()
                     .position(taskFromAdder.location ?? startLocation)
                 TouchCircle()
-                    .opacity(taskFromAdder.dragText.isEmpty ? 0.8 : 1.0)
+                    .opacity(taskFromAdder.text.isEmpty ? 0.8 : 1.0)
                     .animation(.easeInOut, value: taskFromAdder.isDragging)
-                    .animation(.easeInOut, value: taskFromAdder.dragText)
+                    .animation(.easeInOut, value: taskFromAdder.text)
                     .position(taskFromAdder.location ?? startLocation)
                     .draggableTask(taskFromAdder)
 //                    .gesture(taskFromAdder.dragGesture)
@@ -36,11 +36,11 @@ struct TaskAdderView: View {
                 DragHint()
                     .position(startLocation)
                     .offset(y: 24)
-                    .opacity(taskFromAdder.dragText.isEmpty || taskFromAdder.isDragging ? 0.0 : 1.0)
-                    .animation(.easeInOut(duration: 3), value: taskFromAdder.dragText.isEmpty)
+                    .opacity(taskFromAdder.text.isEmpty || taskFromAdder.isDragging ? 0.0 : 1.0)
+                    .animation(.easeInOut(duration: 3), value: taskFromAdder.text.isEmpty)
                     .animation(.easeInOut(duration: 3), value: taskFromAdder.isDragging)
                 
-                AutoCompleteView(text: $taskFromAdder.dragText)
+                AutoCompleteView(text: $taskFromAdder.text)
                     .position(startLocation)
                     .offset(x: 155, y: -85)
                     .opacity(showAutoComplete ? 1.0 : 0.0)
@@ -76,7 +76,7 @@ struct TaskAdderView: View {
     
     @ViewBuilder
     private func TaskInput() -> some View {
-        TextField("Add task", text: $taskFromAdder.dragText)
+        TextField("Add task", text: $taskFromAdder.text)
             .font(.system(.callout, design: .monospaced, weight: .medium))
             .accessibilityIdentifier("AddTask")
             .focused($taskFocus)
@@ -92,7 +92,7 @@ struct TaskAdderView: View {
     private func TouchCircle() -> some View {
         let width: Double = taskFromAdder.isDragging ? 15 : 25
         let strokeWidth: Double = 1.2
-        let gap: Double = taskFromAdder.dragText.isEmpty ? 8 : 10
+        let gap: Double = taskFromAdder.text.isEmpty ? 8 : 10
         Circle()
             .strokeBorder(style: StrokeStyle(lineWidth: strokeWidth))
             .frame(width: width)
