@@ -31,7 +31,6 @@ struct TaskAdderView: View {
                     .animation(.easeInOut, value: taskFromAdder.text)
                     .position(taskFromAdder.location ?? startLocation)
                     .draggableTask(taskFromAdder)
-//                    .gesture(taskFromAdder.dragGesture)
                 
                 DragHint()
                     .position(startLocation)
