@@ -25,7 +25,7 @@ struct TaskLabel: View {
     var body: some View {
         GeometryReader { geometry in
             let text: String = index < taskNotes.tasksOnBar.count ? taskNotes.tasksOnBar[index] : ""
-            AngledText(text: text, justShowText: draggableTask.isDragging)
+            AngledText(text: text, isBeingDragged: draggableTask.isDragging)
                 .accessibilityIdentifier("TaskLabel_\(text)")
                 .accessibilityAddTraits(.isButton)
             
