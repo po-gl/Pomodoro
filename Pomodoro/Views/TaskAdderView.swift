@@ -10,7 +10,7 @@ import SwiftUI
 struct TaskAdderView: View {
     @Environment(\.colorScheme) private var colorScheme
     
-    @ObservedObject var taskFromAdder: DraggableTask
+    @Binding var taskFromAdder: DraggableTask
     
     var startLocation: CGPoint = CGPoint(x: 40, y: -20)
     
@@ -30,7 +30,7 @@ struct TaskAdderView: View {
                     .animation(.easeInOut, value: taskFromAdder.isDragging)
                     .animation(.easeInOut, value: taskFromAdder.text)
                     .position(taskFromAdder.location ?? startLocation)
-                    .draggableTask(taskFromAdder)
+                    .draggableTask($taskFromAdder)
                 
                 DragHint()
                     .position(startLocation)

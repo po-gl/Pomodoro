@@ -20,7 +20,7 @@ struct ContentView: View {
     
     @ObservedObject var pomoTimer: PomoTimer
     
-    @StateObject var taskFromAdder = DraggableTask()
+    @State var taskFromAdder = DraggableTask()
     
     @State var didReceiveSyncFromWatchConnection = false
     
@@ -95,7 +95,7 @@ struct ContentView: View {
                 Background(pomoTimer: pomoTimer)
                     .animation(.default, value: pomoTimer.isPaused)
                 
-                TaskAdderView(taskFromAdder: taskFromAdder)
+                TaskAdderView(taskFromAdder: $taskFromAdder)
                     .zIndex(1)
                 
                 
@@ -118,7 +118,7 @@ struct ContentView: View {
                 
                 ZStack {
                     ProgressBar(pomoTimer: pomoTimer, metrics: proxy,
-                                taskFromAdder: taskFromAdder)
+                                taskFromAdder: $taskFromAdder)
                     .frame(maxHeight: 130)
                     BuddyView(pomoTimer: pomoTimer, metrics: proxy)
                         .offset(y: -7)

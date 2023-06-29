@@ -11,6 +11,7 @@ import CoreData
 class TasksOnBar: ObservableObject {
     @Published var tasksOnBar: [String] = []
     @Published var pomoHighlight: [Bool] = []
+    @Published var draggableTasksOnBar: [DraggableTask] = []
     
     func setTaskAmount(for pomoTimer: PomoTimer) {
         if pomoTimer.order.count > tasksOnBar.count {
@@ -22,13 +23,19 @@ class TasksOnBar: ObservableObject {
         }
         
         pomoHighlight = Array(repeating: false, count: pomoTimer.order.count)
+        
+        if draggableTasksOnBar.count < pomoTimer.order.count {
+            (0..<pomoTimer.order.count-draggableTasksOnBar.count).forEach {
+                _ in draggableTasksOnBar.append(DraggableTask())
+            }
+        }
     }
     
     func addTask(_ text: String, index: Int, context: NSManagedObjectContext) {
         tasksOnBar[index] = text
         saveToUserDefaults()
         
-        if !TasksData.todaysTasksContains(text, context: context) {
+        if !text.isEmpty && !TasksData.todaysTasksContains(text, context: context) {
             TasksData.addTask(text, order: -1, context: context)
         }
     }

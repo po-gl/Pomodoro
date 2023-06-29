@@ -17,7 +17,7 @@ struct ProgressBar: View {
     var metrics: GeometryProxy
     
     @StateObject var taskNotes = TasksOnBar()
-    @ObservedObject var taskFromAdder: DraggableTask
+    @Binding var taskFromAdder: DraggableTask
     
     @State var dragValue = 0.0
     @State var isDragging = false
@@ -102,26 +102,41 @@ struct ProgressBar: View {
                 GeometryReader { geometry in
                     let status = pomoTimer.order[i].getStatus()
                     
-                    RoundedRectangle(cornerRadius: 4)
-                        .position(x: geometry.size.width/2, y: geometry.size.height/2)
-                        .scaleEffect(x: 2.0, anchor: .trailing)
-                        .shadow(radius: 5)
-                        .foregroundStyle(getColorForStatus(status))
-                        .brightness(i<taskNotes.pomoHighlight.count && taskNotes.pomoHighlight[i] ? 0.18 : 0.0)
-                    
-                        .onChange(of: taskFromAdder.dragHasEnded) { _ in
-                            guard taskFromAdder.dragHasEnded && taskFromAdder.location != nil && !isMask else { return }
-                            guard status == .work else { return }
-                            print("Drag has Ended")
-                            taskNotes.pomoHighlight[i] = false
-                            addTaskToTaskNotesIfWithinDropRect(for: i, geometry: geometry)
-                        }
-                    
-                        .onChange(of: taskFromAdder.location) { _ in
-                            guard taskFromAdder.location != nil && !isMask else { return }
-                            guard status == .work else { return }
-                            updateTaskNoteHighlights(for: i, status: status, geometry: geometry)
-                        }
+                    if i < taskNotes.draggableTasksOnBar.count {
+                        RoundedRectangle(cornerRadius: 4)
+                            .position(x: geometry.size.width/2, y: geometry.size.height/2)
+                            .scaleEffect(x: 2.0, anchor: .trailing)
+                            .shadow(radius: 5)
+                            .foregroundStyle(getColorForStatus(status))
+                            .brightness(i<taskNotes.pomoHighlight.count && taskNotes.pomoHighlight[i] ? 0.18 : 0.0)
+                        
+                            .onChange(of: taskFromAdder.dragHasEnded) { _ in
+                                guard taskFromAdder.dragHasEnded && taskFromAdder.location != nil && !isMask else { return }
+                                guard status == .work else { return }
+                                taskNotes.pomoHighlight[i] = false
+                                addTaskToTaskNotesIfWithinDropRect(for: i, draggableTask: &taskFromAdder, adjustedForAdder: true, geometry: geometry)
+                            }
+                        
+                            .onChange(of: taskFromAdder.location) { _ in
+                                guard taskFromAdder.location != nil && !isMask else { return }
+                                guard status == .work else { return }
+                                updateTaskNoteHighlights(for: i, draggableTask: taskFromAdder, adjusted: true, geometry: geometry)
+                            }
+                        
+                            .onChange(of: taskNotes.draggableTasksOnBar) { _ in
+                                guard !isMask else { return }
+                                guard status == .work else { return }
+                                for (j, draggableTask) in taskNotes.draggableTasksOnBar.enumerated() {
+                                    
+                                    guard draggableTask.location != nil else { continue }
+                                    updateTaskNoteHighlights(for: i, from: j, draggableTask: draggableTask, adjusted: false, geometry: geometry)
+                                    
+                                    guard draggableTask.dragHasEnded else { continue }
+                                    taskNotes.pomoHighlight[i] = false
+                                    addTaskToTaskNotesIfWithinDropRect(for: i, from: j, draggableTask: &taskNotes.draggableTasksOnBar[j], adjustedForAdder: false, geometry: geometry)
+                                }
+                            }
+                    }
                 }
                 .frame(width: max(getBarWidth() * getProportion(i) - barOutlinePadding, 0), height: barHeight)
                 .padding(.horizontal, 1)
@@ -162,9 +177,12 @@ struct ProgressBar: View {
                     let status = pomoTimer.order[i].getStatus()
                     
                     if status == .work {
-                        TaskLabel(index: i, taskNotes: taskNotes,
-                                  taskFromAdder: taskFromAdder,
-                                  pomoTimer: pomoTimer)
+                        if i < taskNotes.draggableTasksOnBar.count {
+                            TaskLabel(index: i, taskNotes: taskNotes,
+                                      taskFromAdder: taskFromAdder,
+                                      draggableTask: $taskNotes.draggableTasksOnBar[i],
+                                      pomoTimer: pomoTimer)
+                        }
                     }
                 }
                 .frame(width: max(getBarWidth() * getProportion(i) - barOutlinePadding, 0), height: barHeight)
@@ -219,29 +237,44 @@ struct ProgressBar: View {
     }
     
     
-    private func addTaskToTaskNotesIfWithinDropRect(for i: Int, geometry: GeometryProxy) {
-        if isWithinDropRect(geometry: geometry) {
-            if i < taskNotes.tasksOnBar.count {
-                taskNotes.addTask(taskFromAdder.text, index: i, context: viewContext)
-                taskFromAdder.text = ""
+    private func addTaskToTaskNotesIfWithinDropRect(for i: Int, from j: Int = 0, draggableTask: inout DraggableTask, adjustedForAdder: Bool, geometry: GeometryProxy) {
+        if isWithinDropRect(draggableTask, adjusted: adjustedForAdder, geometry: geometry) {
+            guard i < taskNotes.tasksOnBar.count && j < taskNotes.tasksOnBar.count else { return }
+            if taskNotes.tasksOnBar[i] != draggableTask.text {
+                if adjustedForAdder {
+                    taskNotes.addTask(draggableTask.text, index: i, context: viewContext)
+                    draggableTask.text = ""
+                } else {
+                    let swapTask = taskNotes.tasksOnBar[i]
+                    taskNotes.addTask(swapTask, index: j, context: viewContext)
+                    taskNotes.addTask(draggableTask.text, index: i, context: viewContext)
+                    // set location to nil to prevent duplicate updates
+                    draggableTask.location = nil
+                }
+                resetHaptic()
             }
-            resetHaptic()
         }
     }
     
-    private func updateTaskNoteHighlights(for i: Int, status: PomoStatus, geometry: GeometryProxy) {
-        if isWithinDropRect(geometry: geometry) {
-            if !taskNotes.pomoHighlight[i] { basicHaptic() }
+    private func updateTaskNoteHighlights(for i: Int, from j: Int? = nil, draggableTask: DraggableTask, adjusted: Bool, geometry: GeometryProxy) {
+        if isWithinDropRect(draggableTask, adjusted: adjusted, geometry: geometry) {
+            if !taskNotes.pomoHighlight[i] {
+                if i != j {
+                    basicHaptic()
+                }
+            }
             taskNotes.pomoHighlight[i] = true
         } else {
             taskNotes.pomoHighlight[i] = false
         }
     }
     
-    private func isWithinDropRect(geometry: GeometryProxy) -> Bool {
-        let taskDragLocation = taskFromAdder.location!.adjusted(for: metrics)
+    private func isWithinDropRect(_ draggableTask: DraggableTask, adjusted: Bool, geometry: GeometryProxy) -> Bool {
+        let taskDragLocation = adjusted ? draggableTask.location?.adjusted(for: metrics) ?? CGPoint()
+                                        : draggableTask.location ?? CGPoint()
         let dropRect = getDropRect(geometry: geometry)
-        return taskDragLocation.within(rect: dropRect)
+        let ret = taskDragLocation.within(rect: dropRect)
+        return ret
     }
     
     private func getDropRect(geometry: GeometryProxy) -> CGRect {

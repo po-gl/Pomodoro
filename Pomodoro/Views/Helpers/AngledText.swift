@@ -13,9 +13,15 @@ struct AngledText: View {
     var lineWidth: Double = 20
     var offset: Double = -40
     
+    var justShowText: Bool = false
+    
     var body: some View {
         AngledText()
-            .overlay(AngledLines())
+            .overlay(
+                AngledLines()
+                    .opacity(justShowText ? 0.0 : 1.0)
+                    .animation(.default, value: justShowText)
+            )
     }
     
     @ViewBuilder

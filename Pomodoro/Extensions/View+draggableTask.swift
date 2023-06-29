@@ -8,13 +8,13 @@
 import SwiftUI
 
 extension View {
-    func draggableTask(_ draggableTask: DraggableTask) -> some View {
+    func draggableTask(_ draggableTask: Binding<DraggableTask>) -> some View {
         ModifiedContent(content: self, modifier: DraggableTaskModifier(task: draggableTask))
     }
 }
 
 struct DraggableTaskModifier: ViewModifier {
-    @ObservedObject var task: DraggableTask
+    @Binding var task: DraggableTask
     
     @GestureState var gestureStartLocation: CGPoint?
     @GestureState var isDragging = false
@@ -48,7 +48,7 @@ struct DraggableTaskModifier: ViewModifier {
                     
                     await MainActor.run {
                         withAnimation {
-                            task.location = task.startLocation
+                            task.location = nil
                         }
                     }
                 }

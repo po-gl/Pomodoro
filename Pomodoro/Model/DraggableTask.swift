@@ -7,10 +7,18 @@
 
 import SwiftUI
 
-class DraggableTask: ObservableObject {
-    @Published var text: String = ""
-    @Published var startLocation: CGPoint?
-    @Published var location: CGPoint?
-    @Published var dragHasEnded: Bool = true
-    @Published var isDragging: Bool = false
+struct DraggableTask: Equatable {
+    var text: String = ""
+    var startLocation: CGPoint?
+    var location: CGPoint?
+    var dragHasEnded: Bool = true
+    var isDragging: Bool = false
+    
+    static func == (lhs: DraggableTask, rhs: DraggableTask) -> Bool {
+        lhs.text == rhs.text &&
+        lhs.startLocation == rhs.startLocation &&
+        lhs.location == rhs.location &&
+        lhs.dragHasEnded == rhs.dragHasEnded &&
+        lhs.isDragging == rhs.isDragging
+    }
 }
