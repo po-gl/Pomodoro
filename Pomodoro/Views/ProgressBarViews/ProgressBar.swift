@@ -126,12 +126,15 @@ struct ProgressBar: View {
                             .onChange(of: taskNotes.draggableTasksOnBar) { _ in
                                 guard !isMask else { return }
                                 guard status == .work else { return }
+                                
+                                let allDragsHaveEnded = taskNotes.draggableTasksOnBar.reduce(true, { accum, draggable in accum && draggable.dragHasEnded })
+                                
                                 for (j, draggableTask) in taskNotes.draggableTasksOnBar.enumerated() {
                                     
                                     guard draggableTask.location != nil else { continue }
                                     updateTaskNoteHighlights(for: i, from: j, draggableTask: draggableTask, adjusted: false, geometry: geometry)
                                     
-                                    guard draggableTask.dragHasEnded else { continue }
+                                    guard allDragsHaveEnded else { continue }
                                     taskNotes.pomoHighlight[i] = false
                                     addTaskToTaskNotesIfWithinDropRect(for: i, from: j, draggableTask: &taskNotes.draggableTasksOnBar[j], adjustedForAdder: false, geometry: geometry)
                                 }

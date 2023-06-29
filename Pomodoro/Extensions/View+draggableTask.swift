@@ -33,6 +33,12 @@ struct DraggableTaskModifier: ViewModifier {
                 newLocation.x += event.translation.width
                 newLocation.y += event.translation.height
                 task.location = newLocation
+                
+                Task {
+                    await MainActor.run {
+                        task.dragHasEnded = false
+                    }
+                }
             }
             .updating($gestureStartLocation) { _, startLocation, _ in
                 startLocation = startLocation ?? task.location
