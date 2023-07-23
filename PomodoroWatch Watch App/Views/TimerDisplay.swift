@@ -37,8 +37,12 @@ struct TimerDisplay: View {
             .accessibilityIdentifier("statusString")
             .foregroundColor(isLuminanceReduced ? getColorForStatus(pomoTimer.getStatus(atDate: date)) : .black)
             .padding(.horizontal, 4)
-            .background(RoundedRectangle(cornerRadius: 5).foregroundColor(color).background(RoundedRectangle(cornerRadius: 5).offset(x: 3, y: 3).foregroundColor(color).brightness(-0.3)))
-            .font(.system(size: 24, weight: .regular, design: .serif))
+            .background(
+                RoundedRectangle(cornerRadius: 5).foregroundColor(color)
+                    .shadow(radius: 2, x: 2, y: 2)
+                    .background(RoundedRectangle(cornerRadius: 5).offset(x: 3, y: 3).foregroundColor(color).brightness(-0.3))
+            )
+            .font(.system(size: 24, weight: .medium, design: .serif))
     }
     
     @ViewBuilder
