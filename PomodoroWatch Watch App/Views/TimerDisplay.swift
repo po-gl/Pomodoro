@@ -33,7 +33,7 @@ struct TimerDisplay: View {
     private func StatusBox(at date: Date) -> some View {
         let color = isLuminanceReduced ? .black : getColorForStatus(pomoTimer.getStatus(atDate: date))
         
-        Text("\(getStringForStatus(pomoTimer.getStatus(atDate: date)))")
+        Text(getStringForStatus(pomoTimer.getStatus(atDate: date)))
             .accessibilityIdentifier("statusString")
             .foregroundColor(isLuminanceReduced ? getColorForStatus(pomoTimer.getStatus(atDate: date)) : .black)
             .padding(.horizontal, 4)
@@ -53,9 +53,9 @@ struct TimerDisplay: View {
     
     @ViewBuilder
     private func TimerView(at date: Date) -> some View {
-        Text("\(pomoTimer.timeRemaining(atDate: date).timerFormatted())")
+        Text(pomoTimer.timeRemaining(atDate: date).timerFormatted())
             .accessibilityIdentifier("timeRemaining")
-            .font(.system(size: 40, weight: .regular))
+            .font(.system(size: 40, weight: .medium, design: .rounded))
             .monospacedDigit()
     }
     
