@@ -13,5 +13,6 @@ struct PomoWidgets: WidgetBundle {
     var body: some Widget {
         StatusWatchWidget()
         ProgressWatchWidget()
+        CornerProgressWidget()
     }
 }

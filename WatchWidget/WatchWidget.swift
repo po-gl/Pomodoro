@@ -172,6 +172,81 @@ struct ProgressWidgetView : View {
     }
 }
 
+#if os(watchOS)
+struct CornerProgressWidget: Widget {
+    let kind: String = "ProgressWatchWidget"
+
+    var body: some WidgetConfiguration {
+        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider(withProgress: true)) { entry in
+            CornerProgressWidgetView(entry: entry)
+                .unredacted()
+        }
+        .configurationDisplayName("Pomodoro Progress")
+        .description("Track your pomodoro timer.")
+        .supportedFamilies([.accessoryCorner])
+    }
+}
+
+struct CornerProgressWidgetView: View {
+    var entry: Provider.Entry
+    
+    var body: some View {
+        if #available(iOSApplicationExtension 17, watchOS 10, *) {
+            MainCornerProgressWidgetView()
+                .containerBackground(for: .widget) {
+                    Color.white
+                }
+                .widgetCurvesContent()
+        } else {
+            MainCornerProgressWidgetView()
+        }
+    }
+    
+    @ViewBuilder
+    func MainCornerProgressWidgetView() -> some View {
+        ZStack {
+            ZStack {
+                if entry.isPaused {
+                    Leaf(size: 24)
+                } else {
+                    Text(getIconForStatus(entry.status))
+                        .font(.system(size: 20, weight: .medium, design: .serif))
+                }
+            }
+            .widgetLabel {
+                CornerProgressView()
+            }
+            .widgetAccentable()
+        }
+    }
+    
+    @ViewBuilder
+    func CornerProgressView() -> some View {
+        if !entry.isPaused {
+            ProgressView(timerInterval: entry.timerInterval, countsDown: true, label: {}, currentValueLabel: {})
+                .tint(progressGradient())
+        } else {
+            let progressPercent = (entry.timerInterval.upperBound.timeIntervalSince1970 - entry.date.timeIntervalSince1970) / getTotalForStatus(entry.status)
+            ProgressView(value: progressPercent)
+                .tint(progressGradient())
+        }
+    }
+    
+    func progressGradient() -> AngularGradient {
+        AngularGradient(stops: [
+            .init(color: Color(hex: 0xE05499), location: 0.0),
+            
+            .init(color: Color(hex: 0xE05499), location: 0.1),
+            .init(color: Color(hex: 0xFF6347), location: 0.2),
+            .init(color: Color(hex: 0xD2544F), location: 0.4),
+            
+            .init(color: Color(hex: 0x30E277), location: 0.7),
+            .init(color: Color(hex: 0x76E298), location: 1.0),
+        ], center: .center, startAngle: .degrees(0-60), endAngle: .degrees(360-60))
+    }
+}
+#endif
+
 
 struct StatusWatchWidget: Widget {
     let kind: String = "StatusWatchWidget"
@@ -255,12 +330,18 @@ fileprivate func getTotalForStatus(_ status: PomoStatus) -> Double {
 }
 
 
+#if os(watchOS)
 struct WatchWidget_Previews: PreviewProvider {
     static var pomoTimer = PomoTimer(pomos: 2, longBreak: PomoTimer.defaultBreakTime, perform: { _ in return })
     static let timerInterval = Date()...Date().addingTimeInterval(60)
     
     static var previews: some View {
-        ProgressWidgetView(entry: PomoEntry(date: Date(), isPaused: false, status: .work, timerInterval: timerInterval, configuration: ConfigurationIntent()))
-            .previewContext(WidgetPreviewContext(family: .accessoryCircular))
+        Group {
+            CornerProgressWidgetView(entry: PomoEntry(date: Date(), isPaused: false, status: .work, timerInterval: timerInterval, configuration: ConfigurationIntent()))
+                .previewContext(WidgetPreviewContext(family: .accessoryCorner))
+            ProgressWidgetView(entry: PomoEntry(date: Date(), isPaused: false, status: .work, timerInterval: timerInterval, configuration: ConfigurationIntent()))
+                .previewContext(WidgetPreviewContext(family: .accessoryCircular))
+        }
     }
 }
+#endif
