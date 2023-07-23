@@ -12,6 +12,8 @@ struct TimerDisplay: View {
     @Environment(\.isLuminanceReduced) private var isLuminanceReduced
     @ObservedObject var pomoTimer: PomoTimer
     
+    var metrics: GeometryProxy
+    
     var body: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
             if #available(watchOS 10, *) {
@@ -25,15 +27,14 @@ struct TimerDisplay: View {
     
     @ViewBuilder
     private func MainDisplay(at date: Date) -> some View {
-        VStack(alignment: .center) {
-            ZStack {
-                HStack {
-                    StatusBox(at: date)
-                    EndingTime(at: date)
-                        .offset(y: 5)
-                }
-                .offset(y: -8)
+        VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                StatusBox(at: date)
+                Spacer()
+                EndingTime(at: date)
+                    .offset(x: 4, y: 5)
             }
+            .frame(width: metrics.size.width - 20)
             TimerView(at: date)
         }
     }
@@ -58,10 +59,15 @@ struct TimerDisplay: View {
     @ViewBuilder
     private func EndingTime(at date: Date) -> some View {
         if pomoTimer.getStatus(atDate: date) != .end {
-            Text("until \(date.addingTimeInterval(pomoTimer.timeRemaining(atDate: date)), formatter: timeFormatter)")
-                .font(.system(size: 12, weight: .regular))
-                .monospacedDigit()
-                .opacity(pomoTimer.isPaused ? 0.5 : 0.8)
+            HStack (alignment: .bottom, spacing: 2) {
+                Text("until")
+                    .font(.footnote)
+                    .offset(y: -1)
+                Text("\(date.addingTimeInterval(pomoTimer.timeRemaining(atDate: date)), formatter: timeFormatter)")
+                    .font(.body)
+            }
+            .monospacedDigit()
+            .opacity(pomoTimer.isPaused ? 0.5 : 0.8)
         }
     }
     
@@ -117,5 +123,7 @@ struct TimerDisplay: View {
 fileprivate let timeFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.setLocalizedDateFormatFromTemplate("hh:mm")
+    formatter.amSymbol = ""
+    formatter.pmSymbol = ""
     return formatter
 }()

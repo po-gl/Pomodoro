@@ -15,21 +15,24 @@ struct ChangerPage: View {
         VStack {
             Spacer()
             VStack(alignment: .center) {
-                Text("Pomodoros")
-                    .foregroundStyle(LinearGradient(stops: [.init(color: Color("BarWork"), location: 0), .init(color: .primary, location: 1.5)], startPoint: .leading, endPoint: .trailing))
-                    .font(.system(size: 24, weight: .semibold, design: .monospaced))
-                Divider()
+                PomodorosText()
+                Divider().frame(width: 80)
                 CurrentPomoCount()
             }
             Spacer()
-            HStack {
-                Spacer()
-                PomoStepper()
-                Spacer()
-            }
+            PomoStepper()
+                .padding()
         }
+        .ignoresSafeArea(.container, edges: .bottom)
     }
     
+    
+    @ViewBuilder
+    private func PomodorosText() -> some View {
+        Text("Pomodoros")
+            .foregroundStyle(LinearGradient(stops: [.init(color: Color("BarWork"), location: 0), .init(color: .primary, location: 1.5)], startPoint: .leading, endPoint: .trailing))
+            .font(.system(size: 24, weight: .semibold, design: .monospaced))
+    }
     
     @ViewBuilder
     private func CurrentPomoCount() -> some View {
@@ -55,5 +58,6 @@ struct ChangerPage: View {
                 pomoTimer.decrementPomos()
             }
         }
+        .focusable(false)
     }
 }
