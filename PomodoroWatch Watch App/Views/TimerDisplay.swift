@@ -14,17 +14,27 @@ struct TimerDisplay: View {
     
     var body: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
-            VStack(alignment: .center) {
-                ZStack {
-                    HStack {
-                        StatusBox(at: context.date)
-                        EndingTime(at: context.date)
-                            .offset(y: 5)
-                    }
-                    .offset(y: -8)
-                }
-                TimerView(at: context.date)
+            if #available(watchOS 10, *) {
+                MainDisplay(at: context.date)
+                    .containerBackground(getColorForStatus(pomoTimer.getStatus(atDate: context.date)).gradient.opacity(0.4), for: .tabView)
+            } else {
+                MainDisplay(at: context.date)
             }
+        }
+    }
+    
+    @ViewBuilder
+    private func MainDisplay(at date: Date) -> some View {
+        VStack(alignment: .center) {
+            ZStack {
+                HStack {
+                    StatusBox(at: date)
+                    EndingTime(at: date)
+                        .offset(y: 5)
+                }
+                .offset(y: -8)
+            }
+            TimerView(at: date)
         }
     }
     
