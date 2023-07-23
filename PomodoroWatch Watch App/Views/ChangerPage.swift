@@ -16,7 +16,7 @@ struct ChangerPage: View {
             Spacer()
             VStack(alignment: .center) {
                 Text("Pomodoros")
-                    .foregroundColor(Color("BarWork"))
+                    .foregroundStyle(LinearGradient(stops: [.init(color: Color("BarWork"), location: 0), .init(color: .primary, location: 1.5)], startPoint: .leading, endPoint: .trailing))
                     .font(.system(size: 24, weight: .semibold, design: .monospaced))
                 Divider()
                 CurrentPomoCount()
