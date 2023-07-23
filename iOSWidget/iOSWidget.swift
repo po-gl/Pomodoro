@@ -28,10 +28,22 @@ struct iOSProgressWidgetView : View {
     var entry: Provider.Entry
     
     var body: some View {
+        if #available(iOSApplicationExtension 17, *) {
+            MainProgressWidgetView()
+                .containerBackground(for: .widget) {
+                    Color.white
+                }
+        } else {
+            MainProgressWidgetView()
+        }
+    }
+    
+    @ViewBuilder
+    func MainProgressWidgetView() -> some View {
         ZStack {
             CircularProgressView() {
                 if entry.isPaused {
-                    Leaf(size: 20)
+                    Leaf(size: 22)
                 } else {
                     Text(getIconForStatus(entry.status))
                         .font(.system(size: 22, weight: .medium, design: .serif))

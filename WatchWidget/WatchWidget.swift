@@ -117,13 +117,25 @@ struct ProgressWidgetView : View {
     var entry: Provider.Entry
 
     var body: some View {
+        if #available(iOSApplicationExtension 17, watchOS 10, *) {
+            MainProgressWidgetView()
+                .containerBackground(for: .widget) {
+                    Color.white
+                }
+        } else {
+            MainProgressWidgetView()
+        }
+    }
+    
+    @ViewBuilder
+    func MainProgressWidgetView() -> some View {
         ZStack {
             progressGradient().mask(
                 CircularProgressView()
             )
             .overlay {
                 if entry.isPaused {
-                    Leaf(size: 16)
+                    Leaf()
                 } else {
                     Text(getIconForStatus(entry.status))
                         .font(.system(size: 20, weight: .medium, design: .serif))
@@ -171,7 +183,11 @@ struct StatusWatchWidget: Widget {
         }
         .configurationDisplayName("Pomodoro Status")
         .description("See your pomodoro timer status.")
+#if os(watchOS)
+        .supportedFamilies([.accessoryCircular, .accessoryCorner])
+#elseif os(iOS)
         .supportedFamilies([.accessoryCircular])
+#endif
     }
 }
 
@@ -179,10 +195,22 @@ struct StatusWidgetView : View {
     var entry: Provider.Entry
 
     var body: some View {
+        if #available(iOSApplicationExtension 17, watchOS 10, *) {
+            MainStatusWidgetView()
+                .containerBackground(for: .widget) {
+                    Color.white
+                }
+        } else {
+            MainStatusWidgetView()
+        }
+    }
+    
+    @ViewBuilder
+    func MainStatusWidgetView() -> some View {
         ZStack {
             AccessoryWidgetBackground()
             if entry.isPaused {
-                Leaf(size: 16)
+                Leaf()
             } else {
                 Text(getIconForStatus(entry.status))
                     .font(.system(size: 20, weight: .medium, design: .serif))
@@ -193,10 +221,9 @@ struct StatusWidgetView : View {
 }
 
 @ViewBuilder
-func Leaf(size: Double = 16) -> some View {
-    Image(systemName: "leaf.fill")
-        .resizable()
-        .frame(width: size, height: size)
+func Leaf(size: Double = 18) -> some View {
+    Text(Image(systemName: "leaf.fill"))
+        .font(.system(size: size))
         .foregroundColor(Color(hex: 0x31E377))
         .saturation(0.6)
 }
