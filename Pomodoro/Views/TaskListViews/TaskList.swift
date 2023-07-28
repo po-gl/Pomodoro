@@ -243,6 +243,10 @@ struct TaskList: View {
             Spacer()
             Text("No New Tasks")
                 .foregroundColor(.secondary)
+                .onTapGesture {
+                    basicHaptic()
+                    TasksData.addTask("", context: viewContext)
+                }
             Spacer()
         }
     }
