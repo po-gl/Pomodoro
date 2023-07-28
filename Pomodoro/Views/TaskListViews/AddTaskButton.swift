@@ -16,6 +16,7 @@ struct AddTaskButton: View {
     
     var body: some View {
         Button(action: {
+            basicHaptic()
             TasksData.addTask("", context: viewContext)
             withAnimation { scrollProxy.scrollTo(scrollToID) }
         } ) {
