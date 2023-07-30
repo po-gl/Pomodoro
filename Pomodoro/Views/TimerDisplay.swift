@@ -52,7 +52,7 @@ struct TimerDisplay: View {
             .foregroundColor(fgColor)
             .padding(.horizontal, 8)
             .padding(.vertical, 2)
-            .background(RoundedRectangle(cornerRadius: 5).foregroundColor(bgColor).background(RoundedRectangle(cornerRadius: 5).offset(x: 3, y: 3).foregroundColor(bgColor).brightness(-0.3)))
+            .background(RoundedRectangle(cornerRadius: 5).foregroundColor(bgColor).shadow(radius: 2, x: 2, y: 2).background(RoundedRectangle(cornerRadius: 5).offset(x: 3, y: 3).foregroundColor(bgColor).brightness(-0.3)))
     }
     
     @ViewBuilder

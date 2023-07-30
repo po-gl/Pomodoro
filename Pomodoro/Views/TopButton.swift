@@ -39,7 +39,7 @@ struct TopButton: View {
             Image(systemName: "checklist")
                 .frame(width: 50, height: 32)
                 .foregroundColor(foregroundColor)
-                .background(RoundedRectangle(cornerRadius: 30).foregroundColor(backgroundColor).background(RoundedRectangle(cornerRadius: 30).offset(x: 2, y: 2).foregroundColor(backgroundColor).brightness(-0.3)))
+                .background(RoundedRectangle(cornerRadius: 30).foregroundColor(backgroundColor).shadow(radius: 2, x: 1, y: 1).background(RoundedRectangle(cornerRadius: 30).offset(x: 2.5, y: 2.5).foregroundColor(backgroundColor).brightness(-0.3)))
         }
     }
     
