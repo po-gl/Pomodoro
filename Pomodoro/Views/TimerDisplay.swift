@@ -13,33 +13,41 @@ struct TimerDisplay: View {
     @Environment(\.colorScheme) private var colorScheme
     @ObservedObject var pomoTimer: PomoTimer
     
+    let startStopAnimation: Animation = .interpolatingSpring(stiffness: 190, damping: 13)
+    
     var body: some View {
-        TimelineView(PeriodicTimelineSchedule(from: Date(), by: pomoTimer.isPaused ? 60.0 : 1.0)) { context in
-            VStack(alignment: .center, spacing: 0) {
-                // TOP
-                HStack(alignment: .bottom, spacing: 0) {
-                    StatusBox(at: context.date)
-                        .padding(.trailing, 8)
-                    EndingTime(at: context.date)
-                        .offset(y: -3)
-                    Spacer(minLength: 0)
+        ZStack {
+            TimelineView(PeriodicTimelineSchedule(from: Date(), by: pomoTimer.isPaused ? 60.0 : 1.0)) { context in
+                VStack(alignment: .center, spacing: 0) {
+                    // TOP
+                    HStack(alignment: .bottom, spacing: 0) {
+                        StatusBox(at: context.date)
+                            .padding(.trailing, 8)
+                        EndingTime(at: context.date)
+                            .offset(y: -5)
+                        Spacer(minLength: 0)
+                    }
+                    .offset(x: 10)
+                    
+                    // MIDDLE
+                    TimerView(at: context.date)
+                    
+                    // BOTTOM
+                    HStack (spacing: 0) {
+                        Spacer(minLength: 0)
+                        CurrentPomoView(at: context.date)
+                            .offset(y: -5)
+                    }
+                    .offset(x: -10)
                 }
-                .offset(x: 10)
+                .frame(width: 300, height: 160)
+                .animation(.easeInOut(duration: 0.2), value: pomoTimer.getStatus(atDate: context.date))
                 
-                // MIDDLE
-                TimerView(at: context.date)
-                
-                // BOTTOM
-                HStack (spacing: 0) {
-                    Spacer(minLength: 0)
-                    CurrentPomoView(at: context.date)
-                        .offset(y: -5)
-                }
-                .offset(x: -10)
             }
-            .frame(width: 300, height: 160)
-            .animation(.easeInOut(duration: 0.2), value: pomoTimer.getStatus(atDate: context.date))
         }
+        .drawingGroup()
+        .offset(y: pomoTimer.isPaused ? 0 : 10)
+        .animation(startStopAnimation, value: pomoTimer.isPaused)
     }
     
     @ViewBuilder
@@ -70,7 +78,9 @@ struct TimerDisplay: View {
     @ViewBuilder
     private func TimerView(at date: Date) -> some View {
         Text(pomoTimer.timeRemaining(atDate: date).timerFormatted())
-            .font(.system(size: 70, weight: .light))
+            .font(.system(size: 70,
+                          weight: pomoTimer.isPaused ? .light : .regular,
+                          design: .rounded))
             .monospacedDigit()
             .colorScheme(colorScheme == .dark ? .light : .dark)
     }
