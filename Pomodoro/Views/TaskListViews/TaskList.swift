@@ -34,6 +34,12 @@ struct TaskList: View {
                            predicate: NSPredicate(format: "timestamp < %@", Calendar.current.startOfDay(for: Date()) as CVarArg))
     private var pastTasks: SectionedFetchResults<String, TaskNote>
     
+    @FetchRequest(sortDescriptors: [SortDescriptor(\TaskNote.order, order: .reverse), SortDescriptor(\TaskNote.timestamp, order: .forward)],
+                  predicate: NSPredicate(format: "timestamp >= %@ && timestamp <= %@",
+                                         Calendar.current.startOfDay(for: Date() - 86401) as CVarArg,
+                                         Calendar.current.startOfDay(for: Date() - 1) as CVarArg))
+    private var yesterdaysTasks: FetchedResults<TaskNote>
+    
     @State var showingArchivedProjects = false
     @AppStorage("showPastTasks") private var showPastTasks = false
     
@@ -78,6 +84,7 @@ struct TaskList: View {
                 Divider()
                 ShowPastTasksButton()
                 MarkTodaysTasksAsDoneButton()
+                AddYesterdaysUnfinishedTasksButton()
             } label: {
                 Image(systemName: "ellipsis.circle")
             }
@@ -426,6 +433,20 @@ struct TaskList: View {
             todaysTasks.forEach { TasksData.setCompleted(for: $0, context: viewContext) }
         }) {
             Label("Mark Today as Done", systemImage: "checklist.checked")
+        }
+    }
+    
+    @ViewBuilder
+    private func AddYesterdaysUnfinishedTasksButton() -> some View {
+        Button(action: {
+            yesterdaysTasks.filter({ !$0.completed }).filter({ task in !todaysTasks.contains(where: { $0.text == task.text })}).forEach { taskToAdd in
+                if let taskText = taskToAdd.text {
+                    withAnimation { TasksData.addTask(taskText, note: taskToAdd.note ?? "", flagged: taskToAdd.flagged, date: Date().addingTimeInterval(-1), context: viewContext)}
+                }
+            }
+                
+        }) {
+            Label("Add Unfinished Tasks", systemImage: "arrow.uturn.up")
         }
     }
 }
