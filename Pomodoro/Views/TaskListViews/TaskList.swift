@@ -147,7 +147,7 @@ struct TaskList: View {
     @ViewBuilder
     private func ProjectSectionHeader() -> some View {
         HStack (spacing: 20) {
-            Text("PROJECTS")
+            Text("Projects")
             Spacer()
             Group {
                 ProjectHeaderAddButton()
