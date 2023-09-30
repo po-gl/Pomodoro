@@ -65,12 +65,11 @@ struct TaskList: View {
                 .scrollDismissesKeyboard(.interactively)
                 
                 .toolbar {
-                    ToolbarItem(placement: .bottomBar) {
+                    ToolbarItemGroup(placement: .bottomBar) {
                         HStack {
                             AddTaskButton(scrollProxy: scrollProxy, scrollToID: todaysTasksID)
                             Spacer()
                         }
-                        .padding(.horizontal, 5)
                     }
                 }
             }

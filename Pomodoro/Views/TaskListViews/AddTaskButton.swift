@@ -20,8 +20,10 @@ struct AddTaskButton: View {
             TasksData.addTask("", context: viewContext)
             withAnimation { scrollProxy.scrollTo(scrollToID) }
         } ) {
-            Label("New Task", systemImage: "plus.circle.fill")
-                .labelStyle(.titleAndIcon)
+            Text(Image(systemName: "plus.circle.fill"))
+            Text("New Task")
+                .font(.system(.body, design: .rounded))
+                .fontWeight(.semibold)
         }.tint(Color("AccentColor"))
     }
 }
