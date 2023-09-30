@@ -33,8 +33,11 @@ struct ProjectItemCell: View {
     var primarySaturation: Double { colorScheme == .dark ? 1.8 : 1.2 }
     var secondaryBrightness: Double { colorScheme == .dark ? 0.2 : -0.3 }
     var secondarySaturation: Double { colorScheme == .dark ? 1.0 : 1.0 }
-    var checkBrightness: Double { colorScheme == .dark ? 0.2 : 0.0 }
-    var checkSaturation: Double { colorScheme == .dark ? 1.1 : 1.05 }
+    
+    var collapsedCheckBrightness: Double { colorScheme == .dark ? 0.5 : -0.5 }
+    var collapsedCheckSaturation: Double { colorScheme == .dark ? 1.5 : 1.2 }
+    var checkBrightness: Double { colorScheme == .dark ? 0.2 : -0.3 }
+    var checkSaturation: Double { colorScheme == .dark ? 1.0 : 1.0 }
     
     var collapsedBackgroundBrightness: Double { colorScheme == .dark ? -0.09 : 0.0 }
     var collapsedBackgroundSaturation: Double { colorScheme == .dark ? 0.85 : 1.05 }
@@ -233,9 +236,8 @@ struct ProjectItemCell: View {
             }.frame(width: width/1.5)
         }
         .foregroundColor(color)
-        .brightness(checkBrightness)
-        .saturation(checkSaturation)
-        .hueRotation(.degrees(170))
+        .brightness(isCollapsed ? collapsedCheckBrightness : checkBrightness)
+        .saturation(isCollapsed ? collapsedCheckSaturation : checkSaturation)
         .contentShape(Circle())
         .onTapGesture {
             let newValue = project.progress + 0.5 > 1.0 ? 0.0 : project.progress + 0.5
