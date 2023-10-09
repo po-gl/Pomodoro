@@ -72,6 +72,7 @@ struct Background: View {
                 .offset(y: colorScheme == .dark ? 0 : 35)
                 .rotationEffect(.degrees(colorScheme == .dark ? 180 : 0))
         }
+        .animation(nil, value: colorScheme)
         .compositingGroup()
         .frame(height: 0)
     }
