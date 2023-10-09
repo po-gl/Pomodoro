@@ -10,6 +10,13 @@
 		6101A6F329996B5F00DC5FC5 /* PomoStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6101A6F229996B5F00DC5FC5 /* PomoStepper.swift */; };
 		6101A6F529998C4A00DC5FC5 /* EndTimerHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6101A6F429998C4A00DC5FC5 /* EndTimerHandler.swift */; };
 		6101A6F729998C4A00DC5FC5 /* EndTimerHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6101A6F429998C4A00DC5FC5 /* EndTimerHandler.swift */; };
+		610515B42AD49B4800F6DD30 /* AnimatedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6131C0AD291204C300D1E6F1 /* AnimatedImage.swift */; };
+		610515B62AD49B9D00F6DD30 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F4253D2908E8FD00300C83 /* Notifications.swift */; };
+		610515B82AD49BD300F6DD30 /* Color+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9089285CD2E4003F1990 /* Color+hex.swift */; };
+		610515B92AD4A2CF00F6DD30 /* Color+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9089285CD2E4003F1990 /* Color+hex.swift */; };
+		610515BA2AD4A2D400F6DD30 /* Color+isDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */; };
+		610515BB2AD4A2D500F6DD30 /* Color+isDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */; };
+		610515BC2AD4A2DE00F6DD30 /* TimeInterval+formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9087285CC863003F1990 /* TimeInterval+formatter.swift */; };
 		610595A42A4B783C00A83804 /* View+globalPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610595A32A4B783B00A83804 /* View+globalPosition.swift */; };
 		610F99C329BD736A00608F41 /* iOSWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6172B4AA297F5EC600E53D8F /* iOSWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		610F99C829BE4BC600608F41 /* HostingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610F99C729BE4BC600608F41 /* HostingView.swift */; };
@@ -65,8 +72,6 @@
 		614DA2B32997BE6C00EFC91C /* Color+isDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */; };
 		614DA2B42997BE6C00EFC91C /* Color+isDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */; };
 		614DA2B52997BE6C00EFC91C /* Color+isDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */; };
-		614DA2B62997BE6C00EFC91C /* Color+isDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */; };
-		614DA2B72997BE6C00EFC91C /* Color+isDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */; };
 		6172B49F297F57C100E53D8F /* View+Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B17250285CFCBB001C8245 /* View+Modifier.swift */; };
 		6172B4A0297F57C400E53D8F /* UIView+ClosestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B17252285CFCF8001C8245 /* UIView+ClosestVC.swift */; };
 		6172B4A1297F57C900E53D8F /* TimeInterval+formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9087285CC863003F1990 /* TimeInterval+formatter.swift */; };
@@ -174,8 +179,6 @@
 		61E22AA5297B31270080CA6E /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619ED26829072E00004E344D /* Haptics.swift */; };
 		61E22AA7297B31500080CA6E /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F4253D2908E8FD00300C83 /* Notifications.swift */; };
 		61E22AAB297B975B0080CA6E /* Color+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9089285CD2E4003F1990 /* Color+hex.swift */; };
-		61E22AAC297B975D0080CA6E /* Color+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9089285CD2E4003F1990 /* Color+hex.swift */; };
-		61E22AAD297B97CC0080CA6E /* Color+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9089285CD2E4003F1990 /* Color+hex.swift */; };
 		61ED2E06297A682F0080C29F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617789B32856A1F300BD43D7 /* ContentView.swift */; };
 		61F21DA0299233F400C3DACC /* LiveActivities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6172B4C8297F82E300E53D8F /* LiveActivities.swift */; };
 		61F4220F2900AC350036400A /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F4220E2900AC350036400A /* ProgressBar.swift */; };
@@ -481,12 +484,61 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		612B9085285CC80D003F1990 /* Extensions */ = {
+		610515B12AD4999D00F6DD30 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				610515B22AD499A900F6DD30 /* Views */,
+				610515B52AD49B7300F6DD30 /* Model */,
+				61F4253D2908E8FD00300C83 /* Notifications.swift */,
+				61147F022A33BC9A000F4BBA /* WatchConnection.swift */,
+				610515B72AD49BC500F6DD30 /* Extensions */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		610515B22AD499A900F6DD30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				6131C0A92911F6E200D1E6F1 /* BuddyView.swift */,
+				610515B32AD499B400F6DD30 /* Helpers */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		610515B32AD499B400F6DD30 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				6131C0AD291204C300D1E6F1 /* AnimatedImage.swift */,
+				614DA2A62997BE3C00EFC91C /* PopStyle.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		610515B52AD49B7300F6DD30 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				613D6D9B285C82FD0020C194 /* SequenceTimer.swift */,
+				619255B02901F4CB00D399B8 /* PomoTimer.swift */,
+				619255B3290204AB00D399B8 /* PomoTime.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		610515B72AD49BC500F6DD30 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				612B9087285CC863003F1990 /* TimeInterval+formatter.swift */,
-				61BE18C42A295E3700082875 /* Date+compare.swift */,
 				612B9089285CD2E4003F1990 /* Color+hex.swift */,
+				614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */,
+				61D5808729BA5E5B006F0BB0 /* Comparable+Clamped.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		612B9085285CC80D003F1990 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				61BE18C42A295E3700082875 /* Date+compare.swift */,
 				61B17250285CFCBB001C8245 /* View+Modifier.swift */,
 				611EE30C2A107CD000DDF171 /* View+doneButton.swift */,
 				61C6BC1229C0364000AF48DE /* View+onSubmitWithVerticalText.swift */,
@@ -494,9 +546,7 @@
 				611A7CE02A380F2D0038AE56 /* View+draggableTask.swift */,
 				610595A32A4B783B00A83804 /* View+globalPosition.swift */,
 				61B17252285CFCF8001C8245 /* UIView+ClosestVC.swift */,
-				614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */,
 				614533CA2A27353B00388136 /* Color+Interpolate.swift */,
-				61D5808729BA5E5B006F0BB0 /* Comparable+Clamped.swift */,
 				618750F429BABCFE0017BF8E /* Point+Extensions.swift */,
 				61AEA85C29CE56F8007AA1AD /* Publishers+Keyboard.swift */,
 			);
@@ -542,6 +592,7 @@
 			children = (
 				6172B4C4297F62EE00E53D8F /* iOSWidgetExtension.entitlements */,
 				615E7F2E290B7DB0005BD3AE /* WatchWidgetExtension.entitlements */,
+				610515B12AD4999D00F6DD30 /* Shared */,
 				617789B02856A1F300BD43D7 /* Pomodoro */,
 				61FAEAAF29065FDC00CACF78 /* PomodoroWatch Watch App */,
 				6172B4AD297F5EC600E53D8F /* iOSWidget */,
@@ -579,9 +630,7 @@
 				61BEBD822856B1D400987514 /* Model */,
 				619ED26829072E00004E344D /* Haptics.swift */,
 				6101A6F429998C4A00DC5FC5 /* EndTimerHandler.swift */,
-				61F4253D2908E8FD00300C83 /* Notifications.swift */,
 				6172B4C8297F82E300E53D8F /* LiveActivities.swift */,
-				61147F022A33BC9A000F4BBA /* WatchConnection.swift */,
 				612B9085285CC80D003F1990 /* Extensions */,
 				617789B52856A1F300BD43D7 /* Assets.xcassets */,
 				61F7362E29C00CCE00289149 /* Pomodoro.xcdatamodeld */,
@@ -624,8 +673,6 @@
 			children = (
 				612D433329C14AB800FF38F8 /* AutoCompleteView.swift */,
 				610F99C729BE4BC600608F41 /* HostingView.swift */,
-				6131C0AD291204C300D1E6F1 /* AnimatedImage.swift */,
-				614DA2A62997BE3C00EFC91C /* PopStyle.swift */,
 				61C4F02129DF4CDA00BC70C7 /* AngledText.swift */,
 			);
 			path = Helpers;
@@ -642,7 +689,6 @@
 				6101A6F229996B5F00DC5FC5 /* PomoStepper.swift */,
 				61F7361229BEBBC800289149 /* TopButton.swift */,
 				611AE62D2903A9AF00FA24F0 /* ButtonCluster.swift */,
-				6131C0A92911F6E200D1E6F1 /* BuddyView.swift */,
 				61C4F01F29DF4C3F00BC70C7 /* TaskListViews */,
 				61B17254285CFD40001C8245 /* Helpers */,
 			);
@@ -653,9 +699,6 @@
 			isa = PBXGroup;
 			children = (
 				61F7362A29C00B4500289149 /* Persistence.swift */,
-				613D6D9B285C82FD0020C194 /* SequenceTimer.swift */,
-				619255B02901F4CB00D399B8 /* PomoTimer.swift */,
-				619255B3290204AB00D399B8 /* PomoTime.swift */,
 				618750F829BB69400017BF8E /* TasksOnBar.swift */,
 				61C6BC1529C12D0F00AF48DE /* DraggableTask.swift */,
 				61F7362629BFEAFA00289149 /* TasksData.swift */,
@@ -1028,12 +1071,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				61A7FE2E29BD6F73000137E7 /* WatchWidgetBundle.swift in Sources */,
+				610515B92AD4A2CF00F6DD30 /* Color+hex.swift in Sources */,
 				612D8F96290B67E80089CDD1 /* SequenceTimer.swift in Sources */,
 				612D8F8C290B63190089CDD1 /* WatchWidget.intentdefinition in Sources */,
+				610515BC2AD4A2DE00F6DD30 /* TimeInterval+formatter.swift in Sources */,
 				612D8F97290B67EB0089CDD1 /* PomoTime.swift in Sources */,
-				61E22AAD297B97CC0080CA6E /* Color+hex.swift in Sources */,
+				610515BA2AD4A2D400F6DD30 /* Color+isDark.swift in Sources */,
 				61D5808E29BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */,
-				614DA2B62997BE6C00EFC91C /* Color+isDark.swift in Sources */,
 				612D8F95290B67E50089CDD1 /* PomoTimer.swift in Sources */,
 				612D8F87290B63180089CDD1 /* WatchWidget.swift in Sources */,
 			);
@@ -1048,13 +1092,13 @@
 				61D5808F29BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */,
 				6172B4B3297F5EC600E53D8F /* iOSWidget.swift in Sources */,
 				6172B4C5297F646800E53D8F /* TimeInterval+formatter.swift in Sources */,
+				610515BB2AD4A2D500F6DD30 /* Color+isDark.swift in Sources */,
 				6172B4C1297F621000E53D8F /* SequenceTimer.swift in Sources */,
 				6172B4B8297F5EC700E53D8F /* iOSWidget.intentdefinition in Sources */,
 				6172B4C2297F621400E53D8F /* PomoTimer.swift in Sources */,
 				6172B4AF297F5EC600E53D8F /* iOSWidgetBundle.swift in Sources */,
 				61A7FE2C29BD6E74000137E7 /* Color+hex.swift in Sources */,
 				6172B4C3297F621700E53D8F /* PomoTime.swift in Sources */,
-				614DA2B72997BE6C00EFC91C /* Color+isDark.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1129,6 +1173,7 @@
 				617789C42856A1F400BD43D7 /* PomodoroTests.swift in Sources */,
 				614A86C5290A4E1E008DFA26 /* PomoTimeTests.swift in Sources */,
 				61BE18C62A295E3700082875 /* Date+compare.swift in Sources */,
+				610515B82AD49BD300F6DD30 /* Color+hex.swift in Sources */,
 				6172B4A2297F57D000E53D8F /* TimeInterval+formatter.swift in Sources */,
 				610F99C929BE4BC600608F41 /* HostingView.swift in Sources */,
 				618750F629BABCFE0017BF8E /* Point+Extensions.swift in Sources */,
@@ -1256,7 +1301,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				61E22AAC297B975D0080CA6E /* Color+hex.swift in Sources */,
 				6187511229BBF3170017BF8E /* Haptics.swift in Sources */,
 				618C796F29BD0A46007EADBC /* BackgroundSession.swift in Sources */,
 				6187511029BBF3070017BF8E /* SequenceTimer.swift in Sources */,
@@ -1264,6 +1308,8 @@
 				6187510C29BBF2FB0017BF8E /* PomoTime.swift in Sources */,
 				618C796C29BD096C007EADBC /* EndTimerHandler.swift in Sources */,
 				61147F062A33CE78000F4BBA /* WatchConnection.swift in Sources */,
+				610515B62AD49B9D00F6DD30 /* Notifications.swift in Sources */,
+				610515B42AD49B4800F6DD30 /* AnimatedImage.swift in Sources */,
 				6187510E29BBF3040017BF8E /* PomoTimer.swift in Sources */,
 				61B2EAA529DF4DD200CABD09 /* BuddyView.swift in Sources */,
 				61D5808D29BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */,
