@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct TopButton: View {
+struct TopButton<Destination: View>: View {
     @Environment(\.colorScheme) private var colorScheme
+    @ViewBuilder let destination: () -> Destination
     @ObservedObject var pomoTimer: PomoTimer
-    
     
     var body: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: pomoTimer.isPaused ? 60.0 : 1.0)) { context in
@@ -33,9 +33,7 @@ struct TopButton: View {
         let backgroundColor = colorScheme == .dark ? .black : getColorForStatus(status)
         let foregroundColor = colorScheme == .dark ? getColorForStatus(status) : .black
         
-        NavigationLink(destination: {
-            TaskList()
-        }) {
+        NavigationLink(destination: destination) {
             Image(systemName: "checklist")
                 .frame(width: 50, height: 32)
                 .foregroundColor(foregroundColor)

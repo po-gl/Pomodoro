@@ -88,7 +88,9 @@ struct ContentView: View {
     @ViewBuilder
     private func MainPage() -> some View {
         ZStack {
-            TopButton(pomoTimer: pomoTimer)
+            TopButton(destination: {
+                TaskList();
+            }, pomoTimer: pomoTimer)
                 .zIndex(1)
             
             ZStack {
