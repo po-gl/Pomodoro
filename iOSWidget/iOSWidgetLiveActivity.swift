@@ -11,7 +11,7 @@ import SwiftUI
 
 struct PomoAttributes: ActivityAttributes {
     public typealias LivePomoState = ContentState
-    
+
     public struct ContentState: Codable, Hashable {
         // Dynamic stateful properties about your activity go here!
         var status: PomoStatus
@@ -26,11 +26,12 @@ struct PomoAttributes: ActivityAttributes {
 
 @available(iOS 16.1, *)
 struct iOSWidgetLiveActivity: Widget {
+// swiftlint:disable:previous type_name
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: PomoAttributes.self) { context in
             // Lock screen/banner UI goes here
             LockScreenLiveActivityView(context: context)
-        } dynamicIsland: { context in
+        } dynamicIsland: { _ in
             DynamicIsland {
                 // Expanded UI goes here.  Compose the expanded UI through
                 // various regions, like leading/trailing/center/bottom
@@ -56,11 +57,10 @@ struct iOSWidgetLiveActivity: Widget {
     }
 }
 
-
 @available(iOS 16.1, *)
 struct LockScreenLiveActivityView: View {
     let context: ActivityViewContext<PomoAttributes>
-    
+
     var body: some View {
         VStack {
             HStack(spacing: 10) {
@@ -82,8 +82,7 @@ struct LockScreenLiveActivityView: View {
         .activitySystemActionForegroundColor(.white.opacity(0.8))
         .activityBackgroundTint(.black.opacity(0.8))
     }
-    
-    
+
     private func pauseButton() -> some View {
         Link(destination: URL(string: "com.po-gl.stop")!) {
             Image(systemName: "pause.circle.fill")
@@ -92,21 +91,21 @@ struct LockScreenLiveActivityView: View {
                 .frame(width: 50)
         }
     }
-    
+
     private func tomatoFiller() -> some View {
         Text("🍅")
             .font(.system(size: 34))
             .padding(10)
             .background(Circle().foregroundColor(.black).opacity(0.2))
     }
-    
+
     private func timerView() -> some View {
         Text(timerInterval: context.state.timer, countsDown: true)
             .multilineTextAlignment(.trailing)
             .font(.system(size: 42, weight: .light))
             .monospacedDigit()
     }
-    
+
     private func statusView() -> some View {
         Text("\(getString(for: context.state.status))")
             .font(.system(size: 20, weight: .thin, design: .serif))
@@ -114,21 +113,20 @@ struct LockScreenLiveActivityView: View {
             .padding(.horizontal, 5)
             .background(Rectangle().foregroundColor(getColorForStatus(context.state.status)))
     }
-    
+
     private func timerEndView() -> some View {
         Text("until \(context.state.timer.upperBound, formatter: timeFormatter)")
             .font(.system(size: 17, weight: .regular, design: .serif))
             .monospacedDigit()
             .opacity(0.5)
     }
-    
+
     private func pomoView() -> some View {
         Text("Pomo \(context.state.currentPomo)/\(context.state.pomoCount)")
             .font(.system(size: 17, weight: .thin, design: .serif))
             .opacity(0.5)
     }
-    
-    
+
     private func getColorForStatus(_ status: PomoStatus) -> Color {
         switch status {
         case .work:
@@ -141,7 +139,7 @@ struct LockScreenLiveActivityView: View {
             return .accentColor
         }
     }
-    
+
     private func getIcon(for status: PomoStatus) -> String {
         switch status {
         case .work:
@@ -154,7 +152,7 @@ struct LockScreenLiveActivityView: View {
             return "🎉"
         }
     }
-    
+
     private func getString(for status: PomoStatus) -> String {
         switch status {
         case .longBreak:
@@ -165,7 +163,7 @@ struct LockScreenLiveActivityView: View {
     }
 }
 
-fileprivate let timeFormatter: DateFormatter = {
+private let timeFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.setLocalizedDateFormatFromTemplate("hh:mm")
     return formatter

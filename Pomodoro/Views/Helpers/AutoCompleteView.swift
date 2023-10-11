@@ -9,30 +9,32 @@ import SwiftUI
 
 struct AutoCompleteView: View {
     @Environment(\.colorScheme) private var colorScheme
-    @FetchRequest(sortDescriptors: [SortDescriptor(\TaskNote.order), SortDescriptor(\TaskNote.timestamp)], predicate: NSPredicate(format: "timestamp >= %@ && timestamp <= %@", Calendar.current.startOfDay(for: Date()) as CVarArg, Calendar.current.startOfDay(for: Date() + 86400) as CVarArg))
+    @FetchRequest(sortDescriptors: [SortDescriptor(\TaskNote.order),
+                                    SortDescriptor(\TaskNote.timestamp)],
+                  predicate: NSPredicate(format: "timestamp >= %@ && timestamp <= %@",
+                                         Calendar.current.startOfDay(for: Date()) as CVarArg,
+                                         Calendar.current.startOfDay(for: Date() + 86400) as CVarArg))
     private var todaysTasks: FetchedResults<TaskNote>
-    
+
     @Binding var text: String
-    
-    
+
     var body: some View {
         let itemsToShow = 3
         VStack {
             Spacer()
-            VStack (alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 8) {
                 let tasks = tasksStartingWith(text)
                 let tasksToShow = tasks.count >= itemsToShow ? tasks[..<itemsToShow].reversed() : tasks[0...].reversed()
                 ForEach(tasksToShow) { taskItem in
-                    Row(taskItem.text!)
+                    row(taskItem.text!)
                 }
             }
         }
         .frame(width: 280, height: 120)
     }
-    
-    
+
     @ViewBuilder
-    private func Row(_ rowText: String) -> some View {
+    private func row(_ rowText: String) -> some View {
         HStack {
             Button {
                 text = rowText
@@ -54,11 +56,10 @@ struct AutoCompleteView: View {
             Spacer()
         }
     }
-    
-    
+
     private func tasksStartingWith(_ text: String) -> [TaskNote] {
         guard !text.isEmpty else { return todaysTasks.filter { !$0.completed } }
-        
+
         let text = text.lowercased()
         return todaysTasks.filter {
             let taskText = $0.text!.lowercased()
@@ -66,5 +67,3 @@ struct AutoCompleteView: View {
         }
     }
 }
-
-

@@ -19,7 +19,7 @@ extension UIColor {
 }
 
 extension Color {
-    var isDarkColor : Bool {
+    var isDarkColor: Bool {
         return UIColor(self).isDarkColor
     }
 }

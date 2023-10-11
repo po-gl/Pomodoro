@@ -8,52 +8,53 @@
 import SwiftUI
 import CoreData
 
-
+// swiftlint:disable file_length
+// swiftlint:disable:next type_body_length
 struct TaskList: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.undoManager) private var undoManager
-    
+
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.dismiss) private var dismiss
-    
-    
+
     @FetchRequest(sortDescriptors: [SortDescriptor(\Project.order), SortDescriptor(\Project.timestamp)],
                   predicate: NSPredicate(format: "archived == false"))
     private var currentProjects: FetchedResults<Project>
-                  
-    
-    @FetchRequest(sortDescriptors: [SortDescriptor(\TaskNote.order, order: .reverse), SortDescriptor(\TaskNote.timestamp, order: .forward)],
+
+    @FetchRequest(sortDescriptors: [SortDescriptor(\TaskNote.order, order: .reverse),
+                                    SortDescriptor(\TaskNote.timestamp, order: .forward)],
                   predicate: NSPredicate(format: "timestamp >= %@ && timestamp <= %@",
                                          Calendar.current.startOfDay(for: Date()) as CVarArg,
                                          Calendar.current.startOfDay(for: Date() + 86400) as CVarArg))
     private var todaysTasks: FetchedResults<TaskNote>
-    
+
     @SectionedFetchRequest(sectionIdentifier: \TaskNote.section,
                            sortDescriptors: [SortDescriptor(\TaskNote.timestamp, order: .reverse)],
-                           predicate: NSPredicate(format: "timestamp < %@", Calendar.current.startOfDay(for: Date()) as CVarArg))
+                           predicate: NSPredicate(format: "timestamp < %@",
+                                                  Calendar.current.startOfDay(for: Date()) as CVarArg))
     private var pastTasks: SectionedFetchResults<String, TaskNote>
-    
-    @FetchRequest(sortDescriptors: [SortDescriptor(\TaskNote.order, order: .reverse), SortDescriptor(\TaskNote.timestamp, order: .forward)],
+
+    @FetchRequest(sortDescriptors: [SortDescriptor(\TaskNote.order, order: .reverse),
+                                    SortDescriptor(\TaskNote.timestamp, order: .forward)],
                   predicate: NSPredicate(format: "timestamp >= %@ && timestamp <= %@",
                                          Calendar.current.startOfDay(for: Date() - 86401) as CVarArg,
                                          Calendar.current.startOfDay(for: Date() - 1) as CVarArg))
     private var yesterdaysTasks: FetchedResults<TaskNote>
-    
+
     @State var showingArchivedProjects = false
     @AppStorage("showPastTasks") private var showPastTasks = false
-    
+
     @State private var todaysTasksID = UUID()
-    
+
     @State var isProjectSectionCollapsed = true
-    
 
     var body: some View {
         ZStack {
             ScrollViewReader { scrollProxy in
                 List {
-                    ProjectSection(scrollProxy: scrollProxy)
-                    TaskSection(scrollProxy: scrollProxy)
+                    projectSection(scrollProxy: scrollProxy)
+                    taskSection(scrollProxy: scrollProxy)
                 }
                 .animation(.spring(), value: isProjectSectionCollapsed)
                 .listStyle(.insetGrouped)
@@ -61,9 +62,9 @@ struct TaskList: View {
                 .scrollContentBackground(.hidden)
                 .toolbarBackground(Color("Background").opacity(0.6), for: .navigationBar)
                 .toolbarBackground(Color("Background").opacity(0.6), for: .bottomBar)
-                
+
                 .scrollDismissesKeyboard(.interactively)
-                
+
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
                         HStack {
@@ -76,14 +77,14 @@ struct TaskList: View {
         }
 //        .navigationTitle(dayFormatter.string(from: Date()))
         .navigationBarTitleDisplayMode(.inline)
-        
+
         .toolbar {
             Menu {
-                ShowArchivedProjectsButton()
+                showArchivedProjectsButton()
                 Divider()
-                ShowPastTasksButton()
-                MarkTodaysTasksAsDoneButton()
-                AddYesterdaysUnfinishedTasksButton()
+                showPastTasksButton()
+                markTodaysTasksAsDoneButton()
+                addYesterdaysUnfinishedTasksButton()
             } label: {
                 Image(systemName: "ellipsis.circle")
             }
@@ -91,74 +92,78 @@ struct TaskList: View {
                 ArchivedProjectsView()
             }
         }
-        
+
         .onAppear {
             sortTasks()
         }
-        
+
         .onChange(of: scenePhase) { scenePhase in
             // Dismiss to avoid awkard animation due to
             // hosting view controller reattaching 
             if scenePhase == .background { dismiss() }
         }
     }
-    
+
     @ViewBuilder
-    private func ProjectSection(scrollProxy: ScrollViewProxy) -> some View {
+    private func projectSection(scrollProxy: ScrollViewProxy) -> some View {
         Section {
             if !currentProjects.isEmpty {
-                ProjectStackList(scrollProxy: scrollProxy)
+                projectStackList(scrollProxy: scrollProxy)
             } else {
                 EmptyProjectsView()
             }
 //            .onMove(perform: moveProjects)
         } header: {
-            ProjectSectionHeader()
+            projectSectionHeader()
         }
         .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
         .listRowBackground(Color.clear)
-        
+
         .onChange(of: currentProjects.count) { count in
             if count == 0 {
                 isProjectSectionCollapsed = true
             }
         }
     }
-    
+
     @ViewBuilder
-    private func ProjectStackList(scrollProxy: ScrollViewProxy) -> some View {
+    private func projectStackList(scrollProxy: ScrollViewProxy) -> some View {
         let collapsedRowHeight: Double = 85
-        HStack (alignment: .top) {
+        HStack(alignment: .top) {
             VStack {
-                ForEach(0..<currentProjects.count, id: \.self) { index in
-                    ProjectCellWithModifiers(currentProjects[index], scrollProxy: scrollProxy, cellHeight: collapsedRowHeight, isFirstProject: index == 0)
-                        .zIndex(-Double(index))
-                        .opacity(isProjectSectionCollapsed ? 1 - (0.3 * Double(index)) : 1.0)
-                        .scaleEffect(isProjectSectionCollapsed ? 1 - (0.08 * Double(index)) : 1.0)
-                        .offset(y: isProjectSectionCollapsed ? -Double(index) * collapsedRowHeight + (Double(index) * 3) : 0.0)
+                ForEach(0..<currentProjects.count, id: \.self) { i in
+                    let iDouble = Double(i)
+                    projectCellWithModifiers(currentProjects[i],
+                                             scrollProxy: scrollProxy,
+                                             cellHeight: collapsedRowHeight,
+                                             isFirstProject: i == 0)
+                        .zIndex(-iDouble)
+                        .opacity(isProjectSectionCollapsed ? 1 - (0.3 * iDouble) : 1.0)
+                        .scaleEffect(isProjectSectionCollapsed ? 1 - (0.08 * iDouble) : 1.0)
+                        .offset(y: isProjectSectionCollapsed ? -iDouble * collapsedRowHeight + (iDouble * 3) : 0.0)
                 }
             }
             .frame(maxHeight: isProjectSectionCollapsed ? collapsedRowHeight*1.25 : .infinity, alignment: .top)
             .padding(.vertical, 3)
         }
     }
-    
+
     @ViewBuilder
-    private func ProjectSectionHeader() -> some View {
-        HStack (spacing: 20) {
+    private func projectSectionHeader() -> some View {
+        HStack(spacing: 20) {
             Text("Projects")
             Spacer()
             Group {
-                ProjectHeaderAddButton()
-                ProjectHeaderChevronButton()
+                projectHeaderAddButton()
+                projectHeaderChevronButton()
             }
             .opacity(isProjectSectionCollapsed ? 0.0 : 1.0)
         }
         .padding(.horizontal, 20)
     }
-    
+
     @ViewBuilder
-    private func ProjectHeaderAddButton() -> some View {
+    private func projectHeaderAddButton() -> some View {
         Button(action: {
             withAnimation(.spring()) {
                 ProjectsData.addProject("", context: viewContext)
@@ -177,9 +182,9 @@ struct TaskList: View {
 //                )
         }
     }
-    
+
     @ViewBuilder
-    private func ProjectHeaderChevronButton() -> some View {
+    private func projectHeaderChevronButton() -> some View {
         Button(action: {
             withAnimation(.spring()) {
                 isProjectSectionCollapsed = true
@@ -198,14 +203,21 @@ struct TaskList: View {
                 )
         }
     }
-    
+
     @ViewBuilder
-    private func ProjectCellWithModifiers(_ project: Project, scrollProxy: ScrollViewProxy, cellHeight: Double, isFirstProject: Bool) -> some View {
-        ZStack (alignment: .leading) {
+    private func projectCellWithModifiers(_ project: Project,
+                                          scrollProxy: ScrollViewProxy,
+                                          cellHeight: Double,
+                                          isFirstProject: Bool) -> some View {
+        ZStack(alignment: .leading) {
             // glitches occur on delete without a reference to .order in view
             Text("\(project.order)").opacity(0)
-            
-            ProjectItemCell(project: project, isCollapsed: $isProjectSectionCollapsed, scrollProxy: scrollProxy, cellHeight: cellHeight, isFirstProject: isFirstProject)
+
+            ProjectItemCell(project: project,
+                            isCollapsed: $isProjectSectionCollapsed,
+                            scrollProxy: scrollProxy,
+                            cellHeight: cellHeight,
+                            isFirstProject: isFirstProject)
                 .id(project.id)
 //                .swipeActions(edge: .trailing) {
 //                    ToggleProjectArchiveButton(project)
@@ -213,38 +225,36 @@ struct TaskList: View {
 //                }
         }
     }
-    
 
-    
     // MARK: Tasks section views
-    
+
     @ViewBuilder
-    private func TaskSection(scrollProxy: ScrollViewProxy) -> some View {
-        TodaysTasks(scrollProxy: scrollProxy)
-        
+    private func taskSection(scrollProxy: ScrollViewProxy) -> some View {
+        todaysTasks(scrollProxy: scrollProxy)
+
         if showPastTasks {
-            PastTasks(scrollProxy: scrollProxy)
+            pastTasks(scrollProxy: scrollProxy)
         }
     }
-    
+
     @ViewBuilder
-    private func TodaysTasks(scrollProxy: ScrollViewProxy) -> some View {
+    private func todaysTasks(scrollProxy: ScrollViewProxy) -> some View {
         Section("Today's Tasks") {
             ForEach(todaysTasks) { taskItem in
-                TaskCellWithModifiers(taskItem, scrollProxy: scrollProxy)
+                taskCellWithModifiers(taskItem, scrollProxy: scrollProxy)
             }
             .onMove(perform: moveTasks)
-            
+
             if todaysTasks.isEmpty {
-                TodaysTasksEmptyState()
+                todaysTasksEmptyState()
             }
         }
         .listRowBackground(Color("Background"))
         .id(todaysTasksID)
     }
-    
+
     @ViewBuilder
-    private func TodaysTasksEmptyState() -> some View {
+    private func todaysTasksEmptyState() -> some View {
         HStack {
             Spacer()
             Text("No New Tasks")
@@ -256,28 +266,28 @@ struct TaskList: View {
             Spacer()
         }
     }
-    
+
     // MARK: Past Tasks section
-    
+
     @ViewBuilder
-    private func PastTasks(scrollProxy: ScrollViewProxy) -> some View {
+    private func pastTasks(scrollProxy: ScrollViewProxy) -> some View {
         ForEach(pastTasks) { section in
             Section {
                 ForEach(section) { taskItem in
-                    TaskCellWithModifiers(taskItem, scrollProxy: scrollProxy)
+                    taskCellWithModifiers(taskItem, scrollProxy: scrollProxy)
                         .opacity(0.7)
                 }
             } header: {
-                PastSectionHeader(for: section.id)
+                pastSectionHeader(for: section.id)
             }
             .listRowBackground(Color("Background"))
         }
     }
-    
+
     @ViewBuilder
-    private func PastSectionHeader(for dateString: String) -> some View {
-        let color = ColorForDateString(dateString)
-        
+    private func pastSectionHeader(for dateString: String) -> some View {
+        let color = colorForDateString(dateString)
+
         Text(dateString)
             .padding(.vertical, 2).padding(.horizontal, 8)
             .foregroundColor(color)
@@ -290,12 +300,12 @@ struct TaskList: View {
             )
             .opacity(colorScheme == .dark ? 1.0 : 0.8)
     }
-    
-    private func ColorForDateString(_ dateString: String) -> Color {
+
+    private func colorForDateString(_ dateString: String) -> Color {
         let date = TaskNote.sectionFormatter.date(from: dateString)
         var progress: Double?
         let progressPerDay = 0.04
-        
+
         if let date {
             let timeSinceDate = Date.now.timeIntervalSince(date)
             let daysSinceDate = (timeSinceDate / 60 / 60 / 24).rounded()
@@ -306,31 +316,31 @@ struct TaskList: View {
         // so colors are manual here instead of Color("BarRest")
         let fromColor = colorScheme == .dark ? Color(hex: 0xD2544F) : Color(hex: 0xFC7974)
         let toColor = colorScheme == .dark ? Color(hex: 0x22B159) : Color(hex: 0x31E377)
-        
+
         return Color.interpolate(from: fromColor, to: toColor, progress: progress ?? 1.0)
     }
-    
+
     @ViewBuilder
-    private func TaskCellWithModifiers(_ taskItem: TaskNote, scrollProxy: ScrollViewProxy) -> some View {
-        ZStack (alignment: .leading) {
+    private func taskCellWithModifiers(_ taskItem: TaskNote, scrollProxy: ScrollViewProxy) -> some View {
+        ZStack(alignment: .leading) {
             // glitches occur on delete without a reference to .order in view
             Text("\(taskItem.order)").opacity(0)
-            
+
             TaskItemCell(taskItem: taskItem, scrollProxy: scrollProxy)
                 .padding(.vertical, 3)
                 .id(taskItem.id)
-            
+
                 .swipeActions(edge: .leading) {
-                    DeleteTaskButton(taskItem)
+                    deleteTaskButton(taskItem)
                 }
                 .swipeActions(edge: .trailing) {
                     if taskItem.timestamp! < Calendar.current.startOfDay(for: Date()) {
-                        ReAddToTodaysTasksButton(taskItem)
+                        reAddToTodaysTasksButton(taskItem)
                     }
-                    FlagTaskButton(taskItem)
+                    flagTaskButton(taskItem)
                 }
-            
-                .onChange(of: taskItem.completed) { completed in
+
+                .onChange(of: taskItem.completed) { _ in
                     Task {
                         try? await Task.sleep(for: .seconds(0.3))
                         undoManager?.disableUndoRegistration()
@@ -340,46 +350,49 @@ struct TaskList: View {
                 }
         }
     }
-    
+
     @ViewBuilder
-    private func ReAddToTodaysTasksButton(_ taskItem: TaskNote) -> some View {
+    private func reAddToTodaysTasksButton(_ taskItem: TaskNote) -> some View {
         Button(action: {
             if let taskText = taskItem.text {
                 guard !TasksData.todaysTasksContains(taskText, context: viewContext) else { return }
-                withAnimation { TasksData.addTask(taskText, note: taskItem.note ?? "", flagged: taskItem.flagged, date: Date().addingTimeInterval(-1), context: viewContext) }
+                withAnimation { TasksData.addTask(taskText,
+                                                  note: taskItem.note ?? "",
+                                                  flagged: taskItem.flagged,
+                                                  date: Date().addingTimeInterval(-1),
+                                                  context: viewContext) }
             }
         }) {
             Label("Re-add", systemImage: "arrow.uturn.up")
         }.tint(.blue)
     }
-    
+
     @ViewBuilder
-    private func FlagTaskButton(_ taskItem: TaskNote) -> some View {
+    private func flagTaskButton(_ taskItem: TaskNote) -> some View {
         Button(action: {
             withAnimation { TasksData.toggleFlagged(for: taskItem, context: viewContext) }
         }) {
             Label(taskItem.flagged ? "Unflag" : "Flag", systemImage: taskItem.flagged ? "flag.slash.fill" : "flag.fill")
         }.tint(Color("BarWork"))
     }
-    
+
     @ViewBuilder
-    private func DeleteTaskButton(_ taskItem: TaskNote) -> some View {
+    private func deleteTaskButton(_ taskItem: TaskNote) -> some View {
         Button(role: .destructive, action: {
             withAnimation { TasksData.delete(taskItem, context: viewContext) }
         }) {
             Label("Delete", systemImage: "trash")
         }.tint(.red)
     }
-    
-    
+
     private func sortTasks() {
         withAnimation {
             TasksData.separateCompleted(todaysTasks, context: viewContext)
         }
     }
-    
+
     private func moveProjects(from source: IndexSet, to destination: Int) {
-        var revisedItems: [Project] = currentProjects.map{ $0 }
+        var revisedItems: [Project] = currentProjects.map { $0 }
         revisedItems.move(fromOffsets: source, toOffset: destination)
 
         for reverseIndex in stride(from: revisedItems.count-1, through: 0, by: -1) {
@@ -387,9 +400,9 @@ struct TaskList: View {
                 Int16(reverseIndex)
         }
     }
-    
+
     private func moveTasks(from source: IndexSet, to destination: Int) {
-        var revisedItems: [TaskNote] = todaysTasks.map{ $0 }
+        var revisedItems: [TaskNote] = todaysTasks.map { $0 }
         revisedItems.move(fromOffsets: source, toOffset: destination )
 
         for reverseIndex in 0..<revisedItems.count {
@@ -397,13 +410,12 @@ struct TaskList: View {
                 Int16(reverseIndex)
         }
         TasksData.saveContext(viewContext)
-        
+
         sortTasks()
     }
-    
-    
+
     @ViewBuilder
-    private func ShowArchivedProjectsButton() -> some View {
+    private func showArchivedProjectsButton() -> some View {
         Button(action: {
             basicHaptic()
             showingArchivedProjects = true
@@ -411,9 +423,9 @@ struct TaskList: View {
             Label("Show Archived Projects", systemImage: "eye.fill")
         }
     }
-    
+
     @ViewBuilder
-    private func ShowPastTasksButton() -> some View {
+    private func showPastTasksButton() -> some View {
         Button(action: {
             basicHaptic()
             withAnimation { showPastTasks.toggle() }
@@ -425,32 +437,41 @@ struct TaskList: View {
             }
         }
     }
-    
+
     @ViewBuilder
-    private func MarkTodaysTasksAsDoneButton() -> some View {
+    private func markTodaysTasksAsDoneButton() -> some View {
         Button(action: {
             todaysTasks.forEach { TasksData.setCompleted(for: $0, context: viewContext) }
         }) {
             Label("Mark Today as Done", systemImage: "checklist.checked")
         }
     }
-    
+
     @ViewBuilder
-    private func AddYesterdaysUnfinishedTasksButton() -> some View {
+    private func addYesterdaysUnfinishedTasksButton() -> some View {
         Button(action: {
-            yesterdaysTasks.filter({ !$0.completed }).filter({ task in !todaysTasks.contains(where: { $0.text == task.text })}).forEach { taskToAdd in
+            yesterdaysTasks
+                .filter({ !$0.completed })
+                .filter({ task in !todaysTasks.contains(where: { $0.text == task.text })})
+                .forEach { taskToAdd in
                 if let taskText = taskToAdd.text {
-                    withAnimation { TasksData.addTask(taskText, note: taskToAdd.note ?? "", flagged: taskToAdd.flagged, date: Date().addingTimeInterval(-1), context: viewContext)}
+                    withAnimation {
+                        TasksData.addTask(taskText,
+                                          note: taskToAdd.note ?? "",
+                                          flagged: taskToAdd.flagged,
+                                          date: Date().addingTimeInterval(-1),
+                                          context: viewContext)
+                    }
                 }
             }
-                
+
         }) {
             Label("Add Unfinished Tasks", systemImage: "arrow.uturn.up")
         }
     }
 }
 
-fileprivate let dayFormatter: DateFormatter = {
+private let dayFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.setLocalizedDateFormatFromTemplate("EEEE MMM d")
     return formatter
@@ -463,3 +484,4 @@ struct TaskList_Previews: PreviewProvider {
         }
     }
 }
+// swiftlint:enable file_length

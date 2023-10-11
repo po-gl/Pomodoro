@@ -105,7 +105,6 @@
 		618750F629BABCFE0017BF8E /* Point+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618750F429BABCFE0017BF8E /* Point+Extensions.swift */; };
 		618750F729BABCFE0017BF8E /* Point+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618750F429BABCFE0017BF8E /* Point+Extensions.swift */; };
 		618750F929BB69400017BF8E /* TasksOnBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618750F829BB69400017BF8E /* TasksOnBar.swift */; };
-		618750FA29BB69400017BF8E /* TasksOnBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618750F829BB69400017BF8E /* TasksOnBar.swift */; };
 		618750FB29BB69400017BF8E /* TasksOnBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618750F829BB69400017BF8E /* TasksOnBar.swift */; };
 		618750FD29BB7A0B0017BF8E /* TaskLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618750FC29BB7A0B0017BF8E /* TaskLabel.swift */; };
 		618750FF29BB7A0B0017BF8E /* TaskLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618750FC29BB7A0B0017BF8E /* TaskLabel.swift */; };
@@ -834,6 +833,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				61995B142AD6271400C4DAB5 /* PBXTargetDependency */,
 				61D7895629A148E100B296B4 /* PBXTargetDependency */,
 				61A7FE2929BD5767000137E7 /* PBXTargetDependency */,
 				610F99C529BD736A00608F41 /* PBXTargetDependency */,
@@ -983,6 +983,9 @@
 				Base,
 			);
 			mainGroup = 617789A52856A1F200BD43D7;
+			packageReferences = (
+				61995B122AD61EDE00C4DAB5 /* XCRemoteSwiftPackageReference "SwiftLint" */,
+			);
 			productRefGroup = 617789AF2856A1F300BD43D7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1169,7 +1172,6 @@
 			files = (
 				6172B4CB297F848C00E53D8F /* iOSWidgetLiveActivity.swift in Sources */,
 				61F7363129C00CCE00289149 /* Pomodoro.xcdatamodeld in Sources */,
-				618750FA29BB69400017BF8E /* TasksOnBar.swift in Sources */,
 				617789C42856A1F400BD43D7 /* PomodoroTests.swift in Sources */,
 				614A86C5290A4E1E008DFA26 /* PomoTimeTests.swift in Sources */,
 				61BE18C62A295E3700082875 /* Date+compare.swift in Sources */,
@@ -1341,6 +1343,10 @@
 			isa = PBXTargetDependency;
 			target = 617789AD2856A1F300BD43D7 /* Pomodoro */;
 			targetProxy = 617789CA2856A1F400BD43D7 /* PBXContainerItemProxy */;
+		};
+		61995B142AD6271400C4DAB5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 61995B132AD6271400C4DAB5 /* SwiftLintPlugin */;
 		};
 		61A7FE2929BD5767000137E7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2026,6 +2032,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		61995B122AD61EDE00C4DAB5 /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/SwiftLint.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.53.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		61995B132AD6271400C4DAB5 /* SwiftLintPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 61995B122AD61EDE00C4DAB5 /* XCRemoteSwiftPackageReference "SwiftLint" */;
+			productName = "plugin:SwiftLintPlugin";
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		61F7362E29C00CCE00289149 /* Pomodoro.xcdatamodeld */ = {

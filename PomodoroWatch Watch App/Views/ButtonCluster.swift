@@ -7,12 +7,11 @@
 
 import Foundation
 import SwiftUI
-    
 
 struct ButtonCluster: View {
     @Environment(\.isLuminanceReduced) private var isLuminanceReduced
     @ObservedObject var pomoTimer: PomoTimer
-    
+
     var body: some View {
         HStack {
             ResetButton()
@@ -20,7 +19,7 @@ struct ButtonCluster: View {
             StartStopButton()
         }
     }
-    
+
     @ViewBuilder
     private func ResetButton() -> some View {
         let isEnabled = pomoTimer.isPaused || pomoTimer.getStatus() == .end
@@ -33,14 +32,14 @@ struct ButtonCluster: View {
                 guard isEnabled else { return }
                 resetHaptic()
                 pomoTimer.unpause() // to update crown scroll progress
-                withAnimation(.easeIn(duration: 0.2)){
+                withAnimation(.easeIn(duration: 0.2)) {
                     pomoTimer.reset()
                     pomoTimer.pause()
                 }
             }
             .disabled(!isEnabled)
     }
-    
+
     @ViewBuilder
     private func StartStopButton() -> some View {
         let isEnabled = pomoTimer.getStatus() != .end
@@ -52,15 +51,15 @@ struct ButtonCluster: View {
             .onTapGesture {
                 guard isEnabled else { return }
                 pomoTimer.isPaused ? startHaptic() : stopHaptic()
-                withAnimation(.easeIn(duration: 0.2)){
+                withAnimation(.easeIn(duration: 0.2)) {
                     pomoTimer.toggle()
                 }
             }
             .disabled(!isEnabled)
     }
-    
+
     @State var showSoftLightOverlay = true
-    
+
     @ViewBuilder
     private func softLightOverlay() -> some View {
         // In watchOS 10, blendMode abruptly reverts to normal when
@@ -70,7 +69,7 @@ struct ButtonCluster: View {
             LinearGradient(colors: [.clear, .white], startPoint: .leading, endPoint: .trailing)
                 .clipShape(Circle())
                 .blendMode(.softLight)
-            
+
                 .opacity(isLuminanceReduced ? 0.0 : showSoftLightOverlay ? 1.0 : 0.0)
                 .animation(nil, value: isLuminanceReduced)
                 .onChange(of: isLuminanceReduced) { isLuminanceReduced in
@@ -82,14 +81,14 @@ struct ButtonCluster: View {
                         showSoftLightOverlay = false
                     }
                 }
-            
+
         } else {
             LinearGradient(colors: [.clear, .white], startPoint: .leading, endPoint: .trailing)
                 .clipShape(Circle())
                 .blendMode(.softLight)
         }
     }
-    
+
     private func withFill(_ systemName: String) -> String {
         return isLuminanceReduced ? systemName : systemName + ".fill"
     }

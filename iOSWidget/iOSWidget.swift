@@ -9,7 +9,6 @@ import WidgetKit
 import SwiftUI
 import Intents
 
-
 struct iOSProgressWidget: Widget {
     let kind: String = "ProgressWatchWidget"
 
@@ -24,9 +23,9 @@ struct iOSProgressWidget: Widget {
     }
 }
 
-struct iOSProgressWidgetView : View {
+struct iOSProgressWidgetView: View {
     var entry: Provider.Entry
-    
+
     var body: some View {
         if #available(iOSApplicationExtension 17, *) {
             MainProgressWidgetView()
@@ -37,11 +36,11 @@ struct iOSProgressWidgetView : View {
             MainProgressWidgetView()
         }
     }
-    
+
     @ViewBuilder
     func MainProgressWidgetView() -> some View {
         ZStack {
-            CircularProgressView() {
+            CircularProgressView {
                 if entry.isPaused {
                     Leaf(size: 22)
                 } else {
@@ -53,7 +52,7 @@ struct iOSProgressWidgetView : View {
             .widgetAccentable()
         }
     }
-    
+
     @ViewBuilder
     func CircularProgressView(@ViewBuilder label: () -> some View) -> some View {
         if !entry.isPaused {
@@ -66,8 +65,6 @@ struct iOSProgressWidgetView : View {
         }
     }
 }
-
-
 
 struct iOSWidget: Widget {
     let kind: String = "iOSWidget"
@@ -82,7 +79,7 @@ struct iOSWidget: Widget {
     }
 }
 
-struct iOSWidgetEntryView : View {
+struct iOSWidgetEntryView: View {
     var entry: Provider.Entry
 
     var body: some View {
@@ -106,8 +103,7 @@ struct iOSWidgetEntryView : View {
     }
 }
 
-
-fileprivate func getColorForStatus(_ status: PomoStatus) -> Color {
+private func getColorForStatus(_ status: PomoStatus) -> Color {
     switch status {
     case .work:
         return Color("BarWork")
@@ -120,8 +116,8 @@ fileprivate func getColorForStatus(_ status: PomoStatus) -> Color {
     }
 }
 
-fileprivate func getIconForStatus(_ status: PomoStatus) -> String {
-    switch status{
+private func getIconForStatus(_ status: PomoStatus) -> String {
+    switch status {
     case .work:
         return "W"
     case .rest:
@@ -133,9 +129,8 @@ fileprivate func getIconForStatus(_ status: PomoStatus) -> String {
     }
 }
 
-
-fileprivate func getTotalForStatus(_ status: PomoStatus) -> Double {
-    switch status{
+private func getTotalForStatus(_ status: PomoStatus) -> Double {
+    switch status {
     case .work:
         return PomoTimer.defaultWorkTime
     case .rest:
@@ -147,13 +142,12 @@ fileprivate func getTotalForStatus(_ status: PomoStatus) -> Double {
     }
 }
 
-
 struct iOSWidget_Previews: PreviewProvider {
     static var pomoTimer = PomoTimer(pomos: 2, longBreak: PomoTimer.defaultBreakTime, perform: { _ in return })
     static let timerInterval = Date()...Date().addingTimeInterval(60)
-    
+
     static var previews: some View {
-        
+
         Group {
             iOSProgressWidgetView(entry: PomoEntry(date: Date(), isPaused: false, status: .rest, timerInterval: timerInterval, configuration: ConfigurationIntent()))
                 .previewContext(WidgetPreviewContext(family: .accessoryCircular))

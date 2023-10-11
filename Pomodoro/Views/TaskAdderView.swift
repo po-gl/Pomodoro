@@ -9,36 +9,35 @@ import SwiftUI
 
 struct TaskAdderView: View {
     @Environment(\.colorScheme) private var colorScheme
-    
+
     @Binding var taskFromAdder: DraggableTask
-    
+
     var startLocation: CGPoint = CGPoint(x: 40, y: -20)
-    
+
     @FocusState private var taskFocus
-    
+
     @State private var animate = false
     @State private var showAutoComplete = false
-    
-    
+
     var body: some View {
         ZStack {
-            ZStack  {
-                TaskInput()
+            ZStack {
+                taskInput()
                     .position(taskFromAdder.location ?? startLocation)
-                TouchCircle()
+                touchCircle()
                     .opacity(taskFromAdder.text.isEmpty ? 0.8 : 1.0)
                     .animation(.easeInOut, value: taskFromAdder.isDragging)
                     .animation(.easeInOut, value: taskFromAdder.text)
                     .position(taskFromAdder.location ?? startLocation)
                     .draggableTask($taskFromAdder)
-                
-                DragHint()
+
+                dragHint()
                     .position(startLocation)
                     .offset(y: 24)
                     .opacity(taskFromAdder.text.isEmpty || taskFromAdder.isDragging ? 0.0 : 1.0)
                     .animation(.easeInOut(duration: 3), value: taskFromAdder.text.isEmpty)
                     .animation(.easeInOut(duration: 3), value: taskFromAdder.isDragging)
-                
+
                 AutoCompleteView(text: $taskFromAdder.text)
                     .position(startLocation)
                     .offset(x: 155, y: -85)
@@ -71,10 +70,9 @@ struct TaskAdderView: View {
             taskFromAdder.startLocation = startLocation
         }
     }
-    
-    
+
     @ViewBuilder
-    private func TaskInput() -> some View {
+    private func taskInput() -> some View {
         TextField("Add task", text: $taskFromAdder.text)
             .font(.system(.callout, design: .monospaced, weight: .medium))
             .accessibilityIdentifier("AddTask")
@@ -86,9 +84,9 @@ struct TaskAdderView: View {
             .offset(x: 140)
             .frame(width: 280)
     }
-    
+
     @ViewBuilder
-    private func TouchCircle() -> some View {
+    private func touchCircle() -> some View {
         let width: Double = taskFromAdder.isDragging ? 15 : 25
         let strokeWidth: Double = 1.2
         let gap: Double = taskFromAdder.text.isEmpty ? 8 : 10
@@ -108,13 +106,13 @@ struct TaskAdderView: View {
             .opacity(0.7)
             .accessibilityIdentifier("DraggableTask")
     }
-    
+
     @ViewBuilder
-    private func DragHint() -> some View {
+    private func dragHint() -> some View {
         let gradient = LinearGradient(stops: [.init(color: .primary, location: 0.0),
                                               .init(color: .primary.opacity(0.3), location: 1.0)],
                                       startPoint: .leading, endPoint: .trailing)
-        HStack (spacing: 14) {
+        HStack(spacing: 14) {
             Image(systemName: "arrowshape.forward.fill")
                 .foregroundStyle(gradient)
                 .font(.system(size: 16))
@@ -126,7 +124,7 @@ struct TaskAdderView: View {
                 .opacity(animate ? 0.4 : 0.0)
         }
         .onAppear {
-            withAnimation (.easeInOut(duration: 3).repeatForever()) {
+            withAnimation(.easeInOut(duration: 3).repeatForever()) {
                 animate = true
             }
         }

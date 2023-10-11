@@ -15,7 +15,7 @@ extension View {
 
 struct GlobalPositionModifier: ViewModifier {
     var point: CGPoint
-    
+
     func body(content: Content) -> some View {
         GeometryReader { geometry in
             content

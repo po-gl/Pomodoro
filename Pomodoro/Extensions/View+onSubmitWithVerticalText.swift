@@ -16,15 +16,16 @@ extension View {
 struct OnSubmitWithVerticalTextModifier: ViewModifier {
     @Binding var text: String
     let action: () -> Void
-    
+
     func body(content: Content) -> some View {
         content
             .onChange(of: text) { newValue in
                 guard let newLineIndex = newValue.firstIndex(where: { $0 == "\n" }) else { return }
-                
+
                 text.remove(at: newLineIndex)
                 action()
-                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+                                                to: nil, from: nil, for: nil)
             }
     }
 }

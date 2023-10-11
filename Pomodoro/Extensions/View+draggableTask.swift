@@ -15,10 +15,10 @@ extension View {
 
 struct DraggableTaskModifier: ViewModifier {
     @Binding var task: DraggableTask
-    
+
     @GestureState var gestureStartLocation: CGPoint?
     @GestureState var isDragging = false
-    
+
     func body(content: Content) -> some View {
         content
             .gesture(dragGesture)
@@ -28,12 +28,12 @@ struct DraggableTaskModifier: ViewModifier {
         DragGesture()
             .onChanged { event in
                 guard !task.text.isEmpty else { return }
-                
+
                 var newLocation = gestureStartLocation ?? task.location ?? task.startLocation ?? CGPoint()
                 newLocation.x += event.translation.width
                 newLocation.y += event.translation.height
                 task.location = newLocation
-                
+
                 Task {
                     await MainActor.run {
                         task.dragHasEnded = false
@@ -51,7 +51,7 @@ struct DraggableTaskModifier: ViewModifier {
                     }
                     // wait so location isn't reset immediately on end
                     try? await Task.sleep(for: .seconds(0.1))
-                    
+
                     await MainActor.run {
                         withAnimation {
                             task.location = nil
@@ -67,7 +67,7 @@ struct DraggableTaskModifier: ViewModifier {
                         task.dragHasEnded = !drag
                     }
                 }
-                
+
                 guard !task.text.isEmpty else { return }
                 if !isDragging { basicHaptic() }
                 isDragging = true

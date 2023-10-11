@@ -14,9 +14,9 @@ struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.isLuminanceReduced) private var isLuminanceReduced
     @ObservedObject var pomoTimer: PomoTimer
-    
+
     @State var didReceiveSyncFromWatchConnection = false
-    
+
     init() {
         pomoTimer = PomoTimer(pomos: 4, longBreak: PomoTimer.defaultBreakTime) { status in
             EndTimerHandler.shared.handle(status: status)
@@ -24,7 +24,7 @@ struct ContentView: View {
         pomoTimer.pause()
         pomoTimer.restoreFromUserDefaults()
     }
-    
+
     var body: some View {
         TabView {
             MainPage(pomoTimer: pomoTimer)
@@ -41,10 +41,10 @@ struct ContentView: View {
                 pomoTimer.restoreFromUserDefaults()
                 cancelPendingNotifications()
                 setupWatchConnection()
-                
+
                 BackgroundSession.shared.stop()
                 startBackgroundSessionIfDidNotReceiveWCSync()
-                
+
             } else if newPhase == .inactive || newPhase == .background {
                 pomoTimer.saveToUserDefaults()
                 WidgetCenter.shared.reloadAllTimelines()
@@ -53,7 +53,7 @@ struct ContentView: View {
                 }
             }
         }
-        
+
         .onChange(of: pomoTimer.isPaused) { _ in
             if pomoTimer.isPaused {
                 BackgroundSession.shared.stop()
@@ -70,7 +70,7 @@ struct ContentView: View {
                 startBackgroundSessionIfDidNotReceiveWCSync()
             }
         }
-        
+
         .onReceive(Publishers.wcSessionDataDidFlow) { timer in
             if let timer {
                 print("\(#function): watchOS received pomoTimer.pomoCount=\(timer.pomoCount) isPaused=\(timer.isPaused)")
@@ -80,8 +80,7 @@ struct ContentView: View {
             }
         }
     }
-    
-    
+
     private func startBackgroundSessionIfDidNotReceiveWCSync() {
         if !didReceiveSyncFromWatchConnection {
             BackgroundSession.shared.startIfUnpaused(for: pomoTimer)

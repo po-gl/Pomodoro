@@ -22,37 +22,36 @@ final class PomodoroWatch_Watch_AppUITests: XCTestCase {
 
         let resetButton = app.images["resetButton"]
         let playButton = app.images["playPauseButton"]
-        
+
         playButton.tap()
         XCTAssertEqual(resetButton.isEnabled, false)
         playButton.tap()
         XCTAssertEqual(resetButton.isEnabled, true)
     }
-    
+
     func testWatchUI_play_pause_reset() throws {
         let app = XCUIApplication()
         app.launch()
-        
+
         let resetButton = app.images["resetButton"]
         let playButton = app.images["playPauseButton"]
-        
+
         playButton.tap()
         XCTAssertEqual(resetButton.isEnabled, false)
         playButton.tap()
         resetButton.tap()
         XCTAssertEqual(resetButton.isEnabled, true)
     }
-    
+
     func testWatchUI_scrollToEnd() throws {
         let app = XCUIApplication()
         app.launch()
-        
+
         XCUIDevice.shared.rotateDigitalCrown(delta: 9.0, velocity: 30.0)
         XCTAssert(app.staticTexts["Break"].exists)
         XCTAssert(app.staticTexts["🏖️"].exists)
         XCTAssert(app.staticTexts["00:01:00"].exists)
     }
-    
 
     func testLaunchPerformance() throws {
         if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {

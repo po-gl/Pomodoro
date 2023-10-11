@@ -9,10 +9,9 @@ import SwiftUI
 
 class EndTimerHandler {
     static let shared = EndTimerHandler()
-    
+
     @AppStorage("hasEndFired", store: UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")) var hasEndFired = false
-    
-    
+
     public func handle(status: PomoStatus) {
         switch status {
         case .work:

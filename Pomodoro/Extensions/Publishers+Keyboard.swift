@@ -12,7 +12,7 @@ extension Publishers {
     static var keyboardOpened: AnyPublisher<Bool, Never> {
         let willShow = NotificationCenter.default.publisher(for: UIApplication.keyboardDidShowNotification)
             .map { _ in true }
-        
+
         return willShow
             .eraseToAnyPublisher()
     }

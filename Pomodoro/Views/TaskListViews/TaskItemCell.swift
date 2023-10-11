@@ -11,44 +11,44 @@ import Combine
 struct TaskItemCell: View {
     @Environment(\.managedObjectContext) private var viewContext
     @ObservedObject var taskItem: TaskNote
-    
+
     var scrollProxy: ScrollViewProxy
-    
+
     @State var editText = ""
     @State var editNoteText = ""
     @FocusState var focus
-    
+
     var body: some View {
-        HStack (alignment: .top, spacing: 15) {
-            Check()
-            VStack (spacing: 5) {
-                MainTextField()
+        HStack(alignment: .top, spacing: 15) {
+            check()
+            VStack(spacing: 5) {
+                mainTextField()
                 if focus || !editNoteText.isEmpty {
-                    NoteTextField()
+                    noteTextField()
                 }
             }
             if taskItem.flagged {
-                Flag()
+                flag()
             }
         }
-       
+
         .onAppear {
             editText = taskItem.text!
             editNoteText = taskItem.note ?? ""
-            
+
             focusIfJustAdded()
         }
-        
+
         .focused($focus)
         .onChange(of: focus) { _ in
             guard !focus else { return }
             deleteOrEditTask()
         }
         .scrollToOnFocus(proxy: scrollProxy, focus: focus, id: taskItem.id)
-        
+
         .doneButton(isPresented: focus)
     }
-    
+
     private func focusIfJustAdded() {
         if let date = taskItem.timestamp {
             if Date.now.timeIntervalSince(date) < 0.5 {
@@ -56,27 +56,27 @@ struct TaskItemCell: View {
             }
         }
     }
-    
+
     @ViewBuilder
-    private func MainTextField() -> some View {
+    private func mainTextField() -> some View {
         TextField("", text: $editText, axis: .vertical)
             .foregroundColor(taskItem.timestamp?.isToday() ?? true ? .primary : .secondary)
             .onSubmitWithVerticalText(with: $editText) {
                 deleteOrEditTask()
-                
+
                 if !editText.isEmpty {
                     TasksData.addTask("", context: viewContext)
                 }
             }
     }
-    
+
     @ViewBuilder
-    private func NoteTextField() -> some View {
+    private func noteTextField() -> some View {
         TextField("Add Note", text: $editNoteText, axis: .vertical)
             .font(.footnote)
             .foregroundColor(.secondary)
     }
-    
+
     private func deleteOrEditTask() {
         if editText.isEmpty {
             withAnimation { TasksData.delete(taskItem, context: viewContext) }
@@ -85,10 +85,9 @@ struct TaskItemCell: View {
             TasksData.editNote(editNoteText, for: taskItem, context: viewContext)
         }
     }
-    
-    
+
     @ViewBuilder
-    private func Check() -> some View {
+    private func check() -> some View {
         let width: Double = 20
         ZStack {
             Circle().stroke(style: StrokeStyle(lineWidth: 1.2))
@@ -103,12 +102,11 @@ struct TaskItemCell: View {
             TasksData.toggleCompleted(for: taskItem, context: viewContext)
         }
     }
-    
+
     @ViewBuilder
-    private func Flag() -> some View {
+    private func flag() -> some View {
         Image(systemName: "leaf.fill")
             .foregroundColor(Color("BarWork"))
             .frame(width: 20, height: 20)
     }
 }
-

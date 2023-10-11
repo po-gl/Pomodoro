@@ -9,27 +9,27 @@ import SwiftUI
 
 struct Background: View {
     @Environment(\.colorScheme) private var colorScheme
-    
+
     @ObservedObject var pomoTimer: PomoTimer
-    
+
     var body: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: pomoTimer.isPaused ? 60.0 : 1.0)) { context in
             GeometryReader { geometry in
-                VStack (spacing: 0) {
-                    Top(at: context.date)
+                VStack(spacing: 0) {
+                    top(at: context.date)
                         .frame(height: getTopFrameHeight(proxy: geometry))
-                    PickGradient().zIndex(1)
-                    Bottom(at: context.date, geometry: geometry)
-                    
+                    pickGradient().zIndex(1)
+                    bottom(at: context.date, geometry: geometry)
+
                 }
                 .ignoresSafeArea()
                 .animation(.easeInOut(duration: 0.3), value: pomoTimer.getStatus(atDate: context.date))
             }
         }
     }
-    
+
     @ViewBuilder
-    private func Top(at date: Date) -> some View {
+    private func top(at date: Date) -> some View {
         if colorScheme == .dark {
             Rectangle()
                 .foregroundColor(getTopColor(at: date))
@@ -44,14 +44,15 @@ struct Background: View {
                 .foregroundColor(getTopColor(at: date))
         }
     }
-    
+
     @ViewBuilder
-    private func Bottom(at date: Date, geometry: GeometryProxy) -> some View {
+    private func bottom(at date: Date, geometry: GeometryProxy) -> some View {
         Rectangle()
             .foregroundColor(getBottomColor(at: date))
             .overlay(
                 Rectangle()
-                    .fill(LinearGradient(colors: [colorScheme == .light ? .white : .clear, .clear], startPoint: .top, endPoint: .bottom))
+                    .fill(LinearGradient(colors: [colorScheme == .light ? .white : .clear, .clear],
+                                         startPoint: .top, endPoint: .bottom))
                     .opacity(0.6)
                     .blendMode(.softLight)
                     // SwiftUI bug: blendmode flickers to normal if touching
@@ -59,11 +60,11 @@ struct Background: View {
                     .frame(maxWidth: geometry.size.width - 2)
             )
     }
-    
+
     @ViewBuilder
-    private func PickGradient() -> some View {
-        ZStack (alignment: .top) {
-            SoftGradient()
+    private func pickGradient() -> some View {
+        ZStack(alignment: .top) {
+            softGradient()
                 .frame(height: 30)
                 .rotationEffect(.degrees(colorScheme == .dark ? 180 : 0))
                 .offset(y: colorScheme == .dark ? -10 : 15)
@@ -76,21 +77,20 @@ struct Background: View {
         .compositingGroup()
         .frame(height: 0)
     }
-    
+
     @ViewBuilder
-    private func SoftGradient() -> some View {
+    private func softGradient() -> some View {
         Rectangle()
             .fill(LinearGradient(colors: [.clear, .black], startPoint: .bottom, endPoint: .top))
     }
-    
-    
+
     private func getBottomColor(at date: Date) -> Color {
         if colorScheme == .dark {
             return .black
         } else if pomoTimer.isPaused {
             return Color("BackgroundStopped")
         }
-        
+
         switch pomoTimer.getStatus(atDate: date) {
         case .work:
             return Color("BackgroundWork")
@@ -102,12 +102,12 @@ struct Background: View {
             return Color("BackgroundStopped")
         }
     }
-    
+
     private func getTopColor(at date: Date) -> Color {
         if colorScheme == .light {
             return .black
         }
-        
+
         switch pomoTimer.getStatus(atDate: date) {
         case .work:
             return Color("BarWork")
@@ -119,7 +119,7 @@ struct Background: View {
             return Color("End")
         }
     }
-    
+
     private func getTopFrameHeight(proxy: GeometryProxy) -> Double {
         let height = proxy.size.height / 2.5 + (colorScheme == .dark ? 15.0 : -25.0)
         return max(height, 0)

@@ -13,7 +13,7 @@ struct DraggableTask: Equatable {
     var location: CGPoint?
     var dragHasEnded: Bool = true
     var isDragging: Bool = false
-    
+
     static func == (lhs: DraggableTask, rhs: DraggableTask) -> Bool {
         lhs.text == rhs.text &&
         lhs.startLocation == rhs.startLocation &&

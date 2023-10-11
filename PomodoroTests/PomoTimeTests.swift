@@ -8,7 +8,6 @@
 import XCTest
 
 final class PomoTimeTests: XCTestCase {
-    
 
     override func setUpWithError() throws {
     }
@@ -18,7 +17,7 @@ final class PomoTimeTests: XCTestCase {
 
     func testPomoTimeInit() throws {
         let pomoTime = PomoTime(1.0, .work)
-        
+
         XCTAssertEqual(pomoTime.getTime(), 1.0)
         XCTAssertEqual(pomoTime.getStatus(), PomoStatus.work)
         XCTAssertEqual(pomoTime.getStatusString(), PomoStatus.work.rawValue)
@@ -26,10 +25,10 @@ final class PomoTimeTests: XCTestCase {
 
     func testPomoTimeEncodeAndDecode() throws {
         let pomoTime = PomoTime(70.0 * 60.0, .longBreak)
-        
+
         let encoded = try PropertyListEncoder().encode(pomoTime)
         let decoded = try PropertyListDecoder().decode(PomoTime.self, from: encoded)
-        
+
         XCTAssertEqual(decoded.getTime(), 70.0 * 60.0)
         XCTAssertEqual(decoded.getStatus(), PomoStatus.longBreak)
         XCTAssertEqual(decoded.getStatusString(), PomoStatus.longBreak.rawValue)

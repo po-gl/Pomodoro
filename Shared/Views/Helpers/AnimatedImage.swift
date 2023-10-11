@@ -15,10 +15,10 @@ struct AnimatedImageData: Equatable {
 
 struct AnimatedImage: View {
     var data: AnimatedImageData
-    
+
     @State private var image: Image?
     @State private var timer: Timer?
-    
+
     var body: some View {
         VStack {
             image?
@@ -37,19 +37,18 @@ struct AnimatedImage: View {
             animate(images: newData.imageNames, interval: newData.interval, loops: newData.loops)
         }
     }
-    
+
     private func animate(images: [String], interval: Double, loops: Bool) {
         var imageIndex: Int = 0
         image = Image(images[0])
-        
+
         timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { timer in
             image = Image(images[imageIndex])
             imageIndex = (imageIndex+1) % images.count
-            
+
             if !loops && imageIndex == 0 {
                 timer.invalidate()
             }
         }
     }
 }
-

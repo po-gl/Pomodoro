@@ -10,7 +10,7 @@ import SwiftUI
 struct ChangerPage: View {
     @ObservedObject var pomoTimer: PomoTimer
     var pomoChangeAnimation: Animation = .interpolatingSpring(stiffness: 190, damping: 13)
-    
+
     var body: some View {
         VStack {
             Spacer()
@@ -25,25 +25,24 @@ struct ChangerPage: View {
         }
         .ignoresSafeArea(.container, edges: .bottom)
     }
-    
-    
+
     @ViewBuilder
     private func PomodorosText() -> some View {
         Text("Pomodoros")
             .foregroundStyle(LinearGradient(stops: [.init(color: Color("BarWork"), location: 0), .init(color: .primary, location: 1.5)], startPoint: .leading, endPoint: .trailing))
             .font(.system(size: 24, weight: .semibold, design: .monospaced))
     }
-    
+
     @ViewBuilder
     private func CurrentPomoCount() -> some View {
-        HStack (spacing: 0) {
+        HStack(spacing: 0) {
             ForEach(0..<pomoTimer.pomoCount, id: \.self) { _ in
                 Text("🍅")
                     .font(.system(size: 22, weight: .regular))
             }
         }
     }
-    
+
     @ViewBuilder
     private func PomoStepper() -> some View {
         Stepper {

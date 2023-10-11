@@ -14,7 +14,7 @@ extension CGPoint {
         self.y >= rect.origin.y &&
         self.y <= rect.origin.y + rect.height
     }
-    
+
     func adjusted(for geometry: GeometryProxy) -> CGPoint {
         var translated = self
         translated.y += geometry.size.height/2

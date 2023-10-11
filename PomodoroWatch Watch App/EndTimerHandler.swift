@@ -9,10 +9,10 @@ import Foundation
 
 class EndTimerHandler {
     static let shared = EndTimerHandler()
-    
+
     public func handle(status: PomoStatus) {
         BackgroundSession.shared.stop()
-        
+
         switch status {
         case .work:
             workHaptic()

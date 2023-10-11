@@ -11,15 +11,18 @@ struct ArchivedProjectsView: View {
     @FetchRequest(sortDescriptors: [SortDescriptor(\Project.order), SortDescriptor(\Project.timestamp)],
                   predicate: NSPredicate(format: "archived == true"))
     private var archivedProjects: FetchedResults<Project>
-    
+
     @State var isCollapsed = false
-    
+
     var body: some View {
         ScrollViewReader { scrollProxy in
             ScrollView {
                 VStack {
                     ForEach(archivedProjects) { project in
-                        ProjectItemCell(project: project, isCollapsed: $isCollapsed, scrollProxy: scrollProxy, cellHeight: 85)
+                        ProjectItemCell(project: project,
+                                        isCollapsed: $isCollapsed,
+                                        scrollProxy: scrollProxy,
+                                        cellHeight: 85)
                     }
                 }
                 .padding(.horizontal)

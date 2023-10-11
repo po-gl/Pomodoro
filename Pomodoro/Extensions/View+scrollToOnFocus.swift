@@ -20,9 +20,9 @@ struct ScrollToOnFocusModifier: ViewModifier {
     var scrollProxy: ScrollViewProxy
     var focus: Bool
     var id: ObjectIdentifier
-    
+
     @State var hasScrolled = false
-    
+
     func body(content: Content) -> some View {
         content
             .onReceive(Publishers.keyboardOpened) { _ in
@@ -31,9 +31,9 @@ struct ScrollToOnFocusModifier: ViewModifier {
                     return
                 }
                 guard !hasScrolled else { return }
-                
+
                 hasScrolled = true
-                
+
                 Task {
                     try? await Task.sleep(for: .seconds(0.5))
                     withAnimation { scrollProxy.scrollTo(id, anchor: .bottom) }

@@ -11,9 +11,9 @@ import SwiftUI
 struct TimerDisplay: View {
     @Environment(\.isLuminanceReduced) private var isLuminanceReduced
     @ObservedObject var pomoTimer: PomoTimer
-    
+
     var metrics: GeometryProxy
-    
+
     var body: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
             if #available(watchOS 10, *) {
@@ -24,7 +24,7 @@ struct TimerDisplay: View {
             }
         }
     }
-    
+
     @ViewBuilder
     private func MainDisplay(at date: Date) -> some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -38,12 +38,11 @@ struct TimerDisplay: View {
             TimerView(at: date)
         }
     }
-    
-    
+
     @ViewBuilder
     private func StatusBox(at date: Date) -> some View {
         let color = isLuminanceReduced ? .black : getColorForStatus(pomoTimer.getStatus(atDate: date))
-        
+
         Text(getStringForStatus(pomoTimer.getStatus(atDate: date)))
             .accessibilityIdentifier("statusString")
             .foregroundColor(isLuminanceReduced ? getColorForStatus(pomoTimer.getStatus(atDate: date)) : .black)
@@ -55,11 +54,11 @@ struct TimerDisplay: View {
             )
             .font(.system(size: 24, weight: .medium, design: .serif))
     }
-    
+
     @ViewBuilder
     private func EndingTime(at date: Date) -> some View {
         if pomoTimer.getStatus(atDate: date) != .end {
-            HStack (alignment: .bottom, spacing: 2) {
+            HStack(alignment: .bottom, spacing: 2) {
                 Text("until")
                     .font(.footnote)
                     .offset(y: -1)
@@ -70,7 +69,7 @@ struct TimerDisplay: View {
             .opacity(pomoTimer.isPaused ? 0.5 : 0.8)
         }
     }
-    
+
     @ViewBuilder
     private func TimerView(at date: Date) -> some View {
         Text(pomoTimer.timeRemaining(atDate: date).timerFormatted())
@@ -78,8 +77,7 @@ struct TimerDisplay: View {
             .font(.system(size: 40, weight: .medium, design: .rounded))
             .monospacedDigit()
     }
-    
-    
+
     func getStringForStatus(_ status: PomoStatus) -> String {
         switch status {
         case .work:
@@ -92,7 +90,7 @@ struct TimerDisplay: View {
             return "Finished"
         }
     }
-    
+
     func getColorForStatus(_ status: PomoStatus) -> Color {
         switch status {
         case .work:
@@ -105,7 +103,7 @@ struct TimerDisplay: View {
             return Color("End")
         }
     }
-    
+
     private func getIconForStatus(status: PomoStatus) -> String {
         switch status {
         case .work:
@@ -120,7 +118,7 @@ struct TimerDisplay: View {
     }
 }
 
-fileprivate let timeFormatter: DateFormatter = {
+private let timeFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.setLocalizedDateFormatFromTemplate("hh:mm")
     formatter.amSymbol = ""

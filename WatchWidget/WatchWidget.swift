@@ -10,9 +10,9 @@ import SwiftUI
 import Intents
 
 struct Provider: IntentTimelineProvider {
-    
+
     let withProgress: Bool
-    
+
     func placeholder(in context: Context) -> PomoEntry {
         let now = Date()
         return PomoEntry(date: now,
@@ -22,20 +22,20 @@ struct Provider: IntentTimelineProvider {
                          configuration: ConfigurationIntent())
     }
 
-    func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (PomoEntry) -> ()) {
+    func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (PomoEntry) -> Void) {
         let pomoTimer = PomoTimer()
         pomoTimer.restoreFromUserDefaults()
-        
+
         let now = Date()
         let entry = PomoEntry.new(for: now, pomoTimer, configuration)
         completion(entry)
     }
 
-    func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<PomoEntry>) -> ()) {
+    func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<PomoEntry>) -> Void) {
         var entries: [PomoEntry] = []
         let pomoTimer = PomoTimer()
         pomoTimer.restoreFromUserDefaults()
-        
+
         let now = Date()
         entries.append(PomoEntry.new(for: now, pomoTimer, configuration))
 
@@ -43,28 +43,28 @@ struct Provider: IntentTimelineProvider {
             let transitionEntries = addTransitionEntries(pomoTimer, configuration)
             entries.append(contentsOf: transitionEntries)
         }
-        
+
         let timeline = Timeline(entries: entries, policy: .atEnd)
         completion(timeline)
     }
-    
+
     private func addTransitionEntries(_ pomoTimer: PomoTimer, _ configuration: ConfigurationIntent) -> [PomoEntry] {
         var entries: [PomoEntry] = []
-        
+
         let now = Date()
         let offset = 1.0
         var runningDate = now
 
         let limit = pomoTimer.pomoCount * 2 + 1
         var i = 0
-        
+
         repeat {
             runningDate = runningDate.addingTimeInterval(pomoTimer.timeRemaining(atDate: runningDate)+offset)
             i += 1
             entries.append(PomoEntry.new(for: runningDate, pomoTimer, configuration))
-            
+
         } while pomoTimer.timeRemaining(atDate: runningDate) > 0  && i < limit
-        
+
         return entries
     }
 
@@ -74,22 +74,21 @@ struct Provider: IntentTimelineProvider {
     }
 }
 
-
 struct PomoEntry: TimelineEntry {
     var date: Date
     var isPaused: Bool
     var status: PomoStatus
     var timerInterval: ClosedRange<Date>
     let configuration: ConfigurationIntent
-    
+
     static func new(for entryDate: Date, _ pomoTimer: PomoTimer, _ configuration: ConfigurationIntent) -> PomoEntry {
         let isPaused = pomoTimer.isPaused
         let status = pomoTimer.getStatus(atDate: entryDate)
-        
+
         let timeRemaining = pomoTimer.timeRemaining(atDate: entryDate)
         let timeStart = entryDate.addingTimeInterval(timeRemaining - getTotalForStatus(status))
         let timeEnd = entryDate.addingTimeInterval(timeRemaining)
-        
+
         return PomoEntry(date: entryDate,
                          isPaused: isPaused,
                          status: status,
@@ -97,7 +96,6 @@ struct PomoEntry: TimelineEntry {
                          configuration: configuration)
     }
 }
-
 
 struct ProgressWatchWidget: Widget {
     let kind: String = "ProgressWatchWidget"
@@ -113,7 +111,7 @@ struct ProgressWatchWidget: Widget {
     }
 }
 
-struct ProgressWidgetView : View {
+struct ProgressWidgetView: View {
     var entry: Provider.Entry
 
     var body: some View {
@@ -126,7 +124,7 @@ struct ProgressWidgetView : View {
             MainProgressWidgetView()
         }
     }
-    
+
     @ViewBuilder
     func MainProgressWidgetView() -> some View {
         ZStack {
@@ -144,7 +142,7 @@ struct ProgressWidgetView : View {
             .widgetAccentable()
         }
     }
-    
+
     @ViewBuilder
     func CircularProgressView() -> some View {
         if !entry.isPaused {
@@ -156,18 +154,18 @@ struct ProgressWidgetView : View {
                 .progressViewStyle(.circular)
         }
     }
-    
+
     func progressGradient() -> AngularGradient {
         AngularGradient(stops: [
             .init(color: Color(hex: 0xE05499), location: 0.0),
             .init(color: Color(hex: 0xFF6347), location: 0.2),
             .init(color: Color(hex: 0xD2544F), location: 0.4),
-            
+
             .init(color: Color(hex: 0x30E277), location: 0.7),
             .init(color: Color(hex: 0x76E298), location: 0.9),
-            
-            .init(color: Color(hex: 0xE05499), location: 1.0),
-            
+
+            .init(color: Color(hex: 0xE05499), location: 1.0)
+
         ], center: .center, startAngle: .degrees(0-60), endAngle: .degrees(360-60))
     }
 }
@@ -189,7 +187,7 @@ struct CornerProgressWidget: Widget {
 
 struct CornerProgressWidgetView: View {
     var entry: Provider.Entry
-    
+
     var body: some View {
         if #available(iOSApplicationExtension 17, watchOS 10, *) {
             MainCornerProgressWidgetView()
@@ -201,7 +199,7 @@ struct CornerProgressWidgetView: View {
             MainCornerProgressWidgetView()
         }
     }
-    
+
     @ViewBuilder
     func MainCornerProgressWidgetView() -> some View {
         ZStack {
@@ -219,7 +217,7 @@ struct CornerProgressWidgetView: View {
             .widgetAccentable()
         }
     }
-    
+
     @ViewBuilder
     func CornerProgressView() -> some View {
         if !entry.isPaused {
@@ -231,22 +229,21 @@ struct CornerProgressWidgetView: View {
                 .tint(progressGradient())
         }
     }
-    
+
     func progressGradient() -> AngularGradient {
         AngularGradient(stops: [
             .init(color: Color(hex: 0xE05499), location: 0.0),
-            
+
             .init(color: Color(hex: 0xE05499), location: 0.1),
             .init(color: Color(hex: 0xFF6347), location: 0.2),
             .init(color: Color(hex: 0xD2544F), location: 0.4),
-            
+
             .init(color: Color(hex: 0x30E277), location: 0.7),
-            .init(color: Color(hex: 0x76E298), location: 1.0),
+            .init(color: Color(hex: 0x76E298), location: 1.0)
         ], center: .center, startAngle: .degrees(0-60), endAngle: .degrees(360-60))
     }
 }
 #endif
-
 
 struct StatusWatchWidget: Widget {
     let kind: String = "StatusWatchWidget"
@@ -266,7 +263,7 @@ struct StatusWatchWidget: Widget {
     }
 }
 
-struct StatusWidgetView : View {
+struct StatusWidgetView: View {
     var entry: Provider.Entry
 
     var body: some View {
@@ -279,7 +276,7 @@ struct StatusWidgetView : View {
             MainStatusWidgetView()
         }
     }
-    
+
     @ViewBuilder
     func MainStatusWidgetView() -> some View {
         ZStack {
@@ -303,8 +300,8 @@ func Leaf(size: Double = 18) -> some View {
         .saturation(0.6)
 }
 
-fileprivate func getIconForStatus(_ status: PomoStatus) -> String {
-    switch status{
+private func getIconForStatus(_ status: PomoStatus) -> String {
+    switch status {
     case .work:
         return "W"
     case .rest:
@@ -316,8 +313,8 @@ fileprivate func getIconForStatus(_ status: PomoStatus) -> String {
     }
 }
 
-fileprivate func getTotalForStatus(_ status: PomoStatus) -> Double {
-    switch status{
+private func getTotalForStatus(_ status: PomoStatus) -> Double {
+    switch status {
     case .work:
         return PomoTimer.defaultWorkTime
     case .rest:
@@ -329,12 +326,11 @@ fileprivate func getTotalForStatus(_ status: PomoStatus) -> Double {
     }
 }
 
-
 #if os(watchOS)
 struct WatchWidget_Previews: PreviewProvider {
     static var pomoTimer = PomoTimer(pomos: 2, longBreak: PomoTimer.defaultBreakTime, perform: { _ in return })
     static let timerInterval = Date()...Date().addingTimeInterval(60)
-    
+
     static var previews: some View {
         Group {
             CornerProgressWidgetView(entry: PomoEntry(date: Date(), isPaused: false, status: .work, timerInterval: timerInterval, configuration: ConfigurationIntent()))

@@ -14,16 +14,16 @@ import Combine
 struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.colorScheme) private var colorScheme
-    
+
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.undoManager) private var undoManager
-    
+
     @ObservedObject var pomoTimer: PomoTimer
-    
+
     @State var taskFromAdder = DraggableTask()
-    
+
     @State var didReceiveSyncFromWatchConnection = false
-    
+
     init() {
         pomoTimer = PomoTimer(pomos: 4, longBreak: PomoTimer.defaultBreakTime) { status in
             EndTimerHandler.shared.handle(status: status)
@@ -31,17 +31,17 @@ struct ContentView: View {
         pomoTimer.pause()
         pomoTimer.restoreFromUserDefaults()
     }
-    
+
     var body: some View {
         NavigationStack {
-            MainPage()
+            mainPage()
                 .reverseStatusBarColor()
                 .ignoresSafeArea()
                 .onAppear {
                     getNotificationPermissions()
                     viewContext.undoManager = undoManager
                 }
-            
+
                 .onChange(of: scenePhase) { newPhase in
                     print("Phase \(newPhase)")
                     if newPhase == .active {
@@ -57,13 +57,13 @@ struct ContentView: View {
                         }
                     }
                 }
-            
+
                 .onChange(of: pomoTimer.isPaused) { _ in
                     WidgetCenter.shared.reloadAllTimelines()
                     let wcSent = updateWatchConnection(pomoTimer)
                     didReceiveSyncFromWatchConnection = !wcSent
                 }
-            
+
                 .onReceive(Publishers.wcSessionDataDidFlow) { timer in
                     if let timer {
                         print("iOS received pomoTimer.pomoCount=\(timer.pomoCount) isPaused=\(timer.isPaused)")
@@ -72,7 +72,7 @@ struct ContentView: View {
                         didReceiveSyncFromWatchConnection = true
                     }
                 }
-            
+
                 .onOpenURL { url in
                     if url.absoluteString == "com.po-gl.stop" {
                         pomoTimer.pause()
@@ -83,41 +83,38 @@ struct ContentView: View {
         .navigationViewStyle(.stack)
         .tint(Color("NavigationAccent"))
     }
-    
-    
+
     @ViewBuilder
-    private func MainPage() -> some View {
+    private func mainPage() -> some View {
         ZStack {
             TopButton(destination: {
-                TaskList();
+                TaskList()
             }, pomoTimer: pomoTimer)
                 .zIndex(1)
-            
+
             ZStack {
                 Background(pomoTimer: pomoTimer)
                     .animation(.default, value: pomoTimer.isPaused)
-                
+
                 TaskAdderView(taskFromAdder: $taskFromAdder)
                     .zIndex(1)
-                
-                
-                MainStack()
+
+                mainStack()
             }
             .animation(.easeInOut(duration: 0.3), value: pomoTimer.isPaused)
             .avoidKeyboard()
         }
     }
-    
-    
+
     @ViewBuilder
-    private func MainStack() -> some View {
+    private func mainStack() -> some View {
         GeometryReader { proxy in
             VStack {
                 TimerDisplay(pomoTimer: pomoTimer)
                     .padding(.top, 50)
-                
+
                 Spacer()
-                
+
                 ZStack {
                     ProgressBar(pomoTimer: pomoTimer, metrics: proxy,
                                 taskFromAdder: $taskFromAdder)
@@ -133,7 +130,7 @@ struct ContentView: View {
                         .padding(.trailing, 20)
                 }
                 .padding(.bottom, 20)
-                
+
                 ButtonCluster(pomoTimer: pomoTimer)
                     .padding(.bottom, 50)
             }

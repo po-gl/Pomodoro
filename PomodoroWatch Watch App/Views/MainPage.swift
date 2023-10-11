@@ -10,7 +10,7 @@ import WidgetKit
 
 struct MainPage: View {
     @ObservedObject var pomoTimer: PomoTimer
-    
+
     var body: some View {
         GeometryReader { metrics in
             VStack {
@@ -24,7 +24,7 @@ struct MainPage: View {
                     }
                 }
                 .offset(y: -15)
-                
+
                 Spacer()
                 ButtonCluster(pomoTimer: pomoTimer)
                     .padding([.bottom, .horizontal])

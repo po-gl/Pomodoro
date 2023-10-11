@@ -14,18 +14,18 @@ extension TimeInterval {
         formatter.zeroFormattingBehavior = .pad
         return formatter
     }()
-    
+
     static let compactFormatter: DateComponentsFormatter = {
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.minute, .second]
         formatter.zeroFormattingBehavior = .dropLeading
         return formatter
     }()
-    
+
     func timerFormatted() -> String {
         return TimeInterval.formatter.string(from: self)!
     }
-    
+
     func compactTimerFormatted() -> String {
         return TimeInterval.compactFormatter.string(from: self)!
     }

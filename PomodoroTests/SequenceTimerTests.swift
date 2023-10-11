@@ -8,7 +8,7 @@
 import XCTest
 
 final class SequenceTimerTests: XCTestCase {
-    
+
     var sequenceTimer = SequenceTimer([], perform: { _ in return }, timerProvider: MockTimer.self)
     var actionsPerformed = 0
 
@@ -16,7 +16,7 @@ final class SequenceTimerTests: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         let intervals = [2.0, 3.0]
         actionsPerformed = 0
-        sequenceTimer = SequenceTimer(intervals, perform: { i in
+        sequenceTimer = SequenceTimer(intervals, perform: { _ in
             self.actionsPerformed += 1
         }, timerProvider: MockTimer.self)
     }
@@ -60,7 +60,7 @@ final class SequenceTimerTests: XCTestCase {
         XCTAssertEqual(sequenceTimer.getIndex(atDate: now), 1)
         XCTAssertEqual(sequenceTimer.timeRemaining(atDate: now), 0.0)
     }
-    
+
     func testPauseTimer() throws {
         sequenceTimer.pause()
         XCTAssertTrue(sequenceTimer.isPaused)
@@ -72,12 +72,11 @@ final class SequenceTimerTests: XCTestCase {
         passTime(seconds: 3)
         XCTAssertEqual(actionsPerformed, 3)
     }
-    
-    
+
     func testSequenceTimerPerformance() throws {
         let sequenceOfIntervals: [TimeInterval] = Array(repeating: 10.0*60.0, count: 100)
         let sequenceTimer = SequenceTimer(sequenceOfIntervals, perform: { _ in return }, timerProvider: MockTimer.self)
-        
+
         let index = 97.0
         let now = Date().addingTimeInterval((10.0 * 60.0)*index + 1.0*index)
         self.measure {
@@ -86,7 +85,6 @@ final class SequenceTimerTests: XCTestCase {
         }
     }
 
-    
     private func passTime(seconds: Int) {
         for _ in 0..<seconds {
             MockTimer.currentTimer.fire()
@@ -94,13 +92,12 @@ final class SequenceTimerTests: XCTestCase {
     }
 }
 
-
 class MockTimer: Timer {
     var block: ((Timer) -> Void)!
-    
+
     static var currentTimer: MockTimer!
     static var timeRemaining: TimeInterval!
-    
+
     override func fire() {
         if MockTimer.timeRemaining == 0.0 {
             block(self)
@@ -108,10 +105,10 @@ class MockTimer: Timer {
             MockTimer.timeRemaining -= 1.0
         }
     }
-    
+
     override func invalidate() {
     }
-    
+
     override open class func scheduledTimer(withTimeInterval: TimeInterval, repeats: Bool, block: @escaping (Timer) -> Void) -> Timer {
         let mockTimer = MockTimer()
         mockTimer.block = block

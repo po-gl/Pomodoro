@@ -8,65 +8,64 @@
 import SwiftUI
 import Combine
 
+// swiftlint:disable:next type_body_length
 struct ProjectItemCell: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.colorScheme) private var colorScheme
     @ObservedObject var project: Project
-    
+
     @Binding var isCollapsed: Bool
-    
+
     var scrollProxy: ScrollViewProxy
-    
+
     var cellHeight: Double
-    
+
     var isFirstProject: Bool = false
-    
+
     @State var editText = ""
     @State var editNoteText = ""
     @FocusState var focus
     @State var color: Color = Color("BarRest")
-    
+
     @State var showingProjectInfo = false
-    
-    
+
     var primaryBrightness: Double { colorScheme == .dark ? 0.5 : -0.5 }
     var primarySaturation: Double { colorScheme == .dark ? 1.8 : 1.2 }
     var secondaryBrightness: Double { colorScheme == .dark ? 0.2 : -0.3 }
     var secondarySaturation: Double { colorScheme == .dark ? 1.0 : 1.0 }
-    
+
     var collapsedCheckBrightness: Double { colorScheme == .dark ? 0.5 : -0.5 }
     var collapsedCheckSaturation: Double { colorScheme == .dark ? 1.5 : 1.2 }
     var checkBrightness: Double { colorScheme == .dark ? 0.2 : -0.3 }
     var checkSaturation: Double { colorScheme == .dark ? 1.0 : 1.0 }
-    
+
     var collapsedBackgroundBrightness: Double { colorScheme == .dark ? -0.09 : 0.0 }
     var collapsedBackgroundSaturation: Double { colorScheme == .dark ? 0.85 : 1.05 }
     var backgroundBrightness: Double { colorScheme == .dark ? -0.5 : 0.3 }
     var backgroundSaturation: Double { colorScheme == .dark ? 0.8 : 0.33 }
     var backgroundOpacity: Double { colorScheme == .dark ? 0.6 : 0.5 }
-    
 
     var body: some View {
-        Card {
+        card {
             HStack {
-                VStack (spacing: 0) {
+                VStack(spacing: 0) {
                     HStack {
-                        ProgressCheck()
+                        progressCheck()
                             .offset(y: isCollapsed && !editNoteText.isEmpty ? 10 : 0)
-                        MainTextField()
+                        mainTextField()
                         if !isCollapsed {
-                            InfoMenuButton().offset(y: -1)
+                            infoMenuButton().offset(y: -1)
                         }
                     }
                     if focus || !editNoteText.isEmpty {
-                        NoteTextField()
+                        noteTextField()
                             .padding(.leading, 32)
                     }
                 }
-                
+
                 Spacer()
                 if isCollapsed && isFirstProject {
-                    Chevron()
+                    chevron()
                 } else {
                 }
             }
@@ -81,7 +80,7 @@ struct ProjectItemCell: View {
             editText = project.name ?? ""
             color = Color(project.color ?? "BarRest")
         }
-        
+
         .focused($focus)
         .onChange(of: focus) { _ in
             guard !focus else { return }
@@ -102,7 +101,7 @@ struct ProjectItemCell: View {
             }
         }
     }
-    
+
     private func focusIfJustAdded() {
         if let date = project.timestamp {
             if Date.now.timeIntervalSince(date) < 0.5 {
@@ -113,9 +112,9 @@ struct ProjectItemCell: View {
             }
         }
     }
-    
+
     @ViewBuilder
-    private func MainTextField() -> some View {
+    private func mainTextField() -> some View {
         TextField("", text: $editText, axis: .vertical)
             .font(.system(size: 22))
             .frame(minHeight: 30)
@@ -128,9 +127,9 @@ struct ProjectItemCell: View {
             .brightness(primaryBrightness)
             .saturation(primarySaturation)
     }
-    
+
     @ViewBuilder
-    private func NoteTextField() -> some View {
+    private func noteTextField() -> some View {
         TextField("Add Note", text: $editNoteText, axis: .vertical)
             .font(.system(size: 14))
             .frame(minHeight: 20)
@@ -140,7 +139,7 @@ struct ProjectItemCell: View {
             .foregroundColor(color)
             .brightness(secondaryBrightness)
     }
-    
+
     private func deleteOrEditProject() {
         if editText.isEmpty {
             ProjectsData.delete(project, context: viewContext)
@@ -148,29 +147,28 @@ struct ProjectItemCell: View {
             editProject()
         }
     }
-    
+
     private func editProject() {
         ProjectsData.editName(editText, for: project, context: viewContext)
         ProjectsData.editNote(editNoteText, for: project, context: viewContext)
     }
-    
-    
+
     @ViewBuilder
-    private func Chevron() -> some View {
+    private func chevron() -> some View {
         Image(systemName: "chevron.right")
             .font(.system(size: 25, weight: .medium))
             .foregroundColor(color)
             .brightness(primaryBrightness)
             .saturation(primarySaturation)
     }
-    
+
     @ViewBuilder
-    private func InfoMenuButton() -> some View {
+    private func infoMenuButton() -> some View {
         Menu {
-            ShowInfoButton()
-            SendToTopButton()
-            ToggleProjectArchiveButton()
-            DeleteProjectButton()
+            showInfoButton()
+            sendToTopButton()
+            toggleProjectArchiveButton()
+            deleteProjectButton()
         } label: {
             Image(systemName: "ellipsis.circle")
                 .tint(color)
@@ -179,9 +177,9 @@ struct ProjectItemCell: View {
             ProjectInfoView(project: project)
         }
     }
-    
+
     @ViewBuilder
-    private func ShowInfoButton() -> some View {
+    private func showInfoButton() -> some View {
         Button(action: {
             editProject()
             withAnimation { showingProjectInfo = true }
@@ -189,37 +187,37 @@ struct ProjectItemCell: View {
             Label("Show Project Info", systemImage: "info.circle")
         }
     }
-    
-    
+
     @ViewBuilder
-    private func SendToTopButton() -> some View {
+    private func sendToTopButton() -> some View {
         Button(action: {
             withAnimation { ProjectsData.setAsTopProject(project, context: viewContext) }
         }) {
             Label("Send to Top", systemImage: "square.3.layers.3d.top.filled")
         }
     }
-    
+
     @ViewBuilder
-    private func ToggleProjectArchiveButton() -> some View {
+    private func toggleProjectArchiveButton() -> some View {
         Button(action: {
             ProjectsData.toggleArchive(project, context: viewContext)
         }) {
-            Label(project.archived ? "Unarchive" : "Archive", systemImage: project.archived ? "arrow.uturn.up" : "archivebox.fill")
+            Label(project.archived ? "Unarchive" : "Archive",
+                  systemImage: project.archived ? "arrow.uturn.up" : "archivebox.fill")
         }
     }
-    
+
     @ViewBuilder
-    private func DeleteProjectButton() -> some View {
+    private func deleteProjectButton() -> some View {
         Button(role: .destructive, action: {
             ProjectsData.delete(project, context: viewContext)
         }) {
             Label("Delete", systemImage: "trash")
         }
     }
-    
+
     @ViewBuilder
-    private func ProgressCheck() -> some View {
+    private func progressCheck() -> some View {
         let width: Double = 22
         ZStack {
             Circle().stroke(style: StrokeStyle(lineWidth: 1.8))
@@ -228,7 +226,7 @@ struct ProjectItemCell: View {
                 Circle()
                     .opacity(project.progress > 0.0 ? 1.0 : 0.0)
                     .mask {
-                        VStack (spacing: 0) {
+                        VStack(spacing: 0) {
                             Rectangle().fill(.clear).frame(height: width * (1-project.progress))
                             Rectangle().frame(height: width * project.progress)
                         }
@@ -241,11 +239,11 @@ struct ProjectItemCell: View {
         .contentShape(Circle())
         .onTapGesture {
             let newValue = project.progress + 0.5 > 1.0 ? 0.0 : project.progress + 0.5
-            
+
             withAnimation {
                 ProjectsData.setProgress(newValue, for: project, context: viewContext)
             }
-            
+
             if newValue == 1.0 {
                 resetHaptic()
             } else {
@@ -254,27 +252,27 @@ struct ProjectItemCell: View {
         }
         .frame(width: width, height: width)
     }
-    
+
     @ViewBuilder
-    private func Card(@ViewBuilder content: @escaping () -> some View) -> some View {
-        HStack (alignment: .top) {
+    private func card(@ViewBuilder content: @escaping () -> some View) -> some View {
+        HStack(alignment: .top) {
             content()
         }
         .padding()
         .frame(maxWidth: .infinity, minHeight: cellHeight)
         .background(
             ZStack {
-                GradientRectangle()
+                gradientRectangle()
                     .brightness(collapsedBackgroundBrightness)
                     .saturation(collapsedBackgroundSaturation)
                     .opacity(isCollapsed ? 1.0 : 0.0)
-                
-                GradientRectangle()
+
+                gradientRectangle()
                     .brightness(backgroundBrightness)
                     .saturation(backgroundSaturation)
                     .opacity(backgroundOpacity)
                     .overlay(
-                        GradientBorder()
+                        gradientBorder()
                             .brightness(collapsedBackgroundBrightness)
                             .saturation(collapsedBackgroundSaturation)
                     )
@@ -282,16 +280,16 @@ struct ProjectItemCell: View {
             }
         )
     }
-    
+
     @ViewBuilder
-    private func GradientRectangle() -> some View {
+    private func gradientRectangle() -> some View {
         RoundedRectangle(cornerRadius: 20)
             .fill(color.gradient)
             .rotationEffect(.degrees(180))
     }
-    
+
     @ViewBuilder
-    private func GradientBorder() -> some View {
+    private func gradientBorder() -> some View {
         RoundedRectangle(cornerRadius: 20)
             .strokeBorder(color.gradient, lineWidth: 2)
             .rotationEffect(.degrees(180))

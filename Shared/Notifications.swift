@@ -12,10 +12,9 @@ import SwiftUI
 import WatchKit
 import UserNotifications
 #endif
-    
-    
+
 func getNotificationPermissions() {
-    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { success, error in
+    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, error in
         if let error = error {
             print("There was an error requesting permissions: \(error.localizedDescription)")
         }
@@ -25,7 +24,7 @@ func getNotificationPermissions() {
 func setupNotifications(_ pomoTimer: PomoTimer) async {
     guard !pomoTimer.isPaused else { return }
     guard await UNUserNotificationCenter.current().pendingNotificationRequests().isEmpty else { return }
-    
+
     let now = Date()
 #if os(iOS)
     let currentIndex = pomoTimer.getIndex(atDate: now)
@@ -33,12 +32,12 @@ func setupNotifications(_ pomoTimer: PomoTimer) async {
     // watchOS uses BackgroundSession to handle the first notification
     let currentIndex = pomoTimer.getIndex(atDate: now) + 1
 #endif
-    
+
     for index in currentIndex..<pomoTimer.order.count {
         let timeToNext = pomoTimer.timeRemaining(for: index, atDate: now)
-        
+
         let content = UNMutableNotificationContent()
-        
+
         switch pomoTimer.getStatus(atDate: now.addingTimeInterval(timeToNext)) {
         case .work:
             let endOfNext = now.addingTimeInterval(pomoTimer.timeRemaining(for: index+1, atDate: now))
@@ -66,9 +65,10 @@ func setupNotifications(_ pomoTimer: PomoTimer) async {
             content.sound = UNNotificationSound.default
         }
 
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeToNext > 0.0 ? timeToNext : 0.1, repeats: false)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeToNext > 0.0 ? timeToNext : 0.1,
+                                                        repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-        
+
         do {
             try await UNUserNotificationCenter.current().add(request)
         } catch {
@@ -82,8 +82,7 @@ func cancelPendingNotifications() {
     UNUserNotificationCenter.current().removeAllDeliveredNotifications()
 }
 
-
-fileprivate let timeFormatter: DateFormatter = {
+private let timeFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.setLocalizedDateFormatFromTemplate("hh:mm")
     return formatter

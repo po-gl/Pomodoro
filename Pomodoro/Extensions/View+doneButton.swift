@@ -13,17 +13,17 @@ extension View {
     }
 }
 
-
 struct DoneButtonModifier: ViewModifier {
     var predicate = false
-    
+
     func body(content: Content) -> some View {
         content
             .toolbar {
                 if predicate {
                     ToolbarItem(placement: .primaryAction) {
                         Button("Done") {
-                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+                                                            to: nil, from: nil, for: nil)
                         }
                     }
                 }
