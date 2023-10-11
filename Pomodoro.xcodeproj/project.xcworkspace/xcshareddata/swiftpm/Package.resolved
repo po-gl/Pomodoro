@@ -48,10 +48,10 @@
     {
       "identity" : "swiftlint",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/po-gl/SwiftLint.git",
+      "location" : "https://github.com/realm/SwiftLint.git",
       "state" : {
-        "branch" : "main",
-        "revision" : "f644da3b7a36e0443184bc6405680f5a380d59a6"
+        "revision" : "6d2e58271ebc14c37bf76d7c9f4082cc15bad718",
+        "version" : "0.53.0"
       }
     },
     {
