@@ -390,6 +390,7 @@
 		61AEA85F29CE59D0007AA1AD /* View+scrollToOnFocus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+scrollToOnFocus.swift"; sourceTree = "<group>"; };
 		61B17250285CFCBB001C8245 /* View+Modifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Modifier.swift"; sourceTree = "<group>"; };
 		61B17252285CFCF8001C8245 /* UIView+ClosestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+ClosestVC.swift"; sourceTree = "<group>"; };
+		61BC3DAC2AD74C23007C4BB9 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		61BE18C42A295E3700082875 /* Date+compare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+compare.swift"; sourceTree = "<group>"; };
 		61C4F02129DF4CDA00BC70C7 /* AngledText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AngledText.swift; sourceTree = "<group>"; };
 		61C6BC1229C0364000AF48DE /* View+onSubmitWithVerticalText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+onSubmitWithVerticalText.swift"; sourceTree = "<group>"; };
@@ -591,6 +592,7 @@
 			children = (
 				6172B4C4297F62EE00E53D8F /* iOSWidgetExtension.entitlements */,
 				615E7F2E290B7DB0005BD3AE /* WatchWidgetExtension.entitlements */,
+				61BC3DAB2AD74BD2007C4BB9 /* ci_scripts */,
 				610515B12AD4999D00F6DD30 /* Shared */,
 				617789B02856A1F300BD43D7 /* Pomodoro */,
 				61FAEAAF29065FDC00CACF78 /* PomodoroWatch Watch App */,
@@ -675,6 +677,14 @@
 				61C4F02129DF4CDA00BC70C7 /* AngledText.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		61BC3DAB2AD74BD2007C4BB9 /* ci_scripts */ = {
+			isa = PBXGroup;
+			children = (
+				61BC3DAC2AD74C23007C4BB9 /* ci_post_clone.sh */,
+			);
+			path = ci_scripts;
 			sourceTree = "<group>";
 		};
 		61BEBD812856B17A00987514 /* Views */ = {
