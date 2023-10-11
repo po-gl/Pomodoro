@@ -843,7 +843,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				61995B142AD6271400C4DAB5 /* PBXTargetDependency */,
+				61BC3DAF2AD75E9A007C4BB9 /* PBXTargetDependency */,
 				61D7895629A148E100B296B4 /* PBXTargetDependency */,
 				61A7FE2929BD5767000137E7 /* PBXTargetDependency */,
 				610F99C529BD736A00608F41 /* PBXTargetDependency */,
@@ -994,7 +994,7 @@
 			);
 			mainGroup = 617789A52856A1F200BD43D7;
 			packageReferences = (
-				61995B122AD61EDE00C4DAB5 /* XCRemoteSwiftPackageReference "SwiftLint" */,
+				61BC3DAD2AD75E86007C4BB9 /* XCRemoteSwiftPackageReference "SwiftLint" */,
 			);
 			productRefGroup = 617789AF2856A1F300BD43D7 /* Products */;
 			projectDirPath = "";
@@ -1354,14 +1354,14 @@
 			target = 617789AD2856A1F300BD43D7 /* Pomodoro */;
 			targetProxy = 617789CA2856A1F400BD43D7 /* PBXContainerItemProxy */;
 		};
-		61995B142AD6271400C4DAB5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 61995B132AD6271400C4DAB5 /* SwiftLintPlugin */;
-		};
 		61A7FE2929BD5767000137E7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 61FAEAAD29065FDC00CACF78 /* PomodoroWatch Watch App */;
 			targetProxy = 61A7FE2829BD5767000137E7 /* PBXContainerItemProxy */;
+		};
+		61BC3DAF2AD75E9A007C4BB9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 61BC3DAE2AD75E9A007C4BB9 /* SwiftLintPlugin */;
 		};
 		61D7895629A148E100B296B4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2044,20 +2044,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		61995B122AD61EDE00C4DAB5 /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
+		61BC3DAD2AD75E86007C4BB9 /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/SwiftLint.git";
+			repositoryURL = "https://github.com/po-gl/SwiftLint.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.53.0;
+				branch = main;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		61995B132AD6271400C4DAB5 /* SwiftLintPlugin */ = {
+		61BC3DAE2AD75E9A007C4BB9 /* SwiftLintPlugin */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 61995B122AD61EDE00C4DAB5 /* XCRemoteSwiftPackageReference "SwiftLint" */;
+			package = 61BC3DAD2AD75E86007C4BB9 /* XCRemoteSwiftPackageReference "SwiftLint" */;
 			productName = "plugin:SwiftLintPlugin";
 		};
 /* End XCSwiftPackageProductDependency section */
