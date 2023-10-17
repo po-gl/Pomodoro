@@ -18,14 +18,20 @@ struct TaskListView: UIViewControllerRepresentable {
 }
 
 private struct StaticData {
-    lazy var numbers = (0..<100).map { _ in Int.random(in: 1...32)}
+    lazy var numbers = (0..<100).map { _ in DataNumber(val: Int.random(in: 1...32))}
 }
 
-class TaskListViewController: UIViewController, UICollectionViewDataSource {
+private struct DataNumber: Hashable {
+    var val: Int
+    var id = UUID()
+}
 
+class TaskListViewController: UIViewController {
+    private typealias ListItem = DataNumber
     private var data = StaticData()
 
     private var collectionView: UICollectionView!
+    private var diffableDataSource: UICollectionViewDiffableDataSource<Int, ListItem>!
 
     override func loadView() {
         super.loadView()
@@ -51,7 +57,18 @@ class TaskListViewController: UIViewController, UICollectionViewDataSource {
 
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.allowsSelection = false
-        collectionView.dataSource = self
+
+        // swiftlint:disable:next line_length
+        let diffableDataSource = UICollectionViewDiffableDataSource<Int, ListItem>(collectionView: collectionView) { collectionView, indexPath, _ -> UICollectionViewCell? in
+            let item = self.data.numbers[indexPath.item]
+            let cell = collectionView.dequeueConfiguredReusableCell(using: self.taskCellRegistration,
+                                                                    for: indexPath,
+                                                                    item: item)
+            return cell
+        }
+        self.diffableDataSource = diffableDataSource
+        collectionView.dataSource = self.diffableDataSource
+        updateSnapshot()
     }
 
     private func createTaskSection(_ layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
@@ -65,13 +82,21 @@ class TaskListViewController: UIViewController, UICollectionViewDataSource {
         return section
     }
 
-    private var taskCellRegistration: UICollectionView.CellRegistration<UICollectionViewCell, Int> = {
+    private var taskCellRegistration: UICollectionView.CellRegistration<UICollectionViewCell, ListItem> = {
         .init { cell, _, item in
             cell.contentConfiguration = UIHostingConfiguration {
-                Cell(data: item)
+                Cell(data: item.val)
             }
         }
     }()
+
+    private func updateSnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, ListItem>()
+        snapshot.appendSections([0])
+        snapshot.appendItems(data.numbers)
+
+        diffableDataSource.apply(snapshot, animatingDifferences: true)
+    }
 }
 
 struct Cell: View {
@@ -101,20 +126,6 @@ struct Cell: View {
                 }
             }
     }
-}
-
-extension TaskListViewController {
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        data.numbers.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let item = data.numbers[indexPath.item]
-        return collectionView.dequeueConfiguredReusableCell(using: taskCellRegistration, for: indexPath, item: item)
-    }
-
 }
 
 struct TaskListView_Previews: PreviewProvider {
