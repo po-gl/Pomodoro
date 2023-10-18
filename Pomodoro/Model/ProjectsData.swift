@@ -34,6 +34,8 @@ struct ProjectsData {
         newProject.timestamp = date
         newProject.archived = archived
         newProject.order = order
+
+        try? context.obtainPermanentIDs(for: [newProject])
         saveContext(context, errorMessage: "CoreData error adding project.")
     }
 
