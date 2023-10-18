@@ -64,6 +64,7 @@ class TaskListViewController: UIViewController, NSFetchedResultsControllerDelega
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.autoresizingMask = [.flexibleHeight]
         collectionView.allowsSelection = false
+        collectionView.allowsFocus = true
     }
 
     private func createTasksLayout(_ layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
@@ -97,8 +98,7 @@ class TaskListViewController: UIViewController, NSFetchedResultsControllerDelega
                 return
             }
             cell.contentConfiguration = UIHostingConfiguration {
-                Cell(data: taskItem.text ?? "", id: taskItem.id)
-                    .id(taskItem.id)
+                TaskCell(taskItem: taskItem)
                     .environment(\.managedObjectContext, viewContext)
             }
         }
@@ -115,9 +115,9 @@ class TaskListViewController: UIViewController, NSFetchedResultsControllerDelega
                                                         Calendar.current.startOfDay(for: Date() + 86400) as CVarArg)
 
         todaysTasksController = NSFetchedResultsController(fetchRequest: todaysTasksFetchRequest,
-                                                                managedObjectContext: viewContext,
-                                                                sectionNameKeyPath: nil,
-                                                                cacheName: nil)
+                                                           managedObjectContext: viewContext,
+                                                           sectionNameKeyPath: nil,
+                                                           cacheName: nil)
         todaysTasksController.delegate = self
 
         do {
@@ -130,16 +130,18 @@ class TaskListViewController: UIViewController, NSFetchedResultsControllerDelega
 
 extension TaskListViewController {
 
+    // swiftlint:disable line_length
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
                     didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
-        // swiftlint:disable:next line_length
         guard let dataSource = collectionView.dataSource as? UICollectionViewDiffableDataSource<Section, NSManagedObjectID> else {
-            assertionFailure("Collection view data source not available")
+            assertionFailure("Collection view data source with snapshot is not available")
             return
         }
 
         var snapshot = snapshot as NSDiffableDataSourceSnapshot<Section, NSManagedObjectID>
         let currentSnapshot = dataSource.snapshot() as NSDiffableDataSourceSnapshot<Section, NSManagedObjectID>
+
+        let shouldAnimate = snapshot.numberOfItems != currentSnapshot.numberOfItems
 
         let reloadIdentifiers: [NSManagedObjectID] = snapshot.itemIdentifiers.compactMap { itemIdentifier in
             guard let index = snapshot.indexOfItem(itemIdentifier),
@@ -147,17 +149,17 @@ extension TaskListViewController {
                   index == currentIndex else {
                 return nil
             }
-            // swiftlint:disable:next line_length
             guard let existingObjects = try? todaysTasksController.managedObjectContext.existingObject(with: itemIdentifier),
                   existingObjects.isUpdated else {
                 return nil
             }
             return itemIdentifier
         }
-
+        print("Reloaded \(reloadIdentifiers.count) items")
         snapshot.reloadItems(reloadIdentifiers)
-        dataSource.apply(snapshot, animatingDifferences: true)
+        dataSource.apply(snapshot, animatingDifferences: shouldAnimate)
     }
+    // swiftlint:enable line_length
 }
 
 #if DEBUG
@@ -175,45 +177,6 @@ extension TaskListViewController {
     typealias UICollectionViewDiffableDataSource = DebugDiffableDataSource
 }
 #endif
-
-struct Cell: View {
-    @Environment(\.managedObjectContext) private var viewContext
-
-    let data: String
-    let id: ObjectIdentifier
-    @State var isExpanded: Bool = false
-    @State var unexpandTask: Task<(), Never>?
-
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text("I'm a cell \(data)")
-            Text(id.debugDescription)
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-        }
-            .frame(minHeight: isExpanded ? 200 : 20)
-            .background(Color(hex: 0xF3FCDC * data.count))
-            .clipShape(.rect(cornerRadius: 4.0))
-            .animation(.bouncy(duration: 1), value: isExpanded)
-            .onTapGesture {
-                withAnimation {
-                    isExpanded = true
-                }
-                unexpandTask?.cancel()
-
-                unexpandTask = Task {
-                    try? await Task.sleep(for: .seconds(3))
-                    if !Task.isCancelled {
-                        withAnimation {
-                            isExpanded = false
-                        }
-                    }
-                }
-
-                TasksData.addTask("New task added to view context", context: viewContext)
-            }
-    }
-}
 
 struct TaskListView_Previews: PreviewProvider {
     static var previews: some View {
@@ -244,6 +207,7 @@ struct TaskListView_Previews: PreviewProvider {
                 VStack {
                     TopButton(destination: {
                         TaskListView()
+                            .navigationTitle("List")
                     }, pomoTimer: pomoTimer)
                 }
                 .background(Color(hex: 0x02201F))
