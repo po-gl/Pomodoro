@@ -34,6 +34,8 @@ struct TasksData {
         newTask.flagged = flagged
         newTask.timestamp = date
         newTask.order = order
+
+        try? context.obtainPermanentIDs(for: [newTask])
         saveContext(context, errorMessage: "CoreData error adding task.")
     }
 
