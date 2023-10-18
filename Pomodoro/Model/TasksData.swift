@@ -39,9 +39,12 @@ struct TasksData {
         saveContext(context, errorMessage: "CoreData error adding task.")
     }
 
-    static func editText(_ text: String, for task: TaskNote, context: NSManagedObjectContext) {
+    static func editText(_ text: String, note: String? = nil, for task: TaskNote, context: NSManagedObjectContext) {
         task.text = text
-        saveContext(context, errorMessage: "CoreData error editing task.")
+        if let note {
+            task.note = note
+        }
+        saveContext(context, errorMessage: "CoreData error editing task text.")
     }
 
     static func editNote(_ note: String, for task: TaskNote, context: NSManagedObjectContext) {

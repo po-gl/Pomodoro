@@ -39,13 +39,16 @@ struct ProjectsData {
         saveContext(context, errorMessage: "CoreData error adding project.")
     }
 
-    static func editName(_ name: String, for task: Project, context: NSManagedObjectContext) {
-        task.name = name
+    static func editName(_ name: String, note: String? = nil, for project: Project, context: NSManagedObjectContext) {
+        project.name = name
+        if let note {
+            project.note = note
+        }
         saveContext(context, errorMessage: "CoreData error editing project name.")
     }
 
-    static func editNote(_ note: String, for task: Project, context: NSManagedObjectContext) {
-        task.note = note
+    static func editNote(_ note: String, for project: Project, context: NSManagedObjectContext) {
+        project.note = note
         saveContext(context, errorMessage: "CoreData error editing project note.")
     }
 
