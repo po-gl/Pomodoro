@@ -49,12 +49,12 @@ class TaskListViewController: UIViewController, NSFetchedResultsControllerDelega
         configureFetchController()
 
         view = collectionView
-        title = "Task List"
     }
 
     private struct LayoutMetrics {
         static let horizontalMargin = 16.0
         static let sectionSpacing = 10.0
+        static let headerHeight = 20.0
     }
 
     private func configureLayout() {
@@ -68,28 +68,48 @@ class TaskListViewController: UIViewController, NSFetchedResultsControllerDelega
     }
 
     private func createTasksLayout(_ layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
-        var config = UICollectionLayoutListConfiguration(appearance: .plain)
+        var config = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
         config.backgroundColor = .clear
         let section = NSCollectionLayoutSection.list(using: config, layoutEnvironment: layoutEnvironment)
         section.contentInsets = .zero
         section.contentInsets.leading = LayoutMetrics.horizontalMargin
         section.contentInsets.trailing = LayoutMetrics.horizontalMargin
         section.contentInsets.bottom = LayoutMetrics.sectionSpacing
+
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                heightDimension: .estimated(LayoutMetrics.headerHeight))
+        // swiftlint:disable:next line_length
+        let headerElement = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+
+        section.boundarySupplementaryItems = [headerElement]
         return section
     }
 
     private func configureDataSource() {
         // swiftlint:disable:next line_length
-        let diffableDataSource = UICollectionViewDiffableDataSource<Section, ListItemID>(collectionView: collectionView) { collectionView, indexPath, identifier -> UICollectionViewCell? in
+        let diffableDataSource = UICollectionViewDiffableDataSource<Section, ListItemID>(collectionView: collectionView) { [unowned self] collectionView, indexPath, identifier -> UICollectionViewCell? in
             let item = self.viewContext.object(with: identifier)
             let cell = collectionView.dequeueConfiguredReusableCell(using: self.taskCellRegistration,
                                                                     for: indexPath,
                                                                     item: item)
             return cell
         }
+        diffableDataSource.supplementaryViewProvider = { collectionView, _, indexPath -> UICollectionReusableView? in
+            return collectionView.dequeueConfiguredReusableSupplementary(using: self.headerCellRegistration,
+                                                                         for: indexPath)
+        }
+
         self.diffableDataSource = diffableDataSource
         collectionView.dataSource = self.diffableDataSource
     }
+
+    private var headerCellRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewCell> = {
+        .init(elementKind: UICollectionView.elementKindSectionHeader) { cell, _, _ in
+            cell.contentConfiguration = UIHostingConfiguration {
+                TodaysTasksHeader()
+            }
+        }
+    }()
 
     private var taskCellRegistration: UICollectionView.CellRegistration<UICollectionViewCell, ListItem> = {
         .init { cell, _, item in
