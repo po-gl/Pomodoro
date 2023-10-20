@@ -29,7 +29,6 @@ struct ProjectStack: View {
                                 cellHeight: collapsedRowHeight,
                                 isFirstProject: i == 0)
                     .zIndex(-iDouble)
-                    .padding(.top, i == 0 ? 4 : 0)
                     .opacity(isCollapsed ? 1 - (0.3 * iDouble) : 1.0)
                     .scaleEffect(isCollapsed ? 1 - (0.08 * iDouble) : 1.0)
                     .offset(y: isCollapsed ? -iDouble * collapsedRowHeight + (iDouble * 3) : 0.0)
@@ -37,7 +36,7 @@ struct ProjectStack: View {
                 }
             }
             .frame(maxHeight: isCollapsed ? collapsedRowHeight*1.25 : .infinity, alignment: .top)
-            .padding(.vertical, 3)
+            .padding(.top, 10)
         }
         .animation(.easeInOut, value: isCollapsed)
     }

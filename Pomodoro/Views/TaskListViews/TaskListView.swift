@@ -62,13 +62,35 @@ class TaskListViewController: UIViewController, NSFetchedResultsControllerDelega
     }
 
     private func configureLayout() {
-        let layout = UICollectionViewCompositionalLayout { [unowned self] _, layoutEnvironment in
-            return createTasksLayout(layoutEnvironment)
+        let layout = UICollectionViewCompositionalLayout { [unowned self] section, layoutEnvironment in
+            if section == 0 {
+                return createProjectsLayout(layoutEnvironment)
+            } else {
+                return createTasksLayout(layoutEnvironment)
+            }
         }
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.autoresizingMask = [.flexibleHeight]
         collectionView.allowsSelection = false
         collectionView.allowsFocus = true
+    }
+
+    private func createProjectsLayout(_ layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
+        var config = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+        config.backgroundColor = .clear
+        let section = NSCollectionLayoutSection.list(using: config, layoutEnvironment: layoutEnvironment)
+        section.contentInsets = .zero
+        section.contentInsets.top = -16.0
+
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                heightDimension: .estimated(LayoutMetrics.headerHeight))
+        // swiftlint:disable:next line_length
+        let headerElement = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        headerElement.contentInsets.leading = LayoutMetrics.horizontalMargin
+        headerElement.contentInsets.trailing = LayoutMetrics.horizontalMargin
+
+        section.boundarySupplementaryItems = [headerElement]
+        return section
     }
 
     private func createTasksLayout(_ layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
