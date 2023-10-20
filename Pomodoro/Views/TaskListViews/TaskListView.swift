@@ -21,13 +21,17 @@ struct TaskListView: UIViewControllerRepresentable {
 
 class TaskListViewController: UIViewController, NSFetchedResultsControllerDelegate {
     enum Section {
+        case projects
         case tasks
     }
-    private typealias ListItemID = NSManagedObjectID
-    private typealias ListItem = NSManagedObject
+
+    enum ListItem: Hashable {
+        case task(NSManagedObjectID)
+        case projectsPlaceholder
+    }
 
     private var collectionView: UICollectionView! = nil
-    private var diffableDataSource: UICollectionViewDiffableDataSource<Section, ListItemID>! = nil
+    private var diffableDataSource: UICollectionViewDiffableDataSource<Section, ListItem>! = nil
 
     private var todaysTasksController: NSFetchedResultsController<TaskNote>! = nil
     private var viewContext: NSManagedObjectContext
@@ -46,7 +50,7 @@ class TaskListViewController: UIViewController, NSFetchedResultsControllerDelega
         configureLayout()
         configureDataSource()
 
-        configureFetchController()
+        configureFetchControllers()
 
         view = collectionView
     }
@@ -87,12 +91,18 @@ class TaskListViewController: UIViewController, NSFetchedResultsControllerDelega
 
     private func configureDataSource() {
         // swiftlint:disable:next line_length
-        let diffableDataSource = UICollectionViewDiffableDataSource<Section, ListItemID>(collectionView: collectionView) { [unowned self] collectionView, indexPath, identifier -> UICollectionViewCell? in
-            let item = self.viewContext.object(with: identifier)
-            let cell = collectionView.dequeueConfiguredReusableCell(using: self.taskCellRegistration,
-                                                                    for: indexPath,
-                                                                    item: item)
-            return cell
+        let diffableDataSource = UICollectionViewDiffableDataSource<Section, ListItem>(collectionView: collectionView) { [unowned self] collectionView, indexPath, identifier -> UICollectionViewCell? in
+            switch identifier {
+            case let .task(identifier):
+                let item = self.viewContext.object(with: identifier)
+                return collectionView.dequeueConfiguredReusableCell(using: self.taskCellRegistration,
+                                                                        for: indexPath,
+                                                                        item: item)
+            case .projectsPlaceholder:
+                return collectionView.dequeueConfiguredReusableCell(using: self.projectsStackCellRegistration,
+                                                                        for: indexPath,
+                                                                        item: nil)
+            }
         }
         diffableDataSource.supplementaryViewProvider = { collectionView, _, indexPath -> UICollectionReusableView? in
             return collectionView.dequeueConfiguredReusableSupplementary(using: self.headerCellRegistration,
@@ -104,14 +114,18 @@ class TaskListViewController: UIViewController, NSFetchedResultsControllerDelega
     }
 
     private var headerCellRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewCell> = {
-        .init(elementKind: UICollectionView.elementKindSectionHeader) { cell, _, _ in
+        .init(elementKind: UICollectionView.elementKindSectionHeader) { cell, _, indexPath in
             cell.contentConfiguration = UIHostingConfiguration {
-                TodaysTasksHeader()
+                if indexPath.section == 0 {
+                    ProjectsHeader()
+                } else {
+                    TodaysTasksHeader()
+                }
             }
         }
     }()
 
-    private var taskCellRegistration: UICollectionView.CellRegistration<UICollectionViewCell, ListItem> = {
+    private var taskCellRegistration: UICollectionView.CellRegistration<UICollectionViewCell, NSManagedObject> = {
         .init { cell, _, item in
             guard let taskItem = item as? TaskNote,
                   let viewContext = taskItem.managedObjectContext else {
@@ -124,7 +138,20 @@ class TaskListViewController: UIViewController, NSFetchedResultsControllerDelega
         }
     }()
 
-    private func configureFetchController() {
+    private var projectsStackCellRegistration: UICollectionView.CellRegistration<UICollectionViewCell, NSNull> = {
+        .init { cell, _, _ in
+            cell.contentConfiguration = UIHostingConfiguration {
+                ProjectStack()
+            }
+//            cell.layer.speed = 0.2
+            cell.contentView.clipsToBounds = false
+            cell.clipsToBounds = false
+            cell.contentView.layer.masksToBounds = false
+            cell.layer.masksToBounds = false
+        }
+    }()
+
+    private func configureFetchControllers() {
         let todaysTasksFetchRequest = NSFetchRequest<TaskNote>(entityName: "TaskNote")
         todaysTasksFetchRequest.sortDescriptors = [
             SortDescriptor(\TaskNote.order, order: .reverse),
@@ -150,36 +177,23 @@ class TaskListViewController: UIViewController, NSFetchedResultsControllerDelega
 
 extension TaskListViewController {
 
-    // swiftlint:disable line_length
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
                     didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
-        guard let dataSource = collectionView.dataSource as? UICollectionViewDiffableDataSource<Section, NSManagedObjectID> else {
+        guard let dataSource = collectionView.dataSource
+                as? UICollectionViewDiffableDataSource<Section, ListItem> else {
             assertionFailure("Collection view data source with snapshot is not available")
             return
         }
 
-        var snapshot = snapshot as NSDiffableDataSourceSnapshot<Section, NSManagedObjectID>
-        let currentSnapshot = dataSource.snapshot() as NSDiffableDataSourceSnapshot<Section, NSManagedObjectID>
+        var snapshot = NSDiffableDataSourceSnapshot<Section, ListItem>()
+        snapshot.appendSections([.projects, .tasks])
+        snapshot.appendItems([.projectsPlaceholder], toSection: .projects)
 
-        let shouldAnimate = snapshot.numberOfItems != currentSnapshot.numberOfItems
+        let fetchedTasks = todaysTasksController.fetchedObjects?.map { obj in ListItem.task(obj.objectID) } ?? []
+        snapshot.appendItems(fetchedTasks, toSection: .tasks)
 
-        let reloadIdentifiers: [NSManagedObjectID] = snapshot.itemIdentifiers.compactMap { itemIdentifier in
-            guard let index = snapshot.indexOfItem(itemIdentifier),
-                  let currentIndex = currentSnapshot.indexOfItem(itemIdentifier),
-                  index == currentIndex else {
-                return nil
-            }
-            guard let existingObjects = try? todaysTasksController.managedObjectContext.existingObject(with: itemIdentifier),
-                  existingObjects.isUpdated else {
-                return nil
-            }
-            return itemIdentifier
-        }
-        print("Reloaded \(reloadIdentifiers.count) items")
-        snapshot.reloadItems(reloadIdentifiers)
-        dataSource.apply(snapshot, animatingDifferences: shouldAnimate)
+        dataSource.apply(snapshot, animatingDifferences: true)
     }
-    // swiftlint:enable line_length
 }
 
 #if DEBUG
@@ -208,6 +222,13 @@ struct TaskListView_Previews: PreviewProvider {
                 .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
                 .previewDisplayName("TaskList UIKit")
                 .navigationTitle("Tisksss 🐍")
+                .toolbar {
+                    ToolbarItem(placement: .bottomBar) {
+                        Button("Add task") {
+                            TasksData.addTask("New task", context: PersistenceController.preview.container.viewContext)
+                        }
+                    }
+                }
         }
     }
 
