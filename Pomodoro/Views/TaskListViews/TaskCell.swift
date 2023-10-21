@@ -12,6 +12,8 @@ struct TaskCell: View {
     @Environment(\.managedObjectContext) private var viewContext
     @ObservedObject var taskItem: TaskNote
 
+    let indexPath: IndexPath
+
     @State var editText = ""
     @State var editNoteText = ""
     @FocusState var focus
@@ -40,8 +42,12 @@ struct TaskCell: View {
 
         .focused($focus)
         .onChange(of: focus) { _ in
-            guard !focus else { return }
-            deleteOrEditTask()
+            if focus {
+                TaskListViewController.focusedIndexPath = indexPath
+            } else {
+                TaskListViewController.focusedIndexPath = nil
+                deleteOrEditTask()
+            }
         }
         .doneButton(isPresented: focus)
     }
