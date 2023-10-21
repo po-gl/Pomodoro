@@ -30,11 +30,17 @@ class TaskListViewController: UIViewController, NSFetchedResultsControllerDelega
         case projectsPlaceholder
     }
 
+    // TODO: implement a solution that doesn't involve a static property
+    static var focusedIndexPath: IndexPath?
+
     private var collectionView: UICollectionView! = nil
     private var diffableDataSource: UICollectionViewDiffableDataSource<Section, ListItem>! = nil
 
     private var todaysTasksController: NSFetchedResultsController<TaskNote>! = nil
     private var viewContext: NSManagedObjectContext
+
+    private var keyboardOffsetConstraint: NSLayoutConstraint! = nil
+    private var keyboardWithoutOffsetConstraint: NSLayoutConstraint! = nil
 
     init(viewContext: NSManagedObjectContext) {
         self.viewContext = viewContext
@@ -52,7 +58,52 @@ class TaskListViewController: UIViewController, NSFetchedResultsControllerDelega
 
         configureFetchControllers()
 
-        view = collectionView
+        let wrappingView = UIView(frame: .zero)
+        wrappingView.addSubview(collectionView)
+        view = wrappingView
+
+        keyboardWithoutOffsetConstraint = view.keyboardLayoutGuide.topAnchor
+            .constraint(equalTo: collectionView.bottomAnchor)
+        keyboardOffsetConstraint = view.keyboardLayoutGuide.topAnchor
+            .constraint(equalTo: collectionView.bottomAnchor, constant: -34.0)
+
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            keyboardWithoutOffsetConstraint
+        ])
+
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+
+    @objc func handleKeyboardWillShow() {
+        if let focusedIndexPath = TaskListViewController.focusedIndexPath {
+            setBottomConstraint(withOffset: true)
+            collectionView.scrollToItem(at: focusedIndexPath, at: .bottom, animated: false)
+        }
+    }
+
+    @objc func handleKeyboardWillHide() {
+        setBottomConstraint(withOffset: false)
+    }
+
+    private func setBottomConstraint(withOffset: Bool) {
+        // Note the order is important to avoid constraint conflicts
+        if withOffset {
+            keyboardWithoutOffsetConstraint.isActive = !withOffset
+            keyboardOffsetConstraint.isActive = withOffset
+        } else {
+            keyboardOffsetConstraint.isActive = withOffset
+            keyboardWithoutOffsetConstraint.isActive = !withOffset
+        }
+        view.setNeedsUpdateConstraints()
     }
 
     private struct LayoutMetrics {
@@ -148,13 +199,13 @@ class TaskListViewController: UIViewController, NSFetchedResultsControllerDelega
     }()
 
     private var taskCellRegistration: UICollectionView.CellRegistration<UICollectionViewCell, NSManagedObject> = {
-        .init { cell, _, item in
+        .init { cell, indexPath, item in
             guard let taskItem = item as? TaskNote,
                   let viewContext = taskItem.managedObjectContext else {
                 return
             }
             cell.contentConfiguration = UIHostingConfiguration {
-                TaskCell(taskItem: taskItem)
+                TaskCell(taskItem: taskItem, indexPath: indexPath)
                     .environment(\.managedObjectContext, viewContext)
             }
         }
@@ -165,11 +216,6 @@ class TaskListViewController: UIViewController, NSFetchedResultsControllerDelega
             cell.contentConfiguration = UIHostingConfiguration {
                 ProjectStack()
             }
-//            cell.layer.speed = 0.2
-            cell.contentView.clipsToBounds = false
-            cell.clipsToBounds = false
-            cell.contentView.layer.masksToBounds = false
-            cell.layer.masksToBounds = false
         }
     }()
 
