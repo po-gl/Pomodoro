@@ -50,6 +50,13 @@ struct TaskCell: View {
             }
         }
         .doneButton(isPresented: focus)
+
+        .swipeActions(edge: .leading) {
+            deleteTaskButton()
+        }
+        .swipeActions(edge: .trailing) {
+            flagTaskButton()
+        }
     }
 
     private func focusIfJustAdded() {
@@ -110,5 +117,24 @@ struct TaskCell: View {
         Image(systemName: "leaf.fill")
             .foregroundColor(Color("BarWork"))
             .frame(width: 20, height: 20)
+    }
+
+    @ViewBuilder
+    private func deleteTaskButton() -> some View {
+        Button(role: .destructive, action: {
+            withAnimation { TasksData.delete(taskItem, context: viewContext) }
+        }) {
+            Label("Delete", systemImage: "trash")
+        }.tint(.red)
+    }
+
+    @ViewBuilder
+    private func flagTaskButton() -> some View {
+        Button(action: {
+            withAnimation { TasksData.toggleFlagged(for: taskItem, context: viewContext) }
+        }) {
+            Label(taskItem.flagged ? "Unflag" : "Flag",
+                  systemImage: taskItem.flagged ? "flag.slash.fill" : "flag.fill")
+        }.tint(Color("BarWork"))
     }
 }
