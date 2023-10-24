@@ -19,7 +19,7 @@ struct TaskListView: UIViewControllerRepresentable {
     }
 }
 
-class TaskListViewController: UIViewController, NSFetchedResultsControllerDelegate {
+class TaskListViewController: UIViewController {
     enum Section {
         case projects
         case tasks
@@ -124,6 +124,9 @@ class TaskListViewController: UIViewController, NSFetchedResultsControllerDelega
         collectionView.autoresizingMask = [.flexibleHeight]
         collectionView.allowsSelection = false
         collectionView.allowsFocus = true
+        collectionView.dragInteractionEnabled = true
+        collectionView.dragDelegate = self
+        collectionView.dropDelegate = self
     }
 
     private func createProjectsLayout(_ layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
@@ -182,8 +185,47 @@ class TaskListViewController: UIViewController, NSFetchedResultsControllerDelega
                                                                          for: indexPath)
         }
 
+        configureDataSouceReordering(diffableDataSource)
+
         self.diffableDataSource = diffableDataSource
         collectionView.dataSource = self.diffableDataSource
+    }
+
+    // swiftlint:disable:next line_length
+    private func configureDataSouceReordering(_ diffableDataSource: UICollectionViewDiffableDataSource<Section, ListItem>) {
+        diffableDataSource.reorderingHandlers.canReorderItem = { listItem in
+            if case .task = listItem {
+                return true
+            }
+            return false
+        }
+
+        diffableDataSource.reorderingHandlers.didReorder = { [weak self] transaction in
+            guard let self = self else { return }
+            guard let tasksSection = transaction.sectionTransactions.first(where: { section in
+                section.sectionIdentifier == .tasks
+            }) else {
+                return
+            }
+            let revisedItems = tasksSection.finalSnapshot.items
+                .compactMap { listItem in
+                    if case let .task(item) = listItem {
+                        return item
+                    } else {
+                        return nil
+                    }
+                }
+                .compactMap { item in self.viewContext.object(with: item) as? TaskNote }
+
+            for reverseIndex in 0..<revisedItems.count {
+                revisedItems[revisedItems.count-1-reverseIndex].order =
+                    Int16(reverseIndex)
+            }
+
+            self.viewContext.perform {
+                TasksData.saveContext(self.viewContext, errorMessage: "Error saving reordered tasks")
+            }
+        }
     }
 
     private var headerCellRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewCell> = {
@@ -243,7 +285,7 @@ class TaskListViewController: UIViewController, NSFetchedResultsControllerDelega
     }
 }
 
-extension TaskListViewController {
+extension TaskListViewController: NSFetchedResultsControllerDelegate {
 
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
                     didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
@@ -261,6 +303,36 @@ extension TaskListViewController {
         snapshot.appendItems(fetchedTasks, toSection: .tasks)
 
         dataSource.apply(snapshot, animatingDifferences: true)
+    }
+}
+
+extension TaskListViewController: UICollectionViewDragDelegate {
+    func collectionView(_ collectionView: UICollectionView,
+                        itemsForBeginning session: UIDragSession,
+                        at indexPath: IndexPath) -> [UIDragItem] {
+        guard let item = diffableDataSource.itemIdentifier(for: indexPath) else { return [] }
+        guard case let .task(taskItem) = item else { return [] }
+
+        let itemProvider = NSItemProvider()
+        let dragItem = UIDragItem(itemProvider: itemProvider)
+        dragItem.localObject = taskItem
+        return [dragItem]
+    }
+}
+
+extension TaskListViewController: UICollectionViewDropDelegate {
+
+    func collectionView(_ collectionView: UICollectionView,
+                        dropSessionDidUpdate session: UIDropSession,
+                        withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
+        if let destinationIndexPath, destinationIndexPath.section == 1 {
+            return UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+        }
+        return UICollectionViewDropProposal(operation: .forbidden)
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        performDropWith coordinator: UICollectionViewDropCoordinator) {
     }
 }
 
