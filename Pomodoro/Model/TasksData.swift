@@ -87,7 +87,7 @@ struct TasksData {
         }
     }
 
-    static func separateCompleted(_ tasks: FetchedResults<TaskNote>, context: NSManagedObjectContext) {
+    static func separateCompleted(_ tasks: some Sequence<TaskNote>, context: NSManagedObjectContext) {
         let countOfUncompleted = tasks.filter { !$0.completed }.count
 
         // O(n) iterate through array, maintain two indexes
