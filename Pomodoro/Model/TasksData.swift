@@ -12,6 +12,10 @@ struct TasksData {
 
     static var todaysTasksRequest: NSFetchRequest<TaskNote> {
         let fetchRequest = TaskNote.fetchRequest()
+        fetchRequest.sortDescriptors = [
+            SortDescriptor(\TaskNote.order, order: .reverse),
+            SortDescriptor(\TaskNote.timestamp, order: .forward)
+        ].map { descriptor in NSSortDescriptor(descriptor) }
         fetchRequest.predicate = NSPredicate(
             format: "timestamp >= %@ && timestamp <= %@",
             Calendar.current.startOfDay(for: Date()) as CVarArg,
