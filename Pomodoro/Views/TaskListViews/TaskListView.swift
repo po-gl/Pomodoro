@@ -57,6 +57,9 @@ class TaskListViewController: UIViewController {
         configureDataSource()
 
         configureFetchControllers()
+        if let todaysTasks = todaysTasksController.fetchedObjects {
+            TasksData.separateCompleted(todaysTasks, context: viewContext)
+        }
 
         let wrappingView = UIView(frame: .zero)
         wrappingView.addSubview(collectionView)
@@ -224,6 +227,13 @@ class TaskListViewController: UIViewController {
 
             self.viewContext.perform {
                 TasksData.saveContext(self.viewContext, errorMessage: "Error saving reordered tasks")
+
+                Task {
+                    try? await Task.sleep(for: .seconds(1.0))
+                    if let todaysTasks = self.todaysTasksController.fetchedObjects {
+                        TasksData.separateCompleted(todaysTasks, context: self.viewContext)
+                    }
+                }
             }
         }
     }
@@ -262,16 +272,7 @@ class TaskListViewController: UIViewController {
     }()
 
     private func configureFetchControllers() {
-        let todaysTasksFetchRequest = NSFetchRequest<TaskNote>(entityName: "TaskNote")
-        todaysTasksFetchRequest.sortDescriptors = [
-            SortDescriptor(\TaskNote.order, order: .reverse),
-            SortDescriptor(\TaskNote.timestamp, order: .forward)
-        ].map { descriptor in NSSortDescriptor(descriptor) }
-        todaysTasksFetchRequest.predicate = NSPredicate(format: "timestamp >= %@ && timestamp <= %@",
-                                                        Calendar.current.startOfDay(for: Date()) as CVarArg,
-                                                        Calendar.current.startOfDay(for: Date() + 86400) as CVarArg)
-
-        todaysTasksController = NSFetchedResultsController(fetchRequest: todaysTasksFetchRequest,
+        todaysTasksController = NSFetchedResultsController(fetchRequest: TasksData.todaysTasksRequest,
                                                            managedObjectContext: viewContext,
                                                            sectionNameKeyPath: nil,
                                                            cacheName: nil)

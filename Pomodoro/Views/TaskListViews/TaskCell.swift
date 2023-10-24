@@ -17,6 +17,9 @@ struct TaskCell: View {
     @State var editText = ""
     @State var editNoteText = ""
     @FocusState var focus
+    
+    @FetchRequest(fetchRequest: TasksData.todaysTasksRequest)
+    var todaysTasks: FetchedResults<TaskNote>
 
     var body: some View {
         HStack(alignment: .top, spacing: 15) {
@@ -56,6 +59,15 @@ struct TaskCell: View {
         }
         .swipeActions(edge: .trailing) {
             flagTaskButton()
+        }
+
+        .onChange(of: taskItem.completed) { _ in
+            Task {
+                try? await Task.sleep(for: .seconds(0.3))
+                withAnimation {
+                    TasksData.separateCompleted(todaysTasks, context: viewContext)
+                }
+            }
         }
     }
 
