@@ -17,7 +17,7 @@ struct TaskCell: View {
     @State var editText = ""
     @State var editNoteText = ""
     @FocusState var focus
-    
+
     @FetchRequest(fetchRequest: TasksData.todaysTasksRequest)
     var todaysTasks: FetchedResults<TaskNote>
 
@@ -65,7 +65,9 @@ struct TaskCell: View {
             Task {
                 try? await Task.sleep(for: .seconds(0.3))
                 withAnimation {
+                    viewContext.undoManager?.disableUndoRegistration()
                     TasksData.separateCompleted(todaysTasks, context: viewContext)
+                    viewContext.undoManager?.enableUndoRegistration()
                 }
             }
         }
