@@ -22,6 +22,7 @@ struct TaskListView: View {
     var body: some View {
         TaskListCollectionView(showPastTasks: $showPastTasks)
             .ignoresSafeArea(.keyboard)
+            .background(Color("Background"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
