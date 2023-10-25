@@ -25,8 +25,9 @@ struct TaskListView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Button("Add task") {
-                        TasksData.addTask("New task", context: viewContext)
+                    HStack {
+                        addTaskButton()
+                        Spacer()
                     }
                 }
             }
@@ -44,6 +45,19 @@ struct TaskListView: View {
                     ArchivedProjectsView()
                 }
             }
+    }
+
+    @ViewBuilder
+    private func addTaskButton() -> some View {
+        Button(action: {
+            basicHaptic()
+            TasksData.addTask("", context: viewContext)
+        }) {
+            Text(Image(systemName: "plus.circle.fill"))
+            Text("New Task")
+                .font(.system(.body, design: .rounded))
+                .fontWeight(.semibold)
+        }.tint(Color("AccentColor"))
     }
 
     @ViewBuilder
