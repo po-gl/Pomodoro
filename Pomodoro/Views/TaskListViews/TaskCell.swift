@@ -58,6 +58,9 @@ struct TaskCell: View {
             deleteTaskButton()
         }
         .swipeActions(edge: .trailing) {
+            if let timeStamp = taskItem.timestamp, timeStamp < Calendar.current.startOfDay(for: Date()) {
+                reAddToTodaysTasksButton()
+            }
             flagTaskButton()
         }
 
@@ -150,5 +153,21 @@ struct TaskCell: View {
             Label(taskItem.flagged ? "Unflag" : "Flag",
                   systemImage: taskItem.flagged ? "flag.slash.fill" : "flag.fill")
         }.tint(Color("BarWork"))
+    }
+
+    @ViewBuilder
+    private func reAddToTodaysTasksButton() -> some View {
+        Button(action: {
+            if let taskText = taskItem.text {
+                guard !TasksData.todaysTasksContains(taskText, context: viewContext) else { return }
+                withAnimation { TasksData.addTask(taskText,
+                                                  note: taskItem.note ?? "",
+                                                  flagged: taskItem.flagged,
+                                                  date: Date().addingTimeInterval(-1),
+                                                  context: viewContext) }
+            }
+        }) {
+            Label("Re-add", systemImage: "arrow.uturn.up")
+        }.tint(.blue)
     }
 }
