@@ -60,8 +60,10 @@ class TaskListViewController: UIViewController {
         configureDataSource()
 
         configureFetchControllers()
-        if let todaysTasks = todaysTasksController.fetchedObjects {
-            TasksData.separateCompleted(todaysTasks, context: viewContext)
+        Task.detached { @MainActor in
+            if let todaysTasks = self.todaysTasksController.fetchedObjects {
+                TasksData.separateCompleted(todaysTasks, context: self.viewContext)
+            }
         }
 
         let wrappingView = UIView(frame: .zero)
