@@ -41,6 +41,11 @@ class TaskListViewController: UIViewController {
     private var collectionView: UICollectionView! = nil
     private var diffableDataSource: UICollectionViewDiffableDataSource<Section, ListItem>! = nil
 
+    private var projectStackCellRegistration: UICollectionView.CellRegistration<UICollectionViewCell, NSNull>! = nil
+    private var taskCellRegistration: UICollectionView.CellRegistration<UICollectionViewCell, NSManagedObject>! = nil
+    private var headerCellRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewCell>! = nil
+    private var pastHeaderCellRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewCell>! = nil
+
     private var viewContext: NSManagedObjectContext
     private var todaysTasksController: NSFetchedResultsController<TaskNote>! = nil
     private var pastTasksController: NSFetchedResultsController<TaskNote>! = nil
@@ -50,6 +55,8 @@ class TaskListViewController: UIViewController {
             try? pastTasksController.performFetch()
         }
     }
+
+    private var isProjectStackCollapsed = ObservableBool(true)
 
     private var keyboardOffsetConstraint: NSLayoutConstraint! = nil
     private var keyboardWithoutOffsetConstraint: NSLayoutConstraint! = nil
@@ -67,6 +74,7 @@ class TaskListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureLayout()
+        configureCellRegistrations()
         configureDataSource()
 
         configureFetchControllers()
@@ -184,22 +192,35 @@ class TaskListViewController: UIViewController {
     }
 
     // swiftlint:disable line_length
-    private func configureDataSource() {
-        let diffableDataSource = UICollectionViewDiffableDataSource<Section, ListItem>(collectionView: collectionView) { [unowned self] collectionView, indexPath, identifier -> UICollectionViewCell? in
-            switch identifier {
-            case let .task(identifier), let .pastTask(identifier):
-                let item = self.viewContext.object(with: identifier)
-                return collectionView.dequeueConfiguredReusableCell(using: self.taskCellRegistration,
-                                                                    for: indexPath,
-                                                                    item: item)
-            case .projectsPlaceholder:
-                return collectionView.dequeueConfiguredReusableCell(using: self.projectsStackCellRegistration,
-                                                                    for: indexPath,
-                                                                    item: nil)
+    private func configureCellRegistrations() {
+        projectStackCellRegistration = UICollectionView.CellRegistration<UICollectionViewCell, NSNull> { [unowned self] cell, _, _ in
+            cell.contentConfiguration = UIHostingConfiguration {
+                ProjectStack(isCollapsed: isProjectStackCollapsed)
             }
         }
 
-        let pastHeaderCellRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewCell>(elementKind: UICollectionView.elementKindSectionHeader) { [unowned self] cell, _, indexPath in
+        taskCellRegistration = UICollectionView.CellRegistration<UICollectionViewCell, NSManagedObject> { cell, indexPath, item in
+            guard let taskItem = item as? TaskNote,
+                  let viewContext = taskItem.managedObjectContext else {
+                return
+            }
+            cell.contentConfiguration = UIHostingConfiguration {
+                TaskCell(taskItem: taskItem, indexPath: indexPath)
+                    .environment(\.managedObjectContext, viewContext)
+            }
+        }
+
+        headerCellRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewCell>(elementKind: UICollectionView.elementKindSectionHeader) { [unowned self] cell, _, indexPath in
+            cell.contentConfiguration = UIHostingConfiguration {
+                if indexPath.section == 0 {
+                    ProjectsHeader(isCollapsed: isProjectStackCollapsed)
+                } else {
+                    TodaysTasksHeader()
+                }
+            }
+        }
+
+        pastHeaderCellRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewCell>(elementKind: UICollectionView.elementKindSectionHeader) { [unowned self] cell, _, indexPath in
             let identifier = self.diffableDataSource.itemIdentifier(for: indexPath)
             if case let .pastTask(taskItem) = identifier,
                let pastTask = self.viewContext.object(with: taskItem) as? TaskNote {
@@ -208,12 +229,29 @@ class TaskListViewController: UIViewController {
                 }
             }
         }
+    }
+
+    private func configureDataSource() {
+
+        let diffableDataSource = UICollectionViewDiffableDataSource<Section, ListItem>(collectionView: collectionView) { [unowned self] collectionView, indexPath, identifier -> UICollectionViewCell? in
+            switch identifier {
+            case let .task(identifier), let .pastTask(identifier):
+                let item = self.viewContext.object(with: identifier)
+                return collectionView.dequeueConfiguredReusableCell(using: self.taskCellRegistration,
+                                                                    for: indexPath,
+                                                                    item: item)
+            case .projectsPlaceholder:
+                return collectionView.dequeueConfiguredReusableCell(using: self.projectStackCellRegistration,
+                                                                    for: indexPath,
+                                                                    item: nil)
+            }
+        }
 
         diffableDataSource.supplementaryViewProvider = { [unowned self] collectionView, _, indexPath -> UICollectionReusableView? in
             let identifier = diffableDataSource.itemIdentifier(for: indexPath)
             switch identifier {
             case .pastTask:
-                return collectionView.dequeueConfiguredReusableSupplementary(using: pastHeaderCellRegistration,
+                return collectionView.dequeueConfiguredReusableSupplementary(using: self.pastHeaderCellRegistration,
                                                                              for: indexPath)
             default:
                 return collectionView.dequeueConfiguredReusableSupplementary(using: self.headerCellRegistration,
@@ -271,39 +309,6 @@ class TaskListViewController: UIViewController {
             }
         }
     }
-
-    private var headerCellRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewCell> = {
-        .init(elementKind: UICollectionView.elementKindSectionHeader) { cell, _, indexPath in
-            cell.contentConfiguration = UIHostingConfiguration {
-                if indexPath.section == 0 {
-                    ProjectsHeader()
-                } else {
-                    TodaysTasksHeader()
-                }
-            }
-        }
-    }()
-
-    private var taskCellRegistration: UICollectionView.CellRegistration<UICollectionViewCell, NSManagedObject> = {
-        .init { cell, indexPath, item in
-            guard let taskItem = item as? TaskNote,
-                  let viewContext = taskItem.managedObjectContext else {
-                return
-            }
-            cell.contentConfiguration = UIHostingConfiguration {
-                TaskCell(taskItem: taskItem, indexPath: indexPath)
-                    .environment(\.managedObjectContext, viewContext)
-            }
-        }
-    }()
-
-    private var projectsStackCellRegistration: UICollectionView.CellRegistration<UICollectionViewCell, NSNull> = {
-        .init { cell, _, _ in
-            cell.contentConfiguration = UIHostingConfiguration {
-                ProjectStack()
-            }
-        }
-    }()
 
     private func configureFetchControllers() {
         todaysTasksController = NSFetchedResultsController(fetchRequest: TasksData.todaysTasksRequest,
@@ -409,7 +414,7 @@ struct TaskListView_Previews: PreviewProvider {
             .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
             .previewDisplayName("Wrapped List")
         NavigationStack {
-            TaskListCollectionView(showPastTasks: Binding<Bool>(get: { true }, set: { val in }))
+            TaskListCollectionView(showPastTasks: Binding<Bool>(get: { true }, set: { _ in }))
                 .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
                 .previewDisplayName("TaskList UIKit")
 //                .navigationTitle("Tisksss 🐍")

@@ -13,7 +13,7 @@ struct ProjectCell: View {
     @Environment(\.colorScheme) private var colorScheme
     @ObservedObject var project: Project
 
-    @Binding var isCollapsed: Bool
+    @ObservedObject var isCollapsed: ObservableBool
 
     var cellHeight: Double
 
@@ -48,9 +48,9 @@ struct ProjectCell: View {
                 VStack(spacing: 0) {
                     HStack {
                         progressCheck()
-                            .offset(y: isCollapsed && !editNoteText.isEmpty ? 10 : 0)
+                            .offset(y: isCollapsed.value && !editNoteText.isEmpty ? 10 : 0)
                         mainTextField()
-                        if !isCollapsed {
+                        if !isCollapsed.value {
                             infoMenuButton().offset(y: -1)
                         }
                     }
@@ -61,9 +61,8 @@ struct ProjectCell: View {
                 }
 
                 Spacer()
-                if isCollapsed && isFirstProject {
+                if isCollapsed.value && isFirstProject {
                     chevron()
-                } else {
                 }
             }
         }
@@ -86,16 +85,15 @@ struct ProjectCell: View {
 
         .doneButton(isPresented: focus)
 
-        .onChange(of: isCollapsed) { isCollapsed in
+        .onChange(of: isCollapsed.value) { isCollapsed in
             if isCollapsed {
                 focus = false
             }
         }
         .onTapGesture {
-            isCollapsed.toggle()
-//            if isCollapsed {
-//                isCollapsed = false
-//            }
+            if isCollapsed.value {
+                isCollapsed.value = false
+            }
         }
     }
 
@@ -103,7 +101,7 @@ struct ProjectCell: View {
         if let date = project.timestamp {
             if Date.now.timeIntervalSince(date) < 0.5 {
                 withAnimation {
-                    isCollapsed = false
+                    isCollapsed.value = false
                 }
                 focus = true
             }
@@ -115,8 +113,8 @@ struct ProjectCell: View {
         TextField("", text: $editText, axis: .vertical)
             .font(.system(size: 22))
             .frame(minHeight: 30)
-            .lineLimit(isCollapsed ? 1 : Int.max, reservesSpace: false)
-            .disabled(isCollapsed)
+            .lineLimit(isCollapsed.value ? 1 : Int.max, reservesSpace: false)
+            .disabled(isCollapsed.value)
             .onSubmitWithVerticalText(with: $editText) {
                 deleteOrEditProject()
             }
@@ -130,9 +128,9 @@ struct ProjectCell: View {
         TextField("Add Note", text: $editNoteText, axis: .vertical)
             .font(.system(size: 14))
             .frame(minHeight: 20)
-            .lineLimit(isCollapsed ? 1 : Int.max, reservesSpace: false)
-            .fixedSize(horizontal: false, vertical: !isCollapsed)
-            .disabled(isCollapsed)
+            .lineLimit(isCollapsed.value ? 1 : Int.max, reservesSpace: false)
+            .fixedSize(horizontal: false, vertical: !isCollapsed.value)
+            .disabled(isCollapsed.value)
             .foregroundColor(color)
             .brightness(secondaryBrightness)
     }
@@ -230,8 +228,8 @@ struct ProjectCell: View {
             }.frame(width: width/1.5)
         }
         .foregroundColor(color)
-        .brightness(isCollapsed ? collapsedCheckBrightness : checkBrightness)
-        .saturation(isCollapsed ? collapsedCheckSaturation : checkSaturation)
+        .brightness(isCollapsed.value ? collapsedCheckBrightness : checkBrightness)
+        .saturation(isCollapsed.value ? collapsedCheckSaturation : checkSaturation)
         .contentShape(Circle())
         .onTapGesture {
             let newValue = project.progress + 0.5 > 1.0 ? 0.0 : project.progress + 0.5
@@ -261,7 +259,7 @@ struct ProjectCell: View {
                 gradientRectangle()
                     .brightness(collapsedBackgroundBrightness)
                     .saturation(collapsedBackgroundSaturation)
-                    .opacity(isCollapsed ? 1.0 : 0.0)
+                    .opacity(isCollapsed.value ? 1.0 : 0.0)
 
                 gradientRectangle()
                     .brightness(backgroundBrightness)
@@ -272,7 +270,7 @@ struct ProjectCell: View {
                             .brightness(collapsedBackgroundBrightness)
                             .saturation(collapsedBackgroundSaturation)
                     )
-                    .opacity(isCollapsed ? 0.0 : 1.0)
+                    .opacity(isCollapsed.value ? 0.0 : 1.0)
             }
         )
     }
