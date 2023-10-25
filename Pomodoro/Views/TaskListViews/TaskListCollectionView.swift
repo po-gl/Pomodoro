@@ -160,7 +160,6 @@ class TaskListViewController: UIViewController {
         config.backgroundColor = .clear
         let section = NSCollectionLayoutSection.list(using: config, layoutEnvironment: layoutEnvironment)
         section.contentInsets = .zero
-        section.contentInsets.top = -16.0
 
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                 heightDimension: .estimated(LayoutMetrics.headerHeight))

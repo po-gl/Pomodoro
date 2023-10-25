@@ -33,12 +33,12 @@ struct ProjectStack: View {
                     .scaleEffect(isCollapsed.value ? 1 - (0.08 * iDouble) : 1.0)
                     .offset(y: isCollapsed.value ? -iDouble * collapsedRowHeight + (iDouble * 3) : 0.0)
                     .compositingGroup()
+                    .animation(.easeInOut(duration: isCollapsed.value ? 0.2 : 0.4), value: isCollapsed.value)
                 }
             }
             .frame(maxHeight: isCollapsed.value ? collapsedRowHeight*1.25 : .infinity, alignment: .top)
-            .padding(.top, 10)
         }
-        .animation(.easeInOut, value: isCollapsed.value)
+        .compositingGroup()
     }
 }
 
