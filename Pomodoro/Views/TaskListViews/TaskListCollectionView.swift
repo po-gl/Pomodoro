@@ -11,11 +11,14 @@ import CoreData
 struct TaskListCollectionView: UIViewControllerRepresentable {
     @Environment(\.managedObjectContext) private var viewContext
 
-    func makeUIViewController(context: Context) -> UIViewController {
-        TaskListViewController(viewContext: viewContext)
+    @Binding var showPastTasks: Bool
+
+    func makeUIViewController(context: Context) -> TaskListViewController {
+        TaskListViewController(viewContext: viewContext, showPastTasks: showPastTasks)
     }
 
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+    func updateUIViewController(_ uiViewController: TaskListViewController, context: Context) {
+        uiViewController.showPastTasks = showPastTasks
     }
 }
 
@@ -42,11 +45,18 @@ class TaskListViewController: UIViewController {
     private var todaysTasksController: NSFetchedResultsController<TaskNote>! = nil
     private var pastTasksController: NSFetchedResultsController<TaskNote>! = nil
 
+    public var showPastTasks: Bool {
+        didSet {
+            try? pastTasksController.performFetch()
+        }
+    }
+
     private var keyboardOffsetConstraint: NSLayoutConstraint! = nil
     private var keyboardWithoutOffsetConstraint: NSLayoutConstraint! = nil
 
-    init(viewContext: NSManagedObjectContext) {
+    init(viewContext: NSManagedObjectContext, showPastTasks: Bool) {
         self.viewContext = viewContext
+        self.showPastTasks = showPastTasks
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -333,11 +343,13 @@ extension TaskListViewController: NSFetchedResultsControllerDelegate {
         let todaysTasks = todaysTasksController.fetchedObjects?.map { obj in ListItem.task(obj.objectID) } ?? []
         snapshot.appendItems(todaysTasks, toSection: .tasks)
 
-        let pastSections = pastTasksController.sections?.map { section in Section.pastTasks(section.name)} ?? []
-        snapshot.appendSections(pastSections)
-        for pastTaskObj in pastTasksController.fetchedObjects ?? [] {
-            let pastTaskID = pastTaskObj.objectID
-            snapshot.appendItems([.pastTask(pastTaskID)], toSection: .pastTasks(pastTaskObj.section))
+        if showPastTasks {
+            let pastSections = pastTasksController.sections?.map { section in Section.pastTasks(section.name)} ?? []
+            snapshot.appendSections(pastSections)
+            for pastTaskObj in pastTasksController.fetchedObjects ?? [] {
+                let pastTaskID = pastTaskObj.objectID
+                snapshot.appendItems([.pastTask(pastTaskID)], toSection: .pastTasks(pastTaskObj.section))
+            }
         }
 
         dataSource.apply(snapshot, animatingDifferences: true)
@@ -391,12 +403,13 @@ extension TaskListViewController {
 #endif
 
 struct TaskListView_Previews: PreviewProvider {
+
     static var previews: some View {
         Wrapper()
             .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
             .previewDisplayName("Wrapped List")
         NavigationStack {
-            TaskListCollectionView()
+            TaskListCollectionView(showPastTasks: Binding<Bool>(get: { true }, set: { val in }))
                 .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
                 .previewDisplayName("TaskList UIKit")
 //                .navigationTitle("Tisksss 🐍")
@@ -412,6 +425,7 @@ struct TaskListView_Previews: PreviewProvider {
 
     struct Wrapper: View {
         @ObservedObject var pomoTimer: PomoTimer
+        @State var showPastTasks: Bool = true
 
         init() {
             pomoTimer = PomoTimer(pomos: 4, longBreak: PomoTimer.defaultBreakTime) { status in
@@ -425,7 +439,7 @@ struct TaskListView_Previews: PreviewProvider {
             NavigationStack {
                 VStack {
                     TopButton(destination: {
-                        TaskListCollectionView()
+                        TaskListCollectionView(showPastTasks: $showPastTasks)
                             .navigationTitle("List")
                     }, pomoTimer: pomoTimer)
                 }
