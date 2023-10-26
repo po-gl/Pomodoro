@@ -18,11 +18,15 @@ struct ArchivedProjectsView: View {
         ScrollViewReader { scrollProxy in
             ScrollView {
                 VStack {
-                    ForEach(archivedProjects) { project in
-                        ProjectItemCell(project: project,
-                                        isCollapsed: $isCollapsed,
-                                        scrollProxy: scrollProxy,
-                                        cellHeight: 85)
+                    if archivedProjects.count > 0 {
+                        ForEach(archivedProjects) { project in
+                            ProjectItemCell(project: project,
+                                            isCollapsed: $isCollapsed,
+                                            scrollProxy: scrollProxy,
+                                            cellHeight: 85)
+                        }
+                    } else {
+                        emptyState
                     }
                 }
                 .padding(.horizontal)
@@ -31,6 +35,13 @@ struct ArchivedProjectsView: View {
         .navigationTitle("Archived Projects")
         .navigationBarTitleDisplayMode(.large)
         .background(Color("Background"))
+    }
+
+    var emptyState: some View {
+        Text("No Archived Projects")
+            .foregroundStyle(.secondary)
+            .frame(maxWidth: .infinity)
+            .padding(.top, 150)
     }
 }
 
