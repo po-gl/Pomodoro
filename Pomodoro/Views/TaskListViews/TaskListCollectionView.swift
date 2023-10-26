@@ -152,6 +152,10 @@ class TaskListViewController: UIViewController {
 
     private func configureLayout() {
         let layout = UICollectionViewCompositionalLayout { [unowned self] section, layoutEnvironment in
+            if !showProjects {
+                return createProjectsLayout(layoutEnvironment)
+            }
+
             if section == 0 {
                 return createProjectsLayout(layoutEnvironment)
             } else {
@@ -230,7 +234,7 @@ class TaskListViewController: UIViewController {
 
         headerCellRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewCell>(elementKind: UICollectionView.elementKindSectionHeader) { [unowned self] cell, _, indexPath in
             cell.contentConfiguration = UIHostingConfiguration {
-                if indexPath.section == 0 {
+                if indexPath.section == 0 && showProjects {
                     ProjectsHeader(isCollapsed: isProjectStackCollapsed)
                 } else {
                     TodaysTasksHeader()
