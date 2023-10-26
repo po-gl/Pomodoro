@@ -24,7 +24,7 @@ struct TaskListView: View {
         TaskListCollectionView(showProjects: $showProjects,
                                showPastTasks: $showPastTasks)
             .ignoresSafeArea(.keyboard)
-            .background(Color("Background"))
+            .background(Color("Background").ignoresSafeArea())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
