@@ -31,6 +31,7 @@ class TaskListViewController: UIViewController {
 
     enum ListItem: Hashable {
         case task(NSManagedObjectID)
+        case emptyTask
         case pastTask(NSManagedObjectID)
         case projectsPlaceholder
     }
@@ -43,6 +44,7 @@ class TaskListViewController: UIViewController {
 
     private var projectStackCellRegistration: UICollectionView.CellRegistration<UICollectionViewCell, NSNull>! = nil
     private var taskCellRegistration: UICollectionView.CellRegistration<UICollectionViewCell, NSManagedObject>! = nil
+    private var taskEmptyCellRegistration: UICollectionView.CellRegistration<UICollectionViewCell, NSNull>! = nil
     private var headerCellRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewCell>! = nil
     private var pastHeaderCellRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewCell>! = nil
 
@@ -209,6 +211,12 @@ class TaskListViewController: UIViewController {
             }
         }
 
+        taskEmptyCellRegistration = UICollectionView.CellRegistration<UICollectionViewCell, NSNull> { cell, _, _ in
+            cell.contentConfiguration = UIHostingConfiguration {
+                EmptyTasksView()
+            }
+        }
+
         headerCellRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewCell>(elementKind: UICollectionView.elementKindSectionHeader) { [unowned self] cell, _, indexPath in
             cell.contentConfiguration = UIHostingConfiguration {
                 if indexPath.section == 0 {
@@ -239,6 +247,10 @@ class TaskListViewController: UIViewController {
                 return collectionView.dequeueConfiguredReusableCell(using: self.taskCellRegistration,
                                                                     for: indexPath,
                                                                     item: item)
+            case .emptyTask:
+                return collectionView.dequeueConfiguredReusableCell(using: self.taskEmptyCellRegistration,
+                                                                    for: indexPath,
+                                                                    item: nil)
             case .projectsPlaceholder:
                 return collectionView.dequeueConfiguredReusableCell(using: self.projectStackCellRegistration,
                                                                     for: indexPath,
@@ -346,6 +358,10 @@ extension TaskListViewController: NSFetchedResultsControllerDelegate {
 
         let todaysTasks = todaysTasksController.fetchedObjects?.map { obj in ListItem.task(obj.objectID) } ?? []
         snapshot.appendItems(todaysTasks, toSection: .tasks)
+
+        if todaysTasksController.sections?.isEmpty == false && todaysTasks.isEmpty {
+            snapshot.appendItems([ListItem.emptyTask], toSection: .tasks)
+        }
 
         if showPastTasks {
             let pastSections = pastTasksController.sections?.map { section in Section.pastTasks(section.name)} ?? []
