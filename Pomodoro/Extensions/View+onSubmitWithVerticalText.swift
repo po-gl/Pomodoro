@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension View {
-    func onSubmitWithVerticalText(with text: Binding<String>, _ action: @escaping () -> Void) -> some View {
+    func onSubmitWithVerticalText(with text: Binding<String>, _ action: @escaping () -> Void = {}) -> some View {
         ModifiedContent(content: self, modifier: OnSubmitWithVerticalTextModifier(text: text, action: action))
     }
 }
@@ -24,8 +24,10 @@ struct OnSubmitWithVerticalTextModifier: ViewModifier {
 
                 text.remove(at: newLineIndex)
                 action()
-                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
-                                                to: nil, from: nil, for: nil)
+                Task {
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+                                                    to: nil, from: nil, for: nil)
+                }
             }
     }
 }
