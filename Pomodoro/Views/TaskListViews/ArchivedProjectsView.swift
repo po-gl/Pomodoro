@@ -12,25 +12,22 @@ struct ArchivedProjectsView: View {
                   predicate: NSPredicate(format: "archived == true"))
     private var archivedProjects: FetchedResults<Project>
 
-    @State var isCollapsed = false
+    @StateObject var isCollapsed = ObservableBool(false)
 
     var body: some View {
-        ScrollViewReader { scrollProxy in
-            ScrollView {
-                VStack {
-                    if archivedProjects.count > 0 {
-                        ForEach(archivedProjects) { project in
-                            ProjectItemCell(project: project,
-                                            isCollapsed: $isCollapsed,
-                                            scrollProxy: scrollProxy,
-                                            cellHeight: 85)
-                        }
-                    } else {
-                        emptyState
+        ScrollView {
+            VStack {
+                if archivedProjects.count > 0 {
+                    ForEach(archivedProjects) { project in
+                        ProjectCell(project: project,
+                                    isCollapsed: isCollapsed,
+                                    cellHeight: 85)
                     }
+                } else {
+                    emptyState
                 }
-                .padding(.horizontal)
             }
+            .padding(.horizontal)
         }
         .navigationTitle("Archived Projects")
         .navigationBarTitleDisplayMode(.large)
