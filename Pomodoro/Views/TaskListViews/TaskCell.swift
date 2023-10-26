@@ -89,10 +89,11 @@ struct TaskCell: View {
         TextField("", text: $editText, axis: .vertical)
             .foregroundColor(taskItem.timestamp?.isToday() ?? true ? .primary : .secondary)
             .onSubmitWithVerticalText(with: $editText) {
-                deleteOrEditTask()
-
                 if !editText.isEmpty {
-                    TasksData.addTask("", context: viewContext)
+                    Task {
+                        try? await Task.sleep(for: .seconds(0.1))
+                        TasksData.addTask("", context: viewContext)
+                    }
                 }
             }
     }
