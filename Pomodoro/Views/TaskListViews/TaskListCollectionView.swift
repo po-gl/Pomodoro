@@ -122,8 +122,8 @@ class TaskListViewController: UIViewController {
     }
 
     @objc func handleKeyboardWillShow() {
+        setBottomConstraint(withOffset: true)
         if let focusedIndexPath = TaskListViewController.focusedIndexPath {
-            setBottomConstraint(withOffset: true)
             collectionView.scrollToItem(at: focusedIndexPath, at: .bottom, animated: false)
         }
     }
