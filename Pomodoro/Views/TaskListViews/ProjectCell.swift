@@ -115,12 +115,10 @@ struct ProjectCell: View {
             .frame(minHeight: 30)
             .lineLimit(isCollapsed.value ? 1 : Int.max, reservesSpace: false)
             .disabled(isCollapsed.value)
-            .onSubmitWithVerticalText(with: $editText) {
-                deleteOrEditProject()
-            }
             .foregroundColor(color)
             .brightness(primaryBrightness)
             .saturation(primarySaturation)
+            .onSubmitWithVerticalText(with: $editText)
     }
 
     @ViewBuilder
