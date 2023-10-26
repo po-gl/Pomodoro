@@ -11,6 +11,7 @@ struct TaskListView: View {
     @Environment(\.managedObjectContext) private var viewContext
 
     @State var showingArchivedProjects = false
+    @AppStorage("showProjects") var showProjects = true
     @AppStorage("showPastTasks") var showPastTasks = true
 
     @FetchRequest(fetchRequest: TasksData.todaysTasksRequest)
@@ -20,7 +21,8 @@ struct TaskListView: View {
     var yesterdaysTasks: FetchedResults<TaskNote>
 
     var body: some View {
-        TaskListCollectionView(showPastTasks: $showPastTasks)
+        TaskListCollectionView(showProjects: $showProjects,
+                               showPastTasks: $showPastTasks)
             .ignoresSafeArea(.keyboard)
             .background(Color("Background"))
             .navigationBarTitleDisplayMode(.inline)
@@ -36,6 +38,7 @@ struct TaskListView: View {
                 Menu {
                     showArchivedProjectsButton()
                     Divider()
+                    showProjectsButton()
                     showPastTasksButton()
                     markTodaysTasksAsDoneButton()
                     addYesterdaysUnfinishedTasksButton()
@@ -67,7 +70,21 @@ struct TaskListView: View {
             basicHaptic()
             showingArchivedProjects = true
         }) {
-            Label("Show Archived Projects", systemImage: "eye.fill")
+            Label("Archived Projects", systemImage: "archivebox")
+        }
+    }
+
+    @ViewBuilder
+    private func showProjectsButton() -> some View {
+        Button(action: {
+            basicHaptic()
+            withAnimation { showProjects.toggle() }
+        }) {
+            if showProjects {
+                Label("Hide Projects", systemImage: "eye.slash.fill")
+            } else {
+                Label("Show Projects", systemImage: "eye.fill")
+            }
         }
     }
 
