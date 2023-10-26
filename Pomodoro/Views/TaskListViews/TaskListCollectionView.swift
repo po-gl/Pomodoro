@@ -11,13 +11,17 @@ import CoreData
 struct TaskListCollectionView: UIViewControllerRepresentable {
     @Environment(\.managedObjectContext) private var viewContext
 
+    @Binding var showProjects: Bool
     @Binding var showPastTasks: Bool
 
     func makeUIViewController(context: Context) -> TaskListViewController {
-        TaskListViewController(viewContext: viewContext, showPastTasks: showPastTasks)
+        TaskListViewController(viewContext: viewContext,
+                               showProjects: showProjects,
+                               showPastTasks: showPastTasks)
     }
 
     func updateUIViewController(_ uiViewController: TaskListViewController, context: Context) {
+        uiViewController.showProjects = showProjects
         uiViewController.showPastTasks = showPastTasks
     }
 }
@@ -52,6 +56,11 @@ class TaskListViewController: UIViewController {
     private var todaysTasksController: NSFetchedResultsController<TaskNote>! = nil
     private var pastTasksController: NSFetchedResultsController<TaskNote>! = nil
 
+    public var showProjects: Bool {
+        didSet {
+            try? todaysTasksController.performFetch()
+        }
+    }
     public var showPastTasks: Bool {
         didSet {
             try? pastTasksController.performFetch()
@@ -63,8 +72,9 @@ class TaskListViewController: UIViewController {
     private var keyboardOffsetConstraint: NSLayoutConstraint! = nil
     private var keyboardWithoutOffsetConstraint: NSLayoutConstraint! = nil
 
-    init(viewContext: NSManagedObjectContext, showPastTasks: Bool) {
+    init(viewContext: NSManagedObjectContext, showProjects: Bool, showPastTasks: Bool) {
         self.viewContext = viewContext
+        self.showProjects = showProjects
         self.showPastTasks = showPastTasks
         super.init(nibName: nil, bundle: nil)
     }
@@ -353,10 +363,14 @@ extension TaskListViewController: NSFetchedResultsControllerDelegate {
         }
 
         var snapshot = NSDiffableDataSourceSnapshot<Section, ListItem>()
-        snapshot.appendSections([.projects, .tasks])
-        snapshot.appendItems([.projectsPlaceholder], toSection: .projects)
+
+        if showProjects {
+            snapshot.appendSections([.projects])
+            snapshot.appendItems([.projectsPlaceholder], toSection: .projects)
+        }
 
         let todaysTasks = todaysTasksController.fetchedObjects?.map { obj in ListItem.task(obj.objectID) } ?? []
+        snapshot.appendSections([.tasks])
         snapshot.appendItems(todaysTasks, toSection: .tasks)
 
         if todaysTasksController.sections?.isEmpty == false && todaysTasks.isEmpty {
