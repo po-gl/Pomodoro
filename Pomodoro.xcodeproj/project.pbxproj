@@ -107,6 +107,8 @@
 		617CF5082AE889C00040E50B /* TaskListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617CF5062AE889C00040E50B /* TaskListView.swift */; };
 		617CF50E2AE8C0A90040E50B /* ObservableBool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617CF50D2AE8C0A90040E50B /* ObservableBool.swift */; };
 		617CF50F2AE8C0A90040E50B /* ObservableBool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617CF50D2AE8C0A90040E50B /* ObservableBool.swift */; };
+		617CF5192AE9EF800040E50B /* EmptyTasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617CF5182AE9EF800040E50B /* EmptyTasksView.swift */; };
+		617CF51A2AE9EF800040E50B /* EmptyTasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617CF5182AE9EF800040E50B /* EmptyTasksView.swift */; };
 		6186894B2AD9D27A00ED5ED9 /* TaskListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6186894A2AD9D27A00ED5ED9 /* TaskListCollectionView.swift */; };
 		6186894C2AD9D27A00ED5ED9 /* TaskListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6186894A2AD9D27A00ED5ED9 /* TaskListCollectionView.swift */; };
 		618750F529BABCFE0017BF8E /* Point+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618750F429BABCFE0017BF8E /* Point+Extensions.swift */; };
@@ -390,6 +392,7 @@
 		617CF4FF2AE8849F0040E50B /* PastTasksHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastTasksHeader.swift; sourceTree = "<group>"; };
 		617CF5062AE889C00040E50B /* TaskListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListView.swift; sourceTree = "<group>"; };
 		617CF50D2AE8C0A90040E50B /* ObservableBool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableBool.swift; sourceTree = "<group>"; };
+		617CF5182AE9EF800040E50B /* EmptyTasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyTasksView.swift; sourceTree = "<group>"; };
 		6186894A2AD9D27A00ED5ED9 /* TaskListCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListCollectionView.swift; sourceTree = "<group>"; };
 		618750F429BABCFE0017BF8E /* Point+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Point+Extensions.swift"; sourceTree = "<group>"; };
 		618750F829BB69400017BF8E /* TasksOnBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksOnBar.swift; sourceTree = "<group>"; };
@@ -748,6 +751,7 @@
 			isa = PBXGroup;
 			children = (
 				61F7360E29BEB60100289149 /* TaskList.swift */,
+				617CF5182AE9EF800040E50B /* EmptyTasksView.swift */,
 				617CF5062AE889C00040E50B /* TaskListView.swift */,
 				6186894A2AD9D27A00ED5ED9 /* TaskListCollectionView.swift */,
 				617CF4FF2AE8849F0040E50B /* PastTasksHeader.swift */,
@@ -879,7 +883,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				617CF5112AE8C2C70040E50B /* PBXTargetDependency */,
+				617CF51C2AE9F9100040E50B /* PBXTargetDependency */,
 				61D7895629A148E100B296B4 /* PBXTargetDependency */,
 				61A7FE2929BD5767000137E7 /* PBXTargetDependency */,
 				610F99C529BD736A00608F41 /* PBXTargetDependency */,
@@ -1171,6 +1175,7 @@
 				6126288F2A2768C9004B64C6 /* AddTaskButton.swift in Sources */,
 				618750F929BB69400017BF8E /* TasksOnBar.swift in Sources */,
 				612B908A285CD2E4003F1990 /* Color+hex.swift in Sources */,
+				617CF5192AE9EF800040E50B /* EmptyTasksView.swift in Sources */,
 				61F7360F29BEB60100289149 /* TaskList.swift in Sources */,
 				617CF5002AE884A00040E50B /* PastTasksHeader.swift in Sources */,
 				610595A42A4B783C00A83804 /* View+globalPosition.swift in Sources */,
@@ -1269,6 +1274,7 @@
 				61E22A9E297B31040080CA6E /* ButtonCluster.swift in Sources */,
 				61F62A172AE08EA5005DE8A4 /* TaskItemCell.swift in Sources */,
 				61E22AA4297B31210080CA6E /* PomoTime.swift in Sources */,
+				617CF51A2AE9EF800040E50B /* EmptyTasksView.swift in Sources */,
 				61D5808A29BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */,
 				618750F729BABCFE0017BF8E /* Point+Extensions.swift in Sources */,
 				6187559F2AE21BE200FC1564 /* ProjectStack.swift in Sources */,
@@ -1408,9 +1414,9 @@
 			target = 617789AD2856A1F300BD43D7 /* Pomodoro */;
 			targetProxy = 617789CA2856A1F400BD43D7 /* PBXContainerItemProxy */;
 		};
-		617CF5112AE8C2C70040E50B /* PBXTargetDependency */ = {
+		617CF51C2AE9F9100040E50B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			productRef = 617CF5102AE8C2C70040E50B /* SwiftLintPlugin */;
+			productRef = 617CF51B2AE9F9100040E50B /* SwiftLintPlugin */;
 		};
 		61A7FE2929BD5767000137E7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2109,7 +2115,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		617CF5102AE8C2C70040E50B /* SwiftLintPlugin */ = {
+		617CF51B2AE9F9100040E50B /* SwiftLintPlugin */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 61BC3DB02AD76C4B007C4BB9 /* XCRemoteSwiftPackageReference "SwiftLint" */;
 			productName = "plugin:SwiftLintPlugin";
