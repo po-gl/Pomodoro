@@ -162,7 +162,8 @@ struct ProjectCell: View {
             toggleProjectArchiveButton()
             deleteProjectButton()
         } label: {
-            Image(systemName: "ellipsis.circle")
+            Image(systemName: "info.circle")
+                .font(.title3)
                 .tint(color)
         }
         .sheet(isPresented: $showingProjectInfo) {

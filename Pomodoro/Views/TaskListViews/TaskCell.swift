@@ -160,6 +160,7 @@ struct TaskCell: View {
             withAnimation { showTaskInfo = true }
         }, label: {
             Image(systemName: "info.circle")
+                .font(.title3)
         }).tint(Color("AccentColor"))
     }
 
