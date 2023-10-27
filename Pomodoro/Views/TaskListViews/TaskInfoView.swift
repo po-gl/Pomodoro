@@ -28,45 +28,43 @@ struct TaskInfoView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                GroupBox {
-                    TextField("Task", text: $editText, axis: .vertical)
-                        .lineLimit(nil)
-                    Divider()
-                    TextField("Note", text: $editNote, axis: .vertical)
-                        .lineLimit(nil)
-                }
-                .padding([.horizontal, .top])
-
-                GroupBox {
-                    Toggle(isOn: $editflagged) {
-                        HStack(spacing: 15) {
-                            Image(systemName: "leaf.fill")
-                                .foregroundColor(Color("BarWork"))
-                                .frame(width: 20, height: 20)
-                                .saturation(editflagged ? 1.0 : 0.0)
-                                .animation(.spring, value: editflagged)
-                            Text("Flagged")
+                VStack(spacing: 15) {
+                    GroupBox {
+                        TextField("Task", text: $editText, axis: .vertical)
+                        Divider()
+                        TextField("Note", text: $editNote, axis: .vertical)
+                    }
+                    
+                    GroupBox {
+                        Toggle(isOn: $editflagged) {
+                            HStack(spacing: 15) {
+                                Image(systemName: "leaf.fill")
+                                    .foregroundColor(Color("BarWork"))
+                                    .frame(width: 20, height: 20)
+                                    .saturation(editflagged ? 1.0 : 0.0)
+                                    .animation(.spring, value: editflagged)
+                                Text("Flagged")
+                            }
                         }
                     }
-                }
-                .padding([.horizontal, .top])
-
-                GroupBox {
-                    VStack(alignment: .leading) {
-                        HStack(spacing: 15) {
-                            Text("Assigned Projects")
-                                .foregroundStyle(.secondary)
-                            Spacer()
-                            Menu {
-                                currentProjectsMenuButtons
-                            } label: {
-                                Image(systemName: "pencil.line")
-                                    .font(.title3)
-                                    .tint(Color("AccentColor"))
+                    
+                    GroupBox {
+                        VStack(alignment: .leading) {
+                            HStack(spacing: 15) {
+                                Text("Assigned Projects")
+                                    .foregroundStyle(.secondary)
+                                Spacer()
+                                Menu {
+                                    currentProjectsMenuButtons
+                                } label: {
+                                    Image(systemName: "pencil.line")
+                                        .font(.title3)
+                                        .tint(Color("AccentColor"))
+                                }
+                                .padding(.trailing, 10)
                             }
-                            .padding(.trailing, 10)
+                            projectsList
                         }
-                        projectsList
                     }
                 }
                 .padding()
