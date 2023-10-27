@@ -45,7 +45,7 @@ struct TaskInfoView: View {
                                     .animation(.spring, value: editflagged)
                                 Text("Flagged")
                             }
-                        }
+                        }.tint(Color("AccentColor"))
                     }
                     
                     GroupBox {
