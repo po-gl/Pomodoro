@@ -29,22 +29,22 @@ struct TaskCell: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: 15) {
-            check()
+            check
             VStack(spacing: 5) {
-                mainTextField()
+                mainTextField
                     .frame(minHeight: 25)
                 if focus || !editNoteText.isEmpty {
-                    noteTextField()
+                    noteTextField
                 }
             }
             .overrideAction(predicate: isEmbedded ?? false) {
                 withAnimation { showTaskInfo = true }
             }
             if taskItem.flagged {
-                flag()
+                flag
             }
             if focus {
-                infoButton()
+                infoButton
             }
         }
 
@@ -77,13 +77,13 @@ struct TaskCell: View {
         .doneButton(isPresented: focus)
 
         .swipeActions(edge: .leading) {
-            deleteTaskButton()
+            deleteTaskButton
         }
         .swipeActions(edge: .trailing) {
             if let timeStamp = taskItem.timestamp, timeStamp < Calendar.current.startOfDay(for: Date()) {
-                reAddToTodaysTasksButton()
+                reAddToTodaysTasksButton
             }
-            flagTaskButton()
+            flagTaskButton
         }
 
         .onChange(of: taskItem.completed) { _ in
@@ -106,8 +106,7 @@ struct TaskCell: View {
         }
     }
 
-    @ViewBuilder
-    private func mainTextField() -> some View {
+    var mainTextField: some View {
         TextField("", text: $editText, axis: .vertical)
             .foregroundColor(taskItem.timestamp?.isToday() ?? true ? .primary : .secondary)
             .onSubmitWithVerticalText(with: $editText) {
@@ -120,8 +119,7 @@ struct TaskCell: View {
             }
     }
 
-    @ViewBuilder
-    private func noteTextField() -> some View {
+    var noteTextField: some View {
         TextField("Add Note", text: $editNoteText, axis: .vertical)
             .font(.footnote)
             .foregroundColor(.secondary)
@@ -135,8 +133,7 @@ struct TaskCell: View {
         }
     }
 
-    @ViewBuilder
-    private func check() -> some View {
+    @ViewBuilder var check: some View {
         let width: Double = 20
         ZStack {
             Circle().stroke(style: StrokeStyle(lineWidth: 1.2))
@@ -152,15 +149,13 @@ struct TaskCell: View {
         }
     }
 
-    @ViewBuilder
-    private func flag() -> some View {
+    var flag: some View {
         Image(systemName: "leaf.fill")
             .foregroundColor(Color("BarWork"))
             .frame(width: 20, height: 20)
     }
 
-    @ViewBuilder
-    private func infoButton() -> some View {
+    var infoButton: some View {
         Button(action: {
             TasksData.edit(editText, note: editNoteText, for: taskItem, context: viewContext)
             focus = false
@@ -171,8 +166,7 @@ struct TaskCell: View {
         }).tint(Color("AccentColor"))
     }
 
-    @ViewBuilder
-    private func deleteTaskButton() -> some View {
+    var deleteTaskButton: some View {
         Button(role: .destructive, action: {
             withAnimation { TasksData.delete(taskItem, context: viewContext) }
         }) {
@@ -180,8 +174,7 @@ struct TaskCell: View {
         }.tint(.red)
     }
 
-    @ViewBuilder
-    private func flagTaskButton() -> some View {
+    var flagTaskButton: some View {
         Button(action: {
             withAnimation { TasksData.toggleFlagged(for: taskItem, context: viewContext) }
         }) {
@@ -190,8 +183,7 @@ struct TaskCell: View {
         }.tint(Color("BarWork"))
     }
 
-    @ViewBuilder
-    private func reAddToTodaysTasksButton() -> some View {
+    var reAddToTodaysTasksButton: some View {
         Button(action: {
             if let taskText = taskItem.text {
                 guard !TasksData.todaysTasksContains(taskText, context: viewContext) else { return }
