@@ -198,6 +198,8 @@
 		61E22AAB297B975B0080CA6E /* Color+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9089285CD2E4003F1990 /* Color+hex.swift */; };
 		61E468152AEC5360001F6D7B /* ProjectTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E468142AEC5360001F6D7B /* ProjectTag.swift */; };
 		61E468162AEC5360001F6D7B /* ProjectTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E468142AEC5360001F6D7B /* ProjectTag.swift */; };
+		61E4681A2AEC6961001F6D7B /* View+overrideAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E468192AEC6961001F6D7B /* View+overrideAction.swift */; };
+		61E4681B2AEC6961001F6D7B /* View+overrideAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E468192AEC6961001F6D7B /* View+overrideAction.swift */; };
 		61ED2E06297A682F0080C29F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617789B32856A1F300BD43D7 /* ContentView.swift */; };
 		61F21DA0299233F400C3DACC /* LiveActivities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6172B4C8297F82E300E53D8F /* LiveActivities.swift */; };
 		61F4220F2900AC350036400A /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F4220E2900AC350036400A /* ProgressBar.swift */; };
@@ -425,6 +427,7 @@
 		61D5808729BA5E5B006F0BB0 /* Comparable+Clamped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+Clamped.swift"; sourceTree = "<group>"; };
 		61D5809029BA5F81006F0BB0 /* TaskAdderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAdderView.swift; sourceTree = "<group>"; };
 		61E468142AEC5360001F6D7B /* ProjectTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTag.swift; sourceTree = "<group>"; };
+		61E468192AEC6961001F6D7B /* View+overrideAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+overrideAction.swift"; sourceTree = "<group>"; };
 		61F4220E2900AC350036400A /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		61F4253D2908E8FD00300C83 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		61F62A182AE0C778005DE8A4 /* TodaysTasksHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaysTasksHeader.swift; sourceTree = "<group>"; };
@@ -568,6 +571,7 @@
 				61BE18C42A295E3700082875 /* Date+compare.swift */,
 				61B17250285CFCBB001C8245 /* View+Modifier.swift */,
 				611EE30C2A107CD000DDF171 /* View+doneButton.swift */,
+				61E468192AEC6961001F6D7B /* View+overrideAction.swift */,
 				61C6BC1229C0364000AF48DE /* View+onSubmitWithVerticalText.swift */,
 				61AEA85F29CE59D0007AA1AD /* View+scrollToOnFocus.swift */,
 				611A7CE02A380F2D0038AE56 /* View+draggableTask.swift */,
@@ -879,7 +883,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				61E468182AEC55CB001F6D7B /* PBXTargetDependency */,
+				61E4681D2AEC6F9D001F6D7B /* PBXTargetDependency */,
 				61D7895629A148E100B296B4 /* PBXTargetDependency */,
 				61A7FE2929BD5767000137E7 /* PBXTargetDependency */,
 				610F99C529BD736A00608F41 /* PBXTargetDependency */,
@@ -1211,6 +1215,7 @@
 				618750F529BABCFE0017BF8E /* Point+Extensions.swift in Sources */,
 				6186894B2AD9D27A00ED5ED9 /* TaskListCollectionView.swift in Sources */,
 				61147F032A33BC9A000F4BBA /* WatchConnection.swift in Sources */,
+				61E4681A2AEC6961001F6D7B /* View+overrideAction.swift in Sources */,
 				61F67BA32A3B042F00318CDC /* ProjectInfoView.swift in Sources */,
 				61D5808829BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */,
 				617CF50E2AE8C0A90040E50B /* ObservableBool.swift in Sources */,
@@ -1273,6 +1278,7 @@
 				617CF51A2AE9EF800040E50B /* EmptyTasksView.swift in Sources */,
 				61D5808A29BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */,
 				618750F729BABCFE0017BF8E /* Point+Extensions.swift in Sources */,
+				61E4681B2AEC6961001F6D7B /* View+overrideAction.swift in Sources */,
 				6187559F2AE21BE200FC1564 /* ProjectStack.swift in Sources */,
 				61E22AA0297B310B0080CA6E /* BuddyView.swift in Sources */,
 				617789D02856A1F400BD43D7 /* PomodoroUITestsLaunchTests.swift in Sources */,
@@ -1418,9 +1424,9 @@
 			target = 61FAEAAD29065FDC00CACF78 /* PomodoroWatch Watch App */;
 			targetProxy = 61D7895529A148E100B296B4 /* PBXContainerItemProxy */;
 		};
-		61E468182AEC55CB001F6D7B /* PBXTargetDependency */ = {
+		61E4681D2AEC6F9D001F6D7B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			productRef = 61E468172AEC55CB001F6D7B /* SwiftLintPlugin */;
+			productRef = 61E4681C2AEC6F9D001F6D7B /* SwiftLintPlugin */;
 		};
 		61FAEABF29065FDE00CACF78 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2109,7 +2115,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		61E468172AEC55CB001F6D7B /* SwiftLintPlugin */ = {
+		61E4681C2AEC6F9D001F6D7B /* SwiftLintPlugin */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 61BC3DB02AD76C4B007C4BB9 /* XCRemoteSwiftPackageReference "SwiftLint" */;
 			productName = "plugin:SwiftLintPlugin";
