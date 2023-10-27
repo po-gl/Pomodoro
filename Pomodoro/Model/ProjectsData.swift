@@ -12,12 +12,17 @@ struct ProjectsData {
 
     static var currentProjectsRequest: NSFetchRequest<Project> {
         let fetchRequest = Project.fetchRequest()
+        fetchRequest.sortDescriptors = [
+            SortDescriptor(\Project.order, order: .reverse),
+            SortDescriptor(\Project.timestamp, order: .forward)
+        ].map { descriptor in NSSortDescriptor(descriptor) }
         fetchRequest.predicate = NSPredicate(
             format: "archived == false"
         )
         return fetchRequest
     }
 
+    @discardableResult
     static func addProject(_ name: String,
                            note: String = "",
                            progress: Double = 0.0,
@@ -25,7 +30,7 @@ struct ProjectsData {
                            archived: Bool = false,
                            order: Int16 = 0,
                            date: Date = Date(),
-                           context: NSManagedObjectContext) {
+                           context: NSManagedObjectContext) -> Project {
         let newProject = Project(context: context)
         newProject.name = name
         newProject.note = note
@@ -37,6 +42,7 @@ struct ProjectsData {
 
         try? context.obtainPermanentIDs(for: [newProject])
         saveContext(context, errorMessage: "CoreData error adding project.")
+        return newProject
     }
 
     static func editName(_ name: String, note: String? = nil, for project: Project, context: NSManagedObjectContext) {
