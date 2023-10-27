@@ -14,11 +14,12 @@ struct PersistenceController {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
 
+        var assignedProjects = Set<Project>()
+
         ProjectsData.addProject("Work", note: "Let apple fix Lists", progress: 1.0, color: "BarRest",
                                 date: Date() - 5, context: viewContext)
-        ProjectsData.addProject("Cooking", progress: 0.5, color: "BarWork",
-                                date: Date() - 5, context: viewContext)
-        var assignedProjects = Set<Project>()
+        let extraProject = ProjectsData.addProject("Cooking", progress: 0.5, color: "BarWork",
+                                    date: Date() - 5, context: viewContext)
         assignedProjects.insert(
             ProjectsData.addProject("Apps", progress: 0.0, color: "BarLongBreak",
                                     date: Date() - 5, context: viewContext)
@@ -32,7 +33,7 @@ struct PersistenceController {
             TasksData.addTask("Task \(i)",
                               completed: i == 3 ? true : false,
                               date: Date() - 5,
-                              projects: assignedProjects,
+                              projects: i == 0 ? assignedProjects.union([extraProject]) : assignedProjects,
                               context: viewContext)
         }
         for i in 0..<3 {
