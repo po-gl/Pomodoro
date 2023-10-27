@@ -102,26 +102,10 @@ struct TaskInfoView: View {
 
     var projectsList: some View {
         WrappingHStack(models: editProjects.sorted { $0.name ?? "" < $1.name ?? ""}) { project in
-            let color = Color(project.color ?? "BarRest")
-            Text(project.name ?? "Error")
-                .foregroundStyle(color)
-                .padding(.vertical, 2).padding(.horizontal, 8)
-                .brightness(colorScheme == .dark ? 0.2 : -0.5)
-                .saturation(colorScheme == .dark ? 1.1 : 1.2)
-                .background(
-                    gradientRectangle(color: color)
-                        .brightness(colorScheme == .dark ? -0.35 : 0.15)
-                        .saturation(colorScheme == .dark ? 0.4 : 0.6)
-                        .opacity(colorScheme == .dark ? 0.6 : 0.5)
-                )
-                .opacity(colorScheme == .dark ? 1.0 : 0.8)
+            ProjectTag(name: project.name ?? "error",
+                       color: Color(project.color ?? "BarRest"))
+            .font(.footnote)
         }
-    }
-
-    @ViewBuilder func gradientRectangle(color: Color) -> some View {
-        RoundedRectangle(cornerRadius: 6)
-            .fill(color.gradient)
-            .rotationEffect(.degrees(180))
     }
 
     @ViewBuilder var currentProjectsMenuButtons: some View {
