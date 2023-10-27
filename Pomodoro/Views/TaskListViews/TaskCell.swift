@@ -18,6 +18,8 @@ struct TaskCell: View {
     @State var editNoteText = ""
     @FocusState var focus
 
+    @State var showTaskInfo = false
+
     @FetchRequest(fetchRequest: TasksData.todaysTasksRequest)
     var todaysTasks: FetchedResults<TaskNote>
 
@@ -34,6 +36,9 @@ struct TaskCell: View {
             if taskItem.flagged {
                 flag()
             }
+            if focus {
+                infoButton()
+            }
         }
 
         .onAppear {
@@ -41,6 +46,16 @@ struct TaskCell: View {
             editNoteText = taskItem.note ?? ""
 
             focusIfJustAdded()
+        }
+
+        .sheet(isPresented: $showTaskInfo) {
+            TaskInfoView(taskItem: taskItem)
+        }
+        .onChange(of: showTaskInfo) { _ in
+            if !showTaskInfo {
+                editText = taskItem.text!
+                editNoteText = taskItem.note ?? ""
+            }
         }
 
         .focused($focus)
@@ -135,6 +150,16 @@ struct TaskCell: View {
         Image(systemName: "leaf.fill")
             .foregroundColor(Color("BarWork"))
             .frame(width: 20, height: 20)
+    }
+    
+    @ViewBuilder
+    private func infoButton() -> some View {
+        Button(action: {
+            TasksData.editText(editText, note: editNoteText, for: taskItem, context: viewContext)
+            withAnimation { showTaskInfo = true }
+        }, label: {
+            Image(systemName: "info.circle")
+        })
     }
 
     @ViewBuilder
