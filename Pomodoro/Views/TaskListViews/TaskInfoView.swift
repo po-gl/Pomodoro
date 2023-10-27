@@ -100,9 +100,7 @@ struct TaskInfoView: View {
 
     var projectsList: some View {
         WrappingHStack(models: editProjects.sorted { $0.name ?? "" < $1.name ?? ""}) { project in
-            ProjectTag(name: project.name ?? "error",
-                       color: Color(project.color ?? "BarRest"))
-            .font(.footnote)
+            ProjectTag(project: project)
         }
     }
 

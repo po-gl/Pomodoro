@@ -10,11 +10,20 @@ import SwiftUI
 struct ProjectTag: View {
     @Environment(\.colorScheme) private var colorScheme
 
-    let name: String
-    let color: Color
+    @ObservedObject var project: Project
+
+    @State var showingProjectInfo = false
+
+    var font: Font = .callout
+
+    var name: String = "error"
+    var color: Color = Color("BarRest")
 
     var body: some View {
+        let name = project.name ?? name
+        let color = project.color != nil ? Color(project.color!) : color
         Text(name)
+            .font(font)
             .foregroundStyle(color)
             .padding(.vertical, 2).padding(.horizontal, 8)
             .brightness(colorScheme == .dark ? 0.2 : -0.5)
@@ -28,15 +37,24 @@ struct ProjectTag: View {
                     .opacity(colorScheme == .dark ? 0.6 : 0.5)
             )
             .opacity(colorScheme == .dark ? 1.0 : 0.8)
+
+            .sheet(isPresented: $showingProjectInfo) {
+                ProjectInfoView(project: project)
+            }
+            .onTapGesture {
+                withAnimation { showingProjectInfo = true }
+            }
     }
 }
 
 #Preview {
     VStack {
-        ProjectTag(name: "Apps", color: Color("BarRest"))
-        ProjectTag(name: "Work", color: Color("BarWork"))
-        ProjectTag(name: "Dev Environment", color: Color("BarLongBreak"))
-        ProjectTag(name: "Issues", color: Color("End"))
-        ProjectTag(name: "Embedded Project", color: Color("AccentColor"))
+        let context = PersistenceController.preview.container.viewContext
+        let project = Project(context: context)
+        ProjectTag(project: project, name: "Apps", color: Color("BarRest"))
+        ProjectTag(project: project, name: "Work", color: Color("BarWork"))
+        ProjectTag(project: project, name: "Dev Environment", color: Color("BarLongBreak"))
+        ProjectTag(project: project, name: "Issues", color: Color("End"))
+        ProjectTag(project: project, name: "Embedded Project", color: Color("AccentColor"))
     }
 }
