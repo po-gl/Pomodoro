@@ -61,8 +61,10 @@ struct TaskInfoView: View {
                                 currentProjectsMenuButtons
                             } label: {
                                 Image(systemName: "pencil.line")
+                                    .font(.title3)
                                     .tint(Color("AccentColor"))
                             }
+                            .padding(.trailing, 10)
                         }
                         projectsList
                     }
