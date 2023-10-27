@@ -142,7 +142,7 @@ struct ProjectCell: View {
     }
 
     private func editProject() {
-        ProjectsData.editName(editText, note: editNoteText, for: project, context: viewContext)
+        ProjectsData.edit(editText, note: editNoteText, for: project, context: viewContext)
     }
 
     @ViewBuilder

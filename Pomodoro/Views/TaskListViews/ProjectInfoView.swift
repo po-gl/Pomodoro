@@ -160,6 +160,6 @@ struct ProjectInfoView: View {
         if !editColor.isEmpty {
             ProjectsData.setColor(editColor, for: project, context: viewContext)
         }
-        ProjectsData.editName(editText, for: project, context: viewContext)
+        ProjectsData.edit(editText, for: project, context: viewContext)
     }
 }

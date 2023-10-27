@@ -45,12 +45,26 @@ struct ProjectsData {
         return newProject
     }
 
-    static func editName(_ name: String, note: String? = nil, for project: Project, context: NSManagedObjectContext) {
+    static func edit(_ name: String,
+                     note: String? = nil,
+                     progress: Double? = nil,
+                     color: String? = nil,
+                     archived: Bool? = nil,
+                     for project: Project, context: NSManagedObjectContext) {
         project.name = name
         if let note {
             project.note = note
         }
-        saveContext(context, errorMessage: "CoreData error editing project name.")
+        if let progress {
+            project.progress = progress
+        }
+        if let color {
+            project.color = color
+        }
+        if let archived {
+            project.archived = archived
+        }
+        saveContext(context, errorMessage: "CoreData error editing project.")
     }
 
     static func editNote(_ note: String, for project: Project, context: NSManagedObjectContext) {
