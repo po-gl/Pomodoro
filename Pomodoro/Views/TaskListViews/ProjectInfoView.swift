@@ -14,10 +14,11 @@ struct ProjectInfoView: View {
 
     @ObservedObject var project: Project
     @State var editText = ""
-    @State var editColor: String = ""
-    @FocusState var focus
+    @State var editNote = ""
+    @State var editColor = "BarRest"
+    @State var editArchived = false
 
-    @State var color: Color = Color("BarRest")
+    @State var cancelled = false
 
     var colorNames: [String] = ["BarRest", "BarWork", "BarLongBreak", "End", "AccentColor"]
 
@@ -27,20 +28,17 @@ struct ProjectInfoView: View {
     var backgroundSaturation: Double { colorScheme == .dark ? 0.8 : 0.33 }
 
     var body: some View {
-        ZStack(alignment: .topLeading) {
+        NavigationStack {
             ScrollView {
                 VStack(spacing: 15) {
+                    selectedColorView
                     GroupBox {
-                        VStack(spacing: 15) {
-                            selectedColorView()
-                            GroupBox {
-                                projectNameView()
-                            }
-                        }
+                        TextField("Project Name", text: $editText, axis: .vertical)
+                            .font(.title2)
+                            .foregroundColor(Color(editColor))
+                        Divider()
+                        TextField("Note", text: $editNote, axis: .vertical)
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding(.top)
-                    .padding(.horizontal)
 
                     GroupBox {
                         Grid {
@@ -52,63 +50,69 @@ struct ProjectInfoView: View {
                             .frame(maxWidth: .infinity)
                         }
                     }
-                    .padding(.horizontal)
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.top, 50)
-            }
-            header()
-        }
-        .onAppear {
-            editText = project.name ?? ""
-            editColor = project.color ?? ""
-            color = Color(project.color ?? "BarRest")
-        }
-        .onChange(of: editColor) { _ in
-            color = Color(editColor)
-        }
+                    .accessibilityLabel("Color selection")
 
-        .focused($focus)
-        .onChange(of: focus) { _ in
-            guard !focus else { return }
-            saveEdits()
+                    GroupBox {
+                        Toggle(isOn: $editArchived) {
+                            HStack(spacing: 15) {
+                                Image(systemName: "archivebox.fill")
+                                    .foregroundColor(Color("End"))
+                                    .frame(width: 20, height: 20)
+                                    .saturation(editArchived ? 1.0 : 0.0)
+                                    .animation(.spring, value: editArchived)
+                                Text("Archived")
+                            }
+                        }
+                    }
+                }
+                .padding()
+            }
+            .onAppear {
+                editText = project.name ?? ""
+                editNote = project.note ?? ""
+                editColor = project.color ?? "BarRest"
+            }
+            .onDisappear {
+                if !cancelled {
+                    saveEdits()
+                }
+            }
+
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("Project Details")
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    doneButton
+                }
+                ToolbarItem(placement: .topBarLeading) {
+                    cancelButton
+                }
+            }
+            .background(Color("Background").ignoresSafeArea())
         }
     }
 
-    @ViewBuilder
-    private func selectedColorView() -> some View {
+    @ViewBuilder var selectedColorView: some View {
         let size: Double = 80
         HStack {
-            gradientCircle(color)
+            gradientCircle(Color(editColor))
                 .frame(width: size, height: size)
                 .brightness(collapsedBackgroundBrightness)
                 .saturation(collapsedBackgroundSaturation)
 
-            gradientCircle(color)
+            gradientCircle(Color(editColor))
                 .frame(width: size, height: size)
                 .brightness(backgroundBrightness)
                 .saturation(backgroundSaturation)
                 .overlay(
-                    gradientBorder(color)
+                    gradientBorder(Color(editColor))
                         .brightness(collapsedBackgroundBrightness)
                         .saturation(collapsedBackgroundSaturation)
                 )
         }
     }
 
-    @ViewBuilder
-    private func projectNameView() -> some View {
-        TextField("", text: $editText, axis: .vertical)
-            .multilineTextAlignment(.center)
-            .font(.title3)
-            .onSubmitWithVerticalText(with: $editText) {
-                saveEdits()
-            }
-            .foregroundColor(color)
-    }
-
-    @ViewBuilder
-    private func colorSelect(name: String) -> some View {
+    @ViewBuilder func colorSelect(name: String) -> some View {
         let size: Double = 40
         Button(action: { editColor = name }) {
             gradientCircle(Color(name))
@@ -116,50 +120,49 @@ struct ProjectInfoView: View {
         }
     }
 
-    @ViewBuilder
-    private func gradientCircle(_ color: Color) -> some View {
+    @ViewBuilder func gradientCircle(_ color: Color) -> some View {
         Circle()
             .fill(color.gradient)
             .rotationEffect(.degrees(180))
     }
 
-    @ViewBuilder
-    private func gradientBorder(_ color: Color) -> some View {
+    @ViewBuilder func gradientBorder(_ color: Color) -> some View {
         Circle()
             .strokeBorder(color.gradient, lineWidth: 2)
             .rotationEffect(.degrees(180))
     }
 
-    @ViewBuilder
-    private func header() -> some View {
-        VStack {
-            ZStack {
-                HStack {
-                    Button(action: { dismiss() }) {
-                        Text("Cancel")
-                    }
-                    Spacer()
-
-                    Button(action: {
-                        saveEdits()
-                        dismiss()
-                    }) {
-                        Text("Done").bold()
-                    }
-                }
-                .padding()
-                Text("Project Info")
-            }
-            .frame(height: 50)
-            .background(.thinMaterial)
-            Spacer()
-        }
+    func saveEdits() {
+        ProjectsData.edit(editText,
+                          note: editNote,
+                          color: editColor,
+                          archived: editArchived,
+                          for: project, context: viewContext)
     }
 
-    private func saveEdits() {
-        if !editColor.isEmpty {
-            ProjectsData.setColor(editColor, for: project, context: viewContext)
-        }
-        ProjectsData.edit(editText, for: project, context: viewContext)
+    var doneButton: some View {
+        Button(action: {
+            saveEdits()
+            dismiss()
+        }, label: {
+            Text("Done").bold()
+        })
+    }
+
+    var cancelButton: some View {
+        Button(action: {
+            cancelled = true
+            dismiss()
+        }, label: {
+            Text("Cancel")
+        })
+    }
+}
+
+#Preview {
+    Group {
+        let context = PersistenceController.preview.container.viewContext
+        ProjectInfoView(project: Project(context: context))
+            .environment(\.managedObjectContext, context)
     }
 }
