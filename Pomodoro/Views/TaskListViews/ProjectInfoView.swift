@@ -17,6 +17,7 @@ struct ProjectInfoView: View {
     @State var editNote = ""
     @State var editColor = "BarRest"
     @State var editArchived = false
+    @State var taskNotes = [TaskNote]()
 
     @State var cancelled = false
 
@@ -64,6 +65,22 @@ struct ProjectInfoView: View {
                             }
                         }
                     }
+
+                    GroupBox {
+                        VStack {
+                            HStack {
+                                Text("Assigned Tasks (\(taskNotes.count))")
+                                    .foregroundStyle(.secondary)
+                                Spacer()
+                            }
+                            if !taskNotes.isEmpty {
+                                Rectangle()
+                                    .foregroundStyle(.clear)
+                                    .frame(height: 5)
+                            }
+                            assignedTasksList
+                        }
+                    }
                 }
                 .padding()
             }
@@ -71,6 +88,9 @@ struct ProjectInfoView: View {
                 editText = project.name ?? ""
                 editNote = project.note ?? ""
                 editColor = project.color ?? "BarRest"
+
+                let sortDescriptors = [NSSortDescriptor(keyPath: \TaskNote.timestamp,ascending: true)]
+                taskNotes = project.tasks?.sortedArray(using: sortDescriptors) as? [TaskNote] ?? []
             }
             .onDisappear {
                 if !cancelled {
@@ -89,6 +109,15 @@ struct ProjectInfoView: View {
                 }
             }
             .background(Color("Background").ignoresSafeArea())
+        }
+    }
+
+    @ViewBuilder var assignedTasksList: some View {
+        VStack(spacing: 10) {
+            ForEach(taskNotes) { taskItem in
+                TaskCell(taskItem: taskItem, isEmbedded: true)
+                Divider()
+            }
         }
     }
 
