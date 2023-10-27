@@ -46,7 +46,7 @@ class TasksOnBar: ObservableObject {
         saveToUserDefaults()
 
         if let task = TasksData.taskInTodaysTasks(matching: oldText, context: context) {
-            TasksData.editText(text, for: task, context: context)
+            TasksData.edit(text, for: task, context: context)
         }
     }
 

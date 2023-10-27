@@ -124,7 +124,7 @@ struct TaskCell: View {
         if editText.isEmpty {
             withAnimation { TasksData.delete(taskItem, context: viewContext) }
         } else {
-            TasksData.editText(editText, note: editNoteText, for: taskItem, context: viewContext)
+            TasksData.edit(editText, note: editNoteText, for: taskItem, context: viewContext)
         }
     }
 
@@ -151,15 +151,15 @@ struct TaskCell: View {
             .foregroundColor(Color("BarWork"))
             .frame(width: 20, height: 20)
     }
-    
+
     @ViewBuilder
     private func infoButton() -> some View {
         Button(action: {
-            TasksData.editText(editText, note: editNoteText, for: taskItem, context: viewContext)
+            TasksData.edit(editText, note: editNoteText, for: taskItem, context: viewContext)
             withAnimation { showTaskInfo = true }
         }, label: {
             Image(systemName: "info.circle")
-        })
+        }).tint(Color("AccentColor"))
     }
 
     @ViewBuilder

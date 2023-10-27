@@ -32,7 +32,7 @@ struct ProjectsHeader: View {
     private func projectHeaderAddButton() -> some View {
         Button(action: {
             withAnimation {
-                ProjectsData.addProject("", context: viewContext)
+                _ = ProjectsData.addProject("", context: viewContext)
             }
         }) {
             Text("Add Project")

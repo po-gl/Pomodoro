@@ -56,6 +56,7 @@ struct TasksData {
                         flagged: Bool = false,
                         order: Int16 = 0,
                         date: Date = Date(),
+                        projects: Set<Project> = [],
                         context: NSManagedObjectContext) {
         let newTask = TaskNote(context: context)
         newTask.text = text
@@ -64,15 +65,27 @@ struct TasksData {
         newTask.flagged = flagged
         newTask.timestamp = date
         newTask.order = order
+        newTask.projects = projects as NSSet
 
         try? context.obtainPermanentIDs(for: [newTask])
         saveContext(context, errorMessage: "CoreData error adding task.")
     }
 
-    static func editText(_ text: String, note: String? = nil, for task: TaskNote, context: NSManagedObjectContext) {
+    static func edit(_ text: String,
+                     note: String? = nil,
+                     flagged: Bool? = nil,
+                     projects: Set<Project>? = nil,
+                     for task: TaskNote,
+                     context: NSManagedObjectContext) {
         task.text = text
         if let note {
             task.note = note
+        }
+        if let flagged {
+            task.flagged = flagged
+        }
+        if let projects {
+            task.projects = projects as NSSet
         }
         saveContext(context, errorMessage: "CoreData error editing task text.")
     }
@@ -95,6 +108,16 @@ struct TasksData {
     static func toggleFlagged(for task: TaskNote, context: NSManagedObjectContext) {
         task.flagged.toggle()
         saveContext(context, errorMessage: "CoreData error toggle task flagging.")
+    }
+
+    static func add(project: Project, for task: TaskNote, context: NSManagedObjectContext) {
+        task.addToProjects(project)
+        saveContext(context, errorMessage: "CoreData error assigning project to task note.")
+    }
+
+    static func remove(project: Project, for task: TaskNote, context: NSManagedObjectContext) {
+        task.removeFromProjects(project)
+        saveContext(context, errorMessage: "CoreData error removing project assignment from task note.")
     }
 
     static func delete(_ task: TaskNote, context: NSManagedObjectContext) {
@@ -148,6 +171,14 @@ struct TasksData {
 }
 
 extension TaskNote {
+
+    public var projectsArray: [Project] {
+        let set = projects as? Set<Project> ?? []
+        return set.sorted {
+            $0.name ?? "" < $1.name ?? ""
+        }
+    }
+
     @objc
     public var section: String {
         if let timestamp {

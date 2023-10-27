@@ -14,17 +14,33 @@ struct PersistenceController {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
 
-        ProjectsData.addProject("Work", note: "Let apple fix Lists not animating row height changes",
-                                progress: 1.0, color: "BarRest", date: Date() - 5, context: viewContext)
-        ProjectsData.addProject("Cooking", progress: 0.5, color: "BarWork", date: Date() - 5, context: viewContext)
-        ProjectsData.addProject("Apps", progress: 0.0, color: "BarLongBreak", date: Date() - 5, context: viewContext)
-        ProjectsData.addProject("School", progress: 1.0, archived: true, date: Date() - 5, context: viewContext)
+        ProjectsData.addProject("Work", note: "Let apple fix Lists", progress: 1.0, color: "BarRest",
+                                date: Date() - 5, context: viewContext)
+        ProjectsData.addProject("Cooking", progress: 0.5, color: "BarWork",
+                                date: Date() - 5, context: viewContext)
+        var assignedProjects = Set<Project>()
+        assignedProjects.insert(
+            ProjectsData.addProject("Apps", progress: 0.0, color: "BarLongBreak",
+                                    date: Date() - 5, context: viewContext)
+        )
+        assignedProjects.insert(
+            ProjectsData.addProject("School", progress: 1.0, archived: true,
+                                    date: Date() - 5, context: viewContext)
+        )
 
         for i in 0..<6 {
-            TasksData.addTask("Task \(i)", completed: i == 3 ? true : false, date: Date() - 5, context: viewContext)
+            TasksData.addTask("Task \(i)",
+                              completed: i == 3 ? true : false,
+                              date: Date() - 5,
+                              projects: assignedProjects,
+                              context: viewContext)
         }
         for i in 0..<3 {
             TasksData.addTask("Next day \(i)", date: Date() - 90000, context: viewContext)
+        }
+
+        for i in 0..<3 {
+            TasksData.addTask("Next next day \(i)", date: Date() - 200000, context: viewContext)
         }
 
         return result

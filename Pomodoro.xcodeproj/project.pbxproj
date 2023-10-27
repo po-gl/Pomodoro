@@ -109,6 +109,8 @@
 		617CF51A2AE9EF800040E50B /* EmptyTasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617CF5182AE9EF800040E50B /* EmptyTasksView.swift */; };
 		617CF5292AEB36650040E50B /* TaskInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617CF5282AEB36650040E50B /* TaskInfoView.swift */; };
 		617CF52A2AEB36650040E50B /* TaskInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617CF5282AEB36650040E50B /* TaskInfoView.swift */; };
+		617CF52C2AEB80F90040E50B /* WrappingHStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617CF52B2AEB80F90040E50B /* WrappingHStack.swift */; };
+		617CF52D2AEB80F90040E50B /* WrappingHStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617CF52B2AEB80F90040E50B /* WrappingHStack.swift */; };
 		6186894B2AD9D27A00ED5ED9 /* TaskListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6186894A2AD9D27A00ED5ED9 /* TaskListCollectionView.swift */; };
 		6186894C2AD9D27A00ED5ED9 /* TaskListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6186894A2AD9D27A00ED5ED9 /* TaskListCollectionView.swift */; };
 		618750F529BABCFE0017BF8E /* Point+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618750F429BABCFE0017BF8E /* Point+Extensions.swift */; };
@@ -387,6 +389,7 @@
 		617CF50D2AE8C0A90040E50B /* ObservableBool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableBool.swift; sourceTree = "<group>"; };
 		617CF5182AE9EF800040E50B /* EmptyTasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyTasksView.swift; sourceTree = "<group>"; };
 		617CF5282AEB36650040E50B /* TaskInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskInfoView.swift; sourceTree = "<group>"; };
+		617CF52B2AEB80F90040E50B /* WrappingHStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappingHStack.swift; sourceTree = "<group>"; };
 		6186894A2AD9D27A00ED5ED9 /* TaskListCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListCollectionView.swift; sourceTree = "<group>"; };
 		618750F429BABCFE0017BF8E /* Point+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Point+Extensions.swift"; sourceTree = "<group>"; };
 		618750F829BB69400017BF8E /* TasksOnBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksOnBar.swift; sourceTree = "<group>"; };
@@ -695,6 +698,7 @@
 			children = (
 				612D433329C14AB800FF38F8 /* AutoCompleteView.swift */,
 				610F99C729BE4BC600608F41 /* HostingView.swift */,
+				617CF52B2AEB80F90040E50B /* WrappingHStack.swift */,
 				61C4F02129DF4CDA00BC70C7 /* AngledText.swift */,
 				617CF50D2AE8C0A90040E50B /* ObservableBool.swift */,
 			);
@@ -871,6 +875,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				617CF52F2AEB8A8D0040E50B /* PBXTargetDependency */,
 				61D7895629A148E100B296B4 /* PBXTargetDependency */,
 				61A7FE2929BD5767000137E7 /* PBXTargetDependency */,
 				610F99C529BD736A00608F41 /* PBXTargetDependency */,
@@ -1187,6 +1192,7 @@
 				617CF5292AEB36650040E50B /* TaskInfoView.swift in Sources */,
 				61F7361729BFD78F00289149 /* TaskCell.swift in Sources */,
 				61F4253E2908E8FD00300C83 /* Notifications.swift in Sources */,
+				617CF52C2AEB80F90040E50B /* WrappingHStack.swift in Sources */,
 				61F7363029C00CCE00289149 /* Pomodoro.xcdatamodeld in Sources */,
 				612B9088285CC863003F1990 /* TimeInterval+formatter.swift in Sources */,
 				617789B22856A1F300BD43D7 /* PomodoroApp.swift in Sources */,
@@ -1241,6 +1247,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				617CF52D2AEB80F90040E50B /* WrappingHStack.swift in Sources */,
 				617CF50F2AE8C0A90040E50B /* ObservableBool.swift in Sources */,
 				61E22AAB297B975B0080CA6E /* Color+hex.swift in Sources */,
 				61E22AA7297B31500080CA6E /* Notifications.swift in Sources */,
@@ -1395,9 +1402,9 @@
 			target = 617789AD2856A1F300BD43D7 /* Pomodoro */;
 			targetProxy = 617789CA2856A1F400BD43D7 /* PBXContainerItemProxy */;
 		};
-		617CF5272AEB2E860040E50B /* PBXTargetDependency */ = {
+		617CF52F2AEB8A8D0040E50B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			productRef = 617CF5262AEB2E860040E50B /* SwiftLintPlugin */;
+			productRef = 617CF52E2AEB8A8D0040E50B /* SwiftLintPlugin */;
 		};
 		61A7FE2929BD5767000137E7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2096,7 +2103,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		617CF5262AEB2E860040E50B /* SwiftLintPlugin */ = {
+		617CF52E2AEB8A8D0040E50B /* SwiftLintPlugin */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 61BC3DB02AD76C4B007C4BB9 /* XCRemoteSwiftPackageReference "SwiftLint" */;
 			productName = "plugin:SwiftLintPlugin";
