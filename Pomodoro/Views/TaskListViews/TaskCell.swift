@@ -156,6 +156,7 @@ struct TaskCell: View {
     private func infoButton() -> some View {
         Button(action: {
             TasksData.edit(editText, note: editNoteText, for: taskItem, context: viewContext)
+            focus = false
             withAnimation { showTaskInfo = true }
         }, label: {
             Image(systemName: "info.circle")
