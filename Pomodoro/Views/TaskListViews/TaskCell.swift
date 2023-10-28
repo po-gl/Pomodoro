@@ -40,11 +40,15 @@ struct TaskCell: View {
             .overrideAction(predicate: isEmbedded ?? false) {
                 withAnimation { showTaskInfo = true }
             }
-            if taskItem.flagged {
-                flag
-            }
-            if focus {
-                infoButton
+            HStack {
+                if taskItem.flagged {
+                    flag
+                }
+                projectIndicators
+                    .offset(y: 2)
+                if focus {
+                    infoButton
+                }
             }
         }
 
@@ -146,6 +150,19 @@ struct TaskCell: View {
         .onTapGesture {
             basicHaptic()
             TasksData.toggleCompleted(for: taskItem, context: viewContext)
+        }
+    }
+
+    @ViewBuilder var projectIndicators: some View {
+        let projects = Array(taskItem.projectsArray.prefix(4))
+        let count = taskItem.projectsArray.count
+        if count > 0 {
+            WrappingHStack(models: projects, horizontalSpacing: 1.2, verticalSpacing: 1.2) { project in
+                TinyProjectTag(color: Color(project.color ?? ""), size: 8)
+            }
+            .frame(width: 25, height: count > 2 ? 20 : 10, alignment: .top)
+            .rotationEffect(.degrees(90))
+            .frame(width: count > 2 ? 20 : 10, height: 25)
         }
     }
 
