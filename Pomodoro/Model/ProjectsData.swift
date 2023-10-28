@@ -108,6 +108,11 @@ struct ProjectsData {
         }
     }
 
+    static func getTopProject(context: NSManagedObjectContext) -> Project? {
+        guard let currentProjects = try? context.fetch(currentProjectsRequest) else { return nil }
+        return currentProjects.first
+    }
+
     static func setAsTopProject(_ project: Project, context: NSManagedObjectContext) {
         if let currentProjects = try? context.fetch(currentProjectsRequest) {
             for project in currentProjects {

@@ -88,6 +88,7 @@ struct TaskCell: View {
                 reAddToTodaysTasksButton
             }
             flagTaskButton
+            assignToTopProjectButton
         }
 
         .onChange(of: taskItem.completed) { _ in
@@ -189,6 +190,22 @@ struct TaskCell: View {
         }) {
             Label("Delete", systemImage: "trash")
         }.tint(.red)
+    }
+
+    var assignToTopProjectButton: some View {
+        Button(action: {
+            Task {
+                if let project = ProjectsData.getTopProject(context: viewContext) {
+                    if !taskItem.projectsArray.contains(project) {
+                        withAnimation { TasksData.add(project: project, for: taskItem, context: viewContext) }
+                    } else {
+                        withAnimation { TasksData.remove(project: project, for: taskItem, context: viewContext) }
+                    }
+                }
+            }
+        }) {
+            Label("Assign To Top Project", systemImage: "square.3.layers.3d.top.filled")
+        }.tint(Color("BarRest"))
     }
 
     var flagTaskButton: some View {
