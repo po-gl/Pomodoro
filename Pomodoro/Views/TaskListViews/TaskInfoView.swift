@@ -64,6 +64,7 @@ struct TaskInfoView: View {
                                 .padding(.trailing, 10)
                             }
                             projectsList
+                                .offset(x: -5)
                         }
                     }
                 }
