@@ -86,9 +86,11 @@ struct TaskCell: View {
         .swipeActions(edge: .trailing) {
             if let timeStamp = taskItem.timestamp, timeStamp < Calendar.current.startOfDay(for: Date()) {
                 reAddToTodaysTasksButton
+            } else {
+                flagTaskButton
             }
-            flagTaskButton
             assignToTopProjectButton
+            infoSwipeButton
         }
 
         .onChange(of: taskItem.completed) { _ in
@@ -182,6 +184,14 @@ struct TaskCell: View {
             Image(systemName: "info.circle")
                 .font(.title3)
         }).tint(Color("AccentColor"))
+    }
+
+    var infoSwipeButton: some View {
+        Button(action: {
+            withAnimation { showTaskInfo = true }
+        }, label: {
+            Label("Details", systemImage: "info.circle")
+        }).tint(Color(.lightGray))
     }
 
     var deleteTaskButton: some View {
