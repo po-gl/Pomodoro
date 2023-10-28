@@ -13,13 +13,18 @@ struct WrappingHStack<Model, V>: View where Model: Identifiable, Model: Hashable
 
     var models: [Model]
     var viewGenerator: ViewGenerator
-    var horizontalSpacing: CGFloat = 4
-    var verticalSpacing: CGFloat = 5
+    var horizontalSpacing: CGFloat
+    var verticalSpacing: CGFloat
 
     @State private var totalHeight = CGFloat.zero
 
-    init(models: [Model], @ViewBuilder viewGenerator: @escaping ViewGenerator) {
+    init(models: [Model],
+         horizontalSpacing: CGFloat = 4,
+         verticalSpacing: CGFloat = 5,
+         @ViewBuilder viewGenerator: @escaping ViewGenerator) {
         self.models = models
+        self.horizontalSpacing = horizontalSpacing
+        self.verticalSpacing = verticalSpacing
         self.viewGenerator = viewGenerator
     }
 
