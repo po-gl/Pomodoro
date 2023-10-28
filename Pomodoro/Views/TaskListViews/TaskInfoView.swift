@@ -34,7 +34,7 @@ struct TaskInfoView: View {
                         Divider()
                         TextField("Note", text: $editNote, axis: .vertical)
                     }
-                    
+
                     GroupBox {
                         Toggle(isOn: $editflagged) {
                             HStack(spacing: 15) {
@@ -47,7 +47,7 @@ struct TaskInfoView: View {
                             }
                         }.tint(Color("AccentColor"))
                     }
-                    
+
                     GroupBox {
                         VStack(alignment: .leading) {
                             HStack(spacing: 15) {

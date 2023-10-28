@@ -16,7 +16,7 @@ struct TaskCell: View {
     // open the task's info page instead of editing text
     var isEmbedded: Bool? = false
 
-    var indexPath: IndexPath? = nil
+    var indexPath: IndexPath?
 
     @State var editText = ""
     @State var editNoteText = ""
