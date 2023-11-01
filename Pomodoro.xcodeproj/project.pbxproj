@@ -887,7 +887,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				61E468222AEC8938001F6D7B /* PBXTargetDependency */,
 				61D7895629A148E100B296B4 /* PBXTargetDependency */,
 				61A7FE2929BD5767000137E7 /* PBXTargetDependency */,
 				610F99C529BD736A00608F41 /* PBXTargetDependency */,
@@ -1429,10 +1428,6 @@
 			isa = PBXTargetDependency;
 			target = 61FAEAAD29065FDC00CACF78 /* PomodoroWatch Watch App */;
 			targetProxy = 61D7895529A148E100B296B4 /* PBXContainerItemProxy */;
-		};
-		61E468222AEC8938001F6D7B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 61E468212AEC8938001F6D7B /* SwiftLintPlugin */;
 		};
 		61FAEABF29065FDE00CACF78 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2119,14 +2114,6 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		61E468212AEC8938001F6D7B /* SwiftLintPlugin */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 61BC3DB02AD76C4B007C4BB9 /* XCRemoteSwiftPackageReference "SwiftLint" */;
-			productName = "plugin:SwiftLintPlugin";
-		};
-/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		61F7362E29C00CCE00289149 /* Pomodoro.xcdatamodeld */ = {
