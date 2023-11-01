@@ -11,8 +11,7 @@ struct ProjectStack: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.managedObjectContext) private var viewContext
 
-    @FetchRequest(sortDescriptors: [SortDescriptor(\Project.order), SortDescriptor(\Project.timestamp)],
-                  predicate: NSPredicate(format: "archived == false"))
+    @FetchRequest(fetchRequest: ProjectsData.currentProjectsRequest)
     private var currentProjects: FetchedResults<Project>
 
     @ObservedObject var isCollapsed: ObservableBool
@@ -22,12 +21,10 @@ struct ProjectStack: View {
     var body: some View {
         HStack(alignment: .top) {
             VStack {
-                let projectCount = currentProjects.count
-
-                if projectCount > 0 {
-                    ForEach(0..<projectCount, id: \.self) { i in
+                if currentProjects.count > 0 {
+                    ForEach(Array(zip(currentProjects.indices, currentProjects)), id: \.1) { i, project in
                         let iDouble = Double(i)
-                        ProjectCell(project: currentProjects[i],
+                        ProjectCell(project: project,
                                     isCollapsed: isCollapsed,
                                     cellHeight: collapsedRowHeight,
                                     isFirstProject: i == 0)
