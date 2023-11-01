@@ -82,6 +82,7 @@ struct TaskCell: View {
 
         .swipeActions(edge: .leading) {
             deleteTaskButton
+            infoSwipeButton
         }
         .swipeActions(edge: .trailing) {
             if let timeStamp = taskItem.timestamp, timeStamp < Calendar.current.startOfDay(for: Date()) {
@@ -90,7 +91,6 @@ struct TaskCell: View {
                 flagTaskButton
             }
             assignToTopProjectButton
-            infoSwipeButton
         }
 
         .onChange(of: taskItem.completed) { _ in
