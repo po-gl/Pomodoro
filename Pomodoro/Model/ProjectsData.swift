@@ -13,7 +13,7 @@ struct ProjectsData {
     static var currentProjectsRequest: NSFetchRequest<Project> {
         let fetchRequest = Project.fetchRequest()
         fetchRequest.sortDescriptors = [
-            SortDescriptor(\Project.order, order: .reverse),
+            SortDescriptor(\Project.order, order: .forward),
             SortDescriptor(\Project.timestamp, order: .forward)
         ].map { descriptor in NSSortDescriptor(descriptor) }
         fetchRequest.predicate = NSPredicate(
