@@ -13,16 +13,17 @@ struct ProjectCell: View {
     @Environment(\.colorScheme) private var colorScheme
     @ObservedObject var project: Project
 
+    @State var editText: String
+    @State var editNoteText: String
+    @State var color: Color
+
     @ObservedObject var isCollapsed: ObservableBool
 
     var cellHeight: Double
 
     var isFirstProject: Bool = false
 
-    @State var editText = ""
-    @State var editNoteText = ""
     @FocusState var focus
-    @State var color: Color = Color("BarRest")
 
     @State var showingProjectInfo = false
 
@@ -67,9 +68,6 @@ struct ProjectCell: View {
             }
         }
         .onAppear {
-            editText = project.name ?? ""
-            editNoteText = project.note ?? ""
-            color = Color(project.color ?? "BarRest")
             focusIfJustAdded()
         }
         .onChange(of: showingProjectInfo) { _ in

@@ -115,7 +115,10 @@ struct ProjectInfoView: View {
     @ViewBuilder var assignedTasksList: some View {
         VStack(spacing: 10) {
             ForEach(taskNotes) { taskItem in
-                TaskCell(taskItem: taskItem, isEmbedded: true)
+                TaskCell(taskItem: taskItem,
+                         editText: taskItem.text ?? "",
+                         editNoteText: taskItem.note ?? "",
+                         isEmbedded: true)
                 Divider()
             }
         }

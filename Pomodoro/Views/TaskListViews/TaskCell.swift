@@ -12,14 +12,15 @@ struct TaskCell: View {
     @Environment(\.managedObjectContext) private var viewContext
     @ObservedObject var taskItem: TaskNote
 
+    @State var editText: String
+    @State var editNoteText: String
+
+    var indexPath: IndexPath?
+
     // Set true if embedded in an info view and tapping text fields should
     // open the task's info page instead of editing text
     var isEmbedded: Bool? = false
 
-    var indexPath: IndexPath?
-
-    @State var editText = ""
-    @State var editNoteText = ""
     @FocusState var focus
 
     @State var showTaskInfo = false
@@ -53,9 +54,6 @@ struct TaskCell: View {
         }
 
         .onAppear {
-            editText = taskItem.text!
-            editNoteText = taskItem.note ?? ""
-
             focusIfJustAdded()
         }
 

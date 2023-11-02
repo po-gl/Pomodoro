@@ -221,7 +221,10 @@ class TaskListViewController: UIViewController {
                 return
             }
             cell.contentConfiguration = UIHostingConfiguration {
-                TaskCell(taskItem: taskItem, indexPath: indexPath)
+                TaskCell(taskItem: taskItem,
+                         editText: taskItem.text ?? "",
+                         editNoteText: taskItem.note ?? "",
+                         indexPath: indexPath)
                     .environment(\.managedObjectContext, viewContext)
             }
         }
