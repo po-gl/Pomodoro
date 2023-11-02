@@ -101,6 +101,9 @@ struct ProjectCell: View {
                 withAnimation {
                     isCollapsed.value = false
                 }
+                editText = ""
+                editNoteText = ""
+                color = Color("BarRest")
                 focus = true
             }
         }

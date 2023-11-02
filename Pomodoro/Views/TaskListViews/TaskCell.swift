@@ -106,6 +106,8 @@ struct TaskCell: View {
     private func focusIfJustAdded() {
         if let date = taskItem.timestamp {
             if Date.now.timeIntervalSince(date) < 0.5 {
+                editText = ""
+                editNoteText = ""
                 focus = true
             }
         }
