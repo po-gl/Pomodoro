@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreData
+import Combine
 
 struct TaskListCollectionView: UIViewControllerRepresentable {
     @Environment(\.managedObjectContext) private var viewContext
@@ -68,6 +69,8 @@ class TaskListViewController: UIViewController {
     }
 
     private var isProjectStackCollapsed = ObservableBool(true)
+    private var projectStackSubscriber: AnyCancellable?
+    private var projectStackIndex: IndexPath?
 
     private var keyboardOffsetConstraint: NSLayoutConstraint! = nil
     private var keyboardWithoutOffsetConstraint: NSLayoutConstraint! = nil
@@ -119,6 +122,13 @@ class TaskListViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide),
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
+
+        projectStackSubscriber = isProjectStackCollapsed.$value.sink(receiveValue: { [weak self] isCollapsed in
+            guard let self = self else { return }
+            if let projectStackIndex, !isCollapsed {
+                collectionView.scrollToItem(at: projectStackIndex, at: .centeredVertically, animated: true)
+            }
+        })
     }
 
     @objc func handleKeyboardWillShow() {
@@ -209,7 +219,8 @@ class TaskListViewController: UIViewController {
 
     // swiftlint:disable line_length
     private func configureCellRegistrations() {
-        projectStackCellRegistration = UICollectionView.CellRegistration<UICollectionViewCell, NSNull> { [unowned self] cell, _, _ in
+        projectStackCellRegistration = UICollectionView.CellRegistration<UICollectionViewCell, NSNull> { [unowned self] cell, indexPath, _ in
+            projectStackIndex = indexPath
             cell.contentConfiguration = UIHostingConfiguration {
                 ProjectStack(isCollapsed: isProjectStackCollapsed)
             }
