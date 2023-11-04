@@ -236,6 +236,7 @@ class TaskListViewController: UIViewController {
                          editText: taskItem.text ?? "",
                          editNoteText: taskItem.note ?? "",
                          indexPath: indexPath)
+                    .id(taskItem.id)
                     .environment(\.managedObjectContext, viewContext)
             }
         }
