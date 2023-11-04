@@ -112,7 +112,7 @@ struct ProjectCell: View {
     @ViewBuilder
     private func mainTextField() -> some View {
         TextField("", text: $editText, axis: .vertical)
-            .font(.system(size: 22))
+            .font(.system(.title2, weight: .medium))
             .frame(minHeight: 30)
             .lineLimit(isCollapsed.value ? 1 : Int.max, reservesSpace: false)
             .disabled(isCollapsed.value)
@@ -125,7 +125,7 @@ struct ProjectCell: View {
     @ViewBuilder
     private func noteTextField() -> some View {
         TextField("Add Note", text: $editNoteText, axis: .vertical)
-            .font(.system(size: 14))
+            .font(.system(.footnote))
             .frame(minHeight: 20)
             .lineLimit(isCollapsed.value ? 1 : Int.max, reservesSpace: false)
             .fixedSize(horizontal: false, vertical: !isCollapsed.value)
