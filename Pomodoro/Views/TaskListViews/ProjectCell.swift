@@ -132,6 +132,7 @@ struct ProjectCell: View {
             .disabled(isCollapsed.value)
             .foregroundColor(color)
             .brightness(secondaryBrightness)
+            .id(editNoteText + String(isCollapsed.value))
     }
 
     private func deleteOrEditProject() {
