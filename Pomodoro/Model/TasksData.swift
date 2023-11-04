@@ -63,8 +63,8 @@ struct TasksData {
         newTask.note = note
         newTask.completed = completed
         newTask.flagged = flagged
-        newTask.timestamp = date
         newTask.order = order
+        newTask.timestamp = date
         newTask.projects = projects as NSSet
 
         try? context.obtainPermanentIDs(for: [newTask])
@@ -123,6 +123,25 @@ struct TasksData {
     static func delete(_ task: TaskNote, context: NSManagedObjectContext) {
         context.delete(task)
         saveContext(context, errorMessage: "CoreData error deleting task.")
+    }
+
+    static func duplicate(_ task: TaskNote,
+                          text: String? = nil,
+                          note: String? = nil,
+                          completed: Bool? = nil,
+                          flagged: Bool? = nil,
+                          order: Int16? = nil,
+                          date: Date? = nil,
+                          projects: Set<Project>? = nil,
+                          context: NSManagedObjectContext) {
+        TasksData.addTask(text ?? task.text ?? "",
+                          note: note ?? task.note ?? "",
+                          completed: completed ?? task.completed,
+                          flagged: flagged ?? task.flagged,
+                          order: order ?? task.order,
+                          date: date ?? task.timestamp ?? Date(),
+                          projects: projects ?? task.projects as? Set<Project> ?? [],
+                          context: context)
     }
 
     // MARK: Save Context

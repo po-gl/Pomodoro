@@ -232,11 +232,13 @@ struct TaskCell: View {
         Button(action: {
             if let taskText = taskItem.text {
                 guard !TasksData.todaysTasksContains(taskText, context: viewContext) else { return }
-                withAnimation { TasksData.addTask(taskText,
-                                                  note: taskItem.note ?? "",
-                                                  flagged: taskItem.flagged,
-                                                  date: Date().addingTimeInterval(-1),
-                                                  context: viewContext) }
+                withAnimation {
+                    TasksData.duplicate(taskItem,
+                                        completed: false,
+                                        order: 0,
+                                        date: Date().addingTimeInterval(-1),
+                                        context: viewContext)
+                }
             }
         }) {
             Label("Re-add", systemImage: "arrow.uturn.up")

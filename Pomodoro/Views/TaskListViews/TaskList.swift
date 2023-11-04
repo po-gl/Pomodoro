@@ -118,16 +118,14 @@ struct TaskList: View {
                 .filter({ !$0.completed })
                 .filter({ task in !todaysTasks.contains(where: { $0.text == task.text })})
                 .forEach { taskToAdd in
-                if let taskText = taskToAdd.text {
                     withAnimation {
-                        TasksData.addTask(taskText,
-                                          note: taskToAdd.note ?? "",
-                                          flagged: taskToAdd.flagged,
-                                          date: Date().addingTimeInterval(-1),
-                                          context: viewContext)
+                        TasksData.duplicate(taskToAdd,
+                                            completed: false,
+                                            order: 0,
+                                            date: Date().addingTimeInterval(-1),
+                                            context: viewContext)
                     }
                 }
-            }
 
         }) {
             Label("Add Unfinished Tasks", systemImage: "arrow.uturn.up")
