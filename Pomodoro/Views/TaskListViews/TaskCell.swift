@@ -120,7 +120,8 @@ struct TaskCell: View {
                 if !editText.isEmpty {
                     Task {
                         try? await Task.sleep(for: .seconds(0.1))
-                        TasksData.addTask("", context: viewContext)
+                        TasksData.addTask("", order: taskItem.order, context: viewContext)
+                        TasksData.separateCompleted(todaysTasks, context: viewContext)
                     }
                 }
             }
