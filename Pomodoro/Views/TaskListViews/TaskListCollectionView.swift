@@ -57,6 +57,8 @@ class TaskListViewController: UIViewController {
     private var todaysTasksController: NSFetchedResultsController<TaskNote>! = nil
     private var pastTasksController: NSFetchedResultsController<TaskNote>! = nil
 
+    private var fetchTask: Task<(), Never>?
+
     public var showProjects: Bool {
         didSet {
             try? todaysTasksController.performFetch()
@@ -376,37 +378,42 @@ extension TaskListViewController: NSFetchedResultsControllerDelegate {
 
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
                     didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
-        guard let dataSource = collectionView.dataSource
-                as? UICollectionViewDiffableDataSource<Section, ListItem> else {
-            assertionFailure("Collection view data source with snapshot is not available")
-            return
-        }
+        fetchTask?.cancel()
+        fetchTask = Task { @MainActor in
+            guard let dataSource = collectionView.dataSource
+                    as? UICollectionViewDiffableDataSource<Section, ListItem> else {
+                assertionFailure("Collection view data source with snapshot is not available")
+                return
+            }
 
-        var snapshot = NSDiffableDataSourceSnapshot<Section, ListItem>()
+            var snapshot = NSDiffableDataSourceSnapshot<Section, ListItem>()
 
-        if showProjects {
-            snapshot.appendSections([.projects])
-            snapshot.appendItems([.projectsPlaceholder], toSection: .projects)
-        }
+            if showProjects {
+                snapshot.appendSections([.projects])
+                snapshot.appendItems([.projectsPlaceholder], toSection: .projects)
+            }
 
-        let todaysTasks = todaysTasksController.fetchedObjects?.map { obj in ListItem.task(obj.objectID) } ?? []
-        snapshot.appendSections([.tasks])
-        snapshot.appendItems(todaysTasks, toSection: .tasks)
+            let todaysTasks = todaysTasksController.fetchedObjects?.map { obj in ListItem.task(obj.objectID) } ?? []
+            snapshot.appendSections([.tasks])
+            snapshot.appendItems(todaysTasks, toSection: .tasks)
 
-        if todaysTasksController.sections?.isEmpty == false && todaysTasks.isEmpty {
-            snapshot.appendItems([ListItem.emptyTask], toSection: .tasks)
-        }
+            if todaysTasksController.sections?.isEmpty == false && todaysTasks.isEmpty {
+                snapshot.appendItems([ListItem.emptyTask], toSection: .tasks)
+            }
 
-        if showPastTasks {
-            let pastSections = pastTasksController.sections?.map { section in Section.pastTasks(section.name)} ?? []
-            snapshot.appendSections(pastSections)
-            for pastTaskObj in pastTasksController.fetchedObjects ?? [] {
-                let pastTaskID = pastTaskObj.objectID
-                snapshot.appendItems([.pastTask(pastTaskID)], toSection: .pastTasks(pastTaskObj.section))
+            if showPastTasks {
+                let pastSections = pastTasksController.sections?.map { section in Section.pastTasks(section.name)} ?? []
+                snapshot.appendSections(pastSections)
+                for pastTaskObj in pastTasksController.fetchedObjects ?? [] {
+                    let pastTaskID = pastTaskObj.objectID
+                    snapshot.appendItems([.pastTask(pastTaskID)], toSection: .pastTasks(pastTaskObj.section))
+                }
+            }
+
+            if !Task.isCancelled {
+                dataSource.apply(snapshot, animatingDifferences: true)
             }
         }
-
-        dataSource.apply(snapshot, animatingDifferences: true)
     }
 }
 
