@@ -34,7 +34,7 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack {
-            mainPage()
+            mainPage
                 .reverseStatusBarColor()
                 .ignoresSafeArea()
                 .onAppear {
@@ -84,8 +84,7 @@ struct ContentView: View {
         .tint(Color("NavigationAccent"))
     }
 
-    @ViewBuilder
-    private func mainPage() -> some View {
+    @ViewBuilder private var mainPage: some View {
         ZStack {
             TopButton(destination: {
                 TaskList()
@@ -99,15 +98,14 @@ struct ContentView: View {
                 TaskAdderView(taskFromAdder: $taskFromAdder)
                     .zIndex(1)
 
-                mainStack()
+                mainStack
             }
             .animation(.easeInOut(duration: 0.3), value: pomoTimer.isPaused)
             .avoidKeyboard()
         }
     }
 
-    @ViewBuilder
-    private func mainStack() -> some View {
+    @ViewBuilder private var mainStack: some View {
         GeometryReader { proxy in
             VStack {
                 TimerDisplay(pomoTimer: pomoTimer)

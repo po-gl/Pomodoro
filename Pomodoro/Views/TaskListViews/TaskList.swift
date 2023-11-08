@@ -29,19 +29,19 @@ struct TaskList: View {
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     HStack {
-                        addTaskButton()
+                        addTaskButton
                         Spacer()
                     }
                 }
             }
             .toolbar {
                 Menu {
-                    showArchivedProjectsButton()
+                    showArchivedProjectsButton
                     Divider()
-                    showProjectsButton()
-                    showPastTasksButton()
-                    markTodaysTasksAsDoneButton()
-                    addYesterdaysUnfinishedTasksButton()
+                    showProjectsButton
+                    showPastTasksButton
+                    markTodaysTasksAsDoneButton
+                    addYesterdaysUnfinishedTasksButton
                 } label: {
                     Image(systemName: "ellipsis.circle")
                 }
@@ -51,8 +51,7 @@ struct TaskList: View {
             }
     }
 
-    @ViewBuilder
-    private func addTaskButton() -> some View {
+    @ViewBuilder private var addTaskButton: some View {
         Button(action: {
             basicHaptic()
             TasksData.addTask("", context: viewContext)
@@ -64,8 +63,7 @@ struct TaskList: View {
         }.tint(Color("AccentColor"))
     }
 
-    @ViewBuilder
-    private func showArchivedProjectsButton() -> some View {
+    @ViewBuilder private var showArchivedProjectsButton: some View {
         Button(action: {
             basicHaptic()
             showingArchivedProjects = true
@@ -74,8 +72,7 @@ struct TaskList: View {
         }
     }
 
-    @ViewBuilder
-    private func showProjectsButton() -> some View {
+    @ViewBuilder private var showProjectsButton: some View {
         Button(action: {
             basicHaptic()
             withAnimation { showProjects.toggle() }
@@ -88,8 +85,7 @@ struct TaskList: View {
         }
     }
 
-    @ViewBuilder
-    private func showPastTasksButton() -> some View {
+    @ViewBuilder private var showPastTasksButton: some View {
         Button(action: {
             basicHaptic()
             withAnimation { showPastTasks.toggle() }
@@ -102,8 +98,7 @@ struct TaskList: View {
         }
     }
 
-    @ViewBuilder
-    private func markTodaysTasksAsDoneButton() -> some View {
+    @ViewBuilder private var markTodaysTasksAsDoneButton: some View {
         Button(action: {
             todaysTasks.forEach { TasksData.setCompleted(for: $0, context: viewContext) }
         }) {
@@ -111,8 +106,7 @@ struct TaskList: View {
         }
     }
 
-    @ViewBuilder
-    private func addYesterdaysUnfinishedTasksButton() -> some View {
+    @ViewBuilder private var addYesterdaysUnfinishedTasksButton: some View {
         Button(action: {
             yesterdaysTasks
                 .filter({ !$0.completed })

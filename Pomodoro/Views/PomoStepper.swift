@@ -21,7 +21,7 @@ struct PomoStepper: View {
                 Text("pomodoros")
                     .font(.system(size: 20, weight: .regular, design: .monospaced))
             }
-            pomoStepper()
+            pomoStepper
                 .scaleEffect(0.8)
                 .frame(width: 80)
         }
@@ -30,8 +30,7 @@ struct PomoStepper: View {
         .animation(.default, value: pomoTimer.isPaused)
     }
 
-    @ViewBuilder
-    private func pomoStepper() -> some View {
+    @ViewBuilder private var pomoStepper: some View {
         Stepper {
         } onIncrement: {
             basicHaptic()

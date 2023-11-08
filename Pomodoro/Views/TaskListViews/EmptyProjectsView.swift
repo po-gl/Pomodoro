@@ -45,14 +45,13 @@ struct EmptyProjectsView: View {
         .padding()
         .frame(maxWidth: .infinity, minHeight: cellHeight)
         .background(
-            gradientRectangle()
+            gradientRectangle
                 .brightness(collapsedBackgroundBrightness)
                 .saturation(collapsedBackgroundSaturation)
         )
     }
 
-    @ViewBuilder
-    private func gradientRectangle() -> some View {
+    @ViewBuilder private var gradientRectangle: some View {
         RoundedRectangle(cornerRadius: 20)
             .fill(color.gradient)
             .rotationEffect(.degrees(180))

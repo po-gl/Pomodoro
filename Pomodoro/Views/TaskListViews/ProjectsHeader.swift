@@ -21,15 +21,14 @@ struct ProjectsHeader: View {
                 .foregroundStyle(.secondary)
             Spacer()
             Group {
-                projectHeaderAddButton()
-                projectHeaderChevronButton()
+                projectHeaderAddButton
+                projectHeaderChevronButton
             }
             .opacity(isCollapsed.value ? 0.0 : 1.0)
         }
     }
 
-    @ViewBuilder
-    private func projectHeaderAddButton() -> some View {
+    @ViewBuilder private var projectHeaderAddButton: some View {
         Button(action: {
             withAnimation {
                 _ = ProjectsData.addProject("", context: viewContext)
@@ -44,8 +43,7 @@ struct ProjectsHeader: View {
         }
     }
 
-    @ViewBuilder
-    private func projectHeaderChevronButton() -> some View {
+    @ViewBuilder private var projectHeaderChevronButton: some View {
         Button(action: {
             withAnimation(.spring()) {
                 isCollapsed.value = true

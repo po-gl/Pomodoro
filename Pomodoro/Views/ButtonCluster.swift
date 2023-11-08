@@ -18,17 +18,16 @@ struct ButtonCluster: View {
             ZStack {
                 HStack(spacing: 0) {
                     Spacer()
-                    resetButton()
+                    resetButton
                     Spacer()
-                    startStopButton()
+                    startStopButton
                     Spacer()
                 }
             }
         }
     }
 
-    @ViewBuilder
-    private func resetButton() -> some View {
+    @ViewBuilder private var resetButton: some View {
         let isEnabled = pomoTimer.isPaused || pomoTimer.getStatus() == .end
         Button("Reset") {
             guard isEnabled else { return }
@@ -42,8 +41,7 @@ struct ButtonCluster: View {
         .animation(.default, value: pomoTimer.isPaused)
     }
 
-    @ViewBuilder
-    private func startStopButton() -> some View {
+    @ViewBuilder private var startStopButton: some View {
         let isEnabled = pomoTimer.getStatus() != .end
         Button(getStartStopButtonString()) {
             guard isEnabled else { return }

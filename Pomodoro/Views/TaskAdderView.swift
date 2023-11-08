@@ -22,16 +22,16 @@ struct TaskAdderView: View {
     var body: some View {
         ZStack {
             ZStack {
-                taskInput()
+                taskInput
                     .position(taskFromAdder.location ?? startLocation)
-                touchCircle()
+                touchCircle
                     .opacity(taskFromAdder.text.isEmpty ? 0.8 : 1.0)
                     .animation(.easeInOut, value: taskFromAdder.isDragging)
                     .animation(.easeInOut, value: taskFromAdder.text)
                     .position(taskFromAdder.location ?? startLocation)
                     .draggableTask($taskFromAdder)
 
-                dragHint()
+                dragHint
                     .position(startLocation)
                     .offset(y: 24)
                     .opacity(taskFromAdder.text.isEmpty || taskFromAdder.isDragging ? 0.0 : 1.0)
@@ -71,8 +71,7 @@ struct TaskAdderView: View {
         }
     }
 
-    @ViewBuilder
-    private func taskInput() -> some View {
+    @ViewBuilder private var taskInput: some View {
         TextField("Add task", text: $taskFromAdder.text)
             .font(.system(.callout, design: .monospaced, weight: .medium))
             .accessibilityIdentifier("AddTask")
@@ -85,8 +84,7 @@ struct TaskAdderView: View {
             .frame(width: 280)
     }
 
-    @ViewBuilder
-    private func touchCircle() -> some View {
+    @ViewBuilder private var touchCircle: some View {
         let width: Double = taskFromAdder.isDragging ? 15 : 25
         let strokeWidth: Double = 1.2
         let gap: Double = taskFromAdder.text.isEmpty ? 8 : 10
@@ -107,8 +105,7 @@ struct TaskAdderView: View {
             .accessibilityIdentifier("DraggableTask")
     }
 
-    @ViewBuilder
-    private func dragHint() -> some View {
+    @ViewBuilder private var dragHint: some View {
         let gradient = LinearGradient(stops: [.init(color: .primary, location: 0.0),
                                               .init(color: .primary.opacity(0.3), location: 1.0)],
                                       startPoint: .leading, endPoint: .trailing)

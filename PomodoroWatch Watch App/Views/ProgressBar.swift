@@ -21,12 +21,11 @@ struct ProgressBar: View {
     private let barHeight: Double = 8.0
 
     var body: some View {
-        ScrollableTimeLineColorBars()
+        ScrollableTimeLineColorBars
     }
 
-    @ViewBuilder
-    private func ScrollableTimeLineColorBars() -> some View {
-        TimeLineColorBars()
+    @ViewBuilder private var ScrollableTimeLineColorBars: some View {
+        TimeLineColorBars
             .focusable(pomoTimer.isPaused)
             .digitalCrownRotation($scrollValue, from: 0.0, through: 100,
                                   sensitivity: .medium,
@@ -52,8 +51,7 @@ struct ProgressBar: View {
             }
     }
 
-    @ViewBuilder
-    private func TimeLineColorBars() -> some View {
+    @ViewBuilder private var TimeLineColorBars: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
             VStack(spacing: 0) {
                 HStack {
@@ -65,7 +63,7 @@ struct ProgressBar: View {
                 .padding(.horizontal, 15)
 
                 ZStack {
-                    ColorBars()
+                    ColorBars
                         .mask { RoundedRectangle(cornerRadius: 5)}
                     ProgressIndicator(at: context.date)
                         .opacity(shouldShowProgressIndicator(at: context.date) ? 1.0 : 0.0)
@@ -123,8 +121,7 @@ struct ProgressBar: View {
         return metrics.size.width - 20.0
     }
 
-    @ViewBuilder
-    private func ColorBars() -> some View {
+    @ViewBuilder private var ColorBars: some View {
         HStack(spacing: 0) {
             ForEach(0..<pomoTimer.order.count, id: \.self) { i in
                 RoundedRectangle(cornerRadius: 3)

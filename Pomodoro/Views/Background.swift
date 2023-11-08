@@ -18,7 +18,7 @@ struct Background: View {
                 VStack(spacing: 0) {
                     top(at: context.date)
                         .frame(height: getTopFrameHeight(proxy: geometry))
-                    pickGradient().zIndex(1)
+                    pickGradient.zIndex(1)
                     bottom(at: context.date, geometry: geometry)
 
                 }
@@ -61,10 +61,9 @@ struct Background: View {
             )
     }
 
-    @ViewBuilder
-    private func pickGradient() -> some View {
+    @ViewBuilder private var pickGradient: some View {
         ZStack(alignment: .top) {
-            softGradient()
+            softGradient
                 .frame(height: 30)
                 .rotationEffect(.degrees(colorScheme == .dark ? 180 : 0))
                 .offset(y: colorScheme == .dark ? -10 : 15)
@@ -78,8 +77,7 @@ struct Background: View {
         .frame(height: 0)
     }
 
-    @ViewBuilder
-    private func softGradient() -> some View {
+    @ViewBuilder private var softGradient: some View {
         Rectangle()
             .fill(LinearGradient(colors: [.clear, .black], startPoint: .bottom, endPoint: .top))
     }

@@ -29,7 +29,7 @@ struct ProgressBar: View {
     private let barHeight: Double = 16.0
 
     var body: some View {
-        timeLineColorBars()
+        timeLineColorBars
             .onChange(of: pomoTimer.isPaused) { _ in
                 isDragging = false
             }
@@ -55,8 +55,7 @@ struct ProgressBar: View {
             }
     }
 
-    @ViewBuilder
-    private func timeLineColorBars() -> some View {
+    @ViewBuilder private var timeLineColorBars: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: pomoTimer.isPaused ? 60.0 : 1.0)) { context in
             VStack(spacing: 0) {
                 HStack {

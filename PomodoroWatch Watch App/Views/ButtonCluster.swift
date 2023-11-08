@@ -14,19 +14,18 @@ struct ButtonCluster: View {
 
     var body: some View {
         HStack {
-            ResetButton()
+            ResetButton
             Spacer()
-            StartStopButton()
+            StartStopButton
         }
     }
 
-    @ViewBuilder
-    private func ResetButton() -> some View {
+    @ViewBuilder private var ResetButton: some View {
         let isEnabled = pomoTimer.isPaused || pomoTimer.getStatus() == .end
         Image(systemName: withFill("arrow.counterclockwise.circle"))
             .accessibilityIdentifier("resetButton")
             .foregroundColor(pomoTimer.isPaused ? .orange : Color(hex: 0x333333))
-            .overlay(softLightOverlay())
+            .overlay(softLightOverlay)
             .font(.system(size: 40))
             .onTapGesture {
                 guard isEnabled else { return }
@@ -40,13 +39,12 @@ struct ButtonCluster: View {
             .disabled(!isEnabled)
     }
 
-    @ViewBuilder
-    private func StartStopButton() -> some View {
+    @ViewBuilder private var StartStopButton: some View {
         let isEnabled = pomoTimer.getStatus() != .end
         Image(systemName: pomoTimer.isPaused ? withFill("play.circle") : withFill("pause.circle"))
             .accessibilityIdentifier("playPauseButton")
             .foregroundColor(.accentColor)
-            .overlay(softLightOverlay())
+            .overlay(softLightOverlay)
             .font(.system(size: 40))
             .onTapGesture {
                 guard isEnabled else { return }
@@ -60,8 +58,7 @@ struct ButtonCluster: View {
 
     @State var showSoftLightOverlay = true
 
-    @ViewBuilder
-    private func softLightOverlay() -> some View {
+    @ViewBuilder private var softLightOverlay: some View {
         // In watchOS 10, blendMode abruptly reverts to normal when
         // luminance is reduced. So here I set the overlay opacity to
         // 0 and set the animation to nil, then delay the returning animation

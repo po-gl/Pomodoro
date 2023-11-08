@@ -58,13 +58,13 @@ struct TaskLabel: View {
                 }
 
                 .confirmationDialog("Task note options.", isPresented: $presentingNoteOptions) {
-                    confirmationDialogButtons()
+                    confirmationDialogButtons
                 } message: {
                     Text(text)
                 }
 
                 .alert("Rename Task Note", isPresented: $presentingNoteRename) {
-                    alertView()
+                    alertView
                 }
 
                 .opacity(text != "" ? 1.0 : 0.0)
@@ -77,8 +77,7 @@ struct TaskLabel: View {
         draggableTask.startLocation = CGPoint(x: frame.midX, y: frame.midY)
     }
 
-    @ViewBuilder
-    private func confirmationDialogButtons() -> some View {
+    @ViewBuilder private var confirmationDialogButtons: some View {
         let text: String = index < taskNotes.tasksOnBar.count ? taskNotes.tasksOnBar[index] : ""
 
         Button {
@@ -108,8 +107,7 @@ struct TaskLabel: View {
         .accessibilityIdentifier("DeleteTask")
     }
 
-    @ViewBuilder
-    private func alertView() -> some View {
+    @ViewBuilder private var alertView: some View {
         TextField("", text: $renameText)
             // Select whole text immediately
             .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in

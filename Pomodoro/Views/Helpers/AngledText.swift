@@ -16,15 +16,14 @@ struct AngledText: View {
     var isBeingDragged: Bool = false
 
     var body: some View {
-        angledText()
+        angledText
             .overlay(
-                angledLines()
+                angledLines
                     .opacity(isBeingDragged ? 0.5 : 1.0)
             )
     }
 
-    @ViewBuilder
-    private func angledText() -> some View {
+    @ViewBuilder private var angledText: some View {
         Text(text)
             .font(.system(.callout, design: .monospaced, weight: .medium))
             .frame(width: width, alignment: .leading)
@@ -34,8 +33,7 @@ struct AngledText: View {
             .opacity(text.isEmpty ? 0.0 : 1.0)
     }
 
-    @ViewBuilder
-    private func angledLines() -> some View {
+    @ViewBuilder private var angledLines: some View {
         Group {
             Rectangle()
                 .fill(LinearGradient(colors: [.clear, .primary], startPoint: .leading, endPoint: .trailing))

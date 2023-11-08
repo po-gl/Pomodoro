@@ -48,22 +48,22 @@ struct ProjectCell: View {
             HStack {
                 VStack(spacing: 0) {
                     HStack {
-                        progressCheck()
+                        progressCheck
                             .offset(y: isCollapsed.value && !editNoteText.isEmpty ? 10 : 0)
-                        mainTextField()
+                        mainTextField
                         if !isCollapsed.value {
-                            infoMenuButton().offset(y: -1)
+                            infoMenuButton.offset(y: -1)
                         }
                     }
                     if focus || !editNoteText.isEmpty {
-                        noteTextField()
+                        noteTextField
                             .padding(.leading, 32)
                     }
                 }
 
                 Spacer()
                 if isCollapsed.value && isFirstProject {
-                    chevron()
+                    chevron
                 }
             }
         }
@@ -109,8 +109,7 @@ struct ProjectCell: View {
         }
     }
 
-    @ViewBuilder
-    private func mainTextField() -> some View {
+    @ViewBuilder private var mainTextField: some View {
         TextField("", text: $editText, axis: .vertical)
             .font(.system(.title2, weight: .medium))
             .frame(minHeight: 30)
@@ -122,8 +121,7 @@ struct ProjectCell: View {
             .onSubmitWithVerticalText(with: $editText)
     }
 
-    @ViewBuilder
-    private func noteTextField() -> some View {
+    @ViewBuilder private var noteTextField: some View {
         TextField("Add Note", text: $editNoteText, axis: .vertical)
             .font(.system(.footnote))
             .frame(minHeight: 20)
@@ -147,8 +145,7 @@ struct ProjectCell: View {
         ProjectsData.edit(editText, note: editNoteText, for: project, context: viewContext)
     }
 
-    @ViewBuilder
-    private func chevron() -> some View {
+    @ViewBuilder private var chevron: some View {
         Image(systemName: "chevron.right")
             .font(.system(size: 25, weight: .medium))
             .foregroundColor(color)
@@ -156,13 +153,12 @@ struct ProjectCell: View {
             .saturation(primarySaturation)
     }
 
-    @ViewBuilder
-    private func infoMenuButton() -> some View {
+    @ViewBuilder private var infoMenuButton: some View {
         Menu {
-            showInfoButton()
-            sendToTopButton()
-            toggleProjectArchiveButton()
-            deleteProjectButton()
+            showInfoButton
+            sendToTopButton
+            toggleProjectArchiveButton
+            deleteProjectButton
         } label: {
             Image(systemName: "info.circle")
                 .font(.title3)
@@ -173,8 +169,7 @@ struct ProjectCell: View {
         }
     }
 
-    @ViewBuilder
-    private func showInfoButton() -> some View {
+    @ViewBuilder private var showInfoButton: some View {
         Button(action: {
             editProject()
             withAnimation { showingProjectInfo = true }
@@ -183,8 +178,7 @@ struct ProjectCell: View {
         }
     }
 
-    @ViewBuilder
-    private func sendToTopButton() -> some View {
+    @ViewBuilder private var sendToTopButton: some View {
         Button(action: {
             withAnimation { ProjectsData.setAsTopProject(project, context: viewContext) }
         }) {
@@ -192,8 +186,7 @@ struct ProjectCell: View {
         }
     }
 
-    @ViewBuilder
-    private func toggleProjectArchiveButton() -> some View {
+    @ViewBuilder private var toggleProjectArchiveButton: some View {
         Button(action: {
             ProjectsData.toggleArchive(project, context: viewContext)
         }) {
@@ -202,8 +195,7 @@ struct ProjectCell: View {
         }
     }
 
-    @ViewBuilder
-    private func deleteProjectButton() -> some View {
+    @ViewBuilder private var deleteProjectButton: some View {
         Button(role: .destructive, action: {
             ProjectsData.delete(project, context: viewContext)
         }) {
@@ -211,8 +203,7 @@ struct ProjectCell: View {
         }
     }
 
-    @ViewBuilder
-    private func progressCheck() -> some View {
+    @ViewBuilder private var progressCheck: some View {
         let width: Double = 22
         ZStack {
             Circle().stroke(style: StrokeStyle(lineWidth: 1.8))
@@ -257,17 +248,17 @@ struct ProjectCell: View {
         .frame(maxWidth: .infinity, minHeight: cellHeight)
         .background(
             ZStack {
-                gradientRectangle()
+                gradientRectangle
                     .brightness(collapsedBackgroundBrightness)
                     .saturation(collapsedBackgroundSaturation)
                     .opacity(isCollapsed.value ? 1.0 : 0.0)
 
-                gradientRectangle()
+                gradientRectangle
                     .brightness(backgroundBrightness)
                     .saturation(backgroundSaturation)
                     .opacity(backgroundOpacity)
                     .overlay(
-                        gradientBorder()
+                        gradientBorder
                             .brightness(collapsedBackgroundBrightness)
                             .saturation(collapsedBackgroundSaturation)
                     )
@@ -276,15 +267,13 @@ struct ProjectCell: View {
         )
     }
 
-    @ViewBuilder
-    private func gradientRectangle() -> some View {
+    @ViewBuilder private var gradientRectangle: some View {
         RoundedRectangle(cornerRadius: 20)
             .fill(color.gradient)
             .rotationEffect(.degrees(180))
     }
 
-    @ViewBuilder
-    private func gradientBorder() -> some View {
+    @ViewBuilder private var gradientBorder: some View {
         RoundedRectangle(cornerRadius: 20)
             .strokeBorder(color.gradient, lineWidth: 2)
             .rotationEffect(.degrees(180))
