@@ -21,6 +21,10 @@ struct TaskLabel: View {
     @State var presentingNoteRename = false
     @State var renameText = ""
 
+    var text: String {
+        index < taskNotes.tasksOnBar.count ? taskNotes.tasksOnBar[index] : ""
+    }
+
     var body: some View {
         GeometryReader { geometry in
             let text: String = index < taskNotes.tasksOnBar.count ? taskNotes.tasksOnBar[index] : ""
@@ -64,7 +68,7 @@ struct TaskLabel: View {
                 }
 
                 .alert("Rename Task Note", isPresented: $presentingNoteRename) {
-                    alertView
+                    renameAlertView
                 }
 
                 .opacity(text != "" ? 1.0 : 0.0)
@@ -78,8 +82,18 @@ struct TaskLabel: View {
     }
 
     @ViewBuilder private var confirmationDialogButtons: some View {
-        let text: String = index < taskNotes.tasksOnBar.count ? taskNotes.tasksOnBar[index] : ""
+        renameButton
+        if text != "" {
+            if let taskNote = TasksData.taskInTodaysTasks(matching: text, context: viewContext) {
+                markAsCompletedButton(taskNote: taskNote)
+            } else {
+                addToTodayButton
+            }
+        }
+        removeFromProgressBarButton
+    }
 
+    @ViewBuilder private var renameButton: some View {
         Button {
             basicHaptic()
             renameText = text
@@ -87,16 +101,31 @@ struct TaskLabel: View {
         } label: {
             Label("Rename", systemImage: "pencil.line")
         }
+    }
 
-        if text != "" && !TasksData.todaysTasksContains(text, context: viewContext) {
-            Button {
-                basicHaptic()
-                TasksData.addTask(text, order: -1, context: viewContext)
-            } label: {
-                Label("Add to Today's tasks", systemImage: "clock.arrow.circlepath")
+    @ViewBuilder private func markAsCompletedButton(taskNote: TaskNote) -> some View {
+        Button {
+            basicHaptic()
+            TasksData.toggleCompleted(for: taskNote, context: viewContext)
+        } label: {
+            if taskNote.completed {
+                Label("Mark as Not Completed", systemImage: "circle.slash")
+            } else {
+                Label("Mark as Completed", systemImage: "checkmark.circle")
             }
         }
+    }
 
+    @ViewBuilder private var addToTodayButton: some View {
+        Button {
+            basicHaptic()
+            TasksData.addTask(text, order: -1, context: viewContext)
+        } label: {
+            Label("Add to Today's tasks", systemImage: "clock.arrow.circlepath")
+        }
+    }
+
+    @ViewBuilder private var removeFromProgressBarButton: some View {
         Button(role: .destructive) {
             resetHaptic()
             withAnimation { taskNotes.tasksOnBar[index] = "" }
@@ -107,7 +136,7 @@ struct TaskLabel: View {
         .accessibilityIdentifier("DeleteTask")
     }
 
-    @ViewBuilder private var alertView: some View {
+    @ViewBuilder private var renameAlertView: some View {
         TextField("", text: $renameText)
             // Select whole text immediately
             .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
