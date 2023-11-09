@@ -176,7 +176,7 @@ struct ProgressBar: View {
             Rectangle()
                 .foregroundColor(colorScheme == .dark ? .black.opacity(0.5) : .white.opacity(0.5))
                 .blendMode(colorScheme == .dark ? .colorBurn : .colorDodge)
-                .frame(width: getBarWidth() * (1 - pomoTimer.getProgress(atDate: date)), height: barHeight)
+                .frame(width: max(getBarWidth() * (1 - pomoTimer.getProgress(atDate: date)), 0), height: barHeight)
         }
         .mask { RoundedRectangle(cornerRadius: 7) }
     }
@@ -220,7 +220,7 @@ struct ProgressBar: View {
                     .offset(x: -(getBarWidth() * getProportion(i) - barOutlinePadding)/2 + 3)
                     .opacity(0.6)
             }
-            .frame(width: getBarWidth() * getProportion(i) - barOutlinePadding, height: barHeight)
+            .frame(width: max(getBarWidth() * getProportion(i) - barOutlinePadding, 0), height: barHeight)
             .padding(.horizontal, 1)
         }
     }

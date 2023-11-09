@@ -57,7 +57,7 @@ struct Background: View {
                     .blendMode(.softLight)
                     // SwiftUI bug: blendmode flickers to normal if touching
                     // edges during navigation animations
-                    .frame(maxWidth: geometry.size.width - 2)
+                    .frame(maxWidth: max(geometry.size.width - 2, 0))
             )
     }
 
