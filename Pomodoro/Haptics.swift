@@ -8,6 +8,7 @@
 import Foundation
 import CoreHaptics
 import UIKit
+import Combine
 
 class Haptics {
     static public let shared = Haptics()
@@ -75,6 +76,25 @@ class Haptics {
         } catch {
             print("Failed to play pattern: \(error.localizedDescription)")
         }
+    }
+}
+
+class ThrottledHaptics {
+    static let shared = ThrottledHaptics()
+
+    @Published private var basicHapticPublisher: Bool = false
+    private var hapticSubscriber: AnyCancellable?
+
+    init() {
+        hapticSubscriber = $basicHapticPublisher
+            .throttle(for: 0.2, scheduler: RunLoop.main, latest: true)
+            .sink { _ in
+                basicHaptic()
+            }
+    }
+
+    func basic() {
+        basicHapticPublisher.toggle()
     }
 }
 

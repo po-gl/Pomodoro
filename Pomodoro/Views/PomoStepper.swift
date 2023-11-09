@@ -33,12 +33,12 @@ struct PomoStepper: View {
     @ViewBuilder private var pomoStepper: some View {
         Stepper {
         } onIncrement: {
-            basicHaptic()
+            ThrottledHaptics.shared.basic()
             withAnimation(pomoChangeAnimation) {
                 pomoTimer.incrementPomos()
             }
         } onDecrement: {
-            basicHaptic()
+            ThrottledHaptics.shared.basic()
             withAnimation(pomoChangeAnimation) {
                 pomoTimer.decrementPomos()
             }
