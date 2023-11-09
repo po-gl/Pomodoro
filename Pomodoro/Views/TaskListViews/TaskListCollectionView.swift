@@ -12,13 +12,15 @@ import Combine
 struct TaskListCollectionView: UIViewControllerRepresentable {
     @Environment(\.managedObjectContext) private var viewContext
 
-    @Binding var showProjects: Bool
-    @Binding var showPastTasks: Bool
+    var showProjects: Bool
+    var showPastTasks: Bool
+    @ObservedObject var isScrolledToTop: ObservableBool
 
     func makeUIViewController(context: Context) -> TaskListViewController {
         TaskListViewController(viewContext: viewContext,
                                showProjects: showProjects,
-                               showPastTasks: showPastTasks)
+                               showPastTasks: showPastTasks,
+                               isScrolledToTop: isScrolledToTop)
     }
 
     func updateUIViewController(_ uiViewController: TaskListViewController, context: Context) {
@@ -77,10 +79,16 @@ class TaskListViewController: UIViewController {
     private var keyboardOffsetConstraint: NSLayoutConstraint! = nil
     private var keyboardWithoutOffsetConstraint: NSLayoutConstraint! = nil
 
-    init(viewContext: NSManagedObjectContext, showProjects: Bool, showPastTasks: Bool) {
+    private var isScrolledToTop: ObservableBool
+
+    init(viewContext: NSManagedObjectContext,
+         showProjects: Bool,
+         showPastTasks: Bool,
+         isScrolledToTop: ObservableBool) {
         self.viewContext = viewContext
         self.showProjects = showProjects
         self.showPastTasks = showPastTasks
+        self.isScrolledToTop = isScrolledToTop
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -182,6 +190,7 @@ class TaskListViewController: UIViewController {
         collectionView.dragDelegate = self
         collectionView.dropDelegate = self
         collectionView.keyboardDismissMode = .interactive
+        collectionView.delegate = self // UIScrollViewDelegate
     }
 
     private func createProjectsLayout(_ layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
@@ -444,6 +453,19 @@ extension TaskListViewController: UICollectionViewDropDelegate {
 
     func collectionView(_ collectionView: UICollectionView,
                         performDropWith coordinator: UICollectionViewDropCoordinator) {
+    }
+}
+
+extension TaskListViewController: UICollectionViewDelegate, UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        Task { @MainActor in
+            let scrollOffset = scrollView.contentOffset.y + scrollView.safeAreaInsets.top
+            if !isScrolledToTop.value && scrollOffset <= 0 {
+                isScrolledToTop.value = true
+            } else if isScrolledToTop.value && scrollOffset > 0 {
+                isScrolledToTop.value = false
+            }
+        }
     }
 }
 

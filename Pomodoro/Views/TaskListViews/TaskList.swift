@@ -20,9 +20,12 @@ struct TaskList: View {
     @FetchRequest(fetchRequest: TasksData.yesterdaysTasksRequest)
     var yesterdaysTasks: FetchedResults<TaskNote>
 
+    @StateObject var isScrolledToTop = ObservableBool(true)
+
     var body: some View {
-        TaskListCollectionView(showProjects: $showProjects,
-                               showPastTasks: $showPastTasks)
+        TaskListCollectionView(showProjects: showProjects,
+                               showPastTasks: showPastTasks,
+                               isScrolledToTop: isScrolledToTop)
             .ignoresSafeArea(.keyboard)
             .background(Color("Background").ignoresSafeArea())
             .navigationBarTitleDisplayMode(.inline)
@@ -48,6 +51,15 @@ struct TaskList: View {
                 .navigationDestination(isPresented: $showingArchivedProjects) {
                     ArchivedProjectsView()
                 }
+            }
+            .ignoresSafeArea(edges: .vertical)
+            .safeAreaInset(edge: .top) {
+                Color.clear
+                    .frame(height: 0)
+                    .background(.bar)
+                    .border(.thinMaterial)
+                    .opacity(isScrolledToTop.value ? 0.0 : 1.0)
+                    .animation(.easeInOut(duration: 0.15), value: isScrolledToTop.value)
             }
     }
 
