@@ -27,9 +27,10 @@ struct ContentView: View {
 
     var body: some View {
         TabView {
-            MainPage(pomoTimer: pomoTimer)
-            ChangerPage(pomoTimer: pomoTimer)
+            MainPage()
+            ChangerPage()
         }
+        .environmentObject(pomoTimer)
         .opacity(isLuminanceReduced ? 0.6 : 1.0)
         .onAppear {
             getNotificationPermissions()

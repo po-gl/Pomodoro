@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PomoStepper: View {
     @Environment(\.colorScheme) private var colorScheme
-    @ObservedObject var pomoTimer: PomoTimer
+    @EnvironmentObject var pomoTimer: PomoTimer
 
     var pomoChangeAnimation: Animation = .interpolatingSpring(stiffness: 190, damping: 13)
 

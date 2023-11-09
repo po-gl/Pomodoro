@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct ButtonCluster: View {
-    @ObservedObject var pomoTimer: PomoTimer
+    @EnvironmentObject var pomoTimer: PomoTimer
 
     var startStopAnimation: Animation = .interpolatingSpring(stiffness: 190, damping: 13)
 

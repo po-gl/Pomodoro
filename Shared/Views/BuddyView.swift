@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BuddyView: View {
-    @ObservedObject var pomoTimer: PomoTimer
+    @EnvironmentObject var pomoTimer: PomoTimer
 
     var metrics: GeometryProxy
     var barWidth: Double { metrics.size.width - 32.0 }
@@ -63,7 +63,8 @@ struct BuddyView_Previews: PreviewProvider {
     static let pomoTimer = PomoTimer()
     static var previews: some View {
         GeometryReader { proxy in
-            BuddyView(pomoTimer: pomoTimer, metrics: proxy)
+            BuddyView(metrics: proxy)
+                .environmentObject(pomoTimer)
                 .frame(width: 20)
         }
     }

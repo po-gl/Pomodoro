@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ButtonCluster: View {
     @Environment(\.isLuminanceReduced) private var isLuminanceReduced
-    @ObservedObject var pomoTimer: PomoTimer
+    @EnvironmentObject var pomoTimer: PomoTimer
 
     var body: some View {
         HStack {

@@ -13,7 +13,7 @@ struct ProgressBar: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.colorScheme) var colorScheme
-    @ObservedObject var pomoTimer: PomoTimer
+    @EnvironmentObject var pomoTimer: PomoTimer
 
     var metrics: GeometryProxy
 
@@ -199,8 +199,7 @@ struct ProgressBar: View {
                         if i < taskNotes.draggableTasksOnBar.count {
                             TaskLabel(index: i, taskNotes: taskNotes,
                                       taskFromAdder: taskFromAdder,
-                                      draggableTask: $taskNotes.draggableTasksOnBar[i],
-                                      pomoTimer: pomoTimer)
+                                      draggableTask: $taskNotes.draggableTasksOnBar[i])
                         }
                     }
                 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ChangerPage: View {
-    @ObservedObject var pomoTimer: PomoTimer
+    @EnvironmentObject var pomoTimer: PomoTimer
     var pomoChangeAnimation: Animation = .interpolatingSpring(stiffness: 190, damping: 13)
 
     var body: some View {

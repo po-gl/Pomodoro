@@ -15,7 +15,7 @@ struct TaskLabel: View {
     @State var taskFromAdder: DraggableTask
     @Binding var draggableTask: DraggableTask
 
-    @ObservedObject var pomoTimer: PomoTimer
+    @EnvironmentObject var pomoTimer: PomoTimer
 
     @State var presentingNoteOptions = false
     @State var presentingNoteRename = false

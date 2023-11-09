@@ -35,6 +35,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             mainPage
+                .environmentObject(pomoTimer)
                 .reverseStatusBarColor()
                 .ignoresSafeArea()
                 .onAppear {
@@ -88,11 +89,11 @@ struct ContentView: View {
         ZStack {
             TopButton(destination: {
                 TaskList()
-            }, pomoTimer: pomoTimer)
-                .zIndex(1)
+            })
+            .zIndex(1)
 
             ZStack {
-                Background(pomoTimer: pomoTimer)
+                Background()
                     .animation(.default, value: pomoTimer.isPaused)
 
                 TaskAdderView(taskFromAdder: $taskFromAdder)
@@ -108,28 +109,27 @@ struct ContentView: View {
     @ViewBuilder private var mainStack: some View {
         GeometryReader { proxy in
             VStack {
-                TimerDisplay(pomoTimer: pomoTimer)
+                TimerDisplay()
                     .padding(.top, 50)
 
                 Spacer()
 
                 ZStack {
-                    ProgressBar(pomoTimer: pomoTimer, metrics: proxy,
-                                taskFromAdder: $taskFromAdder)
+                    ProgressBar(metrics: proxy, taskFromAdder: $taskFromAdder)
                     .frame(maxHeight: 130)
-                    BuddyView(pomoTimer: pomoTimer, metrics: proxy)
+                    BuddyView(metrics: proxy)
                         .offset(y: -7)
                         .brightness(colorScheme == .dark ? 0.0 : 0.1)
                 }
                 HStack {
                     Spacer()
-                    PomoStepper(pomoTimer: pomoTimer)
+                    PomoStepper()
                         .offset(y: -20)
                         .padding(.trailing, 20)
                 }
                 .padding(.bottom, 20)
 
-                ButtonCluster(pomoTimer: pomoTimer)
+                ButtonCluster()
                     .padding(.bottom, 50)
             }
         }

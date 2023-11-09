@@ -10,7 +10,7 @@ import SwiftUI
 
 struct TimerDisplay: View {
     @Environment(\.isLuminanceReduced) private var isLuminanceReduced
-    @ObservedObject var pomoTimer: PomoTimer
+    @EnvironmentObject var pomoTimer: PomoTimer
 
     var metrics: GeometryProxy
 

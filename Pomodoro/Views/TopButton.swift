@@ -10,7 +10,7 @@ import SwiftUI
 struct TopButton<Destination: View>: View {
     @Environment(\.colorScheme) private var colorScheme
     @ViewBuilder let destination: () -> Destination
-    @ObservedObject var pomoTimer: PomoTimer
+    @EnvironmentObject var pomoTimer: PomoTimer
 
     var body: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: pomoTimer.isPaused ? 60.0 : 1.0)) { context in

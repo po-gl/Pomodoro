@@ -10,7 +10,7 @@ import SwiftUI
 
 struct TimerDisplay: View {
     @Environment(\.colorScheme) private var colorScheme
-    @ObservedObject var pomoTimer: PomoTimer
+    @EnvironmentObject var pomoTimer: PomoTimer
 
     let startStopAnimation: Animation = .interpolatingSpring(stiffness: 190, damping: 13)
 
