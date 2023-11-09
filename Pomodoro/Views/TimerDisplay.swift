@@ -10,6 +10,7 @@ import SwiftUI
 
 struct TimerDisplay: View {
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @EnvironmentObject var pomoTimer: PomoTimer
 
     let startStopAnimation: Animation = .interpolatingSpring(stiffness: 190, damping: 13)
@@ -54,8 +55,13 @@ struct TimerDisplay: View {
         let color = getColorForStatus(pomoTimer.getStatus(atDate: date))
         let fgColor = colorScheme == .dark ? color : .black
         let bgColor = colorScheme == .dark ? .black : color
-        Text(pomoTimer.getStatusString(atDate: date))
-            .font(.system(size: 30, weight: .thin, design: .serif))
+        let text = if pomoTimer.getStatus(atDate: date) == .longBreak && isLargerDynamicFont {
+            "Break"
+        } else {
+            pomoTimer.getStatusString(atDate: date)
+        }
+        Text(text)
+            .font(.system(.title, design: .serif, weight: .thin))
             .foregroundColor(fgColor)
             .padding(.horizontal, 8)
             .padding(.vertical, 2)
@@ -74,7 +80,7 @@ struct TimerDisplay: View {
         let color = colorScheme == .dark ? getColorForStatus(pomoTimer.getStatus(atDate: date)) : .white
         Text("until \(date.addingTimeInterval(pomoTimer.timeRemaining(atDate: date)), formatter: timeFormatter)")
             .colorScheme(colorScheme == .dark ? .light : .dark)
-            .font(.system(size: 17, weight: .regular, design: .serif))
+            .font(.system(.headline, design: .serif, weight: .regular))
             .monospacedDigit()
             .foregroundColor(color)
             .brightness(colorScheme == .dark ? -0.45 : -0.5)
@@ -96,11 +102,11 @@ struct TimerDisplay: View {
         HStack(spacing: 0) {
             ForEach(0..<pomoTimer.pomoCount, id: \.self) { i in
                 Text("🍅")
-                    .font(.system(size: 23))
+                    .font(.title2)
                     .opacity(pomoTimer.currentPomo(atDate: date) <= i+1 ? 1.0 : 0.3)
                     .background(
                         Text("🍅")
-                            .font(.system(size: 23))
+                            .font(.title2)
                             .scaleEffect(1.0)
                             .brightness(-1.0).opacity(colorScheme == .dark ? 1.0 : 0.0))
                     .brightness(colorScheme == .dark ? -0.1 : 0.0)
@@ -121,6 +127,17 @@ struct TimerDisplay: View {
         }
     }
 
+    private var isLargerDynamicFont: Bool {
+        if dynamicTypeSize.isAccessibilitySize {
+            return true
+        }
+        switch dynamicTypeSize {
+        case .xxLarge, .xxxLarge:
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 private let timeFormatter: DateFormatter = {

@@ -35,7 +35,8 @@ struct TopButton<Destination: View>: View {
 
         NavigationLink(destination: destination) {
             Image(systemName: "checklist")
-                .frame(width: 50, height: 32)
+                .padding(.vertical, 5)
+                .padding(.horizontal, 12)
                 .foregroundColor(foregroundColor)
                 .background(RoundedRectangle(cornerRadius: 30)
                     .foregroundColor(backgroundColor).shadow(radius: 2, x: 1, y: 1)

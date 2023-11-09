@@ -17,9 +17,9 @@ struct PomoStepper: View {
         HStack {
             HStack(spacing: 0) {
                 Text("\(pomoTimer.pomoCount) ")
-                    .font(.system(size: 23, weight: .semibold, design: .monospaced))
+                    .font(.system(.title2, design: .monospaced, weight: .semibold))
                 Text("pomodoros")
-                    .font(.system(size: 20, weight: .regular, design: .monospaced))
+                    .font(.system(.title3, design: .monospaced, weight: .regular))
             }
             pomoStepper
                 .scaleEffect(0.8)

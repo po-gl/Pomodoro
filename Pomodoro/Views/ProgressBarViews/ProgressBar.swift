@@ -59,12 +59,9 @@ struct ProgressBar: View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: pomoTimer.isPaused ? 60.0 : 1.0)) { context in
             VStack(spacing: 0) {
                 HStack {
-                    Text("progress")
-                        .font(.system(size: 15, design: .monospaced))
-                        .opacity(0)
                     Spacer()
                     Text("\(Int(pomoTimer.getProgress(atDate: context.date) * 100))%")
-                        .font(.system(size: 15, design: .monospaced))
+                        .font(.system(.subheadline, design: .monospaced))
                 }
                 .padding(.bottom, 8)
 
