@@ -8,8 +8,13 @@
 import SwiftUI
 
 extension View {
-    func reverseStatusBarColor() -> some View {
-        ModifiedContent(content: self, modifier: ReverseStatusBarColorModifier())
+    @ViewBuilder func reverseStatusBarColor() -> some View {
+        // iOS 17 automatically determines statusbar color based on background
+        if #available(iOS 17, *) {
+            self
+        } else {
+            ModifiedContent(content: self, modifier: ReverseStatusBarColorModifier())
+        }
     }
 }
 
@@ -20,6 +25,7 @@ struct ReverseStatusBarColorModifier: ViewModifier {
         HostingView(colorScheme: colorScheme) {
             content
         }
+        .ignoresSafeArea()
     }
 }
 

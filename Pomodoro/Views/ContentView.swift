@@ -37,7 +37,6 @@ struct ContentView: View {
             mainPage
                 .environmentObject(pomoTimer)
                 .reverseStatusBarColor()
-                .ignoresSafeArea()
                 .onAppear {
                     getNotificationPermissions()
                     viewContext.undoManager = undoManager
