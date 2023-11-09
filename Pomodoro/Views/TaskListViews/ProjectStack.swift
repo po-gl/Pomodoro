@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ProjectStack: View {
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.managedObjectContext) private var viewContext
 
     @FetchRequest(fetchRequest: ProjectsData.currentProjectsRequest)
@@ -16,7 +17,7 @@ struct ProjectStack: View {
 
     @ObservedObject var isCollapsed: ObservableBool
 
-    let collapsedRowHeight: Double = 85
+    var collapsedRowHeight: Double { !dynamicTypeSize.isAccessibilitySize ? 85 : 135 }
 
     var body: some View {
         HStack(alignment: .top) {
