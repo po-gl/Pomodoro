@@ -70,13 +70,6 @@ struct ContentView: View {
                         didReceiveSyncFromWatchConnection = true
                     }
                 }
-
-                .onOpenURL { url in
-                    if url.absoluteString == "com.po-gl.stop" {
-                        pomoTimer.pause()
-                        pomoTimer.saveToUserDefaults()
-                    }
-                }
         }
         .navigationViewStyle(.stack)
         .tint(Color("NavigationAccent"))
