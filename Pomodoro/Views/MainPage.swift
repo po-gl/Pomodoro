@@ -13,6 +13,8 @@ struct MainPage: View {
     @EnvironmentObject var pomoTimer: PomoTimer
     @State var taskFromAdder = DraggableTask()
 
+    @State var dragOffset = CGFloat.zero
+
     var body: some View {
         ZStack {
             TopButton(destination: {
@@ -21,7 +23,7 @@ struct MainPage: View {
             .zIndex(1)
 
             ZStack {
-                Background()
+                Background(pickOffset: dragOffset)
                     .animation(.default, value: pomoTimer.isPaused)
 
                 TaskAdderView(taskFromAdder: $taskFromAdder)
@@ -40,25 +42,29 @@ struct MainPage: View {
                 TimerDisplay()
                     .padding(.top, 50)
 
-                Spacer()
+                Color.clear.contentShape(Rectangle())
+                    .verticalDragGesture(offset: $dragOffset, clampedTo: -20..<80)
 
                 ZStack {
-                    ProgressBar(metrics: proxy, taskFromAdder: $taskFromAdder)
-                        .frame(maxHeight: 130)
+                    ProgressBar(metrics: proxy, taskFromAdder: $taskFromAdder, peekOffset: dragOffset)
+                        .frame(maxHeight: 60)
                     BuddyView(metrics: proxy)
                         .offset(y: -7)
                         .brightness(colorScheme == .dark ? 0.0 : 0.1)
                 }
+                .verticalOffsetEffect(for: dragOffset, .bouncy)
+
                 HStack {
                     Spacer()
                     PomoStepper()
-                        .offset(y: -20)
-                        .padding(.trailing, 20)
+                        .padding(20)
                 }
                 .padding(.bottom, 20)
+                .verticalOffsetEffect(for: dragOffset, .bouncy)
 
                 ButtonCluster()
                     .padding(.bottom, 50)
+                    .verticalOffsetEffect(for: dragOffset, .spring, factor: 0.7)
             }
         }
         .ignoresSafeArea(.keyboard)

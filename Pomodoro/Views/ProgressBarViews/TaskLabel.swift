@@ -15,6 +15,8 @@ struct TaskLabel: View {
     @State var taskFromAdder: DraggableTask
     @Binding var draggableTask: DraggableTask
 
+    var peekOffset = CGFloat.zero
+
     @EnvironmentObject var pomoTimer: PomoTimer
 
     @State var presentingNoteOptions = false
@@ -28,7 +30,7 @@ struct TaskLabel: View {
     var body: some View {
         GeometryReader { geometry in
             let text: String = index < taskNotes.tasksOnBar.count ? taskNotes.tasksOnBar[index] : ""
-            AngledText(text: text, isBeingDragged: draggableTask.isDragging)
+            AngledText(text: text, isBeingDragged: draggableTask.isDragging, peekOffset: peekOffset)
                 .accessibilityIdentifier("TaskLabel_\(text)")
                 .accessibilityAddTraits(.isButton)
 

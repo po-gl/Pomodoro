@@ -72,6 +72,10 @@
 		614DA2B52997BE6C00EFC91C /* Color+isDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */; };
 		61569CDB2B0031E600DFC977 /* MainPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61569CDA2B0031E600DFC977 /* MainPage.swift */; };
 		61569CDC2B0031E600DFC977 /* MainPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61569CDA2B0031E600DFC977 /* MainPage.swift */; };
+		61569CDE2B0036B200DFC977 /* View+verticalDragGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61569CDD2B0036B200DFC977 /* View+verticalDragGesture.swift */; };
+		61569CDF2B0036B200DFC977 /* View+verticalDragGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61569CDD2B0036B200DFC977 /* View+verticalDragGesture.swift */; };
+		61569CE12B005FAF00DFC977 /* View+verticalOffsetEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61569CE02B005FAF00DFC977 /* View+verticalOffsetEffect.swift */; };
+		61569CE22B005FAF00DFC977 /* View+verticalOffsetEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61569CE02B005FAF00DFC977 /* View+verticalOffsetEffect.swift */; };
 		6172B49F297F57C100E53D8F /* View+Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B17250285CFCBB001C8245 /* View+Modifier.swift */; };
 		6172B4A0297F57C400E53D8F /* UIView+ClosestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B17252285CFCF8001C8245 /* UIView+ClosestVC.swift */; };
 		6172B4A1297F57C900E53D8F /* TimeInterval+formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9087285CC863003F1990 /* TimeInterval+formatter.swift */; };
@@ -370,6 +374,8 @@
 		614DA2A62997BE3C00EFC91C /* PopStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopStyle.swift; sourceTree = "<group>"; };
 		614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+isDark.swift"; sourceTree = "<group>"; };
 		61569CDA2B0031E600DFC977 /* MainPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPage.swift; sourceTree = "<group>"; };
+		61569CDD2B0036B200DFC977 /* View+verticalDragGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+verticalDragGesture.swift"; sourceTree = "<group>"; };
+		61569CE02B005FAF00DFC977 /* View+verticalOffsetEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+verticalOffsetEffect.swift"; sourceTree = "<group>"; };
 		615E7F2D290B7DA9005BD3AE /* PomodoroWatch Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "PomodoroWatch Watch App.entitlements"; sourceTree = "<group>"; };
 		615E7F2E290B7DB0005BD3AE /* WatchWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WatchWidgetExtension.entitlements; sourceTree = "<group>"; };
 		6172B4AA297F5EC600E53D8F /* iOSWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = iOSWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -582,6 +588,8 @@
 				61AEA85F29CE59D0007AA1AD /* View+scrollToOnFocus.swift */,
 				611A7CE02A380F2D0038AE56 /* View+draggableTask.swift */,
 				610595A32A4B783B00A83804 /* View+globalPosition.swift */,
+				61569CDD2B0036B200DFC977 /* View+verticalDragGesture.swift */,
+				61569CE02B005FAF00DFC977 /* View+verticalOffsetEffect.swift */,
 				61B17252285CFCF8001C8245 /* UIView+ClosestVC.swift */,
 				614533CA2A27353B00388136 /* Color+Interpolate.swift */,
 				618750F429BABCFE0017BF8E /* Point+Extensions.swift */,
@@ -1212,6 +1220,7 @@
 				617CF52C2AEB80F90040E50B /* WrappingHStack.swift in Sources */,
 				61F7363029C00CCE00289149 /* Pomodoro.xcdatamodeld in Sources */,
 				612B9088285CC863003F1990 /* TimeInterval+formatter.swift in Sources */,
+				61569CE12B005FAF00DFC977 /* View+verticalOffsetEffect.swift in Sources */,
 				617789B22856A1F300BD43D7 /* PomodoroApp.swift in Sources */,
 				61569CDB2B0031E600DFC977 /* MainPage.swift in Sources */,
 				618755A12AE21D6200FC1564 /* ProjectCell.swift in Sources */,
@@ -1227,6 +1236,7 @@
 				61E4681A2AEC6961001F6D7B /* View+overrideAction.swift in Sources */,
 				61F67BA32A3B042F00318CDC /* ProjectInfoView.swift in Sources */,
 				61D5808829BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */,
+				61569CDE2B0036B200DFC977 /* View+verticalDragGesture.swift in Sources */,
 				617CF50E2AE8C0A90040E50B /* ObservableBool.swift in Sources */,
 				611A7CE12A380F2D0038AE56 /* View+draggableTask.swift in Sources */,
 				6131C0AA2911F6E200D1E6F1 /* BuddyView.swift in Sources */,
@@ -1269,6 +1279,7 @@
 				617CF52D2AEB80F90040E50B /* WrappingHStack.swift in Sources */,
 				617CF50F2AE8C0A90040E50B /* ObservableBool.swift in Sources */,
 				61E22AAB297B975B0080CA6E /* Color+hex.swift in Sources */,
+				61569CE22B005FAF00DFC977 /* View+verticalOffsetEffect.swift in Sources */,
 				61E22AA7297B31500080CA6E /* Notifications.swift in Sources */,
 				61E22AA5297B31270080CA6E /* Haptics.swift in Sources */,
 				614533CC2A27353B00388136 /* Color+Interpolate.swift in Sources */,
@@ -1324,6 +1335,7 @@
 				61F7361529BEBBC800289149 /* TopButton.swift in Sources */,
 				61E22AA3297B311E0080CA6E /* PomoTimer.swift in Sources */,
 				61C6BC1429C0364000AF48DE /* View+onSubmitWithVerticalText.swift in Sources */,
+				61569CDF2B0036B200DFC977 /* View+verticalDragGesture.swift in Sources */,
 				6187510629BBDDBB0017BF8E /* PomodoroApp.swift in Sources */,
 				61BE18C72A295E3700082875 /* Date+compare.swift in Sources */,
 				6172B4CC297F848C00E53D8F /* iOSWidgetLiveActivity.swift in Sources */,

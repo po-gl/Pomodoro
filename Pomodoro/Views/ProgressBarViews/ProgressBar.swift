@@ -20,6 +20,8 @@ struct ProgressBar: View {
     @StateObject var taskNotes = TasksOnBar()
     @Binding var taskFromAdder: DraggableTask
 
+    var peekOffset = CGFloat.zero
+
     @State var dragValue = 0.0
     @State var isDragging = false
     @State var dragStarted = false
@@ -196,7 +198,8 @@ struct ProgressBar: View {
                         if i < taskNotes.draggableTasksOnBar.count {
                             TaskLabel(index: i, taskNotes: taskNotes,
                                       taskFromAdder: taskFromAdder,
-                                      draggableTask: $taskNotes.draggableTasksOnBar[i])
+                                      draggableTask: $taskNotes.draggableTasksOnBar[i],
+                                      peekOffset: peekOffset)
                         }
                     }
                 }

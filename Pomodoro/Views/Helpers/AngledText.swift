@@ -9,11 +9,18 @@ import SwiftUI
 
 struct AngledText: View {
     var text: String
-    var width: Double = 200
+    var height: Double = 150
     var lineWidth: Double = 20
     var offset: Double = -40
+    var angle: Double = -45
 
     var isBeingDragged: Bool = false
+
+    var peekOffset = CGFloat.zero
+
+    var textWidth: CGFloat {
+        (height + peekOffset) / sin(abs(angle) * .pi / 180)
+    }
 
     var body: some View {
         angledText
@@ -24,11 +31,12 @@ struct AngledText: View {
     }
 
     @ViewBuilder private var angledText: some View {
+        let calculatedWidth = textWidth
         Text(text)
             .font(.system(.callout, design: .monospaced, weight: .medium))
-            .frame(width: width, alignment: .leading)
-            .offset(x: width/2)
-            .rotationEffect(.degrees(-45))
+            .frame(width: calculatedWidth, alignment: .leading)
+            .offset(x: calculatedWidth/2)
+            .rotationEffect(.degrees(angle))
             .offset(y: offset)
             .opacity(text.isEmpty ? 0.0 : 1.0)
     }
@@ -43,7 +51,7 @@ struct AngledText: View {
             Rectangle()
                 .frame(width: lineWidth/2, height: 1)
                 .offset(x: -5)
-                .rotationEffect(.degrees(-45))
+                .rotationEffect(.degrees(angle))
                 .offset(y: offset)
         }
         .opacity(text.isEmpty ? 0.0 : 1.0)

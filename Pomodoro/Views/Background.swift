@@ -12,15 +12,17 @@ struct Background: View {
 
     @EnvironmentObject var pomoTimer: PomoTimer
 
+    var pickOffset = CGFloat.zero
+
     var body: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: pomoTimer.isPaused ? 60.0 : 1.0)) { context in
             GeometryReader { geometry in
                 VStack(spacing: 0) {
                     top(at: context.date)
                         .frame(height: getTopFrameHeight(proxy: geometry))
-                    pickGradient.zIndex(1)
+                    pickGradient.zIndex(2)
+                        .verticalOffsetEffect(for: pickOffset, .spring, factor: 0.14)
                     bottom(at: context.date, geometry: geometry)
-
                 }
                 .ignoresSafeArea()
                 .animation(.easeInOut(duration: 0.3), value: pomoTimer.getStatus(atDate: context.date))
@@ -65,11 +67,11 @@ struct Background: View {
         ZStack(alignment: .top) {
             softGradient
                 .frame(height: 30)
+                .offset(y: colorScheme == .dark ? 25 : -5)
                 .rotationEffect(.degrees(colorScheme == .dark ? 180 : 0))
-                .offset(y: colorScheme == .dark ? -10 : 15)
             Image("PickGradient")
                 .frame(width: 0, height: 0)
-                .offset(y: colorScheme == .dark ? 0 : 35)
+                .offset(y: colorScheme == .dark ? 15 : 45)
                 .rotationEffect(.degrees(colorScheme == .dark ? 180 : 0))
         }
         .animation(nil, value: colorScheme)
@@ -119,7 +121,7 @@ struct Background: View {
     }
 
     private func getTopFrameHeight(proxy: GeometryProxy) -> Double {
-        let height = proxy.size.height / 2.5 + (colorScheme == .dark ? 15.0 : -25.0)
+        let height = proxy.size.height / 2.5 + (colorScheme == .dark ? 30.0 : -35.0)
         return max(height, 0)
     }
 }
