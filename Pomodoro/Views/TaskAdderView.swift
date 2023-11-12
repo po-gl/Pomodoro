@@ -30,6 +30,7 @@ struct TaskAdderView: View {
                     .animation(.easeInOut, value: taskFromAdder.text)
                     .position(taskFromAdder.location ?? startLocation)
                     .draggableTask($taskFromAdder)
+                    .zIndex(1)
 
                 dragHint
                     .position(startLocation)
@@ -86,23 +87,34 @@ struct TaskAdderView: View {
 
     @ViewBuilder private var touchCircle: some View {
         let width: Double = taskFromAdder.isDragging ? 15 : 25
+        let extraSize = CGSize(width: 5, height: 40)
         let strokeWidth: Double = 1.2
         let gap: Double = taskFromAdder.text.isEmpty ? 8 : 10
-        Circle()
-            .strokeBorder(style: StrokeStyle(lineWidth: strokeWidth))
-            .frame(width: width)
-            .background(
-                Circle()
-                    .opacity(0.25)
-                    .frame(width: width - gap - strokeWidth)
-            )
-            .overlay(
+        GeometryReader { geometry in
+            ZStack(alignment: .trailing) {
                 Circle()
                     .strokeBorder(style: StrokeStyle(lineWidth: strokeWidth))
-                    .frame(width: width - gap)
-            )
-            .opacity(0.7)
+                    .frame(width: width)
+                    .background(
+                        Circle()
+                            .opacity(0.25)
+                            .frame(width: width - gap - strokeWidth)
+                    )
+                    .overlay(
+                        Circle()
+                            .strokeBorder(style: StrokeStyle(lineWidth: strokeWidth))
+                            .frame(width: width - gap)
+                    )
+                    .opacity(0.7)
+
+                Color.clear
+                    .contentShape(Rectangle())
+                    .frame(width: width + extraSize.width, height: geometry.size.height + extraSize.height)
+            }
+            .position(x: geometry.size.width/2, y: geometry.size.height/2)
+            .offset(x: -extraSize.width/2)
             .accessibilityIdentifier("DraggableTask")
+        }
     }
 
     @ViewBuilder private var dragHint: some View {
