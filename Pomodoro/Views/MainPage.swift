@@ -28,6 +28,7 @@ struct MainPage: View {
 
                 TaskAdderView(taskFromAdder: $taskFromAdder)
                     .zIndex(1)
+                    .verticalOffsetEffect(for: dragOffset, .spring, factor: 0.3)
 
                 mainStack
             }

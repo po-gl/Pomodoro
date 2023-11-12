@@ -20,7 +20,7 @@ struct VerticalOffsetEffectModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .offset(y: offset * factor)
+            .offset(y: offset * factor * 0.667)
             .animation(animation, value: offset)
     }
 }
