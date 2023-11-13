@@ -33,6 +33,9 @@ struct TaskLabel: View {
             AngledText(text: text, isBeingDragged: draggableTask.isDragging, peekOffset: peekOffset)
                 .accessibilityIdentifier("TaskLabel_\(text)")
                 .accessibilityAddTraits(.isButton)
+                .overlay {
+                    completedMark
+                }
 
                 .globalPosition(draggableTask.location ?? CGPoint(x: geometry.frame(in: .global).midX,
                                                                   y: geometry.frame(in: .global).midY))
@@ -81,6 +84,19 @@ struct TaskLabel: View {
     private func setDraggableTaskStartLocation(geometry: GeometryProxy) {
         let frame = geometry.frame(in: .global)
         draggableTask.startLocation = CGPoint(x: frame.midX, y: frame.midY)
+    }
+
+    @ViewBuilder private var completedMark: some View {
+        if let taskNote = TasksData.taskInTodaysTasks(matching: text, context: viewContext) {
+            Image(systemName: "checkmark.circle", variableValue: 0.5)
+                .symbolRenderingMode(.palette)
+                .resizable()
+                .frame(width: 15, height: 15)
+                .offset(x: -16, y: -45)
+                .foregroundStyle(.primary, .primary.opacity(0.8))
+                .opacity(taskNote.completed ? 1.0 : 0.0)
+                .animation(.spring, value: taskNote.completed)
+        }
     }
 
     @ViewBuilder private var confirmationDialogButtons: some View {
