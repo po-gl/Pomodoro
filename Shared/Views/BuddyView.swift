@@ -23,6 +23,13 @@ struct BuddyView: View {
 
     @State var buddies: [Buddy] = [.tomato, .blueberry, .banana]
 
+    var xOffsetForProgress: Double {
+        let safeBarWidth = max(endingXOffset, 40)
+        return (barWidth * pomoTimer.getProgress()).clamped(to: 40...safeBarWidth)
+    }
+
+    var startStopAnimation: Animation = .interpolatingSpring(stiffness: 190, damping: 13)
+
     var body: some View {
         HStack(spacing: -3) {
             ForEach(Array(buddies.enumerated()), id: \.element) { _, buddy in
@@ -34,7 +41,9 @@ struct BuddyView: View {
             buddies.shuffle()
         }
         .offset(x: -metrics.size.width/2 + startingXOffset)
-        .offset(x: xOffsetForProgress())
+        .offset(x: xOffsetForProgress)
+        .animation(startStopAnimation, value: pomoTimer.isPaused)
+        .animation(.spring(duration: 2.0), value: xOffsetForProgress)
     }
 
     @ViewBuilder
@@ -45,11 +54,6 @@ struct BuddyView: View {
                                    : AnimatedImageData(imageNames: (1...10).map { "\(buddy.rawValue)\($0)" },
                                                        loops: true)
         AnimatedImage(data: animationData)
-    }
-
-    private func xOffsetForProgress() -> Double {
-        let safeBarWidth = max(endingXOffset, 40)
-        return (barWidth * pomoTimer.getProgress()).clamped(to: 40...safeBarWidth)
     }
 }
 
