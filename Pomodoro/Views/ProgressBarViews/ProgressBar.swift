@@ -167,18 +167,20 @@ struct ProgressBar: View {
     private func progressIndicator(at date: Date) -> some View {
         HStack(spacing: 0) {
             Spacer(minLength: 0)
-            Rectangle().fill(.clear).frame(width: 1, height: barHeight).overlay(
-                AnimatedImage(data: AnimatedImageData(imageNames: (1...10).map { "PickIndicator\($0)" },
-                                                      interval: 0.2,
-                                                      loops: true))
-                    .scaleEffect(50)
-                    .opacity(0.7)
-            )
 
             Rectangle()
                 .foregroundColor(colorScheme == .dark ? .black.opacity(0.5) : .white.opacity(0.5))
                 .blendMode(colorScheme == .dark ? .colorBurn : .colorDodge)
                 .frame(width: max(getBarWidth() * (1 - pomoTimer.getProgress(atDate: date)), 0), height: barHeight)
+                .overlay(alignment: .leading) {
+                    Rectangle().fill(.clear).frame(width: 1, height: barHeight).overlay(
+                        AnimatedImage(data: AnimatedImageData(imageNames: (1...10).map { "PickIndicator\($0)" },
+                                                              interval: 0.2,
+                                                              loops: true))
+                        .scaleEffect(50)
+                        .opacity(0.7)
+                    )
+                }
         }
         .mask { RoundedRectangle(cornerRadius: 7) }
     }
