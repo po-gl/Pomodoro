@@ -36,7 +36,8 @@ struct ContentView: View {
                 .environmentObject(pomoTimer)
                 .reverseStatusBarColor()
                 .onAppear {
-                    getNotificationPermissions()
+                    AppNotifications.shared.getNotificationPermissions()
+                    UIApplication.shared.registerForRemoteNotifications()
                     viewContext.undoManager = undoManager
                 }
 
@@ -44,14 +45,14 @@ struct ContentView: View {
                     print("Phase \(newPhase)")
                     if newPhase == .active {
                         pomoTimer.restoreFromUserDefaults()
-                        cancelPendingNotifications()
+                        AppNotifications.shared.cancelPendingNotifications()
                         Haptics.shared.prepareHaptics()
                         setupWatchConnection()
                     } else if newPhase == .inactive || newPhase == .background {
                         pomoTimer.saveToUserDefaults()
                         WidgetCenter.shared.reloadAllTimelines()
                         if !didReceiveSyncFromWatchConnection {
-                            Task { await setupNotifications(pomoTimer) }
+                            Task { await AppNotifications.shared.setupNotifications(pomoTimer) }
                         }
                     }
                 }

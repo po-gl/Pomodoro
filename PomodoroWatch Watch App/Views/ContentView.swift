@@ -33,14 +33,14 @@ struct ContentView: View {
         .environmentObject(pomoTimer)
         .opacity(isLuminanceReduced ? 0.6 : 1.0)
         .onAppear {
-            getNotificationPermissions()
+            AppNotifications.shared.getNotificationPermissions()
             startBackgroundSessionIfDidNotReceiveWCSync()
         }
         .onChange(of: scenePhase) { newPhase in
             print("Phase \(newPhase)")
             if newPhase == .active {
                 pomoTimer.restoreFromUserDefaults()
-                cancelPendingNotifications()
+                AppNotifications.shared.cancelPendingNotifications()
                 setupWatchConnection()
 
                 BackgroundSession.shared.stop()
@@ -50,7 +50,7 @@ struct ContentView: View {
                 pomoTimer.saveToUserDefaults()
                 WidgetCenter.shared.reloadAllTimelines()
                 if !didReceiveSyncFromWatchConnection {
-                    Task { await setupNotifications(pomoTimer) }
+                    Task { await AppNotifications.shared.setupNotifications(pomoTimer) }
                 }
             }
         }
