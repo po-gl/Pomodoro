@@ -46,7 +46,7 @@ struct ContentView: View {
                 BackgroundSession.shared.stop()
                 startBackgroundSessionIfDidNotReceiveWCSync()
 
-            } else if newPhase == .inactive || newPhase == .background {
+            } else if newPhase == .inactive {
                 pomoTimer.saveToUserDefaults()
                 WidgetCenter.shared.reloadAllTimelines()
                 if !didReceiveSyncFromWatchConnection {

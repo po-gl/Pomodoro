@@ -48,7 +48,7 @@ struct ContentView: View {
                         AppNotifications.shared.cancelPendingNotifications()
                         Haptics.shared.prepareHaptics()
                         setupWatchConnection()
-                    } else if newPhase == .inactive || newPhase == .background {
+                    } else if newPhase == .inactive {
                         pomoTimer.saveToUserDefaults()
                         WidgetCenter.shared.reloadAllTimelines()
                         if !didReceiveSyncFromWatchConnection {
