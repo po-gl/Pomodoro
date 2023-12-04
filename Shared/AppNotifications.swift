@@ -28,46 +28,17 @@ class AppNotifications {
         guard !pomoTimer.isPaused else { return }
         guard await UNUserNotificationCenter.current().pendingNotificationRequests().isEmpty else { return }
         
-        let now = Date()
 #if os(iOS)
-        let currentIndex = pomoTimer.getIndex(atDate: now)
+        let currentIndex = pomoTimer.getIndex(atDate: Date.now)
 #elseif os(watchOS)
         // watchOS uses BackgroundSession to handle the first notification
-        let currentIndex = pomoTimer.getIndex(atDate: now) + 1
+        let currentIndex = pomoTimer.getIndex(atDate: Date.now) + 1
 #endif
         
         for index in currentIndex..<pomoTimer.order.count {
-            let timeToNext = pomoTimer.timeRemaining(for: index, atDate: now)
+            let content = getNotificationContent(for: pomoTimer, at: index)
             
-            let content = UNMutableNotificationContent()
-            
-            switch pomoTimer.getStatus(atDate: now.addingTimeInterval(timeToNext)) {
-            case .work:
-                let endOfNext = now.addingTimeInterval(pomoTimer.timeRemaining(for: index+1, atDate: now))
-                content.title = "Time to rest"
-                content.body = "Work is over, take a breather until \(timeFormatter.string(from: endOfNext))."
-                content.sound = UNNotificationSound.default
-            case .rest:
-                let endOfNext = now.addingTimeInterval(pomoTimer.timeRemaining(for: index+1, atDate: now))
-                if index == pomoTimer.order.count-2 {
-                    content.title = "Take a long break"
-                    content.body = "Relax until \(timeFormatter.string(from: endOfNext))."
-                } else {
-                    content.title = "Time to work"
-                    content.body = "Your rest is over, work until \(timeFormatter.string(from: endOfNext))."
-                }
-                content.sound = UNNotificationSound.default
-            case .longBreak:
-                content.title = "\(PomoStatus.longBreak.rawValue) is over."
-                content.body = "🍅🍅🍅"
-                content.sound = UNNotificationSound.default
-            case .end:
-                let celebration: [String] = ["hike", "walk", "favorite snack"]
-                content.title = "Your pomodoros are done! 🎉"
-                content.body = "Celebrate with a \(celebration.randomElement()!)!"
-                content.sound = UNNotificationSound.default
-            }
-            
+            let timeToNext = pomoTimer.timeRemaining(for: index, atDate: Date.now)
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeToNext > 0.0 ? timeToNext : 0.1,
                                                             repeats: false)
             let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
@@ -78,6 +49,40 @@ class AppNotifications {
                 print("Error adding notification \(error.localizedDescription)")
             }
         }
+    }
+    
+    private func getNotificationContent(for pomoTimer: PomoTimer, at index: Int) -> UNMutableNotificationContent {
+        let content = UNMutableNotificationContent()
+        let now = Date.now
+        let timeToNext = pomoTimer.timeRemaining(for: index, atDate: now)
+        
+        switch pomoTimer.getStatus(atDate: now.addingTimeInterval(timeToNext)) {
+        case .work:
+            let endOfNext = now.addingTimeInterval(pomoTimer.timeRemaining(for: index+1, atDate: now))
+            content.title = "Time to rest"
+            content.body = "Work is over, take a breather until \(timeFormatter.string(from: endOfNext))."
+            content.sound = UNNotificationSound.default
+        case .rest:
+            let endOfNext = now.addingTimeInterval(pomoTimer.timeRemaining(for: index+1, atDate: now))
+            if index == pomoTimer.order.count-2 {
+                content.title = "Take a long break"
+                content.body = "Relax until \(timeFormatter.string(from: endOfNext))."
+            } else {
+                content.title = "Time to work"
+                content.body = "Your rest is over, work until \(timeFormatter.string(from: endOfNext))."
+            }
+            content.sound = UNNotificationSound.default
+        case .longBreak:
+            content.title = "\(PomoStatus.longBreak.rawValue) is over."
+            content.body = "🍅🍅🍅"
+            content.sound = UNNotificationSound.default
+        case .end:
+            let celebration: [String] = ["hike", "walk", "favorite snack"]
+            content.title = "Your pomodoros are done! 🎉"
+            content.body = "Celebrate with a \(celebration.randomElement()!)!"
+            content.sound = UNNotificationSound.default
+        }
+        return content
     }
     
     func cancelPendingNotifications() {
