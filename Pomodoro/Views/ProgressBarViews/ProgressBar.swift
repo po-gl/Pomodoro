@@ -17,7 +17,7 @@ struct ProgressBar: View {
 
     var metrics: GeometryProxy
 
-    @StateObject var taskNotes = TasksOnBar()
+    @EnvironmentObject var taskNotes: TasksOnBar
     @Binding var taskFromAdder: DraggableTask
 
     var peekOffset = CGFloat.zero

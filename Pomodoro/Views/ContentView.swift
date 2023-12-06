@@ -19,6 +19,7 @@ struct ContentView: View {
     @Environment(\.undoManager) private var undoManager
 
     @ObservedObject var pomoTimer: PomoTimer
+    @StateObject var tasksOnBar = TasksOnBar()
 
     @State var didReceiveSyncFromWatchConnection = false
 
@@ -34,6 +35,7 @@ struct ContentView: View {
         NavigationStack {
             MainPage()
                 .environmentObject(pomoTimer)
+                .environmentObject(tasksOnBar)
                 .reverseStatusBarColor()
                 .onAppear {
                     AppNotifications.shared.getNotificationPermissions()
