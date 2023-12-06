@@ -42,6 +42,12 @@ struct ContentView: View {
                     UIApplication.shared.registerForRemoteNotifications()
                     viewContext.undoManager = undoManager
                 }
+//                .task {
+//                    try? await Task.sleep(for: .seconds(0.5))
+//                    AppNotifications.shared.sendPomoDataToServerForLiveActivities(pomoTimer)
+//                    try? await Task.sleep(for: .seconds(65.0))
+//                    AppNotifications.shared.cancelServerRequestForLiveActivities()
+//                }
 
                 .onChange(of: scenePhase) { newPhase in
                     print("Phase \(newPhase)")
@@ -56,13 +62,24 @@ struct ContentView: View {
                         if !didReceiveSyncFromWatchConnection {
                             Task { await AppNotifications.shared.setupNotifications(pomoTimer) }
                         }
+                        if #available(iOS 16.2, *) {
+                            LiveActivities.shared.setupLiveActivity(pomoTimer, tasksOnBar)
+                        }
                     }
                 }
 
-                .onChange(of: pomoTimer.isPaused) { _ in
+                .onChange(of: pomoTimer.isPaused) { isPaused in
                     WidgetCenter.shared.reloadAllTimelines()
                     let wcSent = updateWatchConnection(pomoTimer)
                     didReceiveSyncFromWatchConnection = !wcSent
+
+                    if #available(iOS 16.2, *) {
+                        if isPaused {
+//                            LiveActivities.shared.cancelServerRequest()
+                            // TODO: Update the live activity state on pause changes and only cancel ServerRequest
+                            LiveActivities.shared.cancelLiveActivity(pomoTimer)
+                        }
+                    }
                 }
 
                 .onReceive(Publishers.wcSessionDataDidFlow) { timer in

@@ -16,6 +16,8 @@ import UserNotifications
 class AppNotifications {
     static let shared = AppNotifications()
 
+    public var deviceToken: String?
+
     func getNotificationPermissions() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, error in
             if let error = error {

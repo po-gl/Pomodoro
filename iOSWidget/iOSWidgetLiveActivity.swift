@@ -10,18 +10,21 @@ import WidgetKit
 import SwiftUI
 
 struct PomoAttributes: ActivityAttributes {
-    public typealias LivePomoState = ContentState
+    public typealias PomoState = ContentState
 
     public struct ContentState: Codable, Hashable {
         // Dynamic stateful properties about your activity go here!
-        var status: PomoStatus
-        var timer: ClosedRange<Date>
-        var currentPomo: Int
-        var pomoCount: Int
+        var status: String
+        var task: String
+        var startTimestamp: TimeInterval
+        var currentSegment: Int
+        
+        var timeRemaining: TimeInterval
+        var isFirst: Bool
     }
 
     // Fixed non-changing properties about your activity go here!
-//    var name: String
+    var segmentCount: Int
 }
 
 @available(iOS 16.1, *)
@@ -64,16 +67,12 @@ struct LockScreenLiveActivityView: View {
     var body: some View {
         VStack {
             HStack(spacing: 10) {
-                pauseButton()
-                tomatoFiller()
+                pauseButton
+                Text("\(context.state.currentSegment + 1)/\(context.attributes.segmentCount)")
                 Spacer()
                 VStack(alignment: .trailing) {
-                    timerView()
-                    HStack(spacing: 4) {
-                        statusView()
-                        timerEndView()
-                    }
-                    pomoView()
+                    timerView
+                    statusView
                 }
             }
             .padding(.horizontal)
@@ -81,9 +80,50 @@ struct LockScreenLiveActivityView: View {
         }
         .activitySystemActionForegroundColor(.white.opacity(0.8))
         .activityBackgroundTint(.black.opacity(0.8))
+        .task {
+            if let notification = await UNUserNotificationCenter.current().pendingNotificationRequests().first {
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [notification.identifier])
+            }
+        }
+    }
+    
+    var status: PomoStatus {
+        switch context.state.status.lowercased() {
+        case "work":
+            return .work
+        case "rest":
+            return .rest
+        case "long break":
+            return .longBreak
+        case "finished":
+            return .end
+        default:
+            return .end
+        }
+    }
+    
+    var startDate: Date {
+        Date(timeIntervalSince1970: context.state.startTimestamp)
     }
 
-    private func pauseButton() -> some View {
+    var endDate: Date {
+        if context.state.isFirst {
+            return startDate.addingTimeInterval(context.state.timeRemaining)
+        }
+        
+        switch status {
+        case .work:
+            return startDate.addingTimeInterval(PomoTimer.defaultWorkTime)
+        case .rest:
+            return startDate.addingTimeInterval(PomoTimer.defaultRestTime)
+        case .longBreak:
+            return startDate.addingTimeInterval(PomoTimer.defaultBreakTime)
+        case .end:
+            return startDate
+        }
+    }
+
+    @ViewBuilder var pauseButton: some View {
         Link(destination: URL(string: "com.po-gl.stop")!) {
             Image(systemName: "pause.circle.fill")
                 .foregroundColor(Color("AccentColor"))
@@ -92,38 +132,34 @@ struct LockScreenLiveActivityView: View {
         }
     }
 
-    private func tomatoFiller() -> some View {
+    @ViewBuilder var tomatoFiller: some View {
         Text("🍅")
             .font(.system(size: 34))
             .padding(10)
             .background(Circle().foregroundColor(.black).opacity(0.2))
     }
 
-    private func timerView() -> some View {
-        Text(timerInterval: context.state.timer, countsDown: true)
+    @ViewBuilder var timerView: some View {
+        Text(timerInterval: startDate...endDate, countsDown: true)
             .multilineTextAlignment(.trailing)
             .font(.system(size: 42, weight: .light))
             .monospacedDigit()
+            .contentTransition(.numericText(countsDown: true))
     }
 
-    private func statusView() -> some View {
-        Text("\(getString(for: context.state.status))")
+    @ViewBuilder var statusView: some View {
+        let task = context.state.task
+        Text(task != "" ? task : getString(for: status))
             .font(.system(size: 20, weight: .thin, design: .serif))
             .foregroundColor(.black)
             .padding(.horizontal, 5)
-            .background(Rectangle().foregroundColor(getColorForStatus(context.state.status)))
+            .background(RoundedRectangle(cornerRadius: 8).foregroundColor(getColorForStatus(status)))
     }
 
-    private func timerEndView() -> some View {
-        Text("until \(context.state.timer.upperBound, formatter: timeFormatter)")
+    @ViewBuilder var timerEndView: some View {
+        Text("until \(endDate, formatter: timeFormatter)")
             .font(.system(size: 17, weight: .regular, design: .serif))
             .monospacedDigit()
-            .opacity(0.5)
-    }
-
-    private func pomoView() -> some View {
-        Text("Pomo \(context.state.currentPomo)/\(context.state.pomoCount)")
-            .font(.system(size: 17, weight: .thin, design: .serif))
             .opacity(0.5)
     }
 
@@ -136,7 +172,7 @@ struct LockScreenLiveActivityView: View {
         case .longBreak:
             return Color("BarLongBreak")
         case .end:
-            return .accentColor
+            return Color("End")
         }
     }
 
