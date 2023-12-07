@@ -26,32 +26,42 @@ struct PushTokenPayload: Codable {
     let pushToken: String
 }
 
+@available(iOS 16.1, *)
 class LiveActivities {
     static let shared = LiveActivities()
+
+    var current: Activity<PomoAttributes>?
 
     @available(iOS 16.2, *)
     func setupLiveActivity(_ pomoTimer: PomoTimer, _ tasksOnBar: TasksOnBar) {
         guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
-        guard Activity<PomoAttributes>.activities.isEmpty else { return }
         guard !pomoTimer.isPaused else { return }
 
         sendPomoDataToServer(pomoTimer, tasksOnBar)
 
         let pomoAttrs = PomoAttributes(segmentCount: pomoTimer.order.count + 1) // + 1 for .end segment
-        let content = getLiveActivityContent(pomoTimer, tasksOnBar)
-
-        do {
-            let activity = try Activity.request(attributes: pomoAttrs, content: content, pushType: .token)
-            Logger().log("Requested live activity \(String(describing: activity.id)).")
-            pollPushTokenUpdates(activity: activity)
-        } catch {
-            Logger().error("Error requesting live activity \(error.localizedDescription).")
+        let content = getLiveActivityContentFor(pomoTimer, tasksOnBar)
+        
+        if let activity = LiveActivities.shared.current {
+            Task {
+                await activity.update(content)
+            }
+        } else {
+            do {
+                let activity = try Activity.request(attributes: pomoAttrs, content: content, pushType: .token)
+                Logger().log("Requested live activity \(String(describing: activity.id)).")
+                LiveActivities.shared.current = activity
+                
+                pollPushTokenUpdates(activity: activity)
+            } catch {
+                Logger().error("Error requesting live activity \(error.localizedDescription).")
+            }
         }
     }
 
     @available(iOS 16.2, *)
-    private func getLiveActivityContent(_ pomoTimer: PomoTimer,
-                                        _ tasksOnBar: TasksOnBar) -> ActivityContent<PomoAttributes.PomoState> {
+    func getLiveActivityContentFor(_ pomoTimer: PomoTimer,
+                                   _ tasksOnBar: TasksOnBar) -> ActivityContent<PomoAttributes.PomoState> {
         let i = pomoTimer.getIndex()
         let state = PomoAttributes.PomoState(
             status: pomoTimer.getStatus().rawValue,
@@ -59,7 +69,8 @@ class LiveActivities {
             startTimestamp: Date().timeIntervalSince1970,
             currentSegment: i,
             timeRemaining: pomoTimer.timeRemaining(),
-            isFirst: true)
+            isFullSegment: false,
+            isPaused: pomoTimer.isPaused)
         return ActivityContent(state: state, staleDate: nil)
     }
 
@@ -85,7 +96,7 @@ class LiveActivities {
                                                    task: "",
                                                    startTimestamp: Date().timeIntervalSince1970,
                                                    currentSegment: pomoTimer.order.count,
-                                                   timeRemaining: 0, isFirst: false)
+                                                   timeRemaining: 0, isFullSegment: true, isPaused: true)
         let finalContent = ActivityContent(state: finalStatus, staleDate: nil)
         Task {
             for activity in Activity<PomoAttributes>.activities {

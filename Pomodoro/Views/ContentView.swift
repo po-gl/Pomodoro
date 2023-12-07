@@ -42,12 +42,6 @@ struct ContentView: View {
                     UIApplication.shared.registerForRemoteNotifications()
                     viewContext.undoManager = undoManager
                 }
-//                .task {
-//                    try? await Task.sleep(for: .seconds(0.5))
-//                    AppNotifications.shared.sendPomoDataToServerForLiveActivities(pomoTimer)
-//                    try? await Task.sleep(for: .seconds(65.0))
-//                    AppNotifications.shared.cancelServerRequestForLiveActivities()
-//                }
 
                 .onChange(of: scenePhase) { newPhase in
                     print("Phase \(newPhase)")
@@ -75,9 +69,13 @@ struct ContentView: View {
 
                     if #available(iOS 16.2, *) {
                         if isPaused {
-//                            LiveActivities.shared.cancelServerRequest()
-                            // TODO: Update the live activity state on pause changes and only cancel ServerRequest
-                            LiveActivities.shared.cancelLiveActivity(pomoTimer)
+                            LiveActivities.shared.cancelServerRequest()
+                            if let activity = LiveActivities.shared.current {
+                                let state = LiveActivities.shared.getLiveActivityContentFor(pomoTimer, tasksOnBar)
+                                Task {
+                                    await activity.update(state)
+                                }
+                            }
                         }
                     }
                 }

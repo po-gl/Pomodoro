@@ -20,7 +20,9 @@ struct PomoAttributes: ActivityAttributes {
         var currentSegment: Int
         
         var timeRemaining: TimeInterval
-        var isFirst: Bool
+        var isFullSegment: Bool
+
+        var isPaused: Bool
     }
 
     // Fixed non-changing properties about your activity go here!
@@ -107,7 +109,7 @@ struct LockScreenLiveActivityView: View {
     }
 
     var endDate: Date {
-        if context.state.isFirst {
+        if !context.state.isFullSegment {
             return startDate.addingTimeInterval(context.state.timeRemaining)
         }
         
@@ -140,11 +142,17 @@ struct LockScreenLiveActivityView: View {
     }
 
     @ViewBuilder var timerView: some View {
-        Text(timerInterval: startDate...endDate, countsDown: true)
-            .multilineTextAlignment(.trailing)
-            .font(.system(size: 42, weight: .light))
-            .monospacedDigit()
-            .contentTransition(.numericText(countsDown: true))
+        if context.state.isPaused {
+            Text(endDate.timeIntervalSince(startDate).compactTimerFormatted())
+                .font(.system(size: 42, weight: .light))
+                .monospacedDigit()
+        } else {
+            Text(timerInterval: startDate...endDate, countsDown: true)
+                .multilineTextAlignment(.trailing)
+                .font(.system(size: 42, weight: .light))
+                .monospacedDigit()
+                .contentTransition(.numericText(countsDown: true))
+        }
     }
 
     @ViewBuilder var statusView: some View {
