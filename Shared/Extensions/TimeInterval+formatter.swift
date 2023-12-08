@@ -15,18 +15,15 @@ extension TimeInterval {
         return formatter
     }()
 
-    static let compactFormatter: DateComponentsFormatter = {
-        let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.minute, .second]
-        formatter.zeroFormattingBehavior = .dropLeading
-        return formatter
-    }()
-
     func timerFormatted() -> String {
         return TimeInterval.formatter.string(from: self)!
     }
 
+    /// Formats time in "m:ss"
     func compactTimerFormatted() -> String {
-        return TimeInterval.compactFormatter.string(from: self)!
+        let totalSeconds = Int(self)
+        let minutes = (totalSeconds % 3600) / 60
+        let seconds = totalSeconds % 60
+        return "\(minutes):\(seconds < 10 ? "0" : "")\(seconds)"
     }
 }
