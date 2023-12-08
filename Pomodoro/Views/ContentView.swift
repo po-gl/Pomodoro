@@ -88,6 +88,19 @@ struct ContentView: View {
                         didReceiveSyncFromWatchConnection = true
                     }
                 }
+
+                .onOpenURL { url in
+                    switch url.absoluteString {
+                    case "com.po-gl.pause":
+                        pomoTimer.pause()
+                        pomoTimer.saveToUserDefaults()
+                    case "com.po-gl.unpause":
+                        pomoTimer.unpause()
+                        pomoTimer.saveToUserDefaults()
+                    default:
+                        print("Unhandled url: \(url.absoluteString)")
+                    }
+                }
         }
         .navigationViewStyle(.stack)
         .tint(Color("NavigationAccent"))

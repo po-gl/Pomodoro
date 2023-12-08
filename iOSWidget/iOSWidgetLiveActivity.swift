@@ -126,8 +126,9 @@ struct LockScreenLiveActivityView: View {
     }
 
     @ViewBuilder var pauseButton: some View {
-        Link(destination: URL(string: "com.po-gl.stop")!) {
-            Image(systemName: "pause.circle.fill")
+        let isPaused = context.state.isPaused
+        Link(destination: URL(string: isPaused ? "com.po-gl.unpause" : "com.po-gl.pause")!) {
+            Image(systemName: isPaused ? "play.circle.fill" : "pause.circle.fill")
                 .foregroundColor(Color("AccentColor"))
                 .font(.system(size: 56))
                 .frame(width: 50)
