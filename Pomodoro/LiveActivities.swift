@@ -37,24 +37,25 @@ class LiveActivities {
         guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
         guard !pomoTimer.isPaused else { return }
 
-        sendPomoDataToServer(pomoTimer, tasksOnBar)
-
-        let pomoAttrs = PomoAttributes(segmentCount: pomoTimer.order.count + 1) // + 1 for .end segment
-        let content = getLiveActivityContentFor(pomoTimer, tasksOnBar)
-        
-        if let activity = LiveActivities.shared.current {
-            Task {
-                await activity.update(content)
-            }
-        } else {
+        Task {
             do {
-                let activity = try Activity.request(attributes: pomoAttrs, content: content, pushType: .token)
-                Logger().log("Requested live activity \(String(describing: activity.id)).")
-                LiveActivities.shared.current = activity
-                
-                pollPushTokenUpdates(activity: activity)
+                try await sendPomoDataToServer(pomoTimer, tasksOnBar)
+
+                let pomoAttrs = PomoAttributes(segmentCount: pomoTimer.order.count + 1) // + 1 for .end segment
+                let content = getLiveActivityContentFor(pomoTimer, tasksOnBar)
+
+                if let activity = LiveActivities.shared.current {
+                    await activity.update(content)
+                } else {
+                    let activity = try Activity.request(attributes: pomoAttrs, content: content, pushType: .token)
+                    Logger().log("Requested live activity \(String(describing: activity.id)).")
+                    LiveActivities.shared.current = activity
+
+                    pollPushTokenUpdates(activity: activity)
+                }
             } catch {
-                Logger().error("Error requesting live activity \(error.localizedDescription).")
+                Logger().error("Error requesting live activity: \(error.localizedDescription)")
+                cancelLiveActivity(pomoTimer)
             }
         }
     }
@@ -71,7 +72,7 @@ class LiveActivities {
             timeRemaining: pomoTimer.timeRemaining(),
             isFullSegment: false,
             isPaused: pomoTimer.isPaused)
-        return ActivityContent(state: state, staleDate: nil)
+        return ActivityContent(state: state, staleDate: Date.now.addingTimeInterval(pomoTimer.timeRemaining() + 5))
     }
 
     @available(iOS 16.2, *)
@@ -81,7 +82,7 @@ class LiveActivities {
                 let pushTokenString = pushToken.map { String(format: "%02hhx", $0)}.joined()
                 Logger().log("New push token: \(pushTokenString)")
                 
-                sendPushTokenToServer(pushTokenString)
+                try? await sendPushTokenToServer(pushTokenString)
             }
         }
     }
@@ -90,42 +91,45 @@ class LiveActivities {
     func cancelLiveActivity(_ pomoTimer: PomoTimer) {
         guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
 
-        cancelServerRequest()
+        Task {
+            try? await cancelServerRequest()
+        }
 
         let finalStatus = PomoAttributes.PomoState(status: PomoStatus.end.rawValue,
                                                    task: "",
                                                    startTimestamp: Date().timeIntervalSince1970,
                                                    currentSegment: pomoTimer.order.count,
                                                    timeRemaining: 0, isFullSegment: true, isPaused: true)
-        let finalContent = ActivityContent(state: finalStatus, staleDate: nil)
+        let finalContent = ActivityContent(state: finalStatus, staleDate: Date.now.addingTimeInterval(10))
         Task {
             for activity in Activity<PomoAttributes>.activities {
                 await activity.end(finalContent, dismissalPolicy: .immediate)
             }
         }
+        LiveActivities.shared.current = nil
     }
 
 #if os(iOS)
-    func sendPomoDataToServer(_ pomoTimer: PomoTimer, _ tasksOnBar: TasksOnBar) {
+    func sendPomoDataToServer(_ pomoTimer: PomoTimer, _ tasksOnBar: TasksOnBar) async throws {
         guard let deviceToken = AppNotifications.shared.deviceToken else { return }
         guard pomoTimer.getStatus() != .end else { return }
 
         let url = URL(string: "http://127.0.0.1:9797/request/\(deviceToken)")!
         let payload = Payload(timeIntervals: pomoToPayloadTimeIntervals(pomoTimer, tasksOnBar))
 
-        send(url: url, payload: payload)
+        try await send(url: url, payload: payload)
     }
 
-    func sendPushTokenToServer(_ pushToken: String) {
+    func sendPushTokenToServer(_ pushToken: String) async throws {
         guard let deviceToken = AppNotifications.shared.deviceToken else { return }
 
         let url = URL(string: "http://127.0.0.1:9797/pushtoken/\(deviceToken)")!
         let payload = PushTokenPayload(pushToken: pushToken)
 
-        send(url: url, payload: payload)
+        try await send(url: url, payload: payload)
     }
 
-    func cancelServerRequest() {
+    func cancelServerRequest() async throws {
         guard let deviceToken = AppNotifications.shared.deviceToken else { return }
 
         let url = URL(string: "http://127.0.0.1:9797/cancel/\(deviceToken)")!
@@ -133,16 +137,16 @@ class LiveActivities {
 
         req.httpMethod = "POST"
 
-        send(url: url)
+        try await send(url: url)
     }
 
-    private func send(url: URL) {
+    private func send(url: URL) async throws {
         var req = URLRequest(url: url)
         req.httpMethod = "POST"
-        executeURLDataTask(with: req)
+        try await executeURLDataTask(with: req)
     }
 
-    private func send<T: Encodable>(url: URL, payload: T? = nil) {
+    private func send<T: Encodable>(url: URL, payload: T? = nil) async throws {
         var req = URLRequest(url: url)
         req.httpMethod = "POST"
 
@@ -152,27 +156,23 @@ class LiveActivities {
             req.setValue("application/json", forHTTPHeaderField: "Content-Type")
             req.httpBody = encodedPayload
         }
-        executeURLDataTask(with: req)
+        try await executeURLDataTask(with: req)
     }
 
-    private func executeURLDataTask(with req: URLRequest) {
-        let task = URLSession.shared.dataTask(with: req) { _, res, err in
-            if let err {
-                Logger().error("Client error: \(err.localizedDescription)")
-                return
-            }
-            guard let httpResponse = res as? HTTPURLResponse,
-                  (200...299).contains(httpResponse.statusCode) else {
-                if let httpResponse = res as? HTTPURLResponse {
-                    Logger().error("Server error: \(httpResponse.statusCode)")
-                } else {
-                    Logger().error("Server error: unknown")
+    private func executeURLDataTask(with req: URLRequest) async throws {
+        do {
+            let (_, response) = try await URLSession.shared.data(for: req)
+            if let response = response as? HTTPURLResponse {
+                guard (200...299).contains(response.statusCode) else {
+                    Logger().error("HTTP error: \(response.statusCode)")
+                    throw LiveActivityError.notOkResponse
                 }
-                return
+                Logger().log("HTTP response status: \(response.statusCode)")
             }
-            Logger().log("HTTP response status: \(httpResponse.statusCode)")
+        } catch {
+            Logger().error("Error executing url data task: \(error.localizedDescription)")
+            throw error
         }
-        task.resume()
     }
 
     private func pomoToPayloadTimeIntervals(_ pomoTimer: PomoTimer,
@@ -200,4 +200,8 @@ class LiveActivities {
         return timeIntervals
     }
 #endif
+}
+
+enum LiveActivityError: Error {
+    case notOkResponse
 }

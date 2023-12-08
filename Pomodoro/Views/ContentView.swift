@@ -69,12 +69,12 @@ struct ContentView: View {
 
                     if #available(iOS 16.2, *) {
                         if isPaused {
-                            LiveActivities.shared.cancelServerRequest()
-                            if let activity = LiveActivities.shared.current {
-                                let state = LiveActivities.shared.getLiveActivityContentFor(pomoTimer, tasksOnBar)
-                                Task {
+                            Task {
+                                if let activity = LiveActivities.shared.current {
+                                    let state = LiveActivities.shared.getLiveActivityContentFor(pomoTimer, tasksOnBar)
                                     await activity.update(state)
                                 }
+                                try? await LiveActivities.shared.cancelServerRequest()
                             }
                         }
                     }
