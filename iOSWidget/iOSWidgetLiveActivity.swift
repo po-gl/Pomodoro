@@ -17,16 +17,16 @@ struct PomoAttributes: ActivityAttributes {
         var status: String
         var task: String
         var startTimestamp: TimeInterval
+
         var currentSegment: Int
-        
+        var segmentCount: Int
+
         var timeRemaining: TimeInterval
         var isFullSegment: Bool
 
         var isPaused: Bool
     }
-
     // Fixed non-changing properties about your activity go here!
-    var segmentCount: Int
 }
 
 @available(iOS 16.1, *)
@@ -74,7 +74,7 @@ struct LockScreenLiveActivityView: View {
                     VStack(alignment:. leading, spacing: 5) {
                         statusView
                         timerEndView
-                            .offset(x: 5)
+                            .offset(x: 4)
                     }
                     .padding(.top, 4)
                     Spacer()
@@ -82,7 +82,7 @@ struct LockScreenLiveActivityView: View {
                 }
                 WidgetProgressBar(timerInterval: segmentStartDate...endDate,
                                   currentSegment: context.state.currentSegment,
-                                  segmentCount: context.attributes.segmentCount - 1) // -1 to take off end segment
+                                  segmentCount: context.state.segmentCount - 1) // -1 to take off end segment
             }
         }
         .padding(.horizontal)

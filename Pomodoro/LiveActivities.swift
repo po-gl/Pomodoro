@@ -13,6 +13,7 @@ import OSLog
 
 struct Payload: Codable {
     let timeIntervals: [PayloadTimeInterval]
+    let segmentCount: Int
 }
 
 struct PayloadTimeInterval: Codable {
@@ -41,7 +42,7 @@ class LiveActivities {
             do {
                 try await sendPomoDataToServer(pomoTimer, tasksOnBar)
 
-                let pomoAttrs = PomoAttributes(segmentCount: pomoTimer.order.count + 1) // + 1 for .end segment
+                let pomoAttrs = PomoAttributes()
                 let content = getLiveActivityContentFor(pomoTimer, tasksOnBar)
 
                 if let activity = LiveActivities.shared.current {
@@ -69,6 +70,7 @@ class LiveActivities {
             task: i < tasksOnBar.tasksOnBar.count ? tasksOnBar.tasksOnBar[i] : "",
             startTimestamp: Date().timeIntervalSince1970,
             currentSegment: i,
+            segmentCount: pomoTimer.order.count + 1, // +1 for .end segment
             timeRemaining: pomoTimer.timeRemaining(),
             isFullSegment: false,
             isPaused: pomoTimer.isPaused)
@@ -99,6 +101,7 @@ class LiveActivities {
                                                    task: "",
                                                    startTimestamp: Date().timeIntervalSince1970,
                                                    currentSegment: pomoTimer.order.count,
+                                                   segmentCount: pomoTimer.order.count + 1, // +1 for .end segment
                                                    timeRemaining: 0, isFullSegment: true, isPaused: true)
         let finalContent = ActivityContent(state: finalStatus, staleDate: Date.now.addingTimeInterval(10))
         Task {
@@ -115,7 +118,8 @@ class LiveActivities {
         guard pomoTimer.getStatus() != .end else { return }
 
         let url = URL(string: "http://127.0.0.1:9797/request/\(deviceToken)")!
-        let payload = Payload(timeIntervals: pomoToPayloadTimeIntervals(pomoTimer, tasksOnBar))
+        let payload = Payload(timeIntervals: pomoToPayloadTimeIntervals(pomoTimer, tasksOnBar),
+                              segmentCount: pomoTimer.order.count + 1) // +1 for .end segment
 
         try await send(url: url, payload: payload)
     }
