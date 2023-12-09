@@ -14,6 +14,8 @@ struct WidgetProgressBar: View {
 
     let currentSegment: Int
     let segmentCount: Int
+
+    let pausedAt: Date?
     
     var body: some View {
         let spacing: CGFloat = 2
@@ -24,9 +26,15 @@ struct WidgetProgressBar: View {
                     let status = getStatus(for: i)
                     let percent = getPercent(for: status)
                     if i == currentSegment {
-                        ProgressView(timerInterval: timerInterval, countsDown: false)
-                            .progressViewStyle(ProgressBarStyle(color: status.color))
-                            .frame(width: geometry.frame(in: .local).size.width * percent - spacing)
+                        if let pausedAt {
+                            ProgressView(value: pausedAt.progressBetween(timerInterval.lowerBound, timerInterval.upperBound))
+                                .progressViewStyle(ProgressBarStyle(color: status.color))
+                                .frame(width: geometry.frame(in: .local).size.width * percent - spacing)
+                        } else {
+                            ProgressView(timerInterval: timerInterval, countsDown: false)
+                                .progressViewStyle(ProgressBarStyle(color: status.color))
+                                .frame(width: geometry.frame(in: .local).size.width * percent - spacing)
+                        }
                     } else if i < currentSegment {
                         ProgressView(value: 1.0)
                             .progressViewStyle(ProgressBarStyle(color: status.color, withOverlay: true))
@@ -113,7 +121,8 @@ struct ProgressBarStyle: ProgressViewStyle {
             .opacity(0.4)
         WidgetProgressBar(timerInterval: Date.now...Date.now.addingTimeInterval(5),
                           currentSegment: 2,
-                          segmentCount: 5)
+                          segmentCount: 5,
+                          pausedAt: nil)
         .padding()
     }
     .padding()
