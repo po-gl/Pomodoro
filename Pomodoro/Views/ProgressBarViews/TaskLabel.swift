@@ -69,7 +69,12 @@ struct TaskLabel: View {
                 .confirmationDialog("Task note options.", isPresented: $presentingNoteOptions) {
                     confirmationDialogButtons
                 } message: {
-                    Text(text)
+                    if let taskNote = TasksData.taskInTodaysTasks(matching: text, context: viewContext),
+                       let note = taskNote.note, note != "" {
+                        Text("\(text)\n\(note)")
+                    } else {
+                        Text(text)
+                    }
                 }
 
                 .alert("Rename Task Note", isPresented: $presentingNoteRename) {
