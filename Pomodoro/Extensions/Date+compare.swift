@@ -25,4 +25,8 @@ extension Date {
     func isToday(calendar: Calendar = .current) -> Bool {
         return self.isSameDay(as: Date.now)
     }
+    
+    func progressBetween(_ start: Date, _ end: Date) -> Double {
+        self.timeIntervalSince(start) / end.timeIntervalSince(start)
+    }
 }
