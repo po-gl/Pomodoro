@@ -44,7 +44,12 @@ struct MainPage: View {
                     .padding(.top, 50)
 
                 Color.clear.contentShape(Rectangle())
-                    .verticalDragGesture(offset: $dragOffset, clampedTo: -20..<80)
+                    .verticalDragGesture(offset: $dragOffset, clampedTo: -20..<80, onStart: {
+                        Task {
+                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+                                                            to: nil, from: nil, for: nil)
+                        }
+                    })
 
                 ZStack {
                     ProgressBar(metrics: proxy, taskFromAdder: $taskFromAdder, peekOffset: dragOffset)
