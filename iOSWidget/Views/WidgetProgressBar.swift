@@ -16,7 +16,7 @@ struct WidgetProgressBar: View {
     let segmentCount: Int
     
     var body: some View {
-        let spacing: CGFloat = 3
+        let spacing: CGFloat = 2
 
         GeometryReader { geometry in
             HStack(spacing: spacing) {
@@ -27,10 +27,13 @@ struct WidgetProgressBar: View {
                         ProgressView(timerInterval: timerInterval, countsDown: false)
                             .progressViewStyle(ProgressBarStyle(color: getColor(for: status)))
                             .frame(width: geometry.frame(in: .local).size.width * percent - spacing)
-                    } else {
-                        ProgressView(value: i < currentSegment ? 1.0 : 0.0)
-                            .progressViewStyle(ProgressBarStyle(color: getColor(for: status),
-                                                                withOverlay: i < currentSegment))
+                    } else if i < currentSegment {
+                        ProgressView(value: 1.0)
+                            .progressViewStyle(ProgressBarStyle(color: getColor(for: status), withOverlay: true))
+                            .frame(width: geometry.frame(in: .local).size.width * percent - spacing)
+                    } else { // i > currentSegment
+                        ProgressView(value: 0.0)
+                            .progressViewStyle(ProgressBarStyle(color: .clear, withOverlay: false))
                             .frame(width: geometry.frame(in: .local).size.width * percent - spacing)
                     }
                 }
