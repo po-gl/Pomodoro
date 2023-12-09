@@ -164,12 +164,14 @@ struct LockScreenLiveActivityView: View {
                 .font(.system(size: 42, weight: .light))
                 .monospacedDigit()
                 .frame(width: 115, alignment: .trailing)
+                .foregroundStyle(.white)
         } else {
             Text(timerInterval: startDate...endDate, countsDown: true)
                 .multilineTextAlignment(.trailing)
                 .font(.system(size: 42, weight: .light))
                 .monospacedDigit()
                 .frame(width: 115)
+                .foregroundStyle(.white)
                 .contentTransition(.numericText(countsDown: true))
         }
     }
@@ -180,17 +182,17 @@ struct LockScreenLiveActivityView: View {
         Text(task != "" ? task : status.rawValue)
             .font(.system(.headline, design: .rounded, weight: .light))
             .lineLimit(1)
-            .foregroundColor(.black)
+            .foregroundStyle(.black)
             .padding(.horizontal, 5)
             .background(
                 RoundedRectangle(cornerRadius: 5)
-                    .foregroundColor(color)
+                    .foregroundStyle(color)
                     .brightness(0.1)
                     .shadow(radius: 2, x: 2, y: 2)
                     .background(
                         RoundedRectangle(cornerRadius: 5)
                             .offset(x: 3, y: 3)
-                            .foregroundColor(color)
+                            .foregroundStyle(color)
                             .brightness(-0.3)
                     )
             )
@@ -200,7 +202,8 @@ struct LockScreenLiveActivityView: View {
         Text("until \(endDate, formatter: timeFormatter)")
             .font(.system(.subheadline, design: .rounded, weight: .regular))
             .monospacedDigit()
-            .opacity(0.7)
+            .opacity(0.6)
+            .foregroundStyle(.white)
     }
 
     private func getColorForStatus(_ status: PomoStatus) -> Color {
