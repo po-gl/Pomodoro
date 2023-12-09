@@ -16,6 +16,7 @@ struct ContentView: View {
     @ObservedObject var pomoTimer: PomoTimer
 
     @State var didReceiveSyncFromWatchConnection = false
+    @State var didPerformInactiveSetup = false
 
     init() {
         pomoTimer = PomoTimer(pomos: 4, longBreak: PomoTimer.defaultBreakTime) { status in
@@ -46,12 +47,16 @@ struct ContentView: View {
                 BackgroundSession.shared.stop()
                 startBackgroundSessionIfDidNotReceiveWCSync()
 
-            } else if newPhase == .inactive {
+                didPerformInactiveSetup = false
+
+            } else if newPhase == .inactive || newPhase == .background {
+                guard !didPerformInactiveSetup else { return }
                 pomoTimer.saveToUserDefaults()
                 WidgetCenter.shared.reloadAllTimelines()
                 if !didReceiveSyncFromWatchConnection {
                     Task { await AppNotifications.shared.setupNotifications(pomoTimer) }
                 }
+                didPerformInactiveSetup = true
             }
         }
 

@@ -22,6 +22,7 @@ struct ContentView: View {
     @StateObject var tasksOnBar = TasksOnBar()
 
     @State var didReceiveSyncFromWatchConnection = false
+    @State var didPerformInactiveSetup = false
 
     init() {
         pomoTimer = PomoTimer(pomos: 4, longBreak: PomoTimer.defaultBreakTime) { status in
@@ -50,7 +51,10 @@ struct ContentView: View {
                         AppNotifications.shared.cancelPendingNotifications()
                         Haptics.shared.prepareHaptics()
                         setupWatchConnection()
-                    } else if newPhase == .inactive {
+                        didPerformInactiveSetup = false
+
+                    } else if newPhase == .inactive || newPhase == .background {
+                        guard !didPerformInactiveSetup else { return }
                         pomoTimer.saveToUserDefaults()
                         WidgetCenter.shared.reloadAllTimelines()
                         if !didReceiveSyncFromWatchConnection {
@@ -59,6 +63,7 @@ struct ContentView: View {
                         if #available(iOS 16.2, *) {
                             LiveActivities.shared.setupLiveActivity(pomoTimer, tasksOnBar)
                         }
+                        didPerformInactiveSetup = true
                     }
                 }
 
