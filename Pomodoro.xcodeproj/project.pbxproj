@@ -76,6 +76,9 @@
 		61569CDF2B0036B200DFC977 /* View+verticalDragGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61569CDD2B0036B200DFC977 /* View+verticalDragGesture.swift */; };
 		61569CE12B005FAF00DFC977 /* View+verticalOffsetEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61569CE02B005FAF00DFC977 /* View+verticalOffsetEffect.swift */; };
 		61569CE22B005FAF00DFC977 /* View+verticalOffsetEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61569CE02B005FAF00DFC977 /* View+verticalOffsetEffect.swift */; };
+		6162B7DD2B22EA9D00C83714 /* WidgetProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6162B7DC2B22EA9D00C83714 /* WidgetProgressBar.swift */; };
+		6162B7DE2B22EA9D00C83714 /* WidgetProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6162B7DC2B22EA9D00C83714 /* WidgetProgressBar.swift */; };
+		6162B7DF2B22EA9D00C83714 /* WidgetProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6162B7DC2B22EA9D00C83714 /* WidgetProgressBar.swift */; };
 		6172B49F297F57C100E53D8F /* View+Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B17250285CFCBB001C8245 /* View+Modifier.swift */; };
 		6172B4A0297F57C400E53D8F /* UIView+ClosestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B17252285CFCF8001C8245 /* UIView+ClosestVC.swift */; };
 		6172B4A1297F57C900E53D8F /* TimeInterval+formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9087285CC863003F1990 /* TimeInterval+formatter.swift */; };
@@ -208,6 +211,7 @@
 		61E4681B2AEC6961001F6D7B /* View+overrideAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E468192AEC6961001F6D7B /* View+overrideAction.swift */; };
 		61E4681F2AEC77FA001F6D7B /* TinyProjectTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E4681E2AEC77FA001F6D7B /* TinyProjectTag.swift */; };
 		61E468202AEC77FA001F6D7B /* TinyProjectTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E4681E2AEC77FA001F6D7B /* TinyProjectTag.swift */; };
+		61E734A62B23E88A001C5B2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 617789B52856A1F300BD43D7 /* Assets.xcassets */; };
 		61ED2E06297A682F0080C29F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617789B32856A1F300BD43D7 /* ContentView.swift */; };
 		61F21DA0299233F400C3DACC /* LiveActivities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6172B4C8297F82E300E53D8F /* LiveActivities.swift */; };
 		61F4220F2900AC350036400A /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F4220E2900AC350036400A /* ProgressBar.swift */; };
@@ -378,6 +382,7 @@
 		61569CE02B005FAF00DFC977 /* View+verticalOffsetEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+verticalOffsetEffect.swift"; sourceTree = "<group>"; };
 		615E7F2D290B7DA9005BD3AE /* PomodoroWatch Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "PomodoroWatch Watch App.entitlements"; sourceTree = "<group>"; };
 		615E7F2E290B7DB0005BD3AE /* WatchWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WatchWidgetExtension.entitlements; sourceTree = "<group>"; };
+		6162B7DC2B22EA9D00C83714 /* WidgetProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetProgressBar.swift; sourceTree = "<group>"; };
 		6172B4AA297F5EC600E53D8F /* iOSWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = iOSWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		6172B4AE297F5EC600E53D8F /* iOSWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSWidgetBundle.swift; sourceTree = "<group>"; };
 		6172B4B0297F5EC600E53D8F /* iOSWidgetLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSWidgetLiveActivity.swift; sourceTree = "<group>"; };
@@ -619,9 +624,18 @@
 			path = WatchWidget;
 			sourceTree = "<group>";
 		};
+		6162B7DB2B22EA6D00C83714 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				6162B7DC2B22EA9D00C83714 /* WidgetProgressBar.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		6172B4AD297F5EC600E53D8F /* iOSWidget */ = {
 			isa = PBXGroup;
 			children = (
+				6162B7DB2B22EA6D00C83714 /* Views */,
 				6172B4AE297F5EC600E53D8F /* iOSWidgetBundle.swift */,
 				6172B4B2297F5EC600E53D8F /* iOSWidget.swift */,
 				6172B4B0297F5EC600E53D8F /* iOSWidgetLiveActivity.swift */,
@@ -1105,6 +1119,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61E734A62B23E88A001C5B2A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1157,6 +1172,7 @@
 			files = (
 				6172B4B1297F5EC600E53D8F /* iOSWidgetLiveActivity.swift in Sources */,
 				61A7FE2B29BD6E51000137E7 /* WatchWidget.swift in Sources */,
+				6162B7DF2B22EA9D00C83714 /* WidgetProgressBar.swift in Sources */,
 				61D5808F29BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */,
 				6172B4B3297F5EC600E53D8F /* iOSWidget.swift in Sources */,
 				6172B4C5297F646800E53D8F /* TimeInterval+formatter.swift in Sources */,
@@ -1228,6 +1244,7 @@
 				61AEA86029CE59D0007AA1AD /* View+scrollToOnFocus.swift in Sources */,
 				61AEA85D29CE56F8007AA1AD /* Publishers+Keyboard.swift in Sources */,
 				618A3B222A3B251500A86441 /* EmptyProjectsView.swift in Sources */,
+				6162B7DD2B22EA9D00C83714 /* WidgetProgressBar.swift in Sources */,
 				6172B4B9297F5EC700E53D8F /* iOSWidget.intentdefinition in Sources */,
 				61F62A192AE0C778005DE8A4 /* TodaysTasksHeader.swift in Sources */,
 				618750F529BABCFE0017BF8E /* Point+Extensions.swift in Sources */,
@@ -1326,6 +1343,7 @@
 				61F21DA0299233F400C3DACC /* LiveActivities.swift in Sources */,
 				61569CDC2B0031E600DFC977 /* MainPage.swift in Sources */,
 				618D67DE2979ECD7000A9D8A /* Background.swift in Sources */,
+				6162B7DE2B22EA9D00C83714 /* WidgetProgressBar.swift in Sources */,
 				611A7CE22A380F2D0038AE56 /* View+draggableTask.swift in Sources */,
 				61AEA85E29CE56F8007AA1AD /* Publishers+Keyboard.swift in Sources */,
 				61147F042A33BC9A000F4BBA /* WatchConnection.swift in Sources */,

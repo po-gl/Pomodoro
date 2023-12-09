@@ -67,21 +67,28 @@ struct LockScreenLiveActivityView: View {
     let context: ActivityViewContext<PomoAttributes>
 
     var body: some View {
-        VStack {
-            HStack(spacing: 10) {
-                pauseButton
-                Text("\(context.state.currentSegment + 1)/\(context.attributes.segmentCount)")
-                Spacer()
-                VStack(alignment: .trailing) {
+        HStack(spacing: 10) {
+            pauseButton
+            VStack(alignment: .trailing, spacing: 0) {
+                HStack(alignment: .top, spacing: 0) {
+                    VStack(alignment:. leading, spacing: 5) {
+                        statusView
+                        timerEndView
+                            .offset(x: 5)
+                    }
+                    .padding(.top, 4)
+                    Spacer()
                     timerView
-                    statusView
                 }
+                WidgetProgressBar(timerInterval: segmentStartDate...endDate,
+                                  currentSegment: context.state.currentSegment,
+                                  segmentCount: context.attributes.segmentCount - 1) // -1 to take off end segment
             }
-            .padding(.horizontal)
-            .padding(.vertical, 10)
         }
+        .padding(.horizontal)
+        .padding(.vertical, 10)
         .activitySystemActionForegroundColor(.white.opacity(0.8))
-        .activityBackgroundTint(.black.opacity(0.8))
+        .activityBackgroundTint(.black.opacity(0.7))
         .task {
             if let notification = await UNUserNotificationCenter.current().pendingNotificationRequests().first {
                 UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [notification.identifier])
@@ -108,11 +115,26 @@ struct LockScreenLiveActivityView: View {
         Date(timeIntervalSince1970: context.state.startTimestamp)
     }
 
+    var segmentStartDate: Date {
+        if context.state.isFullSegment {
+            return startDate
+        }
+        switch status {
+        case .work:
+            return endDate.addingTimeInterval(-PomoTimer.defaultWorkTime)
+        case .rest:
+            return endDate.addingTimeInterval(-PomoTimer.defaultRestTime)
+        case .longBreak:
+            return endDate.addingTimeInterval(-PomoTimer.defaultBreakTime)
+        case .end:
+            return endDate
+        }
+    }
+
     var endDate: Date {
         if !context.state.isFullSegment {
             return startDate.addingTimeInterval(context.state.timeRemaining)
         }
-        
         switch status {
         case .work:
             return startDate.addingTimeInterval(PomoTimer.defaultWorkTime)
@@ -129,17 +151,11 @@ struct LockScreenLiveActivityView: View {
         let isPaused = context.state.isPaused
         Link(destination: URL(string: isPaused ? "com.po-gl.unpause" : "com.po-gl.pause")!) {
             Image(systemName: isPaused ? "play.circle.fill" : "pause.circle.fill")
-                .foregroundColor(Color("AccentColor"))
-                .font(.system(size: 56))
+                .foregroundStyle(getGradientForStatus(status))
+                .opacity(0.8)
+                .font(.system(size: 50))
                 .frame(width: 50)
         }
-    }
-
-    @ViewBuilder var tomatoFiller: some View {
-        Text("🍅")
-            .font(.system(size: 34))
-            .padding(10)
-            .background(Circle().foregroundColor(.black).opacity(0.2))
     }
 
     @ViewBuilder var timerView: some View {
@@ -147,29 +163,44 @@ struct LockScreenLiveActivityView: View {
             Text(endDate.timeIntervalSince(startDate).compactTimerFormatted())
                 .font(.system(size: 42, weight: .light))
                 .monospacedDigit()
+                .frame(width: 115, alignment: .trailing)
         } else {
             Text(timerInterval: startDate...endDate, countsDown: true)
                 .multilineTextAlignment(.trailing)
                 .font(.system(size: 42, weight: .light))
                 .monospacedDigit()
+                .frame(width: 115)
                 .contentTransition(.numericText(countsDown: true))
         }
     }
 
     @ViewBuilder var statusView: some View {
+        let color = getColorForStatus(status)
         let task = context.state.task
-        Text(task != "" ? task : getString(for: status))
-            .font(.system(size: 20, weight: .thin, design: .serif))
+        Text(task != "" ? task : status.rawValue)
+            .font(.system(.headline, design: .rounded, weight: .light))
+            .lineLimit(1)
             .foregroundColor(.black)
             .padding(.horizontal, 5)
-            .background(RoundedRectangle(cornerRadius: 8).foregroundColor(getColorForStatus(status)))
+            .background(
+                RoundedRectangle(cornerRadius: 5)
+                    .foregroundColor(color)
+                    .brightness(0.1)
+                    .shadow(radius: 2, x: 2, y: 2)
+                    .background(
+                        RoundedRectangle(cornerRadius: 5)
+                            .offset(x: 3, y: 3)
+                            .foregroundColor(color)
+                            .brightness(-0.3)
+                    )
+            )
     }
 
     @ViewBuilder var timerEndView: some View {
         Text("until \(endDate, formatter: timeFormatter)")
-            .font(.system(size: 17, weight: .regular, design: .serif))
+            .font(.system(.subheadline, design: .rounded, weight: .regular))
             .monospacedDigit()
-            .opacity(0.5)
+            .opacity(0.7)
     }
 
     private func getColorForStatus(_ status: PomoStatus) -> Color {
@@ -185,6 +216,27 @@ struct LockScreenLiveActivityView: View {
         }
     }
 
+    private func getGradientForStatus(_ status: PomoStatus) -> LinearGradient {
+        switch status {
+        case .work:
+            return LinearGradient(stops: [.init(color: Color("BarWork"), location: 0.7),
+                                          .init(color: Color(hex: 0xD3EDDD), location: 1.2)],
+                                  startPoint: .leading, endPoint: .trailing)
+        case .rest:
+            return LinearGradient(stops: [.init(color: Color("BarRest"), location: 0.7),
+                                          .init(color: Color(hex: 0xE8BEB1), location: 1.2)],
+                                  startPoint: .leading, endPoint: .trailing)
+        case .longBreak:
+            return LinearGradient(stops: [.init(color: Color("BarLongBreak"), location: 0.7),
+                                          .init(color: Color(hex: 0xF5E1E1), location: 1.3)],
+                                  startPoint: .leading, endPoint: .trailing)
+        case .end:
+            return LinearGradient(stops: [.init(color: Color("End"), location: 0.7),
+                                          .init(color: Color(hex: 0xD3EDDD), location: 1.3)],
+                                  startPoint: .leading, endPoint: .trailing)
+        }
+    }
+
     private func getIcon(for status: PomoStatus) -> String {
         switch status {
         case .work:
@@ -195,15 +247,6 @@ struct LockScreenLiveActivityView: View {
             return "🏖️"
         case .end:
             return "🎉"
-        }
-    }
-
-    private func getString(for status: PomoStatus) -> String {
-        switch status {
-        case .longBreak:
-            return "Break"
-        default:
-            return status.rawValue
         }
     }
 }
