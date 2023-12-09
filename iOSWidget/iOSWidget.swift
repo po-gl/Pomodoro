@@ -88,7 +88,7 @@ struct iOSWidgetEntryView: View {
             VStack(alignment: .leading, spacing: 0) {
                 Text("\(entry.status.rawValue)")
                     .font(.title2).fontWeight(.light).fontDesign(.monospaced)
-                    .foregroundColor(getColorForStatus(entry.status))
+                    .foregroundColor(getColor(for: entry.status))
                 HStack(spacing: 8) {
                     Text(timerInterval: entry.timerInterval, pauseTime: entry.isPaused ? entry.timerInterval.lowerBound : nil)
                         .foregroundColor(.white)
@@ -103,7 +103,7 @@ struct iOSWidgetEntryView: View {
     }
 }
 
-private func getColorForStatus(_ status: PomoStatus) -> Color {
+private func getColor(for status: PomoStatus) -> Color {
     switch status {
     case .work:
         return Color("BarWork")

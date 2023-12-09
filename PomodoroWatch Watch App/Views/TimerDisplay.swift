@@ -18,7 +18,7 @@ struct TimerDisplay: View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
             if #available(watchOS 10, *) {
                 MainDisplay(at: context.date)
-                    .containerBackground(getColorForStatus(pomoTimer.getStatus(atDate: context.date)).gradient.opacity(0.4), for: .tabView)
+                    .containerBackground(pomoTimer.getStatus(atDate: context.date).color.gradient.opacity(0.4), for: .tabView)
             } else {
                 MainDisplay(at: context.date)
             }
@@ -41,11 +41,11 @@ struct TimerDisplay: View {
 
     @ViewBuilder
     private func StatusBox(at date: Date) -> some View {
-        let color = isLuminanceReduced ? .black : getColorForStatus(pomoTimer.getStatus(atDate: date))
+        let color = isLuminanceReduced ? .black : pomoTimer.getStatus(atDate: date).color
 
         Text(getStringForStatus(pomoTimer.getStatus(atDate: date)))
             .accessibilityIdentifier("statusString")
-            .foregroundColor(isLuminanceReduced ? getColorForStatus(pomoTimer.getStatus(atDate: date)) : .black)
+            .foregroundColor(isLuminanceReduced ? pomoTimer.getStatus(atDate: date).color : .black)
             .padding(.horizontal, 4)
             .background(
                 RoundedRectangle(cornerRadius: 5).foregroundColor(color)
@@ -88,19 +88,6 @@ struct TimerDisplay: View {
             return "Break"
         case .end:
             return "Finished"
-        }
-    }
-
-    func getColorForStatus(_ status: PomoStatus) -> Color {
-        switch status {
-        case .work:
-            return Color("BarWork")
-        case .rest:
-            return Color("BarRest")
-        case .longBreak:
-            return Color("BarLongBreak")
-        case .end:
-            return Color("End")
         }
     }
 

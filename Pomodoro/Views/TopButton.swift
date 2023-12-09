@@ -30,8 +30,8 @@ struct TopButton<Destination: View>: View {
     @ViewBuilder
     private func taskListButton(at date: Date) -> some View {
         let status = pomoTimer.getStatus(atDate: date)
-        let backgroundColor = colorScheme == .dark ? .black : getColorForStatus(status)
-        let foregroundColor = colorScheme == .dark ? getColorForStatus(status) : .black
+        let backgroundColor = colorScheme == .dark ? .black : status.color
+        let foregroundColor = colorScheme == .dark ? status.color : .black
 
         NavigationLink(destination: destination) {
             Image(systemName: "checklist")
@@ -43,19 +43,6 @@ struct TopButton<Destination: View>: View {
                     .background(RoundedRectangle(cornerRadius: 30)
                         .offset(x: 2.5, y: 2.5)
                         .foregroundColor(backgroundColor).brightness(-0.3)))
-        }
-    }
-
-    private func getColorForStatus(_ status: PomoStatus) -> Color {
-        switch status {
-        case .work:
-            return Color("BarWork")
-        case .rest:
-            return Color("BarRest")
-        case .longBreak:
-            return Color("BarLongBreak")
-        case .end:
-            return Color("End")
         }
     }
 }

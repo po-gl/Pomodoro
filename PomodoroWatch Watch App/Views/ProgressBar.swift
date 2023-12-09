@@ -83,20 +83,7 @@ struct ProgressBar: View {
         return intervals[index] / total
     }
 
-    private func getColorForStatus(_ status: PomoStatus) -> Color {
-        switch status {
-        case .work:
-            return Color("BarWork")
-        case .rest:
-            return Color("BarRest")
-        case .longBreak:
-            return Color("BarLongBreak")
-        case .end:
-            return Color("End")
-        }
-    }
-
-    private func getGradientForStatus(_ status: PomoStatus) -> LinearGradient {
+    private func getGradient(for status: PomoStatus) -> LinearGradient {
         switch status {
         case .work:
             return LinearGradient(stops: [.init(color: Color("BarWork"), location: 0.5),
@@ -126,7 +113,7 @@ struct ProgressBar: View {
             ForEach(0..<pomoTimer.order.count, id: \.self) { i in
                 RoundedRectangle(cornerRadius: 3)
                     .scaleEffect(x: 2.0, anchor: .trailing)
-                    .foregroundStyle(getGradientForStatus(pomoTimer.order[i].getStatus()))
+                    .foregroundStyle(getGradient(for: pomoTimer.order[i].getStatus()))
                     .frame(width: getBarWidth() * getProportion(i) - 2, height: barHeight)
                     .padding(.horizontal, 1)
                     .zIndex(Double(pomoTimer.order.count - i))

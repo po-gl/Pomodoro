@@ -52,7 +52,7 @@ struct TimerDisplay: View {
 
     @ViewBuilder
     private func statusBox(at date: Date) -> some View {
-        let color = getColorForStatus(pomoTimer.getStatus(atDate: date))
+        let color = pomoTimer.getStatus(atDate: date).color
         let fgColor = colorScheme == .dark ? color : .black
         let bgColor = colorScheme == .dark ? .black : color
         let text = if pomoTimer.getStatus(atDate: date) == .longBreak && isLargerDynamicFont {
@@ -77,7 +77,7 @@ struct TimerDisplay: View {
 
     @ViewBuilder
     private func endingTime(at date: Date) -> some View {
-        let color = colorScheme == .dark ? getColorForStatus(pomoTimer.getStatus(atDate: date)) : .white
+        let color = colorScheme == .dark ? pomoTimer.getStatus(atDate: date).color : .white
         Text("until \(date.addingTimeInterval(pomoTimer.timeRemaining(atDate: date)), formatter: timeFormatter)")
             .colorScheme(colorScheme == .dark ? .light : .dark)
             .font(.system(.headline, design: .serif, weight: .regular))
@@ -111,19 +111,6 @@ struct TimerDisplay: View {
                             .brightness(-1.0).opacity(colorScheme == .dark ? 1.0 : 0.0))
                     .brightness(colorScheme == .dark ? -0.1 : 0.0)
             }
-        }
-    }
-
-    private func getColorForStatus(_ status: PomoStatus) -> Color {
-        switch status {
-        case .work:
-            return Color("BarWork")
-        case .rest:
-            return Color("BarRest")
-        case .longBreak:
-            return Color("BarLongBreak")
-        case .end:
-            return Color("End")
         }
     }
 

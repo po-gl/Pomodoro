@@ -25,11 +25,11 @@ struct WidgetProgressBar: View {
                     let percent = getPercent(for: status)
                     if i == currentSegment {
                         ProgressView(timerInterval: timerInterval, countsDown: false)
-                            .progressViewStyle(ProgressBarStyle(color: getColor(for: status)))
+                            .progressViewStyle(ProgressBarStyle(color: status.color))
                             .frame(width: geometry.frame(in: .local).size.width * percent - spacing)
                     } else if i < currentSegment {
                         ProgressView(value: 1.0)
-                            .progressViewStyle(ProgressBarStyle(color: getColor(for: status), withOverlay: true))
+                            .progressViewStyle(ProgressBarStyle(color: status.color, withOverlay: true))
                             .frame(width: geometry.frame(in: .local).size.width * percent - spacing)
                     } else { // i > currentSegment
                         ProgressView(value: 0.0)
@@ -79,19 +79,6 @@ struct WidgetProgressBar: View {
         let count = Double(segmentCount - 1) / 2
 
         return work * count + rest * count + longBreak
-    }
-
-    func getColor(for status: PomoStatus) -> Color {
-        switch status {
-        case .work:
-            Color("BarWork")
-        case .rest:
-            Color("BarRest")
-        case .longBreak:
-            Color("BarLongBreak")
-        case .end:
-            Color("End")
-        }
     }
 }
 
