@@ -90,7 +90,7 @@ struct LockScreenLiveActivityView: View {
         .activitySystemActionForegroundColor(.white.opacity(0.8))
         .activityBackgroundTint(.black.opacity(0.7))
         .task {
-            if let notification = await UNUserNotificationCenter.current().pendingNotificationRequests().first {
+            if context.state.isFullSegment, let notification = await UNUserNotificationCenter.current().pendingNotificationRequests().first {
                 UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [notification.identifier])
             }
         }
