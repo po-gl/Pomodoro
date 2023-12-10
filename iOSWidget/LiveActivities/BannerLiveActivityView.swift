@@ -43,7 +43,7 @@ struct BannerLiveActivityView: View {
         .activitySystemActionForegroundColor(.white.opacity(0.8))
         .activityBackgroundTint(.black.opacity(0.7))
         .task {
-            if context.state.isFullSegment, let notification = await UNUserNotificationCenter.current().pendingNotificationRequests().first {
+            if let notification = await UNUserNotificationCenter.current().pendingNotificationRequests().first {
                 UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [notification.identifier])
             }
         }
@@ -90,19 +90,20 @@ struct BannerLiveActivityView: View {
             .background(
                 RoundedRectangle(cornerRadius: 5)
                     .foregroundStyle(status.color)
-                    .brightness(0.1)
+                    .brightness(0.2)
                     .shadow(radius: 2, x: 2, y: 2)
                     .background(
                         RoundedRectangle(cornerRadius: 5)
                             .offset(x: 3, y: 3)
                             .foregroundStyle(status.color)
-                            .brightness(-0.3)
+                            .brightness(0.0)
                     )
             )
     }
 
     @ViewBuilder var timerEndView: some View {
-        Text("until \(endDate, formatter: timeFormatter)")
+        let endTime = context.state.isPaused ? "--:--" : timeFormatter.string(from: endDate)
+        Text("until \(endTime)")
             .font(.system(.subheadline, design: .rounded, weight: .regular))
             .monospacedDigit()
             .opacity(0.6)
