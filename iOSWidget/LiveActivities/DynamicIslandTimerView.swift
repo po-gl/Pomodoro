@@ -26,7 +26,7 @@ struct DynamicIslandTimerView: View {
                 .foregroundStyle(status.color)
                 .brightness(0.4)
                 .monospacedDigit()
-                .frame(maxWidth: inExpandedRegion ? .infinity : status == .rest ? 35 : 45)
+                .frame(maxWidth: inExpandedRegion ? .infinity : status == .rest ? 35 : 45, alignment: .trailing)
         } else {
             // One day Apple might pre-cache view widths as well so a fixed width isn't necessary
             Text(timerInterval: timerInterval, countsDown: true)
