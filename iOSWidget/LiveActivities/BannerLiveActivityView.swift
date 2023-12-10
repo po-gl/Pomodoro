@@ -55,6 +55,8 @@ struct BannerLiveActivityView: View {
             Image(systemName: isPaused ? "play.circle.fill" : "pause.circle.fill")
                 .foregroundStyle(getGradientForStatus(status))
                 .opacity(0.8)
+                .brightness(0.2)
+                .saturation(0.8)
                 .font(.system(size: 50))
                 .frame(width: 50)
         }
