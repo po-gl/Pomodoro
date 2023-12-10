@@ -22,7 +22,7 @@ struct WidgetProgressBar: View {
 
         GeometryReader { geometry in
             HStack(spacing: spacing) {
-                ForEach(0..<segmentCount, id: \.self) { i in
+                ForEach(0..<segmentCount-1, id: \.self) { i in // -1 to take off ".end" segment
                     let status = getStatus(for: i)
                     let percent = getPercent(for: status)
                     if i == currentSegment {
@@ -52,7 +52,7 @@ struct WidgetProgressBar: View {
 
     /// Highly reliant on a work-rest...work-rest-longbreak sequence
     func getStatus(for index: Int) -> PomoStatus {
-        if index == segmentCount-1 {
+        if index == segmentCount-2 { // -2 to take off ".end" segment
             return .longBreak
         } else if index % 2 == 0 {
             return .work
@@ -84,7 +84,7 @@ struct WidgetProgressBar: View {
         let work = PomoTimer.defaultWorkTime
         let rest = PomoTimer.defaultRestTime
         let longBreak = PomoTimer.defaultBreakTime
-        let count = Double(segmentCount - 1) / 2
+        let count = Double(segmentCount - 2) / 2  // -2 to take off ".end" segment
 
         return work * count + rest * count + longBreak
     }
