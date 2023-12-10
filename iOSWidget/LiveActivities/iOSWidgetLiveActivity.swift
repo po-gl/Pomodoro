@@ -115,7 +115,8 @@ struct iOSWidgetLiveActivity: Widget {
                 DynamicIslandTimerView(context: context, status: status,
                                        timerInterval: start...end, inExpandedRegion: true)
 
-                let endTime = context.state.isPaused ? "--:--" : timeFormatter.string(from: end)
+                let isFinished = context.state.currentSegment == context.state.segmentCount-1
+                let endTime = context.state.isPaused || isFinished ? "--:--" : timeFormatter.string(from: end)
                 Text("Ends at \(endTime)")
                     .font(.system(.footnote, design: .rounded, weight: .regular))
                     .monospacedDigit()
