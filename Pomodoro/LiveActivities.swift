@@ -64,7 +64,7 @@ class LiveActivities {
     @available(iOS 16.2, *)
     func getLiveActivityContentFor(_ pomoTimer: PomoTimer,
                                    _ tasksOnBar: TasksOnBar) -> ActivityContent<PomoAttributes.PomoState> {
-        let i = pomoTimer.getIndex()
+        let i = pomoTimer.getStatus() == .end ? pomoTimer.order.count : pomoTimer.getIndex()
         let state = PomoAttributes.PomoState(
             status: pomoTimer.getStatus().rawValue,
             task: i < tasksOnBar.tasksOnBar.count ? tasksOnBar.tasksOnBar[i] : "",
