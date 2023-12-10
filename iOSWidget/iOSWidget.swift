@@ -44,7 +44,7 @@ struct iOSProgressWidgetView: View {
                 if entry.isPaused {
                     Leaf(size: 22)
                 } else {
-                    Text(getIconForStatus(entry.status))
+                    Text(entry.status.icon)
                         .font(.system(size: 22, weight: .medium, design: .serif))
                 }
             }
@@ -94,7 +94,7 @@ struct iOSWidgetEntryView: View {
                         .foregroundColor(.white)
                         .font(.title).fontWeight(.regular)
                         .monospacedDigit()
-                    Text("\(getIconForStatus(entry.status))")
+                    Text(entry.status.icon)
                         .font(.system(size: 20))
                 }
             }
@@ -113,19 +113,6 @@ private func getColor(for status: PomoStatus) -> Color {
         return Color("BarLongBreak")
     case .end:
         return .accentColor
-    }
-}
-
-private func getIconForStatus(_ status: PomoStatus) -> String {
-    switch status {
-    case .work:
-        return "W"
-    case .rest:
-        return "R"
-    case .longBreak:
-        return "🏖️"
-    case .end:
-        return "🎉"
     }
 }
 

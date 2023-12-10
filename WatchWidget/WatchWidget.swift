@@ -135,7 +135,7 @@ struct ProgressWidgetView: View {
                 if entry.isPaused {
                     Leaf()
                 } else {
-                    Text(getIconForStatus(entry.status))
+                    Text(entry.status.icon)
                         .font(.system(size: 20, weight: .medium, design: .serif))
                 }
             }
@@ -207,7 +207,7 @@ struct CornerProgressWidgetView: View {
                 if entry.isPaused {
                     Leaf(size: 24)
                 } else {
-                    Text(getIconForStatus(entry.status))
+                    Text(entry.status.icon)
                         .font(.system(size: 20, weight: .medium, design: .serif))
                 }
             }
@@ -284,7 +284,7 @@ struct StatusWidgetView: View {
             if entry.isPaused {
                 Leaf()
             } else {
-                Text(getIconForStatus(entry.status))
+                Text(entry.status.icon)
                     .font(.system(size: 20, weight: .medium, design: .serif))
             }
         }
@@ -298,19 +298,6 @@ func Leaf(size: Double = 18) -> some View {
         .font(.system(size: size))
         .foregroundColor(Color(hex: 0x31E377))
         .saturation(0.6)
-}
-
-private func getIconForStatus(_ status: PomoStatus) -> String {
-    switch status {
-    case .work:
-        return "W"
-    case .rest:
-        return "R"
-    case .longBreak:
-        return "🏖️"
-    case .end:
-        return "🎉"
-    }
 }
 
 private func getTotalForStatus(_ status: PomoStatus) -> Double {
