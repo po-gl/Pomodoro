@@ -8,6 +8,7 @@
 import SwiftUI
 import CoreHaptics
 import WidgetKit
+import ActivityKit
 import WatchConnectivity
 import Combine
 
@@ -75,7 +76,7 @@ struct ContentView: View {
                     if #available(iOS 16.2, *) {
                         if isPaused {
                             Task {
-                                if let activity = LiveActivities.shared.current {
+                                if let activity = Activity<PomoAttributes>.activities.first {
                                     let state = LiveActivities.shared.getLiveActivityContentFor(pomoTimer, tasksOnBar)
                                     await activity.update(state)
                                 }

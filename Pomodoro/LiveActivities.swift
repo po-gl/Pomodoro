@@ -31,8 +31,6 @@ struct PushTokenPayload: Codable {
 class LiveActivities {
     static let shared = LiveActivities()
 
-    var current: Activity<PomoAttributes>?
-
     @available(iOS 16.2, *)
     func setupLiveActivity(_ pomoTimer: PomoTimer, _ tasksOnBar: TasksOnBar) {
         guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
@@ -45,12 +43,11 @@ class LiveActivities {
                 let pomoAttrs = PomoAttributes()
                 let content = getLiveActivityContentFor(pomoTimer, tasksOnBar)
 
-                if let activity = LiveActivities.shared.current {
+                if let activity = Activity<PomoAttributes>.activities.first {
                     await activity.update(content)
                 } else {
                     let activity = try Activity.request(attributes: pomoAttrs, content: content, pushType: .token)
                     Logger().log("Requested live activity \(String(describing: activity.id)).")
-                    LiveActivities.shared.current = activity
 
                     pollPushTokenUpdates(activity: activity)
                 }
@@ -109,7 +106,6 @@ class LiveActivities {
                 await activity.end(finalContent, dismissalPolicy: .immediate)
             }
         }
-        LiveActivities.shared.current = nil
     }
 
 #if os(iOS)
