@@ -42,27 +42,95 @@ struct iOSWidgetLiveActivity: Widget {
                                    segmentStartDate: getSegmentStartDate(for: context))
 
         } dynamicIsland: { context in
+            let status = getStatus(for: context)
+            let start = getStartDate(for: context)
+            let end = getEndDate(for: context)
+            let segmentStart = getSegmentStartDate(for: context)
             return DynamicIsland {
-                // Expanded UI goes here.  Compose the expanded UI through
-                // various regions, like leading/trailing/center/bottom
-                DynamicIslandExpandedRegion(.leading) {
-                    Text("Leading")
-                }
-                DynamicIslandExpandedRegion(.trailing) {
-                    Text("Trailing")
-                }
-                DynamicIslandExpandedRegion(.bottom) {
-                    Text("Bottom")
-                    // more content
-                }
+                expandedRegion(for: context, status: status, start: start,
+                               end: end, segmentStart: segmentStart)
             } compactLeading: {
-                Text("L")
+                DynamicIslandProgressView(context: context, status: status, timerInterval: segmentStart...end,
+                                          pausedAt: context.state.isPaused ? start : nil)
             } compactTrailing: {
-                Text("T")
+                DynamicIslandTimerView(context: context, status: status, timerInterval: start...end)
             } minimal: {
-                Text("Min")
+                DynamicIslandProgressView(context: context, status: status, timerInterval: segmentStart...end,
+                                          pausedAt: context.state.isPaused ? start : nil)
             }
             .keylineTint(Color.red)
+        }
+    }
+    
+    @DynamicIslandExpandedContentBuilder
+    private func expandedRegion(for context: ActivityViewContext<PomoAttributes>,
+                                status: PomoStatus,
+                                start: Date,
+                                end: Date,
+                                segmentStart: Date) -> DynamicIslandExpandedContent<some View> {
+        DynamicIslandExpandedRegion(.leading, priority: 1.0) {
+            Group {
+                Group {
+                    if context.state.isPaused {
+                        Text(Image(systemName: "leaf.fill"))
+                            .foregroundColor(Color(hex: 0x31E377))
+                            .saturation(0.6)
+                            .scaleEffect(0.8)
+                    } else {
+                        Text(status.icon)
+                            .foregroundStyle(status.color)
+                    }
+                }
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .brightness(0.2)
+                .offset(x: 4)
+
+                Spacer()
+
+                let task = context.state.task
+                Text(task != "" ? task : status.rawValue)
+                    .font(.system(.title3, design: .rounded, weight: .semibold))
+                    .lineLimit(1)
+                    .foregroundStyle(.black)
+                    .padding(.horizontal, 5)
+                    .background(
+                        RoundedRectangle(cornerRadius: 5)
+                            .foregroundStyle(status.color)
+                            .brightness(0.2)
+                            .shadow(radius: 2, x: 2, y: 2)
+                            .background(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .offset(x: 3, y: 3)
+                                    .foregroundStyle(status.color)
+                                    .brightness(0.0)
+                            )
+                    )
+                    .padding(.top, 1)
+            }
+            .padding(.leading, 2)
+        }
+        DynamicIslandExpandedRegion(.trailing, priority: 0.0) {
+            Group {
+                DynamicIslandTimerView(context: context, status: status,
+                                       timerInterval: start...end, inExpandedRegion: true)
+
+                let endTime = context.state.isPaused ? "--:--" : timeFormatter.string(from: end)
+                Text("Ends at \(endTime)")
+                    .font(.system(.footnote, design: .rounded, weight: .regular))
+                    .monospacedDigit()
+                    .opacity(0.6)
+                    .offset(x: -3, y: -3)
+
+            }
+            .padding(.trailing, 2)
+        }
+        DynamicIslandExpandedRegion(.bottom) {
+            WidgetProgressBar(timerInterval: segmentStart...end,
+                              currentSegment: context.state.currentSegment,
+                              segmentCount: context.state.segmentCount - 1, // -1 to take off end segment
+                              pausedAt: context.state.isPaused ? start : nil)
+            .padding(.horizontal, 3)
         }
     }
     
@@ -118,3 +186,8 @@ struct iOSWidgetLiveActivity: Widget {
     }
 }
 
+private let timeFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.setLocalizedDateFormatFromTemplate("hh:mm")
+    return formatter
+}()

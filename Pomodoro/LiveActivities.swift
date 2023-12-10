@@ -40,7 +40,7 @@ class LiveActivities {
 
         Task {
             do {
-                try await sendPomoDataToServer(pomoTimer, tasksOnBar)
+                try? await sendPomoDataToServer(pomoTimer, tasksOnBar)
 
                 let pomoAttrs = PomoAttributes()
                 let content = getLiveActivityContentFor(pomoTimer, tasksOnBar)
