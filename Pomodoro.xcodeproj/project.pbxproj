@@ -195,6 +195,7 @@
 		61C362372B26C8E800E2DDDD /* Pomodoro.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 61F7362E29C00CCE00289149 /* Pomodoro.xcdatamodeld */; };
 		61C362382B26C90A00E2DDDD /* DraggableTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6BC1529C12D0F00AF48DE /* DraggableTask.swift */; };
 		61C362392B26C90A00E2DDDD /* DraggableTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6BC1529C12D0F00AF48DE /* DraggableTask.swift */; };
+		61C3623C2B26DFD500E2DDDD /* WidgetConfiguration+disfavoredLocations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C3623A2B26DFD500E2DDDD /* WidgetConfiguration+disfavoredLocations.swift */; };
 		61C4F02229DF4CDA00BC70C7 /* AngledText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C4F02129DF4CDA00BC70C7 /* AngledText.swift */; };
 		61C4F02329DF4CDA00BC70C7 /* AngledText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C4F02129DF4CDA00BC70C7 /* AngledText.swift */; };
 		61C6BC1329C0364000AF48DE /* View+onSubmitWithVerticalText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6BC1229C0364000AF48DE /* View+onSubmitWithVerticalText.swift */; };
@@ -475,6 +476,7 @@
 		61C3622A2B26BEA900E2DDDD /* ProgressWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressWidget.swift; sourceTree = "<group>"; };
 		61C3622C2B26BEE400E2DDDD /* LeafView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeafView.swift; sourceTree = "<group>"; };
 		61C3622E2B26BFCF00E2DDDD /* StatusWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusWidget.swift; sourceTree = "<group>"; };
+		61C3623A2B26DFD500E2DDDD /* WidgetConfiguration+disfavoredLocations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WidgetConfiguration+disfavoredLocations.swift"; sourceTree = "<group>"; };
 		61C4F02129DF4CDA00BC70C7 /* AngledText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AngledText.swift; sourceTree = "<group>"; };
 		61C6BC1229C0364000AF48DE /* View+onSubmitWithVerticalText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+onSubmitWithVerticalText.swift"; sourceTree = "<group>"; };
 		61C6BC1529C12D0F00AF48DE /* DraggableTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableTask.swift; sourceTree = "<group>"; };
@@ -622,6 +624,7 @@
 				614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */,
 				61D5808729BA5E5B006F0BB0 /* Comparable+Clamped.swift */,
 				61E734AC2B251E43001C5B2A /* PomoStatus+properties.swift */,
+				61C3623A2B26DFD500E2DDDD /* WidgetConfiguration+disfavoredLocations.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1267,6 +1270,7 @@
 				6172B4B8297F5EC700E53D8F /* iOSWidget.intentdefinition in Sources */,
 				6172B4C2297F621400E53D8F /* PomoTimer.swift in Sources */,
 				6172B4AF297F5EC600E53D8F /* iOSWidgetBundle.swift in Sources */,
+				61C3623C2B26DFD500E2DDDD /* WidgetConfiguration+disfavoredLocations.swift in Sources */,
 				61E734AB2B2516CE001C5B2A /* BannerLiveActivityView.swift in Sources */,
 				61C362362B26C8E700E2DDDD /* Pomodoro.xcdatamodeld in Sources */,
 				61A7FE2C29BD6E74000137E7 /* Color+hex.swift in Sources */,
