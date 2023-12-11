@@ -52,11 +52,19 @@ struct StatusWidgetView: View {
 
 struct StatusWidget_Previews: PreviewProvider {
     static var pomoTimer = PomoTimer(pomos: 2, longBreak: PomoTimer.defaultBreakTime, perform: { _ in return })
-    static let timerInterval = Date()...Date().addingTimeInterval(60)
 
     static var previews: some View {
+        let timerInterval = Date.now...Date.now.addingTimeInterval(60)
+        let entry = PomoTimelineEntry(date: Date.now,
+                                      status: .rest,
+                                      task: nil,
+                                      timerInterval: timerInterval,
+                                      isPaused: false,
+                                      currentSegment: 3,
+                                      segmentCount: 6,
+                                      configuration: ConfigurationIntent())
         Group {
-            StatusWidgetView(entry: PomoTimelineEntry(date: Date(), isPaused: false, status: .rest, timerInterval: timerInterval, configuration: ConfigurationIntent()))
+            StatusWidgetView(entry: entry)
                 .previewContext(WidgetPreviewContext(family: .accessoryCircular))
         }
     }

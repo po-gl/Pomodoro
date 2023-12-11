@@ -10,23 +10,32 @@ import WidgetKit
 
 struct PomoTimelineEntry: TimelineEntry {
     var date: Date
-    var isPaused: Bool
     var status: PomoStatus
+    var task: String?
     var timerInterval: ClosedRange<Date>
+    var isPaused: Bool
+    var currentSegment: Int
+    var segmentCount: Int
     let configuration: ConfigurationIntent
 
-    static func new(for entryDate: Date, _ pomoTimer: PomoTimer, _ configuration: ConfigurationIntent) -> PomoTimelineEntry {
+    static func new(for entryDate: Date, _ pomoTimer: PomoTimer, _ tasksOnBar: TasksOnBar, _ configuration: ConfigurationIntent) -> PomoTimelineEntry {
         let isPaused = pomoTimer.isPaused
         let status = pomoTimer.getStatus(atDate: entryDate)
+        let index = pomoTimer.getIndex(atDate: entryDate)
+
+        let task = index < tasksOnBar.tasksOnBar.count ? tasksOnBar.tasksOnBar[index] : nil
 
         let timeRemaining = pomoTimer.timeRemaining(atDate: entryDate)
         let timeStart = entryDate.addingTimeInterval(timeRemaining - status.defaultTime)
         let timeEnd = entryDate.addingTimeInterval(timeRemaining)
 
         return PomoTimelineEntry(date: entryDate,
-                         isPaused: isPaused,
-                         status: status,
-                         timerInterval: timeStart...timeEnd,
-                         configuration: configuration)
+                                 status: status,
+                                 task: task,
+                                 timerInterval: timeStart...timeEnd,
+                                 isPaused: isPaused,
+                                 currentSegment: status == .end ? pomoTimer.order.count : index,
+                                 segmentCount: pomoTimer.order.count + 1, // +1 for .end segment
+                                 configuration: configuration)
     }
 }

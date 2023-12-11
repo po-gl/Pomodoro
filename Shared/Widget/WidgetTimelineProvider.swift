@@ -16,18 +16,23 @@ struct WidgetTimelineProvider: IntentTimelineProvider {
     func placeholder(in context: Context) -> PomoTimelineEntry {
         let now = Date()
         return PomoTimelineEntry(date: now,
-                         isPaused: true,
-                         status: .work,
-                         timerInterval: now...now.addingTimeInterval(PomoTimer.defaultWorkTime),
-                         configuration: ConfigurationIntent())
+                                 status: .work,
+                                 task: nil,
+                                 timerInterval: now...now.addingTimeInterval(PomoTimer.defaultWorkTime),
+                                 isPaused: true,
+                                 currentSegment: 0,
+                                 segmentCount: 6, // work-rest-work-rest-break-end
+                                 configuration: ConfigurationIntent())
     }
 
     func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (PomoTimelineEntry) -> Void) {
         let pomoTimer = PomoTimer()
         pomoTimer.restoreFromUserDefaults()
+        let tasksOnBar = TasksOnBar()
+        tasksOnBar.restoreFromUserDefaults()
 
         let now = Date()
-        let entry = PomoTimelineEntry.new(for: now, pomoTimer, configuration)
+        let entry = PomoTimelineEntry.new(for: now, pomoTimer, tasksOnBar, configuration)
         completion(entry)
     }
 
@@ -35,12 +40,14 @@ struct WidgetTimelineProvider: IntentTimelineProvider {
         var entries: [PomoTimelineEntry] = []
         let pomoTimer = PomoTimer()
         pomoTimer.restoreFromUserDefaults()
+        let tasksOnBar = TasksOnBar()
+        tasksOnBar.restoreFromUserDefaults()
 
         let now = Date()
-        entries.append(PomoTimelineEntry.new(for: now, pomoTimer, configuration))
+        entries.append(PomoTimelineEntry.new(for: now, pomoTimer, tasksOnBar, configuration))
 
         if !pomoTimer.isPaused {
-            let transitionEntries = addTransitionEntries(pomoTimer, configuration)
+            let transitionEntries = addTransitionEntries(pomoTimer, tasksOnBar, configuration)
             entries.append(contentsOf: transitionEntries)
         }
 
@@ -48,7 +55,7 @@ struct WidgetTimelineProvider: IntentTimelineProvider {
         completion(timeline)
     }
 
-    private func addTransitionEntries(_ pomoTimer: PomoTimer, _ configuration: ConfigurationIntent) -> [PomoTimelineEntry] {
+    private func addTransitionEntries(_ pomoTimer: PomoTimer, _ tasksOnBar: TasksOnBar, _ configuration: ConfigurationIntent) -> [PomoTimelineEntry] {
         var entries: [PomoTimelineEntry] = []
 
         let now = Date()
@@ -61,7 +68,7 @@ struct WidgetTimelineProvider: IntentTimelineProvider {
         repeat {
             runningDate = runningDate.addingTimeInterval(pomoTimer.timeRemaining(atDate: runningDate)+offset)
             i += 1
-            entries.append(PomoTimelineEntry.new(for: runningDate, pomoTimer, configuration))
+            entries.append(PomoTimelineEntry.new(for: runningDate, pomoTimer, tasksOnBar, configuration))
 
         } while pomoTimer.timeRemaining(atDate: runningDate) > 0  && i < limit
 

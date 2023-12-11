@@ -60,15 +60,23 @@ struct iOSWidgetView: View {
 
 struct iOSWidget_Previews: PreviewProvider {
     static var pomoTimer = PomoTimer(pomos: 2, longBreak: PomoTimer.defaultBreakTime, perform: { _ in return })
-    static let timerInterval = Date()...Date().addingTimeInterval(60)
 
     static var previews: some View {
+        let timerInterval = Date.now...Date.now.addingTimeInterval(60)
+        let entry = PomoTimelineEntry(date: Date.now,
+                                      status: .work,
+                                      task: nil,
+                                      timerInterval: timerInterval,
+                                      isPaused: false,
+                                      currentSegment: 2,
+                                      segmentCount: 6,
+                                      configuration: ConfigurationIntent())
         Group {
-            iOSWidgetView(entry: PomoTimelineEntry(date: Date(), isPaused: false, status: .work, timerInterval: timerInterval, configuration: ConfigurationIntent()))
+            iOSWidgetView(entry: entry)
                 .previewContext(WidgetPreviewContext(family: .systemSmall))
-            iOSWidgetView(entry: PomoTimelineEntry(date: Date(), isPaused: false, status: .work, timerInterval: timerInterval, configuration: ConfigurationIntent()))
+            iOSWidgetView(entry: entry)
                 .previewContext(WidgetPreviewContext(family: .systemMedium))
-            iOSWidgetView(entry: PomoTimelineEntry(date: Date(), isPaused: false, status: .work, timerInterval: timerInterval, configuration: ConfigurationIntent()))
+            iOSWidgetView(entry: entry)
                 .previewContext(WidgetPreviewContext(family: .systemLarge))
         }
     }

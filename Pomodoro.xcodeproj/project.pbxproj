@@ -185,6 +185,16 @@
 		61C3622B2B26BEA900E2DDDD /* ProgressWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C3622A2B26BEA900E2DDDD /* ProgressWidget.swift */; };
 		61C3622D2B26BEE400E2DDDD /* LeafView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C3622C2B26BEE400E2DDDD /* LeafView.swift */; };
 		61C3622F2B26BFCF00E2DDDD /* StatusWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C3622E2B26BFCF00E2DDDD /* StatusWidget.swift */; };
+		61C362302B26C80400E2DDDD /* TasksOnBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618750F829BB69400017BF8E /* TasksOnBar.swift */; };
+		61C362312B26C88400E2DDDD /* TasksData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F7362629BFEAFA00289149 /* TasksData.swift */; };
+		61C362322B26C8BB00E2DDDD /* TasksOnBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618750F829BB69400017BF8E /* TasksOnBar.swift */; };
+		61C362332B26C8BE00E2DDDD /* TasksData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F7362629BFEAFA00289149 /* TasksData.swift */; };
+		61C362342B26C8CC00E2DDDD /* ProjectsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F7363429C01A5000289149 /* ProjectsData.swift */; };
+		61C362352B26C8CD00E2DDDD /* ProjectsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F7363429C01A5000289149 /* ProjectsData.swift */; };
+		61C362362B26C8E700E2DDDD /* Pomodoro.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 61F7362E29C00CCE00289149 /* Pomodoro.xcdatamodeld */; };
+		61C362372B26C8E800E2DDDD /* Pomodoro.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 61F7362E29C00CCE00289149 /* Pomodoro.xcdatamodeld */; };
+		61C362382B26C90A00E2DDDD /* DraggableTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6BC1529C12D0F00AF48DE /* DraggableTask.swift */; };
+		61C362392B26C90A00E2DDDD /* DraggableTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6BC1529C12D0F00AF48DE /* DraggableTask.swift */; };
 		61C4F02229DF4CDA00BC70C7 /* AngledText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C4F02129DF4CDA00BC70C7 /* AngledText.swift */; };
 		61C4F02329DF4CDA00BC70C7 /* AngledText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C4F02129DF4CDA00BC70C7 /* AngledText.swift */; };
 		61C6BC1329C0364000AF48DE /* View+onSubmitWithVerticalText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6BC1229C0364000AF48DE /* View+onSubmitWithVerticalText.swift */; };
@@ -1211,17 +1221,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61C362372B26C8E800E2DDDD /* Pomodoro.xcdatamodeld in Sources */,
 				61E734B12B251E43001C5B2A /* PomoStatus+properties.swift in Sources */,
+				61C362342B26C8CC00E2DDDD /* ProjectsData.swift in Sources */,
 				61A7FE2E29BD6F73000137E7 /* WatchWidgetBundle.swift in Sources */,
 				610515B92AD4A2CF00F6DD30 /* Color+hex.swift in Sources */,
 				61307C7B2B26B4B800B0FA19 /* PomoTimelineEntry.swift in Sources */,
 				612D8F96290B67E80089CDD1 /* SequenceTimer.swift in Sources */,
 				612D8F8C290B63190089CDD1 /* WatchWidget.intentdefinition in Sources */,
 				61307C782B26B47E00B0FA19 /* WidgetTimelineProvider.swift in Sources */,
+				61C362322B26C8BB00E2DDDD /* TasksOnBar.swift in Sources */,
 				610515BC2AD4A2DE00F6DD30 /* TimeInterval+formatter.swift in Sources */,
 				612D8F97290B67EB0089CDD1 /* PomoTime.swift in Sources */,
 				610515BA2AD4A2D400F6DD30 /* Color+isDark.swift in Sources */,
 				61D5808E29BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */,
+				61C362382B26C90A00E2DDDD /* DraggableTask.swift in Sources */,
+				61C362332B26C8BE00E2DDDD /* TasksData.swift in Sources */,
 				612D8F95290B67E50089CDD1 /* PomoTimer.swift in Sources */,
 				612D8F87290B63180089CDD1 /* WatchWidget.swift in Sources */,
 			);
@@ -1232,16 +1247,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				61C3622D2B26BEE400E2DDDD /* LeafView.swift in Sources */,
+				61C362352B26C8CD00E2DDDD /* ProjectsData.swift in Sources */,
 				6172B4B1297F5EC600E53D8F /* iOSWidgetLiveActivity.swift in Sources */,
 				6162B7DF2B22EA9D00C83714 /* WidgetProgressBar.swift in Sources */,
 				61C3622B2B26BEA900E2DDDD /* ProgressWidget.swift in Sources */,
 				61E734BB2B252EF9001C5B2A /* Date+compare.swift in Sources */,
+				61C362392B26C90A00E2DDDD /* DraggableTask.swift in Sources */,
 				61E734B62B2529C8001C5B2A /* DynamicIslandTimerView.swift in Sources */,
 				61307C792B26B47E00B0FA19 /* WidgetTimelineProvider.swift in Sources */,
 				61D5808F29BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */,
 				6172B4B3297F5EC600E53D8F /* iOSWidget.swift in Sources */,
 				6172B4C5297F646800E53D8F /* TimeInterval+formatter.swift in Sources */,
 				61C3622F2B26BFCF00E2DDDD /* StatusWidget.swift in Sources */,
+				61C362302B26C80400E2DDDD /* TasksOnBar.swift in Sources */,
 				610515BB2AD4A2D500F6DD30 /* Color+isDark.swift in Sources */,
 				61E734BA2B252AD5001C5B2A /* DynamicIslandProgressView.swift in Sources */,
 				61307C752B26B23300B0FA19 /* StandByWidget.swift in Sources */,
@@ -1250,8 +1268,10 @@
 				6172B4C2297F621400E53D8F /* PomoTimer.swift in Sources */,
 				6172B4AF297F5EC600E53D8F /* iOSWidgetBundle.swift in Sources */,
 				61E734AB2B2516CE001C5B2A /* BannerLiveActivityView.swift in Sources */,
+				61C362362B26C8E700E2DDDD /* Pomodoro.xcdatamodeld in Sources */,
 				61A7FE2C29BD6E74000137E7 /* Color+hex.swift in Sources */,
 				6172B4C3297F621700E53D8F /* PomoTime.swift in Sources */,
+				61C362312B26C88400E2DDDD /* TasksData.swift in Sources */,
 				61E734B22B251E43001C5B2A /* PomoStatus+properties.swift in Sources */,
 				61307C7C2B26B4B800B0FA19 /* PomoTimelineEntry.swift in Sources */,
 			);
