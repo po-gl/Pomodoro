@@ -13,7 +13,7 @@ struct iOSProgressWidget: Widget {
     let kind: String = "ProgressWatchWidget"
 
     var body: some WidgetConfiguration {
-        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider(withProgress: true)) { entry in
+        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: WidgetTimelineProvider(withProgress: true)) { entry in
             iOSProgressWidgetView(entry: entry)
                 .unredacted()
         }
@@ -24,7 +24,7 @@ struct iOSProgressWidget: Widget {
 }
 
 struct iOSProgressWidgetView: View {
-    var entry: Provider.Entry
+    var entry: WidgetTimelineProvider.Entry
 
     var body: some View {
         if #available(iOSApplicationExtension 17, *) {
@@ -70,7 +70,7 @@ struct iOSWidget: Widget {
     let kind: String = "iOSWidget"
 
     var body: some WidgetConfiguration {
-        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider(withProgress: true)) { entry in
+        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: WidgetTimelineProvider(withProgress: true)) { entry in
             iOSWidgetEntryView(entry: entry)
                 .unredacted()
         }
@@ -80,7 +80,7 @@ struct iOSWidget: Widget {
 }
 
 struct iOSWidgetEntryView: View {
-    var entry: Provider.Entry
+    var entry: WidgetTimelineProvider.Entry
 
     var body: some View {
         ZStack {
@@ -100,6 +100,49 @@ struct iOSWidgetEntryView: View {
             }
         }
         .ignoresSafeArea()
+    }
+}
+
+struct StatusWatchWidget: Widget {
+    let kind: String = "StatusWatchWidget"
+
+    var body: some WidgetConfiguration {
+        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: WidgetTimelineProvider(withProgress: false)) { entry in
+            StatusWidgetView(entry: entry)
+                .unredacted()
+        }
+        .configurationDisplayName("Pomodoro Status")
+        .description("See your pomodoro timer status.")
+        .supportedFamilies([.accessoryCircular])
+    }
+}
+
+struct StatusWidgetView: View {
+    var entry: WidgetTimelineProvider.Entry
+
+    var body: some View {
+        if #available(iOSApplicationExtension 17, watchOS 10, *) {
+            MainStatusWidgetView()
+                .containerBackground(for: .widget) {
+                    Color.white
+                }
+        } else {
+            MainStatusWidgetView()
+        }
+    }
+
+    @ViewBuilder
+    func MainStatusWidgetView() -> some View {
+        ZStack {
+            AccessoryWidgetBackground()
+            if entry.isPaused {
+                Leaf()
+            } else {
+                Text(entry.status.icon)
+                    .font(.system(size: 20, weight: .medium, design: .serif))
+            }
+        }
+        .widgetAccentable()
     }
 }
 
@@ -129,6 +172,14 @@ private func getTotalForStatus(_ status: PomoStatus) -> Double {
     }
 }
 
+@ViewBuilder
+private func Leaf(size: Double = 18) -> some View {
+    Text(Image(systemName: "leaf.fill"))
+        .font(.system(size: size))
+        .foregroundColor(Color(hex: 0x31E377))
+        .saturation(0.6)
+}
+
 struct iOSWidget_Previews: PreviewProvider {
     static var pomoTimer = PomoTimer(pomos: 2, longBreak: PomoTimer.defaultBreakTime, perform: { _ in return })
     static let timerInterval = Date()...Date().addingTimeInterval(60)
@@ -136,13 +187,13 @@ struct iOSWidget_Previews: PreviewProvider {
     static var previews: some View {
 
         Group {
-            iOSProgressWidgetView(entry: PomoEntry(date: Date(), isPaused: false, status: .rest, timerInterval: timerInterval, configuration: ConfigurationIntent()))
+            iOSProgressWidgetView(entry: PomoTimelineEntry(date: Date(), isPaused: false, status: .rest, timerInterval: timerInterval, configuration: ConfigurationIntent()))
                 .previewContext(WidgetPreviewContext(family: .accessoryCircular))
-            iOSWidgetEntryView(entry: PomoEntry(date: Date(), isPaused: false, status: .work, timerInterval: timerInterval, configuration: ConfigurationIntent()))
+            iOSWidgetEntryView(entry: PomoTimelineEntry(date: Date(), isPaused: false, status: .work, timerInterval: timerInterval, configuration: ConfigurationIntent()))
                 .previewContext(WidgetPreviewContext(family: .systemSmall))
-            iOSWidgetEntryView(entry: PomoEntry(date: Date(), isPaused: false, status: .work, timerInterval: timerInterval, configuration: ConfigurationIntent()))
+            iOSWidgetEntryView(entry: PomoTimelineEntry(date: Date(), isPaused: false, status: .work, timerInterval: timerInterval, configuration: ConfigurationIntent()))
                 .previewContext(WidgetPreviewContext(family: .systemMedium))
-            iOSWidgetEntryView(entry: PomoEntry(date: Date(), isPaused: false, status: .work, timerInterval: timerInterval, configuration: ConfigurationIntent()))
+            iOSWidgetEntryView(entry: PomoTimelineEntry(date: Date(), isPaused: false, status: .work, timerInterval: timerInterval, configuration: ConfigurationIntent()))
                 .previewContext(WidgetPreviewContext(family: .systemLarge))
         }
     }
