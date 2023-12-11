@@ -88,7 +88,7 @@ struct iOSWidgetEntryView: View {
             VStack(alignment: .leading, spacing: 0) {
                 Text("\(entry.status.rawValue)")
                     .font(.title2).fontWeight(.light).fontDesign(.monospaced)
-                    .foregroundColor(getColor(for: entry.status))
+                    .foregroundColor(entry.status.color)
                 HStack(spacing: 8) {
                     Text(timerInterval: entry.timerInterval, pauseTime: entry.isPaused ? entry.timerInterval.lowerBound : nil)
                         .foregroundColor(.white)
@@ -143,19 +143,6 @@ struct StatusWidgetView: View {
             }
         }
         .widgetAccentable()
-    }
-}
-
-private func getColor(for status: PomoStatus) -> Color {
-    switch status {
-    case .work:
-        return Color("BarWork")
-    case .rest:
-        return Color("BarRest")
-    case .longBreak:
-        return Color("BarLongBreak")
-    case .end:
-        return .accentColor
     }
 }
 
