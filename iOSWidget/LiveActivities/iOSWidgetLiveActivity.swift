@@ -189,6 +189,6 @@ struct iOSWidgetLiveActivity: Widget {
 
 private let timeFormatter: DateFormatter = {
     let formatter = DateFormatter()
-    formatter.setLocalizedDateFormatFromTemplate("hh:mm")
+    formatter.dateFormat = "hh:mm"
     return formatter
 }()
