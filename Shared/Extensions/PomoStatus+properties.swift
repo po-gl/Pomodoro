@@ -34,4 +34,17 @@ extension PomoStatus {
             return "🎉"
         }
     }
+    
+    var defaultTime: Double {
+        switch self {
+        case .work:
+            return PomoTimer.defaultWorkTime
+        case .rest:
+            return PomoTimer.defaultRestTime
+        case .longBreak:
+            return PomoTimer.defaultBreakTime
+        case .end:
+            return 0.0
+        }
+    }
 }

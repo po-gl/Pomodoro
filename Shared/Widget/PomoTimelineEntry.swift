@@ -20,7 +20,7 @@ struct PomoTimelineEntry: TimelineEntry {
         let status = pomoTimer.getStatus(atDate: entryDate)
 
         let timeRemaining = pomoTimer.timeRemaining(atDate: entryDate)
-        let timeStart = entryDate.addingTimeInterval(timeRemaining - getTotalForStatus(status))
+        let timeStart = entryDate.addingTimeInterval(timeRemaining - status.defaultTime)
         let timeEnd = entryDate.addingTimeInterval(timeRemaining)
 
         return PomoTimelineEntry(date: entryDate,
@@ -28,18 +28,5 @@ struct PomoTimelineEntry: TimelineEntry {
                          status: status,
                          timerInterval: timeStart...timeEnd,
                          configuration: configuration)
-    }
-}
-
-private func getTotalForStatus(_ status: PomoStatus) -> Double {
-    switch status {
-    case .work:
-        return PomoTimer.defaultWorkTime
-    case .rest:
-        return PomoTimer.defaultRestTime
-    case .longBreak:
-        return PomoTimer.defaultBreakTime
-    case .end:
-        return 1.0
     }
 }

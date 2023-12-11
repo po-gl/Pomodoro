@@ -61,7 +61,7 @@ struct ProgressWidgetView: View {
             ProgressView(timerInterval: entry.timerInterval, countsDown: true, label: {}, currentValueLabel: {})
                 .progressViewStyle(.circular)
         } else {
-            let progressPercent = (entry.timerInterval.upperBound.timeIntervalSince1970 - entry.date.timeIntervalSince1970) / getTotalForStatus(entry.status)
+            let progressPercent = (entry.timerInterval.upperBound.timeIntervalSince1970 - entry.date.timeIntervalSince1970) / entry.status.defaultTime
             ProgressView(value: progressPercent)
                 .progressViewStyle(.circular)
         }
@@ -135,7 +135,7 @@ struct CornerProgressWidgetView: View {
             ProgressView(timerInterval: entry.timerInterval, countsDown: true, label: {}, currentValueLabel: {})
                 .tint(progressGradient())
         } else {
-            let progressPercent = (entry.timerInterval.upperBound.timeIntervalSince1970 - entry.date.timeIntervalSince1970) / getTotalForStatus(entry.status)
+            let progressPercent = (entry.timerInterval.upperBound.timeIntervalSince1970 - entry.date.timeIntervalSince1970) / entry.status.defaultTime
             ProgressView(value: progressPercent)
                 .tint(progressGradient())
         }
@@ -204,19 +204,6 @@ func Leaf(size: Double = 18) -> some View {
         .font(.system(size: size))
         .foregroundColor(Color(hex: 0x31E377))
         .saturation(0.6)
-}
-
-private func getTotalForStatus(_ status: PomoStatus) -> Double {
-    switch status {
-    case .work:
-        return PomoTimer.defaultWorkTime
-    case .rest:
-        return PomoTimer.defaultRestTime
-    case .longBreak:
-        return PomoTimer.defaultBreakTime
-    case .end:
-        return 1.0
-    }
 }
 
 struct WatchWidget_Previews: PreviewProvider {

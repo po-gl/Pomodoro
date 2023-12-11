@@ -59,7 +59,7 @@ struct iOSProgressWidgetView: View {
             ProgressView(timerInterval: entry.timerInterval, countsDown: true, label: {}, currentValueLabel: label)
                 .progressViewStyle(.circular)
         } else {
-            let progressPercent = (entry.timerInterval.upperBound.timeIntervalSince1970 - entry.date.timeIntervalSince1970) / getTotalForStatus(entry.status)
+            let progressPercent = (entry.timerInterval.upperBound.timeIntervalSince1970 - entry.date.timeIntervalSince1970) / entry.status.defaultTime
             ProgressView(value: progressPercent, label: label)
                 .progressViewStyle(.circular)
         }
@@ -156,19 +156,6 @@ private func getColor(for status: PomoStatus) -> Color {
         return Color("BarLongBreak")
     case .end:
         return .accentColor
-    }
-}
-
-private func getTotalForStatus(_ status: PomoStatus) -> Double {
-    switch status {
-    case .work:
-        return PomoTimer.defaultWorkTime
-    case .rest:
-        return PomoTimer.defaultRestTime
-    case .longBreak:
-        return PomoTimer.defaultBreakTime
-    case .end:
-        return 1.0
     }
 }
 
