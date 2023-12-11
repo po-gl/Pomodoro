@@ -80,8 +80,12 @@ class LiveActivities {
             for await pushToken in activity.pushTokenUpdates {
                 let pushTokenString = pushToken.map { String(format: "%02hhx", $0)}.joined()
                 Logger().log("New push token: \(pushTokenString)")
-                
-                try? await sendPushTokenToServer(pushTokenString)
+
+                do {
+                    try await sendPushTokenToServer(pushTokenString)
+                } catch {
+                    Logger().error("Error sending push token to server: \(error.localizedDescription)")
+                }
             }
         }
     }
