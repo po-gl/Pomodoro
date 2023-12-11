@@ -14,6 +14,9 @@ struct iOSWidgetBundle: WidgetBundle {
         iOSWidgetLiveActivity()
         ProgressWidget()
         StatusWidget()
+        if #available(iOS 17.0, *) {
+            StandByWidget()
+        }
         iOSWidget()
     }
 }

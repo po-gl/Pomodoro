@@ -19,6 +19,7 @@ struct iOSWidget: Widget {
         .configurationDisplayName("Pomodoro")
         .description("Track your pomodoro timer.")
         .supportedFamilies([.systemSmall, .systemMedium])
+        .backDeployedDisfavoredLocations([.standBy], for: [.systemSmall])
     }
 }
 
