@@ -21,6 +21,13 @@ struct PayloadTimeInterval: Codable {
     let task: String
     let startsAt: TimeInterval
     let currentSegment: Int
+    let alert: PayloadAlert
+}
+
+struct PayloadAlert: Codable {
+    let title: String
+    let body: String
+    let sound: String
 }
 
 struct PushTokenPayload: Codable {
@@ -199,16 +206,24 @@ class LiveActivities {
             let task = i < tasksOnBar.tasksOnBar.count ? tasksOnBar.tasksOnBar[i] : ""
             let startsAt = cumulativeTime + Date.now.timeIntervalSince1970
             
+            let alertContent = AppNotifications.shared.getNotificationContent(for: pomoTimer, at: i-1)
+            let alert = PayloadAlert(title: alertContent.title, body: alertContent.body, sound: "default")
+
             timeIntervals.append(PayloadTimeInterval(status: status,
                                                      task: task,
                                                      startsAt: startsAt,
-                                                     currentSegment: i))
+                                                     currentSegment: i,
+                                                     alert: alert))
             cumulativeTime += pomo.getTime()
         }
+        
+        let finalAlertContent = AppNotifications.shared.getNotificationContent(for: pomoTimer, at: pomoTimer.order.count-1)
+        let finalAlert = PayloadAlert(title: finalAlertContent.title, body: finalAlertContent.body, sound: "default")
         timeIntervals.append(PayloadTimeInterval(status: PomoStatus.end.rawValue.lowercased(),
                                                  task: "",
                                                  startsAt: cumulativeTime + Date.now.timeIntervalSince1970,
-                                                 currentSegment: pomoTimer.order.count))
+                                                 currentSegment: pomoTimer.order.count,
+                                                 alert: finalAlert))
         return timeIntervals
     }
 #endif

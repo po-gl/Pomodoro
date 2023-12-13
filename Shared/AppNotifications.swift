@@ -60,7 +60,7 @@ class AppNotifications {
         }
     }
     
-    private func getNotificationContent(for pomoTimer: PomoTimer, at index: Int) -> UNMutableNotificationContent {
+    func getNotificationContent(for pomoTimer: PomoTimer, at index: Int) -> UNMutableNotificationContent {
         let content = UNMutableNotificationContent()
         let now = Date.now
         let timeToNext = pomoTimer.timeRemaining(for: index, atDate: now)
