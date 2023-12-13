@@ -31,6 +31,9 @@ struct PushTokenPayload: Codable {
 class LiveActivities {
     static let shared = LiveActivities()
 
+    static var pushTokenPollingTask: Task<(), Never>?
+    
+
     @available(iOS 16.2, *)
     func setupLiveActivity(_ pomoTimer: PomoTimer, _ tasksOnBar: TasksOnBar) {
         guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
@@ -49,7 +52,7 @@ class LiveActivities {
                     let activity = try Activity.request(attributes: pomoAttrs, content: content, pushType: .token)
                     Logger().log("Requested live activity \(String(describing: activity.id)).")
 
-                    pollPushTokenUpdates(activity: activity)
+                    startPollingPushTokenUpdates()
                 }
             } catch {
                 Logger().error("Error requesting live activity: \(error.localizedDescription)")
@@ -75,12 +78,17 @@ class LiveActivities {
     }
 
     @available(iOS 16.2, *)
-    func pollPushTokenUpdates<T>(activity: Activity<T>) {
-        Task {
+    func startPollingPushTokenUpdates() {
+        guard let activity = Activity<PomoAttributes>.activities.first else { return }
+
+        LiveActivities.pushTokenPollingTask?.cancel()
+
+        LiveActivities.pushTokenPollingTask = Task {
             for await pushToken in activity.pushTokenUpdates {
+                guard !Task.isCancelled else { break; }
+
                 let pushTokenString = pushToken.map { String(format: "%02hhx", $0)}.joined()
                 Logger().log("New push token: \(pushTokenString)")
-
                 do {
                     try await sendPushTokenToServer(pushTokenString)
                 } catch {

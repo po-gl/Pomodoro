@@ -53,6 +53,9 @@ struct ContentView: View {
                         Haptics.shared.prepareHaptics()
                         setupWatchConnection()
                         didPerformInactiveSetup = false
+                        if #available(iOS 16.2, *) {
+                            LiveActivities.shared.startPollingPushTokenUpdates()
+                        }
 
                     } else if newPhase == .inactive || newPhase == .background {
                         guard !didPerformInactiveSetup else { return }
