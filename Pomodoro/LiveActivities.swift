@@ -38,6 +38,8 @@ struct PushTokenPayload: Codable {
 class LiveActivities {
     static let shared = LiveActivities()
 
+    static let serverURL = ProcessInfo.processInfo.environment["POMO_SERVER_URL"] ?? "127.0.0.1:9000"
+
     static var pushTokenPollingTask: Task<(), Never>?
     
 
@@ -48,7 +50,7 @@ class LiveActivities {
 
         Task {
             do {
-                try? await sendPomoDataToServer(pomoTimer, tasksOnBar)
+                try await sendPomoDataToServer(pomoTimer, tasksOnBar)
 
                 let pomoAttrs = PomoAttributes()
                 let content = getLiveActivityContentFor(pomoTimer, tasksOnBar)
@@ -132,7 +134,7 @@ class LiveActivities {
         guard let deviceToken = AppNotifications.shared.deviceToken else { return }
         guard pomoTimer.getStatus() != .end else { return }
 
-        let url = URL(string: "http://127.0.0.1:9797/request/\(deviceToken)")!
+        let url = URL(string: "\(LiveActivities.serverURL)/request/\(deviceToken)")!
         let payload = Payload(timeIntervals: pomoToPayloadTimeIntervals(pomoTimer, tasksOnBar),
                               segmentCount: pomoTimer.order.count + 1) // +1 for .end segment
 
@@ -142,7 +144,7 @@ class LiveActivities {
     func sendPushTokenToServer(_ pushToken: String) async throws {
         guard let deviceToken = AppNotifications.shared.deviceToken else { return }
 
-        let url = URL(string: "http://127.0.0.1:9797/pushtoken/\(deviceToken)")!
+        let url = URL(string: "\(LiveActivities.serverURL)/pushtoken/\(deviceToken)")!
         let payload = PushTokenPayload(pushToken: pushToken)
 
         try await send(url: url, payload: payload)
@@ -151,7 +153,7 @@ class LiveActivities {
     func cancelServerRequest() async throws {
         guard let deviceToken = AppNotifications.shared.deviceToken else { return }
 
-        let url = URL(string: "http://127.0.0.1:9797/cancel/\(deviceToken)")!
+        let url = URL(string: "\(LiveActivities.serverURL)/cancel/\(deviceToken)")!
         var req = URLRequest(url: url)
 
         req.httpMethod = "POST"
