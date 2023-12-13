@@ -61,9 +61,6 @@ struct ContentView: View {
                         if !didReceiveSyncFromWatchConnection {
                             Task { await AppNotifications.shared.setupNotifications(pomoTimer) }
                         }
-                        if #available(iOS 16.2, *) {
-                            LiveActivities.shared.setupLiveActivity(pomoTimer, tasksOnBar)
-                        }
                         didPerformInactiveSetup = true
                     }
                 }
@@ -82,6 +79,8 @@ struct ContentView: View {
                                 }
                                 try? await LiveActivities.shared.cancelServerRequest()
                             }
+                        } else {
+                            LiveActivities.shared.setupLiveActivity(pomoTimer, tasksOnBar)
                         }
                     }
                 }
