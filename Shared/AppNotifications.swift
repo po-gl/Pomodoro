@@ -8,6 +8,10 @@
 import Foundation
 import SwiftUI
 
+#if os(iOS)
+import ActivityKit
+#endif
+
 #if os(watchOS)
 import WatchKit
 import UserNotifications
@@ -29,8 +33,11 @@ class AppNotifications {
     func setupNotifications(_ pomoTimer: PomoTimer) async {
         guard !pomoTimer.isPaused else { return }
         guard await UNUserNotificationCenter.current().pendingNotificationRequests().isEmpty else { return }
-        
 #if os(iOS)
+        if #available(iOS 16.1, *) {
+            guard Activity<PomoAttributes>.activities.isEmpty else { return }
+        }
+        
         let currentIndex = pomoTimer.getIndex(atDate: Date.now)
 #elseif os(watchOS)
         // watchOS uses BackgroundSession to handle the first notification
