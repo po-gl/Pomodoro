@@ -36,6 +36,7 @@ struct StandByWidgetView: View {
                     .opacity(entry.isPaused ? 0.13 : 0.2)
                     .animation(.default, value: entry.isPaused)
             }
+            .padding(10)
     }
 
     @ViewBuilder var content: some View {
@@ -57,7 +58,6 @@ struct StandByWidgetView: View {
                               segmentCount: entry.segmentCount,
                               pausedAt: entry.isPaused ? entry.timerInterval.lowerBound : nil)
             .frame(height: 5)
-            .padding(.bottom, 6)
         }
     }
 
