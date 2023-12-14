@@ -38,7 +38,7 @@ struct PushTokenPayload: Codable {
 class LiveActivities {
     static let shared = LiveActivities()
 
-    static let serverURL = ProcessInfo.processInfo.environment["POMO_SERVER_URL"] ?? "127.0.0.1:9000"
+    static let serverURL = ProcessInfo.processInfo.environment["POMO_SERVER_URL"] ?? "https://127.0.0.1:9000"
 
     static var pushTokenPollingTask: Task<(), Never>?
     
@@ -134,7 +134,7 @@ class LiveActivities {
         guard let deviceToken = AppNotifications.shared.deviceToken else { return }
         guard pomoTimer.getStatus() != .end else { return }
 
-        let url = URL(string: "\(LiveActivities.serverURL)/request/\(deviceToken)")!
+        guard let url = URL(string: "\(LiveActivities.serverURL)/request/\(deviceToken)") else { throw LiveActivityError.badURL }
         let payload = Payload(timeIntervals: pomoToPayloadTimeIntervals(pomoTimer, tasksOnBar),
                               segmentCount: pomoTimer.order.count + 1) // +1 for .end segment
 
@@ -144,7 +144,7 @@ class LiveActivities {
     func sendPushTokenToServer(_ pushToken: String) async throws {
         guard let deviceToken = AppNotifications.shared.deviceToken else { return }
 
-        let url = URL(string: "\(LiveActivities.serverURL)/pushtoken/\(deviceToken)")!
+        guard let url = URL(string: "\(LiveActivities.serverURL)/pushtoken/\(deviceToken)") else { throw LiveActivityError.badURL }
         let payload = PushTokenPayload(pushToken: pushToken)
 
         try await send(url: url, payload: payload)
@@ -153,7 +153,7 @@ class LiveActivities {
     func cancelServerRequest() async throws {
         guard let deviceToken = AppNotifications.shared.deviceToken else { return }
 
-        let url = URL(string: "\(LiveActivities.serverURL)/cancel/\(deviceToken)")!
+        guard let url = URL(string: "\(LiveActivities.serverURL)/cancel/\(deviceToken)") else { throw LiveActivityError.badURL }
         var req = URLRequest(url: url)
 
         req.httpMethod = "POST"
@@ -233,4 +233,5 @@ class LiveActivities {
 
 enum LiveActivityError: Error {
     case notOkResponse
+    case badURL
 }
