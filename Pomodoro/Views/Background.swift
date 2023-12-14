@@ -105,18 +105,9 @@ struct Background: View {
 
     private func getTopColor(at date: Date) -> Color {
         if colorScheme == .light {
-            return .black
-        }
-
-        switch pomoTimer.getStatus(atDate: date) {
-        case .work:
-            return Color("BarWork")
-        case .rest:
-            return Color("BarRest")
-        case .longBreak:
-            return Color("BarLongBreak")
-        case .end:
-            return Color("End")
+            .black
+        } else {
+            pomoTimer.getStatus(atDate: date).color
         }
     }
 
