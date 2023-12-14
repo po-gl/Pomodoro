@@ -40,10 +40,10 @@ struct BuddyView: View {
         .onAppear {
             buddies.shuffle()
         }
+        .animation(startStopAnimation, value: pomoTimer.isPaused)
         .offset(x: -metrics.size.width/2 + startingXOffset)
         .offset(x: xOffsetForProgress)
-        .animation(startStopAnimation, value: pomoTimer.isPaused)
-        .animation(.spring(duration: 2.0), value: xOffsetForProgress)
+        .animation(pomoTimer.isPaused ? .spring(duration: 1.8) : startStopAnimation, value: xOffsetForProgress)
     }
 
     @ViewBuilder
