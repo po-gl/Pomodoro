@@ -235,3 +235,14 @@ enum LiveActivityError: Error {
     case notOkResponse
     case badURL
 }
+
+extension LiveActivityError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .notOkResponse:
+            NSLocalizedString("Not OK response from remote server.", comment: "")
+        case .badURL:
+            NSLocalizedString("Bad URL", comment: "")
+        }
+    }
+}
