@@ -40,6 +40,7 @@ struct Background: View {
                         .fill(LinearGradient(colors: [.white, .clear], startPoint: .top, endPoint: .bottom))
                         .blendMode(.softLight)
                 )
+                .brightness(0.1)
                 .drawingGroup()
         } else {
             Rectangle()
