@@ -55,10 +55,17 @@ struct ProjectCell: View {
                             infoMenuButton.offset(y: -1)
                         }
                     }
-                    if focus || !editNoteText.isEmpty {
-                        noteTextField
-                            .padding(.leading, 32)
+                    Group {
+                        if focus || !editNoteText.isEmpty {
+                            noteTextField
+                        }
+                        if !isCollapsed.value && assignedTasksCount > 0 {
+                            Divider()
+                                .padding(.vertical, 6)
+                            projectStats
+                        }
                     }
+                    .padding(.leading, 32)
                 }
 
                 Spacer()
@@ -131,6 +138,24 @@ struct ProjectCell: View {
             .foregroundColor(color)
             .brightness(secondaryBrightness)
             .id("\(project.id)_note_\(isCollapsed.value)")
+    }
+
+    @ViewBuilder private var projectStats: some View {
+        HStack {
+            Spacer()
+            Text("\(assignedTasksCount) assigned task\(assignedTasksCount > 1 ? "s" : "")")
+                .font(.system(.footnote))
+                .foregroundColor(color)
+                .brightness(secondaryBrightness)
+                .onTapGesture {
+                    editProject()
+                    withAnimation { showingProjectInfo = true }
+                }
+        }
+    }
+
+    private var assignedTasksCount: Int {
+        project.tasks?.count ?? 0
     }
 
     private func deleteOrEditProject() {
