@@ -23,6 +23,8 @@ struct TaskInfoView: View {
     @State var editProjects = Set<Project>()
     @State var initialArchivedProjects = [Project]()
 
+    @State var editingAssignedProjects = false
+
     @State var cancelled = false
 
     var body: some View {
@@ -54,12 +56,11 @@ struct TaskInfoView: View {
                                 Text("Assigned Projects")
                                     .foregroundStyle(.secondary)
                                 Spacer()
-                                Menu {
-                                    currentProjectsMenuButtons
-                                } label: {
-                                    Image(systemName: "pencil.line")
-                                        .font(.title3)
-                                        .tint(Color("AccentColor"))
+                                Button(action: { editingAssignedProjects.toggle() }) {
+                                    Text(editingAssignedProjects ? "Done" : "Edit")
+                                        .font(.headline)
+                                        .fontWeight(.bold)
+                                        .tint(editingAssignedProjects ? Color("End") : Color("AccentColor"))
                                 }
                                 .padding(.trailing, 10)
                             }
@@ -67,6 +68,7 @@ struct TaskInfoView: View {
                                 .offset(x: -5)
                         }
                     }
+                    .animation(.spring(duration: 0.3), value: editingAssignedProjects)
                 }
                 .padding()
             }
@@ -99,40 +101,49 @@ struct TaskInfoView: View {
         }
     }
 
-    var projectsList: some View {
+    @ViewBuilder var projectsList: some View {
         WrappingHStack(models: editProjects.sorted { $0.name ?? "" < $1.name ?? ""}) { project in
             ProjectTag(project: project)
-        }
-    }
-
-    @ViewBuilder var currentProjectsMenuButtons: some View {
-        ForEach(currentProjects, id: \Project.id) { project in
-            projectMenuButton(project)
-        }
-        ForEach(initialArchivedProjects, id: \Project.id) { project in
-            projectMenuButton(project)
-        }
-    }
-
-    @ViewBuilder func projectMenuButton(_ project: Project) -> some View {
-        let icon = if editProjects.contains(project) {
-            "circlebadge.fill"
-        } else {
-            "circlebadge"
-        }
-        Button(action: {
-            withAnimation(.bouncy) {
-                if editProjects.contains(project) {
-                    editProjects.remove(project)
-                } else {
-                    editProjects.insert(project)
+                .overrideAction(predicate: editingAssignedProjects) {
+                    withAnimation(.bouncy) {
+                        toggleEditProject(project)
+                    }
                 }
+                .overlay {
+                    if editingAssignedProjects {
+                        TagEditingBorder(colorOnTop: false, color: Color(project.color ?? ""))
+                    }
+                }
+        }
+        VStack {
+            Divider()
+                .padding(.vertical, 5)
+            let combinedProjects = currentProjects + initialArchivedProjects
+            WrappingHStack(models: combinedProjects.filter { !editProjects.contains($0) }
+                                                   .sorted { $0.name ?? "" < $1.name ?? ""}) { project in
+                ProjectTag(project: project)
+                    .overrideAction(predicate: editingAssignedProjects) {
+                        withAnimation(.bouncy) {
+                            toggleEditProject(project)
+                        }
+                    }
+                    .saturation(0.25)
+                    .overlay {
+                        TagEditingBorder(colorOnTop: true, color: Color(project.color ?? ""))
+                            .saturation(0.5)
+                    }
             }
-        }, label: {
-            HStack {
-                Label("\(project.name ?? "error")\(project.archived ? " (archived)" : "")", systemImage: icon)
-            }
-        })
+        }
+        .frame(maxHeight: editingAssignedProjects ? .infinity : 0)
+        .opacity(editingAssignedProjects ? 1 : 0)
+    }
+
+    func toggleEditProject(_ project: Project) {
+        if editProjects.contains(project) {
+            editProjects.remove(project)
+        } else {
+            editProjects.insert(project)
+        }
     }
 
     func saveEdits() {
@@ -159,6 +170,25 @@ struct TaskInfoView: View {
         }, label: {
             Text("Cancel")
         })
+    }
+}
+
+struct TagEditingBorder: View {
+    let colorOnTop: Bool
+    let color: Color
+    @State var animate = false
+
+    var body: some View {
+        let (startPoint, endPoint): (UnitPoint, UnitPoint) = colorOnTop ? (.top, .bottom) : (.bottom, .top)
+        RoundedRectangle(cornerRadius: 6)
+            .stroke(LinearGradient(colors: [color, .clear],
+                                   startPoint: startPoint, endPoint: endPoint),
+                    style: StrokeStyle(lineWidth: 1.5))
+            .opacity(animate ? 1.0 : 0.2)
+            .animation(.easeInOut(duration: 1.1).repeatForever(), value: animate)
+            .onAppear {
+                animate = true
+            }
     }
 }
 
