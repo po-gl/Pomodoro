@@ -19,14 +19,14 @@ struct OverrideActionViewModifier: ViewModifier {
     var action: () -> Void = {}
 
     func body(content: Content) -> some View {
-        ZStack {
-            content
-                .disabled(predicate)
-            if predicate {
-                Color.clear
-                    .contentShape(Rectangle())
-                    .onTapGesture(perform: action)
+        content
+            .disabled(predicate)
+            .overlay {
+                if predicate {
+                    Color.clear
+                        .contentShape(Rectangle())
+                        .onTapGesture(perform: action)
+                }
             }
-        }
     }
 }
