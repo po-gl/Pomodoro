@@ -75,13 +75,7 @@ struct ContentView: View {
 
                     if #available(iOS 16.2, *) {
                         if isPaused {
-                            Task {
-                                if let activity = Activity<PomoAttributes>.activities.first {
-                                    let state = LiveActivities.shared.getLiveActivityContentFor(pomoTimer, tasksOnBar)
-                                    await activity.update(state)
-                                }
-                                try? await LiveActivities.shared.cancelServerRequest()
-                            }
+                            LiveActivities.shared.stopLiveActivity(pomoTimer, tasksOnBar)
                         } else {
                             LiveActivities.shared.setupLiveActivity(pomoTimer, tasksOnBar)
                         }

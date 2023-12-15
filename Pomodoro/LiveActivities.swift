@@ -73,6 +73,22 @@ class LiveActivities {
     }
 
     @available(iOS 16.2, *)
+    func stopLiveActivity(_ pomoTimer: PomoTimer, _ tasksOnBar: TasksOnBar) {
+        Task {
+            do {
+                if let activity = Activity<PomoAttributes>.activities.first {
+                    let content = getLiveActivityContentFor(pomoTimer, tasksOnBar)
+                    await activity.update(content)
+                    Logger().log("Updated live activity \(String(describing: activity.id)).")
+                }
+                try await cancelServerRequest()
+            } catch {
+                Logger().error("Error stopping live activyt: \(error.localizedDescription)")
+            }
+        }
+    }
+
+    @available(iOS 16.2, *)
     func getLiveActivityContentFor(_ pomoTimer: PomoTimer,
                                    _ tasksOnBar: TasksOnBar) -> ActivityContent<PomoAttributes.PomoState> {
         let i = pomoTimer.getStatus() == .end ? pomoTimer.order.count : pomoTimer.getIndex()
