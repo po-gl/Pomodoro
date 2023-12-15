@@ -48,6 +48,8 @@ class LiveActivities {
         guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
         guard !pomoTimer.isPaused else { return }
 
+        Logger().log("URL to live activity server: \(LiveActivities.serverURL)")
+
         Task {
             do {
                 try await sendPomoDataToServer(pomoTimer, tasksOnBar)
