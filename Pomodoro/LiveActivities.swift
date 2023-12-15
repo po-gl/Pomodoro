@@ -59,6 +59,7 @@ class LiveActivities {
 
                 if let activity = Activity<PomoAttributes>.activities.first {
                     await activity.update(content)
+                    Logger().log("Updated live activity \(String(describing: activity.id)).")
                 } else {
                     let activity = try Activity.request(attributes: pomoAttrs, content: content, pushType: .token)
                     Logger().log("Requested live activity \(String(describing: activity.id)).")
