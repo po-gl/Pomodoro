@@ -40,8 +40,7 @@ class LiveActivities {
 
     static let serverURL = ProcessInfo.processInfo.environment["POMO_SERVER_URL"] ?? "http://127.0.0.1:9000"
 
-    static var pushTokenPollingTask: Task<(), Never>?
-    
+    var pushTokenPollingTask: Task<(), Never>?
 
     @available(iOS 16.2, *)
     func setupLiveActivity(_ pomoTimer: PomoTimer, _ tasksOnBar: TasksOnBar) {
@@ -109,9 +108,9 @@ class LiveActivities {
     func startPollingPushTokenUpdates() {
         guard let activity = Activity<PomoAttributes>.activities.first else { return }
 
-        LiveActivities.pushTokenPollingTask?.cancel()
+        LiveActivities.shared.pushTokenPollingTask?.cancel()
 
-        LiveActivities.pushTokenPollingTask = Task {
+        LiveActivities.shared.pushTokenPollingTask = Task {
             for await pushToken in activity.pushTokenUpdates {
                 guard !Task.isCancelled else { break; }
 
