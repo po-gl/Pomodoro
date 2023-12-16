@@ -41,7 +41,7 @@ struct TaskAdderView: View {
 
                 AutoCompleteView(text: $taskFromAdder.text)
                     .position(startLocation)
-                    .offset(x: 155, y: -85)
+                    .offset(x: 153, y: -125)
                     .opacity(showAutoComplete ? 1.0 : 0.0)
                     .animation(.easeInOut, value: showAutoComplete)
                     .onChange(of: taskFromAdder.isDragging) { isDragging in

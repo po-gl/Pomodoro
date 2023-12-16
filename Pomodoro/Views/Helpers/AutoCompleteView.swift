@@ -19,10 +19,10 @@ struct AutoCompleteView: View {
     @Binding var text: String
 
     var body: some View {
-        let itemsToShow = 3
+        let itemsToShow = 5
         VStack {
             Spacer()
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 11) {
                 let tasks = tasksStartingWith(text)
                 let tasksToShow = tasks.count >= itemsToShow ? tasks[..<itemsToShow].reversed() : tasks[0...].reversed()
                 ForEach(tasksToShow) { taskItem in
@@ -30,7 +30,7 @@ struct AutoCompleteView: View {
                 }
             }
         }
-        .frame(width: 280, height: 120)
+        .frame(width: 280, height: 200)
     }
 
     @ViewBuilder
@@ -42,8 +42,8 @@ struct AutoCompleteView: View {
                 Text(rowText)
                     .lineLimit(1)
                     .font(.system(.callout, design: .monospaced))
-                    .padding(.vertical, 3)
-                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .padding(.horizontal, 12)
                     .opacity(0.7)
             }
             .background {
