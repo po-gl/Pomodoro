@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreData
+import OSLog
 
 class TasksOnBar: ObservableObject {
     @Published var tasksOnBar: [String] = []
@@ -57,6 +58,6 @@ class TasksOnBar: ObservableObject {
     func restoreFromUserDefaults() {
         tasksOnBar = UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!
             .object(forKey: "taskNotes") as? [String] ?? tasksOnBar
-        print("RESTORE::tasks=\(tasksOnBar)")
+        Logger().log("RESTORE::tasks=\(self.tasksOnBar)")
     }
 }

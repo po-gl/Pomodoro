@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import OSLog
 
 class SequenceTimer: ObservableObject, Codable {
     @Published var isPaused: Bool = true
@@ -216,9 +217,9 @@ class SequenceTimer: ObservableObject, Codable {
             .object(forKey: "pauseOffset") as? TimeInterval ?? pauseOffset
         scrubOffset = UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!
             .object(forKey: "scrubOffset") as? TimeInterval ?? scrubOffset
-        print("""
-              RESTORE::isPaused=\(isPaused)   startTime=\(startTime)   pauseStart=\(pauseStart) \
-              pauseOffset=\(pauseOffset)   timeAmounts=\(timeAmounts)
+        Logger().log("""
+              RESTORE::isPaused=\(self.isPaused)   startTime=\(self.startTime)   pauseStart=\(self.pauseStart) \
+              pauseOffset=\(self.pauseOffset)   timeAmounts=\(self.timeAmounts)
               """)
 
         if !isPaused {

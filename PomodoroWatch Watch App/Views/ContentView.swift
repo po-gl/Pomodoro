@@ -9,6 +9,7 @@ import SwiftUI
 import WidgetKit
 import WatchConnectivity
 import Combine
+import OSLog
 
 struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
@@ -38,7 +39,7 @@ struct ContentView: View {
             startBackgroundSessionIfDidNotReceiveWCSync()
         }
         .onChange(of: scenePhase) { newPhase in
-            print("Phase \(newPhase)")
+            Logger().log("Phase \(newPhase)")
             if newPhase == .active {
                 pomoTimer.restoreFromUserDefaults()
                 AppNotifications.shared.cancelPendingNotifications()
@@ -86,7 +87,7 @@ struct ContentView: View {
 
         .onReceive(Publishers.wcSessionDataDidFlow) { timer in
             if let timer {
-                print("\(#function): watchOS received pomoTimer.pomoCount=\(timer.pomoCount) isPaused=\(timer.isPaused)")
+                Logger().debug("\(#function): watchOS received pomoTimer.pomoCount=\(timer.pomoCount) isPaused=\(timer.isPaused)")
                 pomoTimer.sync(with: timer)
                 pomoTimer.saveToUserDefaults()
                 didReceiveSyncFromWatchConnection = true

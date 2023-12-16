@@ -476,7 +476,6 @@ final class DebugDiffableDataSource<SectionIdentifier, ItemIdentifier>: UICollec
     // swiftlint:disable:next identifier_name
     @objc func _collectionView(_ collectionView: UICollectionView,
                                willPerformUpdates updates: [UICollectionViewUpdateItem]) {
-        print("Diffable data source updates: \(updates)")
     }
 }
 

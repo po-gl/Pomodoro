@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import OSLog
 
 class PomoTimer: SequenceTimer {
     @Published var order: [PomoTime]
@@ -138,7 +139,7 @@ class PomoTimer: SequenceTimer {
         }
         pomoCount = UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!
             .object(forKey: "pomoCount") as? Int ?? pomoCount
-        print("RESTORE::order=\(order.map { $0.getStatusString() })  pomoCount=\(pomoCount)")
+        Logger().log("RESTORE::order=\(self.order.map { $0.getStatusString() })  pomoCount=\(self.pomoCount)")
         super.restoreFromUserDefaults()
     }
 

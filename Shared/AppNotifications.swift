@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import OSLog
 
 #if os(iOS)
 import ActivityKit
@@ -25,7 +26,7 @@ class AppNotifications {
     func getNotificationPermissions() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, error in
             if let error = error {
-                print("There was an error requesting permissions: \(error.localizedDescription)")
+                Logger().error("There was an error requesting permissions: \(error.localizedDescription)")
             }
         }
     }
@@ -55,7 +56,7 @@ class AppNotifications {
             do {
                 try await UNUserNotificationCenter.current().add(request)
             } catch {
-                print("Error adding notification \(error.localizedDescription)")
+                Logger().error("Error adding notification \(error.localizedDescription)")
             }
         }
     }

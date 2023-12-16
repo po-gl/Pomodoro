@@ -9,6 +9,7 @@ import SwiftUI
 import WatchConnectivity
 import Combine
 import WidgetKit
+import OSLog
 
 func setupWatchConnection() {
     if WCSession.isSupported() {
@@ -25,14 +26,14 @@ func updateWatchConnection(_ pomoTimer: PomoTimer) -> Bool {
 
     if let lastReceivedTime = SessionDelegate.lastReceived?.timeIntervalSince1970 {
         guard Date().timeIntervalSince1970 - lastReceivedTime > 0.05 else {
-            print("Skipped updateWatchConnection")
+            Logger().debug("Skipped updateWatchConnection")
             return false
         }
     }
 
     let data = try? PropertyListEncoder().encode(pomoTimer)
     guard let pomoData = data else {
-        print("Failed to encode pomoTimer")
+        Logger().error("Failed to encode pomoTimer")
         return false
     }
 
@@ -49,7 +50,7 @@ private func wcSendMessage(_ pomoData: Data, session: WCSession) {
         PayloadKey.isComplicationInfo: false,
         PayloadKey.date: Date()
     ], replyHandler: nil, errorHandler: { error in
-        print("Error sending WC message: \(error.localizedDescription)")
+        Logger().error("Error sending WC message: \(error.localizedDescription)")
         do {
             try session.updateApplicationContext([
                 PayloadKey.pomoTimer: pomoData,
@@ -57,7 +58,7 @@ private func wcSendMessage(_ pomoData: Data, session: WCSession) {
                 PayloadKey.date: Date()
             ])
         } catch {
-            print("Failed to call .updateApplicationContext")
+            Logger().error("Failed to call .updateApplicationContext")
         }
     })
 }
@@ -121,7 +122,7 @@ class SessionDelegate: NSObject, WCSessionDelegate {
 
     func session(_ session: WCSession,
                  activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-        print("\(#function): activationState = \(session.activationState.rawValue)")
+        Logger().debug("\(#function): activationState = \(session.activationState.rawValue)")
         postNotificationOnMainQueueAsync(name: .activationDidComplete)
     }
 
@@ -137,7 +138,7 @@ class SessionDelegate: NSObject, WCSessionDelegate {
 
 #if os(iOS)
     func sessionDidBecomeInactive(_ session: WCSession) {
-        print("\(#function): activationState = \(session.activationState.rawValue)")
+        Logger().debug("\(#function): activationState = \(session.activationState.rawValue)")
     }
 
     func sessionDidDeactivate(_ session: WCSession) {

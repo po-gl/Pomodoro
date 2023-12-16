@@ -11,6 +11,7 @@ import WidgetKit
 import ActivityKit
 import WatchConnectivity
 import Combine
+import OSLog
 
 struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
@@ -46,7 +47,7 @@ struct ContentView: View {
                 }
 
                 .onChange(of: scenePhase) { newPhase in
-                    print("Phase \(newPhase)")
+                    Logger().log("Phase \(newPhase)")
                     if newPhase == .active {
                         pomoTimer.restoreFromUserDefaults()
                         AppNotifications.shared.cancelPendingNotifications()
@@ -95,7 +96,7 @@ struct ContentView: View {
 
                 .onReceive(Publishers.wcSessionDataDidFlow) { timer in
                     if let timer {
-                        print("iOS received pomoTimer.pomoCount=\(timer.pomoCount) isPaused=\(timer.isPaused)")
+                        Logger().debug("iOS received pomoTimer.pomoCount=\(timer.pomoCount) isPaused=\(timer.isPaused)")
                         pomoTimer.sync(with: timer)
                         pomoTimer.saveToUserDefaults()
                         didReceiveSyncFromWatchConnection = true
@@ -111,7 +112,7 @@ struct ContentView: View {
                         pomoTimer.unpause()
                         pomoTimer.saveToUserDefaults()
                     default:
-                        print("Unhandled url: \(url.absoluteString)")
+                        Logger().error("Unhandled url: \(url.absoluteString)")
                     }
                 }
         }

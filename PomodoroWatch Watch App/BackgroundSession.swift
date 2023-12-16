@@ -7,6 +7,7 @@
 
 import Foundation
 import WatchKit
+import OSLog
 
 class BackgroundSession: NSObject, WKExtendedRuntimeSessionDelegate {
     static var shared = BackgroundSession()
@@ -25,28 +26,28 @@ class BackgroundSession: NSObject, WKExtendedRuntimeSessionDelegate {
         session = WKExtendedRuntimeSession()
         session.delegate = self
 
-        print("Background Session starting at \(timeFormatter.string(from: date))")
+        Logger().log("Background Session starting at \(timeFormatter.string(from: date))")
         session.start(at: date)
     }
 
     func stop() {
-        print("Background Session stopped")
+        Logger().log("Background Session stopped")
         session.invalidate()
     }
 
     func extendedRuntimeSessionDidStart(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
-        print("BackgroundSession: did start and should notify")
+        Logger().log("BackgroundSession: did start and should notify")
         extendedRuntimeSession.notifyUser(hapticType: .notification)
     }
 
     func extendedRuntimeSessionWillExpire(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
-        print("BackgroundSession: end")
+        Logger().log("BackgroundSession: end")
         extendedRuntimeSession.invalidate()
     }
 
     func extendedRuntimeSession(_ extendedRuntimeSession: WKExtendedRuntimeSession, didInvalidateWith reason: WKExtendedRuntimeSessionInvalidationReason, error: Error?) {
         if let error {
-            print("Error occurred during background session: \(error.localizedDescription)")
+            Logger().error("Error occurred during background session: \(error.localizedDescription)")
         }
     }
 }

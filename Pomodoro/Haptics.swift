@@ -9,6 +9,7 @@ import Foundation
 import CoreHaptics
 import UIKit
 import Combine
+import OSLog
 
 class Haptics {
     static public let shared = Haptics()
@@ -22,7 +23,7 @@ class Haptics {
             engine = try CHHapticEngine()
             try engine?.start()
         } catch {
-            print("There was an error creating the haptics engine: \(error.localizedDescription)")
+            Logger().error("There was an error creating the haptics engine: \(error.localizedDescription)")
         }
     }
 
@@ -74,7 +75,7 @@ class Haptics {
             let player = try engine?.makePlayer(with: pattern)
             try player?.start(atTime: 0.0)
         } catch {
-            print("Failed to play pattern: \(error.localizedDescription)")
+            Logger().error("Failed to play pattern: \(error.localizedDescription)")
         }
     }
 }
