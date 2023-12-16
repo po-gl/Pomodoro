@@ -70,6 +70,13 @@ struct ContentView: View {
             let wcSent = updateWatchConnection(pomoTimer)
             didReceiveSyncFromWatchConnection = !wcSent
         }
+        .onChange(of: pomoTimer.isReset) { _ in
+            if pomoTimer.isReset {
+                WidgetCenter.shared.reloadAllTimelines()
+                let wcSent = updateWatchConnection(pomoTimer)
+                didReceiveSyncFromWatchConnection = !wcSent
+            }
+        }
         .onChange(of: pomoTimer.getStatus()) { _ in
             Task {
                 try? await Task.sleep(for: .seconds(1))

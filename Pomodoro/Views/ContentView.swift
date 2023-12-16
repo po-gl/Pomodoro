@@ -81,6 +81,17 @@ struct ContentView: View {
                         }
                     }
                 }
+                .onChange(of: pomoTimer.isReset) { isReset in
+                    if isReset {
+                        WidgetCenter.shared.reloadAllTimelines()
+                        let wcSent = updateWatchConnection(pomoTimer)
+                        didReceiveSyncFromWatchConnection = !wcSent
+
+                        if #available(iOS 16.2, *) {
+                            LiveActivities.shared.stopLiveActivity(pomoTimer, tasksOnBar)
+                        }
+                    }
+                }
 
                 .onReceive(Publishers.wcSessionDataDidFlow) { timer in
                     if let timer {
