@@ -14,11 +14,11 @@ cd ../Shared/
 
 touch Env.plist
 echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
 <plist version=\"1.0\">
 <dict>
-        <key>serverURL</key>
-        <string>$SERVER_URL</string>
+    <key>serverURL</key>
+    <string>$SERVER_URL</string>
 </dict>
 </plist>" > Env.plist
 
