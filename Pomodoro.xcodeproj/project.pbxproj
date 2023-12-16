@@ -402,6 +402,7 @@
 		611D9AA42B2D039F0011F389 /* StartStop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartStop.swift; sourceTree = "<group>"; };
 		611D9AAB2B2D97190011F389 /* Env.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Env.swift; sourceTree = "<group>"; };
 		611D9AB32B2D987B0011F389 /* Env.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Env.plist; sourceTree = "<group>"; };
+		611D9AB72B2DA06E0011F389 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
 		611EE30C2A107CD000DDF171 /* View+doneButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+doneButton.swift"; sourceTree = "<group>"; };
 		612B9087285CC863003F1990 /* TimeInterval+formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+formatter.swift"; sourceTree = "<group>"; };
 		612B9089285CD2E4003F1990 /* Color+hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+hex.swift"; sourceTree = "<group>"; };
@@ -821,6 +822,7 @@
 			isa = PBXGroup;
 			children = (
 				61BC3DAC2AD74C23007C4BB9 /* ci_post_clone.sh */,
+				611D9AB72B2DA06E0011F389 /* ci_pre_xcodebuild.sh */,
 			);
 			path = ci_scripts;
 			sourceTree = "<group>";
