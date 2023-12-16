@@ -51,14 +51,26 @@ struct BannerLiveActivityView: View {
 
     @ViewBuilder var pauseButton: some View {
         let isPaused = context.state.isPaused
-        Link(destination: URL(string: isPaused ? "com.po-gl.unpause" : "com.po-gl.pause")!) {
-            Image(systemName: isPaused ? "play.circle.fill" : "pause.circle.fill")
-                .foregroundStyle(getGradientForStatus(status))
-                .opacity(0.8)
-                .brightness(0.2)
-                .saturation(0.8)
-                .font(.system(size: 50))
-                .frame(width: 50)
+        let image = Image(systemName: isPaused ? "play.circle.fill" : "pause.circle.fill")
+            .foregroundStyle(getGradientForStatus(status))
+            .brightness(0.2)
+            .saturation(0.8)
+            .font(.system(size: 50))
+            .frame(width: 50)
+
+        if #available(iOS 17.0, *) {
+            ZStack {
+                image.opacity(0.7)
+                Button(intent: StartStop()) {
+                    image
+                }
+                .buttonStyle(.plain)
+                .invalidatableContent()
+            }
+        } else {
+            Link(destination: URL(string: isPaused ? "com.po-gl.unpause" : "com.po-gl.pause")!) {
+                image
+            }
         }
     }
 
