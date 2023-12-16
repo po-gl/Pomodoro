@@ -10,6 +10,7 @@ import SwiftUI
 
 class SequenceTimer: ObservableObject, Codable {
     @Published var isPaused: Bool = true
+    @Published var isReset: Bool = false
 
     private var startTime = Date()
     private var timeAmounts: [TimeInterval] = []
@@ -125,6 +126,7 @@ class SequenceTimer: ObservableObject, Codable {
         if !sequenceOfIntervals.isEmpty {
             timeAmounts = sequenceOfIntervals
         }
+        isReset = true
         pause()
         pauseOffset = 0.0
         scrubOffset = 0.0
@@ -158,6 +160,7 @@ class SequenceTimer: ObservableObject, Codable {
 
     public func unpause() {
         isPaused = false
+        isReset = false
         pauseOffset += Date().timeIntervalSince(pauseStart)
         createTimer(index: getIndex())
     }
@@ -189,6 +192,7 @@ class SequenceTimer: ObservableObject, Codable {
         UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.set(Date(), forKey: "timeSinceAppSuspended")
 
         UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.set(isPaused, forKey: "isPaused")
+        UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.set(isReset, forKey: "isReset")
         UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.set(startTime, forKey: "startTime")
         UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.set(timeAmounts, forKey: "timeAmounts")
         UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.set(pauseStart, forKey: "pauseStart")
@@ -200,6 +204,8 @@ class SequenceTimer: ObservableObject, Codable {
     public func restoreFromUserDefaults() {
         isPaused = UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!
             .object(forKey: "isPaused") as? Bool ?? isPaused
+        isReset = UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!
+            .object(forKey: "isReset") as? Bool ?? isReset
         startTime = UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!
             .object(forKey: "startTime") as? Date ?? startTime
         timeAmounts = UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!
@@ -226,6 +232,7 @@ class SequenceTimer: ObservableObject, Codable {
     required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         isPaused = try values.decode(Bool.self, forKey: .isPaused)
+        isReset = try values.decode(Bool.self, forKey: .isReset)
         startTime = try values.decode(Date.self, forKey: .startTime)
         timeAmounts = try values.decode([TimeInterval].self, forKey: .timeAmounts)
         pauseStart = try values.decode(Date.self, forKey: .pauseStart)
@@ -237,6 +244,7 @@ class SequenceTimer: ObservableObject, Codable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(isPaused, forKey: .isPaused)
+        try container.encode(isReset, forKey: .isReset)
         try container.encode(startTime, forKey: .startTime)
         try container.encode(timeAmounts, forKey: .timeAmounts)
         try container.encode(pauseStart, forKey: .pauseStart)
@@ -246,6 +254,7 @@ class SequenceTimer: ObservableObject, Codable {
 
     enum CodingKeys: String, CodingKey {
         case isPaused
+        case isReset
         case startTime
         case timeAmounts
         case pauseStart

@@ -73,6 +73,15 @@ final class SequenceTimerTests: XCTestCase {
         XCTAssertEqual(actionsPerformed, 3)
     }
 
+    func testIsReset() throws {
+        XCTAssertEqual(sequenceTimer.isReset, false)
+        passTime(seconds: 1)
+        sequenceTimer.reset()
+        XCTAssertEqual(sequenceTimer.isReset, true)
+        sequenceTimer.unpause()
+        XCTAssertEqual(sequenceTimer.isReset, false)
+    }
+
     func testSequenceTimerPerformance() throws {
         let sequenceOfIntervals: [TimeInterval] = Array(repeating: 10.0*60.0, count: 100)
         let sequenceTimer = SequenceTimer(sequenceOfIntervals, perform: { _ in return }, timerProvider: MockTimer.self)
