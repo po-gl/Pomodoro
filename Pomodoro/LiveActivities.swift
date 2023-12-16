@@ -38,7 +38,7 @@ struct PushTokenPayload: Codable {
 class LiveActivities {
     static let shared = LiveActivities()
 
-    static let serverURL = ProcessInfo.processInfo.environment["POMO_SERVER_URL"] ?? "http://127.0.0.1:9000"
+    static let serverURL = Env.shared.vars?.serverURL ?? "http://127.0.0.1:9000"
 
     var pushTokenPollingTask: Task<(), Never>?
 
