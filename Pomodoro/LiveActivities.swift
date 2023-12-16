@@ -147,7 +147,6 @@ class LiveActivities {
         }
     }
 
-#if os(iOS)
     func sendPomoDataToServer(_ pomoTimer: PomoTimer, _ tasksOnBar: TasksOnBar) async throws {
         guard let deviceToken = AppNotifications.shared.deviceToken else { return }
         guard pomoTimer.getStatus() != .end else { return }
@@ -246,7 +245,6 @@ class LiveActivities {
                                                  alert: finalAlert))
         return timeIntervals
     }
-#endif
 }
 
 enum LiveActivityError: Error {
