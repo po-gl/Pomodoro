@@ -72,6 +72,10 @@ class TaskListViewController: UIViewController {
         }
     }
 
+    private var taskSection: Int {
+        showProjects ? 1 : 0
+    }
+
     private var isProjectStackCollapsed = ObservableBool(true)
     private var projectStackSubscriber: AnyCancellable?
     private var projectStackIndex: IndexPath?
@@ -445,7 +449,7 @@ extension TaskListViewController: UICollectionViewDropDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         dropSessionDidUpdate session: UIDropSession,
                         withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
-        if let destinationIndexPath, destinationIndexPath.section == 1 {
+        if let destinationIndexPath, destinationIndexPath.section == taskSection {
             return UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
         }
         return UICollectionViewDropProposal(operation: .forbidden)
