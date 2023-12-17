@@ -146,14 +146,18 @@ class TaskListViewController: UIViewController {
     }
 
     @objc func handleKeyboardWillShow() {
-        setBottomConstraint(withOffset: true)
-        if let focusedIndexPath = TaskListViewController.focusedIndexPath {
-            collectionView.scrollToItem(at: focusedIndexPath, at: .bottom, animated: false)
+        Task { @MainActor in
+            setBottomConstraint(withOffset: true)
+            if let focusedIndexPath = TaskListViewController.focusedIndexPath {
+                collectionView.scrollToItem(at: focusedIndexPath, at: .bottom, animated: false)
+            }
         }
     }
 
     @objc func handleKeyboardWillHide() {
-        setBottomConstraint(withOffset: false)
+        Task { @MainActor in
+            setBottomConstraint(withOffset: false)
+        }
     }
 
     private func setBottomConstraint(withOffset: Bool) {
