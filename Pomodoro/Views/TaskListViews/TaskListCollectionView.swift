@@ -435,11 +435,7 @@ extension TaskListViewController: NSFetchedResultsControllerDelegate {
             snapshot.appendSections([.tasks])
             snapshot.appendItems(todaysTasks, toSection: .tasks)
 
-            if todaysTasksController.sections?.isEmpty == false && todaysTasks.isEmpty {
-                snapshot.appendItems([ListItem.emptyTask], toSection: .tasks)
-            } else {
-                snapshot.appendItems([ListItem.taskAdder], toSection: .tasks)
-            }
+            snapshot.appendItems([ListItem.taskAdder], toSection: .tasks)
 
             if showPastTasks {
                 let pastSections = pastTasksController.sections?.map { section in Section.pastTasks(section.name)} ?? []
