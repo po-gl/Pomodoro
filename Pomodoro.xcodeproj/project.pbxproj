@@ -120,6 +120,8 @@
 		6172B4C9297F82E300E53D8F /* LiveActivities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6172B4C8297F82E300E53D8F /* LiveActivities.swift */; };
 		6172B4CA297F848B00E53D8F /* iOSWidgetLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6172B4B0297F5EC600E53D8F /* iOSWidgetLiveActivity.swift */; };
 		6172B4CC297F848C00E53D8F /* iOSWidgetLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6172B4B0297F5EC600E53D8F /* iOSWidgetLiveActivity.swift */; };
+		617611492B31F41E0009910B /* View+showTabBarForOffset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617611482B31F41E0009910B /* View+showTabBarForOffset.swift */; };
+		6176114A2B31F41E0009910B /* View+showTabBarForOffset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617611482B31F41E0009910B /* View+showTabBarForOffset.swift */; };
 		617789B22856A1F300BD43D7 /* PomodoroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617789B12856A1F300BD43D7 /* PomodoroApp.swift */; };
 		617789B62856A1F300BD43D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 617789B52856A1F300BD43D7 /* Assets.xcassets */; };
 		617789BA2856A1F300BD43D7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 617789B92856A1F300BD43D7 /* Preview Assets.xcassets */; };
@@ -449,6 +451,7 @@
 		6172B4C4297F62EE00E53D8F /* iOSWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOSWidgetExtension.entitlements; sourceTree = "<group>"; };
 		6172B4C7297F686100E53D8F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		6172B4C8297F82E300E53D8F /* LiveActivities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivities.swift; sourceTree = "<group>"; };
+		617611482B31F41E0009910B /* View+showTabBarForOffset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+showTabBarForOffset.swift"; sourceTree = "<group>"; };
 		617789AE2856A1F300BD43D7 /* Pomodoro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pomodoro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		617789B12856A1F300BD43D7 /* PomodoroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroApp.swift; sourceTree = "<group>"; };
 		617789B32856A1F300BD43D7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -665,6 +668,7 @@
 				610595A32A4B783B00A83804 /* View+globalPosition.swift */,
 				61569CDD2B0036B200DFC977 /* View+verticalDragGesture.swift */,
 				61569CE02B005FAF00DFC977 /* View+verticalOffsetEffect.swift */,
+				617611482B31F41E0009910B /* View+showTabBarForOffset.swift */,
 				61B17252285CFCF8001C8245 /* UIView+ClosestVC.swift */,
 				614533CA2A27353B00388136 /* Color+Interpolate.swift */,
 				618750F429BABCFE0017BF8E /* Point+Extensions.swift */,
@@ -1337,6 +1341,7 @@
 				61E734B82B252AD5001C5B2A /* DynamicIslandProgressView.swift in Sources */,
 				610595A42A4B783C00A83804 /* View+globalPosition.swift in Sources */,
 				612D433429C14AB800FF38F8 /* AutoCompleteView.swift in Sources */,
+				617611492B31F41E0009910B /* View+showTabBarForOffset.swift in Sources */,
 				61C6BC1629C12D0F00AF48DE /* DraggableTask.swift in Sources */,
 				6187559E2AE21BE200FC1564 /* ProjectStack.swift in Sources */,
 				61E468152AEC5360001F6D7B /* ProjectTag.swift in Sources */,
@@ -1468,6 +1473,7 @@
 				6130F6F72A4CD0EC00AD9B6C /* View+globalPosition.swift in Sources */,
 				61F67BA42A3B042F00318CDC /* ProjectInfoView.swift in Sources */,
 				61E22AA2297B31130080CA6E /* SequenceTimer.swift in Sources */,
+				6176114A2B31F41E0009910B /* View+showTabBarForOffset.swift in Sources */,
 				61F62A1A2AE0C778005DE8A4 /* TodaysTasksHeader.swift in Sources */,
 				61F7363729C01A5000289149 /* ProjectsData.swift in Sources */,
 				61ED2E06297A682F0080C29F /* ContentView.swift in Sources */,

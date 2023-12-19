@@ -35,89 +35,92 @@ struct ContentView: View {
     }
 
     var body: some View {
-        NavigationStack {
+        TabView {
             MainPage()
-                .environmentObject(pomoTimer)
-                .environmentObject(tasksOnBar)
                 .reverseStatusBarColor()
-                .onAppear {
-                    AppNotifications.shared.getNotificationPermissions()
-                    UIApplication.shared.registerForRemoteNotifications()
-                    viewContext.undoManager = undoManager
-                }
-
-                .onChange(of: scenePhase) { newPhase in
-                    Logger().log("Phase \(newPhase)")
-                    if newPhase == .active {
-                        pomoTimer.restoreFromUserDefaults()
-                        AppNotifications.shared.cancelPendingNotifications()
-                        Haptics.shared.prepareHaptics()
-                        setupWatchConnection()
-                        didPerformInactiveSetup = false
-                        if #available(iOS 16.2, *) {
-                            LiveActivities.shared.startPollingPushTokenUpdates()
-                        }
-
-                    } else if newPhase == .inactive || newPhase == .background {
-                        guard !didPerformInactiveSetup else { return }
-                        pomoTimer.saveToUserDefaults()
-                        WidgetCenter.shared.reloadAllTimelines()
-                        if !didReceiveSyncFromWatchConnection {
-                            Task { await AppNotifications.shared.setupNotifications(pomoTimer) }
-                        }
-                        didPerformInactiveSetup = true
-                    }
-                }
-
-                .onChange(of: pomoTimer.isPaused) { isPaused in
-                    WidgetCenter.shared.reloadAllTimelines()
-                    let wcSent = updateWatchConnection(pomoTimer)
-                    didReceiveSyncFromWatchConnection = !wcSent
-
-                    if #available(iOS 16.2, *) {
-                        if isPaused {
-                            LiveActivities.shared.stopLiveActivity(pomoTimer, tasksOnBar)
-                        } else {
-                            LiveActivities.shared.setupLiveActivity(pomoTimer, tasksOnBar)
-                        }
-                    }
-                }
-                .onChange(of: pomoTimer.isReset) { isReset in
-                    if isReset {
-                        WidgetCenter.shared.reloadAllTimelines()
-                        let wcSent = updateWatchConnection(pomoTimer)
-                        didReceiveSyncFromWatchConnection = !wcSent
-
-                        if #available(iOS 16.2, *) {
-                            LiveActivities.shared.stopLiveActivity(pomoTimer, tasksOnBar)
-                        }
-                    }
-                }
-
-                .onReceive(Publishers.wcSessionDataDidFlow) { timer in
-                    if let timer {
-                        Logger().debug("iOS received pomoTimer.pomoCount=\(timer.pomoCount) isPaused=\(timer.isPaused)")
-                        pomoTimer.sync(with: timer)
-                        pomoTimer.saveToUserDefaults()
-                        didReceiveSyncFromWatchConnection = true
-                    }
-                }
-
-                .onOpenURL { url in
-                    switch url.absoluteString {
-                    case "com.po-gl.pause":
-                        pomoTimer.pause()
-                        pomoTimer.saveToUserDefaults()
-                    case "com.po-gl.unpause":
-                        pomoTimer.unpause()
-                        pomoTimer.saveToUserDefaults()
-                    default:
-                        Logger().error("Unhandled url: \(url.absoluteString)")
-                    }
-                }
+                .tabItem { Label("Pomodoro", systemImage: "timer") }
+            TaskList()
+                .tabItem { Label("Tasks", systemImage: "checklist") }
+//            Text("Settings page")
+//                .tabItem { Label("Settings", systemImage: "gearshape") }
         }
-        .navigationViewStyle(.stack)
-        .tint(Color("NavigationAccent"))
+        .environmentObject(pomoTimer)
+        .environmentObject(tasksOnBar)
+        .onAppear {
+            AppNotifications.shared.getNotificationPermissions()
+            UIApplication.shared.registerForRemoteNotifications()
+            viewContext.undoManager = undoManager
+        }
+        
+        .onChange(of: scenePhase) { newPhase in
+            Logger().log("Phase \(newPhase)")
+            if newPhase == .active {
+                pomoTimer.restoreFromUserDefaults()
+                AppNotifications.shared.cancelPendingNotifications()
+                Haptics.shared.prepareHaptics()
+                setupWatchConnection()
+                didPerformInactiveSetup = false
+                if #available(iOS 16.2, *) {
+                    LiveActivities.shared.startPollingPushTokenUpdates()
+                }
+                
+            } else if newPhase == .inactive || newPhase == .background {
+                guard !didPerformInactiveSetup else { return }
+                pomoTimer.saveToUserDefaults()
+                WidgetCenter.shared.reloadAllTimelines()
+                if !didReceiveSyncFromWatchConnection {
+                    Task { await AppNotifications.shared.setupNotifications(pomoTimer) }
+                }
+                didPerformInactiveSetup = true
+            }
+        }
+        
+        .onChange(of: pomoTimer.isPaused) { isPaused in
+            WidgetCenter.shared.reloadAllTimelines()
+            let wcSent = updateWatchConnection(pomoTimer)
+            didReceiveSyncFromWatchConnection = !wcSent
+            
+            if #available(iOS 16.2, *) {
+                if isPaused {
+                    LiveActivities.shared.stopLiveActivity(pomoTimer, tasksOnBar)
+                } else {
+                    LiveActivities.shared.setupLiveActivity(pomoTimer, tasksOnBar)
+                }
+            }
+        }
+        .onChange(of: pomoTimer.isReset) { isReset in
+            if isReset {
+                WidgetCenter.shared.reloadAllTimelines()
+                let wcSent = updateWatchConnection(pomoTimer)
+                didReceiveSyncFromWatchConnection = !wcSent
+                
+                if #available(iOS 16.2, *) {
+                    LiveActivities.shared.stopLiveActivity(pomoTimer, tasksOnBar)
+                }
+            }
+        }
+        
+        .onReceive(Publishers.wcSessionDataDidFlow) { timer in
+            if let timer {
+                Logger().debug("iOS received pomoTimer.pomoCount=\(timer.pomoCount) isPaused=\(timer.isPaused)")
+                pomoTimer.sync(with: timer)
+                pomoTimer.saveToUserDefaults()
+                didReceiveSyncFromWatchConnection = true
+            }
+        }
+        
+        .onOpenURL { url in
+            switch url.absoluteString {
+            case "com.po-gl.pause":
+                pomoTimer.pause()
+                pomoTimer.saveToUserDefaults()
+            case "com.po-gl.unpause":
+                pomoTimer.unpause()
+                pomoTimer.saveToUserDefaults()
+            default:
+                Logger().error("Unhandled url: \(url.absoluteString)")
+            }
+        }
     }
 }
 

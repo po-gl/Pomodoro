@@ -23,20 +23,14 @@ struct TaskList: View {
     @StateObject var isScrolledToTop = ObservableBool(true)
 
     var body: some View {
-        TaskListCollectionView(showProjects: showProjects,
-                               showPastTasks: showPastTasks,
-                               isScrolledToTop: isScrolledToTop)
+        NavigationStack {
+            TaskListCollectionView(showProjects: showProjects,
+                                   showPastTasks: showPastTasks,
+                                   isScrolledToTop: isScrolledToTop)
             .ignoresSafeArea(.keyboard)
             .background(Color("Background").ignoresSafeArea())
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                    HStack {
-                        addTaskButton
-                        Spacer()
-                    }
-                }
-            }
+            .navigationTitle("Task List")
             .toolbar {
                 Menu {
                     showArchivedProjectsButton
@@ -61,18 +55,9 @@ struct TaskList: View {
                     .opacity(isScrolledToTop.value ? 0.0 : 1.0)
                     .animation(.easeInOut(duration: 0.15), value: isScrolledToTop.value)
             }
-    }
-
-    @ViewBuilder private var addTaskButton: some View {
-        Button(action: {
-            basicHaptic()
-            TasksData.addTask("", context: viewContext)
-        }) {
-            Text(Image(systemName: "plus.circle.fill"))
-            Text("New Task")
-                .font(.system(.body, design: .rounded))
-                .fontWeight(.semibold)
-        }.tint(Color("AccentColor"))
+        }
+        .navigationViewStyle(.stack)
+        .tint(Color("NavigationAccent"))
     }
 
     @ViewBuilder private var showArchivedProjectsButton: some View {

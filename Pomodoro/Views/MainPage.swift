@@ -17,35 +17,29 @@ struct MainPage: View {
 
     var body: some View {
         ZStack {
-            TopButton(destination: {
-                TaskList()
-            })
-            .zIndex(1)
+            Background(pickOffset: dragOffset)
+                .animation(.default, value: pomoTimer.isPaused)
 
-            ZStack {
-                Background(pickOffset: dragOffset)
-                    .animation(.default, value: pomoTimer.isPaused)
+            TaskAdderView(taskFromAdder: $taskFromAdder)
+                .zIndex(1)
+                .verticalOffsetEffect(for: dragOffset, .spring, factor: 0.3)
 
-                TaskAdderView(taskFromAdder: $taskFromAdder)
-                    .zIndex(1)
-                    .verticalOffsetEffect(for: dragOffset, .spring, factor: 0.3)
-
-                mainStack
-            }
-            .animation(.easeInOut(duration: 0.3), value: pomoTimer.isPaused)
-            .avoidKeyboard()
+            mainStack
         }
+        .animation(.easeInOut(duration: 0.3), value: pomoTimer.isPaused)
+        .avoidKeyboard()
+        .showTabBar(for: dragOffset - 30)
     }
 
     @ViewBuilder private var mainStack: some View {
         GeometryReader { proxy in
             VStack {
                 TimerDisplay()
-                    .padding(.top, 50)
+                    .padding(.top, 30)
 
                 Color.clear.contentShape(Rectangle())
                     .verticalDragGesture(offset: $dragOffset, clampedTo: -20..<80, onStart: {
-                        Task {
+                        Task { @MainActor in
                             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
                                                             to: nil, from: nil, for: nil)
                         }
@@ -65,11 +59,11 @@ struct MainPage: View {
                     PomoStepper()
                         .padding(20)
                 }
-                .padding(.bottom, 20)
+                .padding(.bottom, 10)
                 .verticalOffsetEffect(for: dragOffset, .bouncy)
 
                 ButtonCluster()
-                    .padding(.bottom, 50)
+                    .padding(.bottom, 30)
                     .verticalOffsetEffect(for: dragOffset, .spring, factor: 0.7)
             }
         }
