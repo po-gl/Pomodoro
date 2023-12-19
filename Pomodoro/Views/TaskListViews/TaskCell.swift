@@ -44,10 +44,6 @@ struct TaskCell: View {
             VStack(spacing: 5) {
                 mainTextField
                     .frame(minHeight: 25)
-                Text("IndexPath: \(String(describing: indexPath))")
-                    .foregroundStyle(.pink)
-                    .font(.footnote)
-                    .opacity(0.5)
                 if focus || !editNoteText.isEmpty {
                     noteTextField
                 }
