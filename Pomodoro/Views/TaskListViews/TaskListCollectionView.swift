@@ -56,6 +56,8 @@ class TaskListViewController: UIViewController {
     private var taskEmptyCellRegistration: UICollectionView.CellRegistration<UICollectionViewCell, NSNull>! = nil
     private var headerCellRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewCell>! = nil
     private var pastHeaderCellRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewCell>! = nil
+    private var footerCellRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewCell>! = nil
+    private var pastFooterCellRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewCell>! = nil
 
     private var viewContext: NSManagedObjectContext
     private var todaysTasksController: NSFetchedResultsController<TaskNote>! = nil
@@ -236,7 +238,10 @@ class TaskListViewController: UIViewController {
         // swiftlint:disable:next line_length
         let headerElement = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
 
-        section.boundarySupplementaryItems = [headerElement]
+        let dividerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(1.0))
+        let divider = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: dividerSize, elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)
+
+        section.boundarySupplementaryItems = [headerElement, divider]
         return section
     }
 
@@ -302,6 +307,12 @@ class TaskListViewController: UIViewController {
                 }
             }
         }
+
+        footerCellRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewCell>(elementKind: UICollectionView.elementKindSectionFooter) { cell, _, _ in
+            cell.backgroundColor = .systemFill
+        }
+        pastFooterCellRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewCell>(elementKind: UICollectionView.elementKindSectionFooter) { cell, _, _ in
+        }
     }
 
     private func configureDataSource() {
@@ -328,14 +339,15 @@ class TaskListViewController: UIViewController {
             }
         }
 
-        diffableDataSource.supplementaryViewProvider = { [unowned self] collectionView, _, indexPath -> UICollectionReusableView? in
+        diffableDataSource.supplementaryViewProvider = { [unowned self] collectionView, kind, indexPath -> UICollectionReusableView? in
+            let isHeader = kind == UICollectionView.elementKindSectionHeader
             let identifier = diffableDataSource.itemIdentifier(for: indexPath)
             switch identifier {
             case .pastTask:
-                return collectionView.dequeueConfiguredReusableSupplementary(using: self.pastHeaderCellRegistration,
+                return collectionView.dequeueConfiguredReusableSupplementary(using: isHeader ? self.pastHeaderCellRegistration : self.pastFooterCellRegistration,
                                                                              for: indexPath)
             default:
-                return collectionView.dequeueConfiguredReusableSupplementary(using: self.headerCellRegistration,
+                return collectionView.dequeueConfiguredReusableSupplementary(using: isHeader ? self.headerCellRegistration : self.footerCellRegistration,
                                                                              for: indexPath)
             }
         }
