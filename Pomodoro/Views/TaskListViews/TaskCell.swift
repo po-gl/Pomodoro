@@ -35,6 +35,8 @@ struct TaskCell: View {
 
     @State var showTaskInfo = false
 
+    @State var deleted = false
+
     @FetchRequest(fetchRequest: TasksData.todaysTasksRequest)
     var todaysTasks: FetchedResults<TaskNote>
 
@@ -62,6 +64,7 @@ struct TaskCell: View {
                 }
             }
         }
+        .opacity(deleted ? 0.0 : 1.0)
 
         .onAppear {
             focusIfJustAdded()
@@ -250,6 +253,7 @@ struct TaskCell: View {
     var deleteTaskButton: some View {
         Button(role: .destructive, action: {
             withAnimation { TasksData.delete(taskItem, context: viewContext) }
+            withAnimation(.easeInOut(duration: 0.2)) { deleted = true }
         }) {
             Label("Delete", systemImage: "trash")
         }.tint(.red)
