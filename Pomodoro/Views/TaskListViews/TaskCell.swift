@@ -15,11 +15,21 @@ struct TaskCell: View {
     @State var editText: String
     @State var editNoteText: String
 
-    var indexPath: IndexPath?
+    var isAdderCell: Bool = false
 
     // Set true if embedded in an info view and tapping text fields should
     // open the task's info page instead of editing text
     var isEmbedded: Bool? = false
+
+    var initialIndexPath: IndexPath?
+    ///  Reliably gets the indexPath on reorderings where CellRegistration doesn't
+    var indexPath: IndexPath? {
+        guard let cell else { return initialIndexPath}
+        return collectionView?.indexPath(for: cell) ?? initialIndexPath
+    }
+    // Only needed for indexPath
+    var collectionView: UICollectionView?
+    var cell: UICollectionViewCell?
 
     @FocusState var focus
 
@@ -34,6 +44,10 @@ struct TaskCell: View {
             VStack(spacing: 5) {
                 mainTextField
                     .frame(minHeight: 25)
+                Text("IndexPath: \(String(describing: indexPath))")
+                    .foregroundStyle(.pink)
+                    .font(.footnote)
+                    .opacity(0.5)
                 if focus || !editNoteText.isEmpty {
                     noteTextField
                 }
@@ -73,25 +87,34 @@ struct TaskCell: View {
                 TaskListViewController.focusedIndexPath = indexPath
             } else {
                 TaskListViewController.focusedIndexPath = nil
-                deleteOrEditTask()
+                if !isAdderCell {
+                    deleteOrEditTask()
+                } else {
+                    adderAction()
+                }
             }
         }
         .doneButton(isPresented: focus)
 
         .swipeActions(edge: .leading) {
-            deleteTaskButton
-            infoSwipeButton
+            if !isAdderCell {
+                deleteTaskButton
+                infoSwipeButton
+            }
         }
         .swipeActions(edge: .trailing) {
-            if let timeStamp = taskItem.timestamp, timeStamp < Calendar.current.startOfDay(for: Date()) {
-                reAddToTodaysTasksButton
-            } else {
-                flagTaskButton
+            if !isAdderCell {
+                if let timeStamp = taskItem.timestamp, timeStamp < Calendar.current.startOfDay(for: Date()) {
+                    reAddToTodaysTasksButton
+                } else {
+                    flagTaskButton
+                }
+                assignToTopProjectButton
             }
-            assignToTopProjectButton
         }
 
         .onChange(of: taskItem.completed) { _ in
+            guard !isAdderCell else { return }
             Task {
                 try? await Task.sleep(for: .seconds(0.3))
                 withAnimation {
@@ -120,8 +143,14 @@ struct TaskCell: View {
                 if !editText.isEmpty {
                     Task {
                         try? await Task.sleep(for: .seconds(0.1))
-                        TasksData.addTask("", order: taskItem.order, context: viewContext)
-                        TasksData.separateCompleted(todaysTasks, context: viewContext)
+                        if !isAdderCell {
+                            TasksData.addTask("", order: taskItem.order, context: viewContext)
+                            TasksData.separateCompleted(todaysTasks, context: viewContext)
+                        } else {
+                            adderAction()
+                            try? await Task.sleep(for: .seconds(0.1))
+                            focus = true
+                        }
                     }
                 }
             }
@@ -141,10 +170,32 @@ struct TaskCell: View {
         }
     }
 
+    private func adderAction() {
+        if !editText.isEmpty && !showTaskInfo {
+            TasksData.addTask(editText,
+                              note: editNoteText,
+                              completed: taskItem.completed,
+                              flagged: taskItem.flagged,
+                              order: taskItem.order,
+                              date: Date.now-1,
+                              context: viewContext)
+            TasksData.separateCompleted(todaysTasks, context: viewContext)
+            
+            editText = ""
+            editNoteText = ""
+            taskItem.completed = false
+            TasksData.edit("", note: "", flagged: false, for: taskItem, context: viewContext)
+        }
+    }
+
     @ViewBuilder var check: some View {
         let width: Double = 20
+        let radius = width/2
+        let pi = Double.pi
         ZStack {
-            Circle().stroke(style: StrokeStyle(lineWidth: 1.2))
+            Circle().stroke(style: StrokeStyle(lineWidth: 1.2,
+                                               miterLimit: 0,
+                                               dash: !isAdderCell ? [] : [2, 2.0*pi*radius/14-2]))
                 .opacity(taskItem.completed ? 1.0 : 0.5)
             Circle().frame(width: width/1.5)
                 .opacity(taskItem.completed ? 1.0 : 0.0)
@@ -178,9 +229,14 @@ struct TaskCell: View {
 
     var infoButton: some View {
         Button(action: {
-            TasksData.edit(editText, note: editNoteText, for: taskItem, context: viewContext)
-            focus = false
-            withAnimation { showTaskInfo = true }
+            if !isAdderCell {
+                TasksData.edit(editText, note: editNoteText, for: taskItem, context: viewContext)
+                focus = false
+                withAnimation { showTaskInfo = true }
+            } else {
+                TasksData.edit(editText, note: editNoteText, for: taskItem, context: viewContext)
+                withAnimation { showTaskInfo = true }
+            }
         }, label: {
             Image(systemName: "info.circle")
                 .font(.title3)

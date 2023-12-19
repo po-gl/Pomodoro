@@ -39,6 +39,7 @@ class TaskListViewController: UIViewController {
     enum ListItem: Hashable {
         case task(NSManagedObjectID)
         case emptyTask
+        case taskAdder
         case pastTask(NSManagedObjectID)
         case projectsPlaceholder
     }
@@ -51,6 +52,7 @@ class TaskListViewController: UIViewController {
 
     private var projectStackCellRegistration: UICollectionView.CellRegistration<UICollectionViewCell, NSNull>! = nil
     private var taskCellRegistration: UICollectionView.CellRegistration<UICollectionViewCell, NSManagedObject>! = nil
+    private var taskAdderCellRegistration: UICollectionView.CellRegistration<UICollectionViewCell, NSNull>! = nil
     private var taskEmptyCellRegistration: UICollectionView.CellRegistration<UICollectionViewCell, NSNull>! = nil
     private var headerCellRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewCell>! = nil
     private var pastHeaderCellRegistration: UICollectionView.SupplementaryRegistration<UICollectionViewCell>! = nil
@@ -245,7 +247,7 @@ class TaskListViewController: UIViewController {
             }
         }
 
-        taskCellRegistration = UICollectionView.CellRegistration<UICollectionViewCell, NSManagedObject> { cell, indexPath, item in
+        taskCellRegistration = UICollectionView.CellRegistration<UICollectionViewCell, NSManagedObject> { [unowned self] cell, indexPath, item in
             guard let taskItem = item as? TaskNote,
                   let viewContext = taskItem.managedObjectContext else {
                 return
@@ -254,9 +256,24 @@ class TaskListViewController: UIViewController {
                 TaskCell(taskItem: taskItem,
                          editText: taskItem.text ?? "",
                          editNoteText: taskItem.note ?? "",
-                         indexPath: indexPath)
+                         initialIndexPath: indexPath,
+                         collectionView: self.collectionView, cell: cell)
                     .id(taskItem.id)
                     .environment(\.managedObjectContext, viewContext)
+            }
+        }
+
+        taskAdderCellRegistration = UICollectionView.CellRegistration<UICollectionViewCell, NSNull> { [unowned self] cell, indexPath, _ in
+            cell.contentConfiguration = UIHostingConfiguration {
+                let taskItem = TaskNote(context: self.viewContext)
+                TaskCell(taskItem: taskItem,
+                         editText: "",
+                         editNoteText: "",
+                         isAdderCell: true,
+                         initialIndexPath: indexPath,
+                         collectionView: self.collectionView, cell: cell)
+                    .id(taskItem)
+                    .environment(\.managedObjectContext, self.viewContext)
             }
         }
 
@@ -296,6 +313,10 @@ class TaskListViewController: UIViewController {
                 return collectionView.dequeueConfiguredReusableCell(using: self.taskCellRegistration,
                                                                     for: indexPath,
                                                                     item: item)
+            case .taskAdder:
+                return collectionView.dequeueConfiguredReusableCell(using: self.taskAdderCellRegistration,
+                                                                    for: indexPath,
+                                                                    item: nil)
             case .emptyTask:
                 return collectionView.dequeueConfiguredReusableCell(using: self.taskEmptyCellRegistration,
                                                                     for: indexPath,
@@ -416,6 +437,8 @@ extension TaskListViewController: NSFetchedResultsControllerDelegate {
 
             if todaysTasksController.sections?.isEmpty == false && todaysTasks.isEmpty {
                 snapshot.appendItems([ListItem.emptyTask], toSection: .tasks)
+            } else {
+                snapshot.appendItems([ListItem.taskAdder], toSection: .tasks)
             }
 
             if showPastTasks {
