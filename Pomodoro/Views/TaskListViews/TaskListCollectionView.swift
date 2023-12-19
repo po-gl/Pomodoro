@@ -45,7 +45,7 @@ class TaskListViewController: UIViewController {
     }
 
     // TODO: implement a solution that doesn't involve a static property
-    static var focusedCell: UICollectionViewCell?
+    static var focusedIndexPath: IndexPath?
 
     private var collectionView: UICollectionView! = nil
     private var diffableDataSource: UICollectionViewDiffableDataSource<Section, ListItem>! = nil
@@ -84,6 +84,8 @@ class TaskListViewController: UIViewController {
     private var projectStackSubscriber: AnyCancellable?
     private var projectStackIndex: IndexPath?
 
+    /// For some reason there is extra padding on top of keyboard immediately after being shown; this property helps remove the padding
+    private var keyboardFirstShownAt: Date?
     private var keyboardOffsetConstraint: NSLayoutConstraint! = nil
     private var keyboardWithoutOffsetConstraint: NSLayoutConstraint! = nil
 
@@ -151,10 +153,19 @@ class TaskListViewController: UIViewController {
 
     @objc func handleKeyboardWillShow() {
         Task { @MainActor in
-            setBottomConstraint(withOffset: true)
-            if let focusedCell = TaskListViewController.focusedCell {
-                if let indexPath = collectionView.indexPath(for: focusedCell) {
-                    collectionView.scrollToItem(at: indexPath, at: .bottom, animated: false)
+            if let keyboardFirstShownAt {
+                if Date.now.timeIntervalSince(keyboardFirstShownAt) < 0.1 {
+                    setBottomConstraint(withOffset: true)
+                } else {
+                    setBottomConstraint(withOffset: false)
+                }
+            } else {
+                keyboardFirstShownAt = .now
+            }
+
+            if let indexPath = TaskListViewController.focusedIndexPath {
+                if !collectionView.indexPathsForVisibleItems.contains(indexPath) {
+                    collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
                 }
             }
         }
@@ -163,6 +174,7 @@ class TaskListViewController: UIViewController {
     @objc func handleKeyboardWillHide() {
         Task { @MainActor in
             setBottomConstraint(withOffset: false)
+            keyboardFirstShownAt = nil
         }
     }
 
@@ -263,6 +275,8 @@ class TaskListViewController: UIViewController {
                 TaskCell(taskItem: taskItem,
                          editText: taskItem.text ?? "",
                          editNoteText: taskItem.note ?? "",
+                         initialIndexPath: indexPath,
+                         collectionView: self.collectionView,
                          cell: cell)
                     .id(taskItem.id)
                     .environment(\.managedObjectContext, viewContext)
@@ -276,6 +290,8 @@ class TaskListViewController: UIViewController {
                          editText: "",
                          editNoteText: "",
                          isAdderCell: true,
+                         initialIndexPath: indexPath,
+                         collectionView: self.collectionView,
                          cell: cell)
                     .id(taskItem)
                     .environment(\.managedObjectContext, self.viewContext)
