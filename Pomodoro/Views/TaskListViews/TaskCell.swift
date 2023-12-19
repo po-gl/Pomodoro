@@ -21,14 +21,6 @@ struct TaskCell: View {
     // open the task's info page instead of editing text
     var isEmbedded: Bool? = false
 
-    var initialIndexPath: IndexPath?
-    ///  Reliably gets the indexPath on reorderings where CellRegistration doesn't
-    var indexPath: IndexPath? {
-        guard let cell else { return initialIndexPath}
-        return collectionView?.indexPath(for: cell) ?? initialIndexPath
-    }
-    // Only needed for indexPath
-    var collectionView: UICollectionView?
     var cell: UICollectionViewCell?
 
     @FocusState var focus
@@ -80,9 +72,9 @@ struct TaskCell: View {
         .focused($focus)
         .onChange(of: focus) { _ in
             if focus {
-                TaskListViewController.focusedIndexPath = indexPath
+                TaskListViewController.focusedCell = cell
             } else {
-                TaskListViewController.focusedIndexPath = nil
+                TaskListViewController.focusedCell = nil
                 if !isAdderCell {
                     deleteOrEditTask()
                 } else {

@@ -45,7 +45,7 @@ class TaskListViewController: UIViewController {
     }
 
     // TODO: implement a solution that doesn't involve a static property
-    static var focusedIndexPath: IndexPath?
+    static var focusedCell: UICollectionViewCell?
 
     private var collectionView: UICollectionView! = nil
     private var diffableDataSource: UICollectionViewDiffableDataSource<Section, ListItem>! = nil
@@ -150,8 +150,10 @@ class TaskListViewController: UIViewController {
     @objc func handleKeyboardWillShow() {
         Task { @MainActor in
             setBottomConstraint(withOffset: true)
-            if let focusedIndexPath = TaskListViewController.focusedIndexPath {
-                collectionView.scrollToItem(at: focusedIndexPath, at: .bottom, animated: false)
+            if let focusedCell = TaskListViewController.focusedCell {
+                if let indexPath = collectionView.indexPath(for: focusedCell) {
+                    collectionView.scrollToItem(at: indexPath, at: .bottom, animated: false)
+                }
             }
         }
     }
@@ -247,7 +249,7 @@ class TaskListViewController: UIViewController {
             }
         }
 
-        taskCellRegistration = UICollectionView.CellRegistration<UICollectionViewCell, NSManagedObject> { [unowned self] cell, indexPath, item in
+        taskCellRegistration = UICollectionView.CellRegistration<UICollectionViewCell, NSManagedObject> { cell, indexPath, item in
             guard let taskItem = item as? TaskNote,
                   let viewContext = taskItem.managedObjectContext else {
                 return
@@ -256,8 +258,7 @@ class TaskListViewController: UIViewController {
                 TaskCell(taskItem: taskItem,
                          editText: taskItem.text ?? "",
                          editNoteText: taskItem.note ?? "",
-                         initialIndexPath: indexPath,
-                         collectionView: self.collectionView, cell: cell)
+                         cell: cell)
                     .id(taskItem.id)
                     .environment(\.managedObjectContext, viewContext)
             }
@@ -270,8 +271,7 @@ class TaskListViewController: UIViewController {
                          editText: "",
                          editNoteText: "",
                          isAdderCell: true,
-                         initialIndexPath: indexPath,
-                         collectionView: self.collectionView, cell: cell)
+                         cell: cell)
                     .id(taskItem)
                     .environment(\.managedObjectContext, self.viewContext)
             }
