@@ -8,8 +8,14 @@
 import SwiftUI
 
 extension View {
-    func verticalDragGesture(offset: Binding<CGFloat>, clampedTo: Range<CGFloat>? = nil, onStart: @escaping () -> Void = {}) -> some View {
-        ModifiedContent(content: self, modifier: VerticalDragGestureModifier(offset: offset, bounds: clampedTo, onStart: onStart))
+    func verticalDragGesture(offset: Binding<CGFloat>,
+                             clampedTo: Range<CGFloat>? = nil,
+                             onStart: @escaping () -> Void = {},
+                             onEnd: @escaping () -> Void = {}) -> some View {
+        ModifiedContent(content: self, modifier: VerticalDragGestureModifier(offset: offset,
+                                                                             bounds: clampedTo,
+                                                                             onStart: onStart,
+                                                                             onEnd: onEnd))
     }
 }
 
@@ -18,6 +24,8 @@ struct VerticalDragGestureModifier: ViewModifier {
     let bounds: Range<CGFloat>?
 
     let onStart: () -> Void
+    let onEnd: () -> Void
+
     @State var gestureStarted: Bool = false
 
     func body(content: Content) -> some View {
@@ -38,6 +46,7 @@ struct VerticalDragGestureModifier: ViewModifier {
                         }
                     }
                     .onEnded { _ in
+                        onEnd()
                         withAnimation {
                             gestureStarted = false
                             offset = 0
