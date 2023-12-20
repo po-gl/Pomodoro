@@ -17,6 +17,8 @@ struct ProjectCell: View {
     @State var editNoteText: String
     @State var color: Color
 
+    @State var taskNotes = [TaskNote]()
+
     @ObservedObject var isCollapsed: ObservableBool
 
     var cellHeight: Double
@@ -59,7 +61,7 @@ struct ProjectCell: View {
                         if focus || !editNoteText.isEmpty {
                             noteTextField
                         }
-                        if !isCollapsed.value && assignedTasksCount > 0 {
+                        if !isCollapsed.value && taskNotes.count > 0 {
                             Divider()
                                 .padding(.vertical, 6)
                             projectStats
@@ -77,6 +79,10 @@ struct ProjectCell: View {
         .onAppear {
             focusIfJustAdded()
         }
+        .task {
+            taskNotes = await project.tasksArray
+        }
+
         .onChange(of: showingProjectInfo) { _ in
             editText = project.name ?? ""
             color = Color(project.color ?? "BarRest")
@@ -141,9 +147,15 @@ struct ProjectCell: View {
     }
 
     @ViewBuilder private var projectStats: some View {
+        let assignedCount = taskNotes.count
+        let completedCount = taskNotes.filter { $0.completed }.count
+
+        let assignedString = "\(assignedCount) assigned task\(assignedCount > 1 ? "s" : "")"
+        let tasksString = completedCount == 0 ? assignedString : "\(completedCount) completed / \(assignedString)"
+
         HStack {
             Spacer()
-            Text("\(assignedTasksCount) assigned task\(assignedTasksCount > 1 ? "s" : "")")
+            Text(tasksString)
                 .font(.system(.footnote))
                 .foregroundColor(color)
                 .brightness(secondaryBrightness)
@@ -152,10 +164,6 @@ struct ProjectCell: View {
                     withAnimation { showingProjectInfo = true }
                 }
         }
-    }
-
-    private var assignedTasksCount: Int {
-        project.tasks?.count ?? 0
     }
 
     private func deleteOrEditProject() {
