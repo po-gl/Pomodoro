@@ -37,6 +37,7 @@ struct TaskList: View {
                     Divider()
                     showProjectsButton
                     showPastTasksButton
+                    Divider()
                     markTodaysTasksAsDoneButton
                     addUnfinishedTasksButton
                 } label: {
