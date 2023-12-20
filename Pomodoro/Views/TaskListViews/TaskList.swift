@@ -17,8 +17,8 @@ struct TaskList: View {
     @FetchRequest(fetchRequest: TasksData.todaysTasksRequest)
     var todaysTasks: FetchedResults<TaskNote>
 
-    @FetchRequest(fetchRequest: TasksData.yesterdaysTasksRequest)
-    var yesterdaysTasks: FetchedResults<TaskNote>
+    @FetchRequest(fetchRequest: TasksData.limitedPastTasksRequest)
+    var limitedPastTasks: FetchedResults<TaskNote>
 
     @StateObject var isScrolledToTop = ObservableBool(true)
 
@@ -38,7 +38,7 @@ struct TaskList: View {
                     showProjectsButton
                     showPastTasksButton
                     markTodaysTasksAsDoneButton
-                    addYesterdaysUnfinishedTasksButton
+                    addUnfinishedTasksButton
                 } label: {
                     Image(systemName: "ellipsis.circle")
                 }
@@ -103,9 +103,11 @@ struct TaskList: View {
         }
     }
 
-    @ViewBuilder private var addYesterdaysUnfinishedTasksButton: some View {
+    @ViewBuilder private var addUnfinishedTasksButton: some View {
         Button(action: {
-            yesterdaysTasks
+            let lastUnfinishedDate = limitedPastTasks.first?.timestamp ?? Date()
+            limitedPastTasks
+                .filter({ $0.timestamp?.isSameDay(as: lastUnfinishedDate) ?? false })
                 .filter({ !$0.completed })
                 .filter({ task in !todaysTasks.contains(where: { $0.text == task.text })})
                 .forEach { taskToAdd in
