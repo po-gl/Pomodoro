@@ -95,7 +95,10 @@ struct ProjectInfoView: View {
                 }
             }
             .task {
-                taskNotes = await project.tasksArray
+                let result = await project.tasksArray
+                await MainActor.run {
+                    taskNotes = result
+                }
             }
 
             .navigationBarTitleDisplayMode(.inline)
