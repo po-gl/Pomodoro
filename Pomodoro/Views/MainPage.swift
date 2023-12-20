@@ -36,6 +36,7 @@ struct MainPage: View {
             VStack {
                 TimerDisplay()
                     .padding(.top, 30)
+                    .verticalOffsetEffect(for: dragOffset, .spring, factor: 0.15)
 
                 Color.clear.contentShape(Rectangle())
                     .verticalDragGesture(offset: $dragOffset, clampedTo: -20..<80, onStart: {
