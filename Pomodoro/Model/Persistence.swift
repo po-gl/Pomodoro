@@ -25,7 +25,7 @@ struct PersistenceController {
                                     date: Date() - 5, context: viewContext)
         )
         assignedProjects.insert(
-            ProjectsData.addProject("School", progress: 1.0, archived: true,
+            ProjectsData.addProject("School", progress: 1.0, archivedDate: Date.now,
                                     date: Date() - 5, context: viewContext)
         )
 

@@ -215,8 +215,8 @@ struct ProjectCell: View {
         Button(action: {
             ProjectsData.toggleArchive(project, context: viewContext)
         }) {
-            Label(project.archived ? "Unarchive" : "Archive",
-                  systemImage: project.archived ? "arrow.uturn.up" : "archivebox.fill")
+            Label(project.archivedDate != nil ? "Unarchive" : "Archive",
+                  systemImage: project.archivedDate != nil ? "arrow.uturn.up" : "archivebox.fill")
         }
     }
 

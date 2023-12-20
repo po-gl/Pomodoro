@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct ArchivedProjectsView: View {
-    @FetchRequest(sortDescriptors: [SortDescriptor(\Project.order), SortDescriptor(\Project.timestamp)],
-                  predicate: NSPredicate(format: "archived == true"))
+    @FetchRequest(fetchRequest: ProjectsData.archivedProjectsRequest)
     private var archivedProjects: FetchedResults<Project>
 
     @StateObject var isCollapsed = ObservableBool(false)

@@ -17,7 +17,19 @@ struct ProjectsData {
             SortDescriptor(\Project.timestamp, order: .forward)
         ].map { descriptor in NSSortDescriptor(descriptor) }
         fetchRequest.predicate = NSPredicate(
-            format: "archived == false"
+            format: "archivedDate == nil"
+        )
+        return fetchRequest
+    }
+
+    static var archivedProjectsRequest: NSFetchRequest<Project> {
+        let fetchRequest = Project.fetchRequest()
+        fetchRequest.sortDescriptors = [
+            SortDescriptor(\Project.order, order: .forward),
+            SortDescriptor(\Project.archivedDate, order: .reverse)
+        ].map { descriptor in NSSortDescriptor(descriptor) }
+        fetchRequest.predicate = NSPredicate(
+            format: "archivedDate != nil"
         )
         return fetchRequest
     }
@@ -27,7 +39,7 @@ struct ProjectsData {
                            note: String = "",
                            progress: Double = 0.0,
                            color: String = "BarRest",
-                           archived: Bool = false,
+                           archivedDate: Date? = nil,
                            order: Int16 = 0,
                            date: Date = Date(),
                            context: NSManagedObjectContext) -> Project {
@@ -37,7 +49,7 @@ struct ProjectsData {
         newProject.progress = progress
         newProject.color = color
         newProject.timestamp = date
-        newProject.archived = archived
+        newProject.archivedDate = archivedDate
         newProject.order = order
 
         try? context.obtainPermanentIDs(for: [newProject])
@@ -49,7 +61,7 @@ struct ProjectsData {
                      note: String? = nil,
                      progress: Double? = nil,
                      color: String? = nil,
-                     archived: Bool? = nil,
+                     archivedDate: Date? = nil,
                      for project: Project, context: NSManagedObjectContext) {
         project.name = name
         if let note {
@@ -61,8 +73,8 @@ struct ProjectsData {
         if let color {
             project.color = color
         }
-        if let archived {
-            project.archived = archived
+        if let archivedDate {
+            project.archivedDate = archivedDate
         }
         saveContext(context, errorMessage: "CoreData error editing project.")
     }
@@ -83,12 +95,16 @@ struct ProjectsData {
     }
 
     static func archive(_ project: Project, context: NSManagedObjectContext) {
-        project.archived = true
+        project.archivedDate = Date.now
         saveContext(context, errorMessage: "CoreData error archiving project.")
     }
 
     static func toggleArchive(_ project: Project, context: NSManagedObjectContext) {
-        project.archived.toggle()
+        if project.archivedDate != nil {
+            project.archivedDate = nil
+        } else {
+            project.archivedDate = Date.now
+        }
         saveContext(context, errorMessage: "CoreData error toggle archive project.")
     }
 

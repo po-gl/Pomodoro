@@ -168,7 +168,7 @@ struct ProjectInfoView: View {
         ProjectsData.edit(editText,
                           note: editNote,
                           color: editColor,
-                          archived: editArchived,
+                          archivedDate: editArchived ? Date.now : nil,
                           for: project, context: viewContext)
     }
 

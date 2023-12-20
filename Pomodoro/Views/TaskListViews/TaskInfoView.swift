@@ -79,7 +79,7 @@ struct TaskInfoView: View {
                 editNote = taskItem.note ?? ""
                 editflagged = taskItem.flagged
                 editProjects = taskItem.projects as? Set<Project> ?? []
-                initialArchivedProjects = editProjects.filter { $0.archived }
+                initialArchivedProjects = editProjects.filter { $0.archivedDate != nil }
             }
             .onDisappear {
                 if !cancelled {
