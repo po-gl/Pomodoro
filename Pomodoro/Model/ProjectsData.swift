@@ -139,3 +139,12 @@ struct ProjectsData {
         }
     }
 }
+
+extension Project {
+    public var tasksArray: [TaskNote] {
+        get async {
+            let sortDescriptors = [NSSortDescriptor(keyPath: \TaskNote.timestamp, ascending: false)]
+            return self.tasks?.sortedArray(using: sortDescriptors) as? [TaskNote] ?? []
+        }
+    }
+}

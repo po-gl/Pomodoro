@@ -88,14 +88,14 @@ struct ProjectInfoView: View {
                 editText = project.name ?? ""
                 editNote = project.note ?? ""
                 editColor = project.color ?? "BarRest"
-
-                let sortDescriptors = [NSSortDescriptor(keyPath: \TaskNote.timestamp, ascending: true)]
-                taskNotes = project.tasks?.sortedArray(using: sortDescriptors) as? [TaskNote] ?? []
             }
             .onDisappear {
                 if !cancelled {
                     saveEdits()
                 }
+            }
+            .task {
+                taskNotes = await project.tasksArray
             }
 
             .navigationBarTitleDisplayMode(.inline)
