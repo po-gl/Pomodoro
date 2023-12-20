@@ -10,7 +10,7 @@ import WidgetKit
 
 @available(iOS 17.0, *)
 struct StandByWidget: Widget {
-    let kind: String = "iOSWidget"
+    let kind: String = "StandByWidget"
 
     var body: some WidgetConfiguration {
         IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: WidgetTimelineProvider(withProgress: true)) { entry in
