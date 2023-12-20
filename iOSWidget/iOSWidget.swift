@@ -28,6 +28,10 @@ struct iOSWidgetView: View {
     
     var entry: WidgetTimelineProvider.Entry
 
+    var isSmall: Bool {
+        widgetFamily == .systemSmall
+    }
+
     var body: some View {
         if #available(iOSApplicationExtension 17, *) {
             content
@@ -50,7 +54,7 @@ struct iOSWidgetView: View {
     }
 
     @ViewBuilder var content: some View {
-        if widgetFamily == .systemSmall {
+        if isSmall {
             smallLayout
         } else {
             mediumLayout
@@ -107,25 +111,30 @@ struct iOSWidgetView: View {
         if entry.isPaused {
             Text(endDate.timeIntervalSince(startDate).compactTimerFormatted())
                 .font(.system(size: 42, weight: .light))
+                .foregroundStyle(entry.status.color)
+                .brightness(0.4)
                 .monospacedDigit()
                 .frame(width: 115, alignment: .trailing)
-                .foregroundStyle(.white)
         } else {
             Text(timerInterval: entry.timerInterval, countsDown: true)
                 .multilineTextAlignment(.trailing)
                 .font(.system(size: 42, weight: .light))
+                .foregroundStyle(entry.status.color)
+                .brightness(0.4)
                 .monospacedDigit()
                 .frame(width: 115)
-                .foregroundStyle(.white)
                 .contentTransition(.numericText(countsDown: true))
         }
     }
 
     @ViewBuilder var statusView: some View {
         let task = entry.task ?? ""
+        let fontStyle: Font.TextStyle = isSmall && task != "" ? .footnote : .headline
+        let fontWeight: Font.Weight = isSmall ? .semibold : .medium
         Text(task != "" ? task : entry.status.rawValue)
-            .font(.system(.headline, design: .rounded, weight: .medium))
-            .lineLimit(widgetFamily == .systemSmall ? 1 : 3)
+            .font(.system(fontStyle, design: .rounded))
+            .fontWeight(fontWeight)
+            .lineLimit(isSmall ? 2 : 3)
             .foregroundStyle(.black)
             .padding(.horizontal, 5)
             .background(
@@ -145,8 +154,7 @@ struct iOSWidgetView: View {
     @ViewBuilder var timerEndView: some View {
         let endTime = entry.isPaused ? "--:--" : timeFormatter.string(from: entry.timerInterval.lowerBound)
         Text("until \(endTime)")
-            .font(.system(.subheadline, design: .rounded, weight: .regular))
-            .monospacedDigit()
+            .font(.system(isSmall ? .footnote : .subheadline, design: .rounded, weight: .regular))
             .opacity(0.6)
             .foregroundStyle(.white)
     }
