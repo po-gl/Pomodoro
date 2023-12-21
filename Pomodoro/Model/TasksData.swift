@@ -160,11 +160,13 @@ struct TasksData {
     // MARK: Save Context
 
     static func saveContext(_ context: NSManagedObjectContext, errorMessage: String = "CoreData error.") {
-        do {
-            try context.save()
-        } catch {
-            let nsError = error as NSError
-            fatalError("\(errorMessage) \(nsError), \(nsError.userInfo)")
+        context.perform {
+            do {
+                try context.save()
+            } catch {
+                let nsError = error as NSError
+                fatalError("\(errorMessage) \(nsError), \(nsError.userInfo)")
+            }
         }
     }
 
