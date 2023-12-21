@@ -53,5 +53,9 @@ struct VerticalDragGestureModifier: ViewModifier {
                         }
                     }
             )
+            .onDisappear {
+                offset = 0
+                gestureStarted = false
+            }
     }
 }
