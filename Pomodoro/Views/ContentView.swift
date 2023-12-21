@@ -20,6 +20,8 @@ struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.undoManager) private var undoManager
 
+    @ObservedObject var errors = Errors.shared
+
     @ObservedObject var pomoTimer: PomoTimer
     @StateObject var tasksOnBar = TasksOnBar()
 
@@ -41,6 +43,7 @@ struct ContentView: View {
                 .tabItem { Label("Pomodoro", systemImage: "timer") }
             TaskList()
                 .tabItem { Label("Tasks", systemImage: "checklist") }
+                .badge(errors.coreDataError != nil ? "!" : nil)
 //            Text("Settings page")
 //                .tabItem { Label("Settings", systemImage: "gearshape") }
         }
