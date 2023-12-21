@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData
+import OSLog
 
 struct ProjectsData {
 
@@ -120,8 +121,9 @@ struct ProjectsData {
             do {
                 try context.save()
             } catch {
-                let nsError = error as NSError
-                fatalError("\(errorMessage) \(nsError), \(nsError.userInfo)")
+                let error = error as NSError
+                Errors.shared.coreDataError = error
+                Logger().error("CoreData error: \(error), \(error.userInfo)")
             }
         }
     }

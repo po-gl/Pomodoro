@@ -8,6 +8,7 @@
 import SwiftUI
 import CoreData
 import Combine
+import OSLog
 
 struct TaskListCollectionView: UIViewControllerRepresentable {
     @Environment(\.managedObjectContext) private var viewContext
@@ -435,7 +436,9 @@ class TaskListViewController: UIViewController {
             try todaysTasksController.performFetch()
             try pastTasksController.performFetch()
         } catch {
-            fatalError("Failed to fetch entities: \(error)")
+            let error = error as NSError
+            Errors.shared.coreDataError = error
+            Logger().error("Failed to fetch entities, CoreData error: \(error), \(error.userInfo)")
         }
     }
 }

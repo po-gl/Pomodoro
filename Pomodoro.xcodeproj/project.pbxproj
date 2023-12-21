@@ -219,6 +219,13 @@
 		61C6BC1429C0364000AF48DE /* View+onSubmitWithVerticalText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6BC1229C0364000AF48DE /* View+onSubmitWithVerticalText.swift */; };
 		61C6BC1629C12D0F00AF48DE /* DraggableTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6BC1529C12D0F00AF48DE /* DraggableTask.swift */; };
 		61C6BC1729C12D0F00AF48DE /* DraggableTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6BC1529C12D0F00AF48DE /* DraggableTask.swift */; };
+		61D01EB42B34534400A58360 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D01EB32B34534400A58360 /* Errors.swift */; };
+		61D01EB52B34534400A58360 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D01EB32B34534400A58360 /* Errors.swift */; };
+		61D01EB62B3455D300A58360 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D01EB32B34534400A58360 /* Errors.swift */; };
+		61D01EB72B3455D700A58360 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D01EB32B34534400A58360 /* Errors.swift */; };
+		61D01EB82B3455D800A58360 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D01EB32B34534400A58360 /* Errors.swift */; };
+		61D01EBA2B345E5D00A58360 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D01EB92B345E5D00A58360 /* ErrorView.swift */; };
+		61D01EBB2B345E5D00A58360 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D01EB92B345E5D00A58360 /* ErrorView.swift */; };
 		61D5808829BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D5808729BA5E5B006F0BB0 /* Comparable+Clamped.swift */; };
 		61D5808929BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D5808729BA5E5B006F0BB0 /* Comparable+Clamped.swift */; };
 		61D5808A29BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D5808729BA5E5B006F0BB0 /* Comparable+Clamped.swift */; };
@@ -503,6 +510,8 @@
 		61C4F02129DF4CDA00BC70C7 /* AngledText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AngledText.swift; sourceTree = "<group>"; };
 		61C6BC1229C0364000AF48DE /* View+onSubmitWithVerticalText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+onSubmitWithVerticalText.swift"; sourceTree = "<group>"; };
 		61C6BC1529C12D0F00AF48DE /* DraggableTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableTask.swift; sourceTree = "<group>"; };
+		61D01EB32B34534400A58360 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
+		61D01EB92B345E5D00A58360 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		61D5808729BA5E5B006F0BB0 /* Comparable+Clamped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+Clamped.swift"; sourceTree = "<group>"; };
 		61D5809029BA5F81006F0BB0 /* TaskAdderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAdderView.swift; sourceTree = "<group>"; };
 		61E468142AEC5360001F6D7B /* ProjectTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTag.swift; sourceTree = "<group>"; };
@@ -779,6 +788,7 @@
 				619ED26829072E00004E344D /* Haptics.swift */,
 				6101A6F429998C4A00DC5FC5 /* EndTimerHandler.swift */,
 				6172B4C8297F82E300E53D8F /* LiveActivities.swift */,
+				61D01EB32B34534400A58360 /* Errors.swift */,
 				612B9085285CC80D003F1990 /* Extensions */,
 				617789B52856A1F300BD43D7 /* Assets.xcassets */,
 				61F7362E29C00CCE00289149 /* Pomodoro.xcdatamodeld */,
@@ -824,6 +834,7 @@
 				617CF52B2AEB80F90040E50B /* WrappingHStack.swift */,
 				61C4F02129DF4CDA00BC70C7 /* AngledText.swift */,
 				617CF50D2AE8C0A90040E50B /* ObservableBool.swift */,
+				61D01EB92B345E5D00A58360 /* ErrorView.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1263,6 +1274,7 @@
 				610515B92AD4A2CF00F6DD30 /* Color+hex.swift in Sources */,
 				61307C7B2B26B4B800B0FA19 /* PomoTimelineEntry.swift in Sources */,
 				612D8F96290B67E80089CDD1 /* SequenceTimer.swift in Sources */,
+				61D01EB72B3455D700A58360 /* Errors.swift in Sources */,
 				612D8F8C290B63190089CDD1 /* WatchWidget.intentdefinition in Sources */,
 				61307C782B26B47E00B0FA19 /* WidgetTimelineProvider.swift in Sources */,
 				61C362322B26C8BB00E2DDDD /* TasksOnBar.swift in Sources */,
@@ -1311,6 +1323,7 @@
 				61C362362B26C8E700E2DDDD /* Pomodoro.xcdatamodeld in Sources */,
 				61A7FE2C29BD6E74000137E7 /* Color+hex.swift in Sources */,
 				6172B4C3297F621700E53D8F /* PomoTime.swift in Sources */,
+				61D01EB82B3455D800A58360 /* Errors.swift in Sources */,
 				61C362312B26C88400E2DDDD /* TasksData.swift in Sources */,
 				61E734B22B251E43001C5B2A /* PomoStatus+properties.swift in Sources */,
 				61307C7C2B26B4B800B0FA19 /* PomoTimelineEntry.swift in Sources */,
@@ -1338,6 +1351,7 @@
 				612B908A285CD2E4003F1990 /* Color+hex.swift in Sources */,
 				617CF5192AE9EF800040E50B /* EmptyTasksView.swift in Sources */,
 				617CF5002AE884A00040E50B /* PastTasksHeader.swift in Sources */,
+				61D01EBA2B345E5D00A58360 /* ErrorView.swift in Sources */,
 				61E734B82B252AD5001C5B2A /* DynamicIslandProgressView.swift in Sources */,
 				610595A42A4B783C00A83804 /* View+globalPosition.swift in Sources */,
 				612D433429C14AB800FF38F8 /* AutoCompleteView.swift in Sources */,
@@ -1370,6 +1384,7 @@
 				61F4253E2908E8FD00300C83 /* AppNotifications.swift in Sources */,
 				611D9AA52B2D039F0011F389 /* StartStop.swift in Sources */,
 				617CF52C2AEB80F90040E50B /* WrappingHStack.swift in Sources */,
+				61D01EB42B34534400A58360 /* Errors.swift in Sources */,
 				61F7363029C00CCE00289149 /* Pomodoro.xcdatamodeld in Sources */,
 				612B9088285CC863003F1990 /* TimeInterval+formatter.swift in Sources */,
 				61569CE12B005FAF00DFC977 /* View+verticalOffsetEffect.swift in Sources */,
@@ -1421,6 +1436,7 @@
 				61F7362829BFEAFA00289149 /* TasksData.swift in Sources */,
 				614A86C3290A4B74008DFA26 /* PomoTimerTests.swift in Sources */,
 				613D6D9F285C890F0020C194 /* SequenceTimer.swift in Sources */,
+				61D01EB62B3455D300A58360 /* Errors.swift in Sources */,
 				61F7363629C01A5000289149 /* ProjectsData.swift in Sources */,
 				61D5808929BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */,
 				614DA2B12997BE6C00EFC91C /* Color+isDark.swift in Sources */,
@@ -1446,6 +1462,7 @@
 				6186894C2AD9D27A00ED5ED9 /* TaskListCollectionView.swift in Sources */,
 				611EE30E2A107CD000DDF171 /* View+doneButton.swift in Sources */,
 				612D433529C14AB800FF38F8 /* AutoCompleteView.swift in Sources */,
+				61D01EBB2B345E5D00A58360 /* ErrorView.swift in Sources */,
 				618750FB29BB69400017BF8E /* TasksOnBar.swift in Sources */,
 				610F99CA29BE4BC600608F41 /* HostingView.swift in Sources */,
 				6172B49F297F57C100E53D8F /* View+Modifier.swift in Sources */,
@@ -1468,6 +1485,7 @@
 				61E468202AEC77FA001F6D7B /* TinyProjectTag.swift in Sources */,
 				61F7362D29C00B4500289149 /* Persistence.swift in Sources */,
 				6187559C2AE21AAB00FC1564 /* ProjectsHeader.swift in Sources */,
+				61D01EB52B34534400A58360 /* Errors.swift in Sources */,
 				6172B4A3297F57E100E53D8F /* AnimatedImage.swift in Sources */,
 				61E468162AEC5360001F6D7B /* ProjectTag.swift in Sources */,
 				6130F6F72A4CD0EC00AD9B6C /* View+globalPosition.swift in Sources */,

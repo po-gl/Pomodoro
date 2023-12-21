@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreData
+import OSLog
 
 struct TasksData {
 
@@ -164,8 +165,9 @@ struct TasksData {
             do {
                 try context.save()
             } catch {
-                let nsError = error as NSError
-                fatalError("\(errorMessage) \(nsError), \(nsError.userInfo)")
+                let error = error as NSError
+                Errors.shared.coreDataError = error
+                Logger().error("\(#line) CoreData error: \(error), \(error.userInfo)")
             }
         }
     }

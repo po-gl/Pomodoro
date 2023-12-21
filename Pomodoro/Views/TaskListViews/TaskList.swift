@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TaskList: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @ObservedObject var errors = Errors.shared
 
     @State var showingArchivedProjects = false
     @AppStorage("showProjects") var showProjects = true
@@ -21,6 +22,8 @@ struct TaskList: View {
     var limitedPastTasks: FetchedResults<TaskNote>
 
     @StateObject var isScrolledToTop = ObservableBool(true)
+
+    @State var hasShownError = false
 
     var body: some View {
         NavigationStack {
@@ -55,6 +58,21 @@ struct TaskList: View {
                     .border(.thinMaterial)
                     .opacity(isScrolledToTop.value ? 0.0 : 1.0)
                     .animation(.easeInOut(duration: 0.15), value: isScrolledToTop.value)
+            }
+
+            .toolbar {
+                if let coreDataError = errors.coreDataError {
+                    ErrorView(pomoError: Errors.coreDataPomoError,
+                              nsError: coreDataError,
+                              showImmediately: !hasShownError)
+                }
+            }
+            .onChange(of: errors.coreDataError) { error in
+                guard error != nil else { return }
+                Task {
+                    try? await Task.sleep(for: .seconds(0.5))
+                    hasShownError = true
+                }
             }
         }
         .navigationViewStyle(.stack)
