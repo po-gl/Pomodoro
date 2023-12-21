@@ -80,9 +80,11 @@ struct ProjectCell: View {
             focusIfJustAdded()
         }
         .task {
-            let result = await project.tasksArray
-            await MainActor.run {
-                taskNotes = result
+            await reloadTaskNotes()
+        }
+        .onChange(of: project.tasks?.count) { _ in
+            Task {
+                await reloadTaskNotes()
             }
         }
 
@@ -122,6 +124,13 @@ struct ProjectCell: View {
                 color = Color("BarRest")
                 focus = true
             }
+        }
+    }
+
+    private func reloadTaskNotes() async {
+        let result = await project.tasksArray
+        await MainActor.run {
+            taskNotes = result
         }
     }
 
