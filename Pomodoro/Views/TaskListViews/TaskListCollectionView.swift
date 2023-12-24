@@ -278,7 +278,8 @@ class TaskListViewController: UIViewController {
                          editNoteText: taskItem.note ?? "",
                          initialIndexPath: indexPath,
                          collectionView: self.collectionView,
-                         cell: cell)
+                         cell: cell,
+                         isScrolledToTop: self.isScrolledToTop)
                     .id(taskItem.id)
                     .environment(\.managedObjectContext, viewContext)
             }
@@ -320,7 +321,8 @@ class TaskListViewController: UIViewController {
             if case let .pastTask(taskItem) = identifier,
                let pastTask = self.viewContext.object(with: taskItem) as? TaskNote {
                 cell.contentConfiguration = UIHostingConfiguration {
-                    PastTasksHeader(dateString: pastTask.section)
+                    PastTasksHeader(dateString: pastTask.section,
+                                    isScrolledToTop: self.isScrolledToTop)
                 }
             }
         }

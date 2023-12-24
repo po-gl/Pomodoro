@@ -31,6 +31,11 @@ struct TaskCell: View {
     var collectionView: UICollectionView?
     var cell: UICollectionViewCell?
 
+    @ObservedObject var isScrolledToTop = ObservableBool(false)
+    var shouldDimCell: Bool {
+        !(taskItem.timestamp?.isToday() ?? false)
+    }
+
     @FocusState var focus
 
     @State var showTaskInfo = false
@@ -65,6 +70,9 @@ struct TaskCell: View {
             }
         }
         .opacity(deleted ? 0.0 : 1.0)
+
+        .opacity(shouldDimCell && isScrolledToTop.value ? 0.6 : 1.0)
+        .animation(.default, value: isScrolledToTop.value)
 
         .onAppear {
             focusIfJustAdded()

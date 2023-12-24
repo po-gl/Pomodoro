@@ -11,6 +11,8 @@ struct PastTasksHeader: View {
     @Environment(\.colorScheme) private var colorScheme
 
     let dateString: String
+    
+    @ObservedObject var isScrolledToTop = ObservableBool(false)
 
     var body: some View {
         let color = colorForDateString(dateString)
@@ -31,6 +33,8 @@ struct PastTasksHeader: View {
                 .opacity(colorScheme == .dark ? 1.0 : 0.8)
             Spacer()
         }
+        .opacity(isScrolledToTop.value ? 0.6 : 1.0)
+        .animation(.default, value: isScrolledToTop.value)
     }
 
     private func colorForDateString(_ dateString: String) -> Color {
