@@ -10,6 +10,7 @@ import Combine
 
 struct TaskCell: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.scenePhase) private var scenePhase
     @ObservedObject var taskItem: TaskNote
 
     @State var editText: String
@@ -102,6 +103,12 @@ struct TaskCell: View {
             }
         }
         .doneButton(isPresented: focus)
+
+        .onChange(of: scenePhase) { scenePhase in
+            if scenePhase == .background || scenePhase == .inactive {
+                focus = false
+            }
+        }
 
         .swipeActions(edge: .leading) {
             if !isAdderCell {
