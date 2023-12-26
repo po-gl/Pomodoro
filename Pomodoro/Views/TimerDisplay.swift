@@ -63,11 +63,13 @@ struct TimerDisplay: View {
         Text(text)
             .font(.system(.title, design: .rounded, weight: .semibold))
             .foregroundColor(fgColor)
+            .brightness(colorScheme == .dark ? 0.1 : 0.0)
             .padding(.horizontal, 8)
             .padding(.vertical, 2)
             .background(
                 RoundedRectangle(cornerRadius: 5)
                     .foregroundColor(bgColor)
+                    .brightness(colorScheme == .dark ? 0.0 : 0.05)
                     .shadow(radius: 2, x: 2, y: 2)
                     .background(
                         RoundedRectangle(cornerRadius: 5)
