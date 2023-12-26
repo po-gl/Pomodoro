@@ -61,7 +61,7 @@ struct TimerDisplay: View {
             pomoTimer.getStatusString(atDate: date)
         }
         Text(text)
-            .font(.system(.title, design: .serif, weight: .thin))
+            .font(.system(.title, design: .rounded, weight: .semibold))
             .foregroundColor(fgColor)
             .padding(.horizontal, 8)
             .padding(.vertical, 2)
@@ -80,7 +80,7 @@ struct TimerDisplay: View {
         let color = colorScheme == .dark ? pomoTimer.getStatus(atDate: date).color : .white
         Text("until \(date.addingTimeInterval(pomoTimer.timeRemaining(atDate: date)), formatter: timeFormatter)")
             .colorScheme(colorScheme == .dark ? .light : .dark)
-            .font(.system(.headline, design: .serif, weight: .regular))
+            .font(.system(.headline, design: .rounded, weight: .medium))
             .monospacedDigit()
             .foregroundColor(color)
             .brightness(colorScheme == .dark ? -0.45 : -0.5)
