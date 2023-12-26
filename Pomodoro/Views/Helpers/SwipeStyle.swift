@@ -36,6 +36,8 @@ struct SwipeStyle: ButtonStyle {
                                                  startPoint: .top, endPoint: .bottom))
                             .blendMode(.destinationOut)
                     }
+                    .brightness(primaryBrightness)
+                    .saturation(primarySaturation)
             }
             .frame(width: width)
             .opacity(configuration.isPressed ? 0.6 : 1.0)
