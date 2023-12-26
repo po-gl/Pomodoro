@@ -12,6 +12,7 @@ import OSLog
 
 struct TaskListCollectionView: UIViewControllerRepresentable {
     @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.dismissSwipe) private var dismissSwipe
 
     var showProjects: Bool
     var showPastTasks: Bool
@@ -19,6 +20,7 @@ struct TaskListCollectionView: UIViewControllerRepresentable {
 
     func makeUIViewController(context: Context) -> TaskListViewController {
         TaskListViewController(viewContext: viewContext,
+                               dismissSwipe: dismissSwipe,
                                showProjects: showProjects,
                                showPastTasks: showPastTasks,
                                isScrolledToTop: isScrolledToTop)
@@ -85,6 +87,8 @@ class TaskListViewController: UIViewController {
     private var projectStackSubscriber: AnyCancellable?
     private var projectStackIndex: IndexPath?
 
+    private var dismissSwipe: DismissSwipeAction
+
     /// For some reason there is extra padding on top of keyboard immediately after being shown; this property helps remove the padding
     private var keyboardFirstShownAt: Date?
     private var keyboardOffsetConstraint: NSLayoutConstraint! = nil
@@ -93,10 +97,12 @@ class TaskListViewController: UIViewController {
     private var isScrolledToTop: ObservableBool
 
     init(viewContext: NSManagedObjectContext,
+         dismissSwipe: DismissSwipeAction,
          showProjects: Bool,
          showPastTasks: Bool,
          isScrolledToTop: ObservableBool) {
         self.viewContext = viewContext
+        self.dismissSwipe = dismissSwipe
         self.showProjects = showProjects
         self.showPastTasks = showPastTasks
         self.isScrolledToTop = isScrolledToTop
@@ -519,6 +525,8 @@ extension TaskListViewController: UICollectionViewDropDelegate {
 extension TaskListViewController: UICollectionViewDelegate, UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         Task { @MainActor in
+            dismissSwipe()
+
             let scrollOffset = scrollView.contentOffset.y + scrollView.safeAreaInsets.top
             if !isScrolledToTop.value && scrollOffset <= 0 {
                 isScrolledToTop.value = true

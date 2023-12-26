@@ -23,6 +23,8 @@ extension View {
 }
 
 struct CustomSwipeActionsModifier<L: View, T: View>: ViewModifier {
+    @Environment(\.dismissSwipe) var dismissSwipe: DismissSwipeAction
+
     let leadingButtonCount: Int
     let trailingButtonCount: Int
     
@@ -63,6 +65,7 @@ struct CustomSwipeActionsModifier<L: View, T: View>: ViewModifier {
                 guard !disabled else { return }
                 if !gestureStarted {
                     gestureStarted = true
+                    dismissSwipe()
                     Task { @MainActor in
                         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
                                                         to: nil, from: nil, for: nil)
@@ -116,6 +119,12 @@ struct CustomSwipeActionsModifier<L: View, T: View>: ViewModifier {
             .simultaneousGesture(dragGesture)
             .onChange(of: disabled) { _ in
                 withAnimation(.easeInOut(duration: 0.2)) {
+                    resetGesture()
+                }
+            }
+            .onReceive(dismissSwipe.signal) {
+                guard !gestureStarted else { return }
+                withAnimation {
                     resetGesture()
                 }
             }
