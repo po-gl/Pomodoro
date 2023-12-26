@@ -54,7 +54,7 @@ struct ProjectCell: View {
                             .offset(y: isCollapsed.value && !editNoteText.isEmpty ? 10 : 0)
                         mainTextField
                         if !isCollapsed.value {
-                            infoMenuButton.offset(y: -1)
+                            infoButton.offset(y: -1)
                         }
                     }
                     Group {
@@ -76,6 +76,10 @@ struct ProjectCell: View {
                 }
             }
         }
+        .sheet(isPresented: $showingProjectInfo) {
+            ProjectInfoView(project: project)
+        }
+
         .onAppear {
             focusIfJustAdded()
         }
@@ -100,6 +104,16 @@ struct ProjectCell: View {
         }
 
         .doneButton(isPresented: focus)
+
+        .customSwipeActions(leadingButtonCount: 2, trailingButtonCount: project.archivedDate == nil ? 2 : 1, leading: {
+            deleteProjectButton
+            slideInfoButton
+        }, trailing: {
+            toggleProjectArchiveButton
+            if project.archivedDate == nil {
+                sendToTopButton
+            }
+        }, disabled: isCollapsed.value)
 
         .onChange(of: isCollapsed.value) { isCollapsed in
             if isCollapsed {
@@ -198,29 +212,24 @@ struct ProjectCell: View {
             .saturation(primarySaturation)
     }
 
-    @ViewBuilder private var infoMenuButton: some View {
-        Menu {
-            showInfoButton
-            sendToTopButton
-            toggleProjectArchiveButton
-            deleteProjectButton
-        } label: {
-            Image(systemName: "info.circle")
-                .font(.title3)
-                .tint(color)
-        }
-        .sheet(isPresented: $showingProjectInfo) {
-            ProjectInfoView(project: project)
-        }
-    }
-
-    @ViewBuilder private var showInfoButton: some View {
+    @ViewBuilder private var infoButton: some View {
         Button(action: {
             editProject()
             withAnimation { showingProjectInfo = true }
         }) {
-            Label("Show Project Info", systemImage: "info.circle")
+            Image(systemName: "info.circle")
+                .font(.title3)
+                .tint(color)
         }
+    }
+
+    @ViewBuilder private var slideInfoButton: some View {
+        Button(action: {
+            editProject()
+            withAnimation { showingProjectInfo = true }
+        }) {
+            Label("Show Project Info", systemImage: "info.circle.fill")
+        }.tint(Color(.lightGray))
     }
 
     @ViewBuilder private var sendToTopButton: some View {
@@ -228,7 +237,7 @@ struct ProjectCell: View {
             withAnimation { ProjectsData.setAsTopProject(project, context: viewContext) }
         }) {
             Label("Send to Top", systemImage: "square.3.layers.3d.top.filled")
-        }
+        }.tint(Color("BarWork"))
     }
 
     @ViewBuilder private var toggleProjectArchiveButton: some View {
@@ -237,15 +246,15 @@ struct ProjectCell: View {
         }) {
             Label(project.archivedDate != nil ? "Unarchive" : "Archive",
                   systemImage: project.archivedDate != nil ? "arrow.uturn.up" : "archivebox.fill")
-        }
+        }.tint(Color("End"))
     }
 
     @ViewBuilder private var deleteProjectButton: some View {
         Button(role: .destructive, action: {
             ProjectsData.delete(project, context: viewContext)
         }) {
-            Label("Delete", systemImage: "trash")
-        }
+            Label("Delete", systemImage: "trash.fill")
+        }.tint(.red)
     }
 
     @ViewBuilder private var progressCheck: some View {
