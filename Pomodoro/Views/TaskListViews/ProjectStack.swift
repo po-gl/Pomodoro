@@ -51,7 +51,8 @@ struct ProjectStack: View {
 
 #Preview {
     ScrollView {
-        ProjectStack(isCollapsed: ObservableBool(true))
+        ProjectStack(isCollapsed: ObservableBool(false))
             .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+            .padding(.horizontal)
     }
 }
