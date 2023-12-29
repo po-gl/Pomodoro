@@ -154,7 +154,7 @@ struct TaskCell: View {
         TextField("", text: $editText, axis: .vertical)
             .foregroundColor(taskItem.timestamp?.isToday() ?? true ? .primary : .secondary)
             .onSubmitWithVerticalText(with: $editText) {
-                if !editText.isEmpty {
+                if !editText.isEmpty && taskItem.timestamp?.isToday() ?? false {
                     Task {
                         try? await Task.sleep(for: .seconds(0.1))
                         if !isAdderCell {
