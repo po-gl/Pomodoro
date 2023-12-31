@@ -13,9 +13,17 @@ struct ProjectCell: View {
     @Environment(\.colorScheme) private var colorScheme
     @ObservedObject var project: Project
 
-    @State var editText: String
-    @State var editNoteText: String
-    @State var color: Color
+    var editText: Binding<String> {
+        Binding(get: { project.name ?? "" },
+                set: { newValue in project.name = newValue })
+    }
+    var editNoteText: Binding<String> {
+        Binding(get: { project.note ?? "" },
+                set: { newValue in project.note = newValue })
+    }
+    var color: Color {
+        Color(project.color ?? "BarRest")
+    }
 
     @State var taskNotes = [TaskNote]()
 
@@ -51,14 +59,14 @@ struct ProjectCell: View {
                 VStack(spacing: 0) {
                     HStack {
                         progressCheck
-                            .offset(y: isCollapsed.value && !editNoteText.isEmpty ? 10 : 0)
+                            .offset(y: isCollapsed.value && !editNoteText.wrappedValue.isEmpty ? 10 : 0)
                         mainTextField
                         if !isCollapsed.value {
                             infoButton.offset(y: -1)
                         }
                     }
                     Group {
-                        if focus || !editNoteText.isEmpty {
+                        if focus || !editNoteText.wrappedValue.isEmpty {
                             noteTextField
                         }
                         if !isCollapsed.value && taskNotes.count > 0 {
@@ -90,11 +98,6 @@ struct ProjectCell: View {
             Task {
                 await reloadTaskNotes()
             }
-        }
-
-        .onChange(of: showingProjectInfo) { _ in
-            editText = project.name ?? ""
-            color = Color(project.color ?? "BarRest")
         }
 
         .focused($focus)
@@ -133,9 +136,8 @@ struct ProjectCell: View {
                 withAnimation {
                     isCollapsed.value = false
                 }
-                editText = ""
-                editNoteText = ""
-                color = Color("BarRest")
+                editText.wrappedValue = ""
+                editNoteText.wrappedValue = ""
                 focus = true
             }
         }
@@ -149,7 +151,7 @@ struct ProjectCell: View {
     }
 
     @ViewBuilder private var mainTextField: some View {
-        TextField("", text: $editText, axis: .vertical)
+        TextField("", text: editText, axis: .vertical)
             .font(.system(.title2, weight: .medium))
             .frame(minHeight: 30)
             .lineLimit(isCollapsed.value ? 1 : Int.max, reservesSpace: false)
@@ -157,11 +159,11 @@ struct ProjectCell: View {
             .foregroundColor(color)
             .brightness(primaryBrightness)
             .saturation(primarySaturation)
-            .onSubmitWithVerticalText(with: $editText)
+            .onSubmitWithVerticalText(with: editText)
     }
 
     @ViewBuilder private var noteTextField: some View {
-        TextField("Add Note", text: $editNoteText, axis: .vertical)
+        TextField("Add Note", text: editNoteText, axis: .vertical)
             .font(.system(.footnote))
             .frame(minHeight: 20)
             .lineLimit(isCollapsed.value ? 1 : Int.max, reservesSpace: false)
@@ -193,7 +195,7 @@ struct ProjectCell: View {
     }
 
     private func deleteOrEditProject() {
-        if editText.isEmpty {
+        if editText.wrappedValue.isEmpty {
             ProjectsData.delete(project, context: viewContext)
         } else {
             editProject()
@@ -201,7 +203,7 @@ struct ProjectCell: View {
     }
 
     private func editProject() {
-        ProjectsData.edit(editText, note: editNoteText, for: project, context: viewContext)
+        ProjectsData.saveContext(viewContext, errorMessage: "Saving project cell")
     }
 
     @ViewBuilder private var chevron: some View {

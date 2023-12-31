@@ -26,9 +26,6 @@ struct ProjectStack: View {
                     ForEach(Array(zip(currentProjects.indices, currentProjects)), id: \.1) { i, project in
                         let iDouble = Double(i)
                         ProjectCell(project: project,
-                                    editText: project.name ?? "",
-                                    editNoteText: project.note ?? "",
-                                    color: Color(project.color ?? "BarRest"),
                                     isCollapsed: isCollapsed,
                                     cellHeight: collapsedRowHeight,
                                     isFirstProject: i == 0)

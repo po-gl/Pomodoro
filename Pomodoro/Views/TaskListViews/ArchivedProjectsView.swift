@@ -19,9 +19,6 @@ struct ArchivedProjectsView: View {
                 if archivedProjects.count > 0 {
                     ForEach(archivedProjects) { project in
                         ProjectCell(project: project,
-                                    editText: project.name ?? "",
-                                    editNoteText: project.note ?? "",
-                                    color: Color(project.color ?? "BarRest"),
                                     isCollapsed: isCollapsed,
                                     cellHeight: 85)
                     }
