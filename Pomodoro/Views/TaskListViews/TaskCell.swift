@@ -191,7 +191,7 @@ struct TaskCell: View {
                               completed: taskItem.completed,
                               flagged: taskItem.flagged,
                               order: taskItem.order,
-                              date: Date.now,
+                              date: Date.now-1,
                               context: viewContext)
             TasksData.separateCompleted(todaysTasks, context: viewContext)
             
