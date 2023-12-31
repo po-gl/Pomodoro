@@ -37,6 +37,7 @@ struct TaskCell: View {
     // Only needed for indexPath
     var collectionView: UICollectionView?
     var cell: UICollectionViewCell?
+    var scrollTaskList: () -> Void = {}
 
     @ObservedObject var isScrolledToTop = ObservableBool(false)
     var shouldDimCell: Bool {
@@ -154,19 +155,17 @@ struct TaskCell: View {
     var mainTextField: some View {
         TextField("", text: editText, axis: .vertical)
             .foregroundColor(taskItem.timestamp?.isToday() ?? true ? .primary : .secondary)
-            .onSubmitWithVerticalText(with: editText) {
-                if !editText.wrappedValue.isEmpty && taskItem.timestamp?.isToday() ?? false {
-                    Task {
-                        try? await Task.sleep(for: .seconds(0.1))
-                        if !isAdderCell {
+            .onSubmitWithVerticalText(with: editText, resigns: !isAdderCell) {
+                if !isAdderCell {
+                    if !editText.wrappedValue.isEmpty && taskItem.timestamp?.isToday() ?? false {
+                        Task {
+                            try? await Task.sleep(for: .seconds(0.1))
                             TasksData.addTask("", order: taskItem.order, context: viewContext)
                             TasksData.separateCompleted(todaysTasks, context: viewContext)
-                        } else {
-                            adderAction()
-                            try? await Task.sleep(for: .seconds(0.1))
-                            focus = true
                         }
                     }
+                } else {
+                    adderAction()
                 }
             }
     }
@@ -200,6 +199,10 @@ struct TaskCell: View {
             editNoteText.wrappedValue = ""
             taskItem.completed = false
             TasksData.edit("", note: "", flagged: false, for: taskItem, context: viewContext)
+            Task { @MainActor in
+                TaskListViewController.focusedIndexPath = indexPath
+                scrollTaskList()
+            }
         }
     }
 

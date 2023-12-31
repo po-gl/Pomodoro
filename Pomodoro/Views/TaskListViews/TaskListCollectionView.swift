@@ -170,11 +170,13 @@ class TaskListViewController: UIViewController {
                 keyboardFirstShownAt = .now
             }
 
-            if let indexPath = TaskListViewController.focusedIndexPath {
-                if !collectionView.indexPathsForVisibleItems.contains(indexPath) {
-                    collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
-                }
-            }
+            scrollToFocusedIndexPath()
+        }
+    }
+
+    func scrollToFocusedIndexPath() {
+        if let indexPath = TaskListViewController.focusedIndexPath {
+            collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
         }
     }
 
@@ -295,7 +297,8 @@ class TaskListViewController: UIViewController {
                          isAdderCell: true,
                          initialIndexPath: indexPath,
                          collectionView: self.collectionView,
-                         cell: cell)
+                         cell: cell,
+                         scrollTaskList: self.scrollToFocusedIndexPath)
                     .environment(\.managedObjectContext, self.viewContext)
             }
         }
