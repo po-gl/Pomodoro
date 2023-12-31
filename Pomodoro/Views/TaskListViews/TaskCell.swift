@@ -13,8 +13,14 @@ struct TaskCell: View {
     @Environment(\.scenePhase) private var scenePhase
     @ObservedObject var taskItem: TaskNote
 
-    @State var editText: String
-    @State var editNoteText: String
+    var editText: Binding<String> {
+        Binding(get: { taskItem.text ?? "" },
+                set: { newValue in taskItem.text = newValue })
+    }
+    var editNoteText: Binding<String> {
+        Binding(get: { taskItem.note ?? "" },
+                set: { newValue in taskItem.note = newValue })
+    }
 
     var isAdderCell: Bool = false
 
@@ -52,7 +58,7 @@ struct TaskCell: View {
             VStack(spacing: 5) {
                 mainTextField
                     .frame(minHeight: 25)
-                if focus || !editNoteText.isEmpty {
+                if focus || !editNoteText.wrappedValue.isEmpty {
                     noteTextField
                 }
             }
@@ -81,12 +87,6 @@ struct TaskCell: View {
 
         .sheet(isPresented: $showTaskInfo) {
             TaskInfoView(taskItem: taskItem)
-        }
-        .onChange(of: showTaskInfo) { _ in
-            if !showTaskInfo {
-                editText = taskItem.text!
-                editNoteText = taskItem.note ?? ""
-            }
         }
 
         .focused($focus)
@@ -143,18 +143,18 @@ struct TaskCell: View {
     private func focusIfJustAdded() {
         if let date = taskItem.timestamp {
             if Date.now.timeIntervalSince(date) < 0.5 {
-                editText = ""
-                editNoteText = ""
+                editText.wrappedValue = ""
+                editNoteText.wrappedValue = ""
                 focus = true
             }
         }
     }
 
     var mainTextField: some View {
-        TextField("", text: $editText, axis: .vertical)
+        TextField("", text: editText, axis: .vertical)
             .foregroundColor(taskItem.timestamp?.isToday() ?? true ? .primary : .secondary)
-            .onSubmitWithVerticalText(with: $editText) {
-                if !editText.isEmpty && taskItem.timestamp?.isToday() ?? false {
+            .onSubmitWithVerticalText(with: editText) {
+                if !editText.wrappedValue.isEmpty && taskItem.timestamp?.isToday() ?? false {
                     Task {
                         try? await Task.sleep(for: .seconds(0.1))
                         if !isAdderCell {
@@ -171,32 +171,32 @@ struct TaskCell: View {
     }
 
     var noteTextField: some View {
-        TextField("Add Note", text: $editNoteText, axis: .vertical)
+        TextField("Add Note", text: editNoteText, axis: .vertical)
             .font(.footnote)
             .foregroundColor(.secondary)
     }
 
     private func deleteOrEditTask() {
-        if editText.isEmpty {
+        if editText.wrappedValue.isEmpty {
             withAnimation { TasksData.delete(taskItem, context: viewContext) }
         } else {
-            TasksData.edit(editText, note: editNoteText, for: taskItem, context: viewContext)
+            TasksData.saveContext(viewContext, errorMessage: "Saving task cell")
         }
     }
 
     private func adderAction() {
-        if !editText.isEmpty && !showTaskInfo {
-            TasksData.addTask(editText,
-                              note: editNoteText,
+        if !editText.wrappedValue.isEmpty && !showTaskInfo {
+            TasksData.addTask(editText.wrappedValue,
+                              note: editNoteText.wrappedValue,
                               completed: taskItem.completed,
                               flagged: taskItem.flagged,
                               order: taskItem.order,
-                              date: Date.now-1,
+                              date: Date.now,
                               context: viewContext)
             TasksData.separateCompleted(todaysTasks, context: viewContext)
             
-            editText = ""
-            editNoteText = ""
+            editText.wrappedValue = ""
+            editNoteText.wrappedValue = ""
             taskItem.completed = false
             TasksData.edit("", note: "", flagged: false, for: taskItem, context: viewContext)
         }
@@ -244,11 +244,11 @@ struct TaskCell: View {
     var infoButton: some View {
         Button(action: {
             if !isAdderCell {
-                TasksData.edit(editText, note: editNoteText, for: taskItem, context: viewContext)
+                TasksData.saveContext(viewContext, errorMessage: "Saving task cell")
                 focus = false
                 withAnimation { showTaskInfo = true }
             } else {
-                TasksData.edit(editText, note: editNoteText, for: taskItem, context: viewContext)
+                TasksData.saveContext(viewContext, errorMessage: "Saving task cell")
                 withAnimation { showTaskInfo = true }
             }
         }, label: {

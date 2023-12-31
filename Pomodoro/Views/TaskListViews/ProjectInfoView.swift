@@ -119,8 +119,6 @@ struct ProjectInfoView: View {
         VStack(spacing: 10) {
             ForEach(taskNotes) { taskItem in
                 TaskCell(taskItem: taskItem,
-                         editText: taskItem.text ?? "",
-                         editNoteText: taskItem.note ?? "",
                          isEmbedded: true)
                 Divider()
             }

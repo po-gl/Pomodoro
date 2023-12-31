@@ -280,13 +280,10 @@ class TaskListViewController: UIViewController {
             }
             cell.contentConfiguration = UIHostingConfiguration {
                 TaskCell(taskItem: taskItem,
-                         editText: taskItem.text ?? "",
-                         editNoteText: taskItem.note ?? "",
                          initialIndexPath: indexPath,
                          collectionView: self.collectionView,
                          cell: cell,
                          isScrolledToTop: self.isScrolledToTop)
-                    .id(taskItem.id)
                     .environment(\.managedObjectContext, viewContext)
             }
         }
@@ -295,13 +292,10 @@ class TaskListViewController: UIViewController {
             cell.contentConfiguration = UIHostingConfiguration {
                 let taskItem = TaskNote(context: self.viewContext)
                 TaskCell(taskItem: taskItem,
-                         editText: "",
-                         editNoteText: "",
                          isAdderCell: true,
                          initialIndexPath: indexPath,
                          collectionView: self.collectionView,
                          cell: cell)
-                    .id(taskItem)
                     .environment(\.managedObjectContext, self.viewContext)
             }
         }
