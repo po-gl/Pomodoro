@@ -16,14 +16,12 @@ struct TaskListCollectionView: UIViewControllerRepresentable {
 
     var showProjects: Bool
     var showPastTasks: Bool
-    @ObservedObject var isScrolledToTop: ObservableBool
 
     func makeUIViewController(context: Context) -> TaskListViewController {
         TaskListViewController(viewContext: viewContext,
                                dismissSwipe: dismissSwipe,
                                showProjects: showProjects,
-                               showPastTasks: showPastTasks,
-                               isScrolledToTop: isScrolledToTop)
+                               showPastTasks: showPastTasks)
     }
 
     func updateUIViewController(_ uiViewController: TaskListViewController, context: Context) {
@@ -94,18 +92,14 @@ class TaskListViewController: UIViewController {
     private var keyboardOffsetConstraint: NSLayoutConstraint! = nil
     private var keyboardWithoutOffsetConstraint: NSLayoutConstraint! = nil
 
-    private var isScrolledToTop: ObservableBool
-
     init(viewContext: NSManagedObjectContext,
          dismissSwipe: DismissSwipeAction,
          showProjects: Bool,
-         showPastTasks: Bool,
-         isScrolledToTop: ObservableBool) {
+         showPastTasks: Bool) {
         self.viewContext = viewContext
         self.dismissSwipe = dismissSwipe
         self.showProjects = showProjects
         self.showPastTasks = showPastTasks
-        self.isScrolledToTop = isScrolledToTop
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -129,6 +123,7 @@ class TaskListViewController: UIViewController {
         let wrappingView = UIView(frame: .zero)
         wrappingView.addSubview(collectionView)
         view = wrappingView
+        view.backgroundColor = UIColor(Color("Background"))
 
         keyboardWithoutOffsetConstraint = view.keyboardLayoutGuide.topAnchor
             .constraint(equalTo: collectionView.bottomAnchor)
@@ -275,7 +270,7 @@ class TaskListViewController: UIViewController {
             }
         }
 
-        taskCellRegistration = UICollectionView.CellRegistration<UICollectionViewCell, NSManagedObject> { cell, indexPath, item in
+        taskCellRegistration = UICollectionView.CellRegistration<UICollectionViewCell, NSManagedObject> { [unowned self] cell, indexPath, item in
             guard let taskItem = item as? TaskNote,
                   let viewContext = taskItem.managedObjectContext else {
                 return
@@ -284,8 +279,7 @@ class TaskListViewController: UIViewController {
                 TaskCell(taskItem: taskItem,
                          initialIndexPath: indexPath,
                          collectionView: self.collectionView,
-                         cell: cell,
-                         isScrolledToTop: self.isScrolledToTop)
+                         cell: cell)
                     .environment(\.managedObjectContext, viewContext)
             }
         }
@@ -324,8 +318,7 @@ class TaskListViewController: UIViewController {
             if case let .pastTask(taskItem) = identifier,
                let pastTask = self.viewContext.object(with: taskItem) as? TaskNote {
                 cell.contentConfiguration = UIHostingConfiguration {
-                    PastTasksHeader(dateString: pastTask.section,
-                                    isScrolledToTop: self.isScrolledToTop)
+                    PastTasksHeader(dateString: pastTask.section)
                 }
             }
         }
@@ -523,13 +516,6 @@ extension TaskListViewController: UICollectionViewDelegate, UIScrollViewDelegate
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         Task { @MainActor in
             dismissSwipe()
-
-            let scrollOffset = scrollView.contentOffset.y + scrollView.safeAreaInsets.top
-            if !isScrolledToTop.value && scrollOffset <= 0 {
-                isScrolledToTop.value = true
-            } else if isScrolledToTop.value && scrollOffset > 0 {
-                isScrolledToTop.value = false
-            }
         }
     }
 }

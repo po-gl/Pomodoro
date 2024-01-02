@@ -21,19 +21,18 @@ struct TaskList: View {
     @FetchRequest(fetchRequest: TasksData.limitedPastTasksRequest)
     var limitedPastTasks: FetchedResults<TaskNote>
 
-    @StateObject var isScrolledToTop = ObservableBool(true)
-
     @State var hasShownError = false
 
     var body: some View {
         NavigationStack {
             TaskListCollectionView(showProjects: showProjects,
-                                   showPastTasks: showPastTasks,
-                                   isScrolledToTop: isScrolledToTop)
+                                   showPastTasks: showPastTasks)
             .ignoresSafeArea(.keyboard)
-            .background(Color("Background").ignoresSafeArea())
+
             .navigationBarTitleDisplayMode(.inline)
+            .ignoresSafeArea(edges: .vertical)
             .navigationTitle("Task List")
+
             .toolbar {
                 Menu {
                     showArchivedProjectsButton
@@ -49,15 +48,6 @@ struct TaskList: View {
                 .navigationDestination(isPresented: $showingArchivedProjects) {
                     ArchivedProjectsView()
                 }
-            }
-            .ignoresSafeArea(edges: .vertical)
-            .safeAreaInset(edge: .top) {
-                Color.clear
-                    .frame(height: 0)
-                    .background(.bar)
-                    .border(.thinMaterial)
-                    .opacity(isScrolledToTop.value ? 0.0 : 1.0)
-                    .animation(.easeInOut(duration: 0.15), value: isScrolledToTop.value)
             }
 
             .toolbar {
@@ -75,7 +65,6 @@ struct TaskList: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
         .tint(Color("NavigationAccent"))
     }
 
