@@ -56,7 +56,10 @@ struct TaskInfoView: View {
                                 Text("Assigned Projects")
                                     .foregroundStyle(.secondary)
                                 Spacer()
-                                Button(action: { editingAssignedProjects.toggle() }) {
+                                Button(action: {
+                                    basicHaptic()
+                                    editingAssignedProjects.toggle()
+                                }) {
                                     Text(editingAssignedProjects ? "Done" : "Edit")
                                         .font(.headline)
                                         .fontWeight(.bold)
