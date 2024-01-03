@@ -177,6 +177,14 @@
 		618D67DD2979ECD7000A9D8A /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618D67DC2979ECD7000A9D8A /* Background.swift */; };
 		618D67DE2979ECD7000A9D8A /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618D67DC2979ECD7000A9D8A /* Background.swift */; };
 		618F465F29DF4E470043131C /* BuddyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6131C0A92911F6E200D1E6F1 /* BuddyView.swift */; };
+		6191ACB02B453730000A4937 /* UserDefaults+pomo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6191ACAF2B453730000A4937 /* UserDefaults+pomo.swift */; };
+		6191ACB12B453730000A4937 /* UserDefaults+pomo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6191ACAF2B453730000A4937 /* UserDefaults+pomo.swift */; };
+		6191ACB22B45392F000A4937 /* UserDefaults+pomo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6191ACAF2B453730000A4937 /* UserDefaults+pomo.swift */; };
+		6191ACB32B45392F000A4937 /* UserDefaults+pomo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6191ACAF2B453730000A4937 /* UserDefaults+pomo.swift */; };
+		6191ACB42B453930000A4937 /* UserDefaults+pomo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6191ACAF2B453730000A4937 /* UserDefaults+pomo.swift */; };
+		6191ACB52B453932000A4937 /* UserDefaults+pomo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6191ACAF2B453730000A4937 /* UserDefaults+pomo.swift */; };
+		6191ACB62B453932000A4937 /* UserDefaults+pomo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6191ACAF2B453730000A4937 /* UserDefaults+pomo.swift */; };
+		6191ACB72B453933000A4937 /* UserDefaults+pomo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6191ACAF2B453730000A4937 /* UserDefaults+pomo.swift */; };
 		619255AD290121DA00D399B8 /* TimerDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619255AC290121DA00D399B8 /* TimerDisplay.swift */; };
 		619255B12901F4CB00D399B8 /* PomoTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619255B02901F4CB00D399B8 /* PomoTimer.swift */; };
 		619255B22901F4CB00D399B8 /* PomoTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619255B02901F4CB00D399B8 /* PomoTimer.swift */; };
@@ -497,6 +505,7 @@
 		618C796929BD096C007EADBC /* EndTimerHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndTimerHandler.swift; sourceTree = "<group>"; };
 		618C796D29BD0A46007EADBC /* BackgroundSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundSession.swift; sourceTree = "<group>"; };
 		618D67DC2979ECD7000A9D8A /* Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Background.swift; sourceTree = "<group>"; };
+		6191ACAF2B453730000A4937 /* UserDefaults+pomo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+pomo.swift"; sourceTree = "<group>"; };
 		619255AC290121DA00D399B8 /* TimerDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDisplay.swift; sourceTree = "<group>"; };
 		619255B02901F4CB00D399B8 /* PomoTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomoTimer.swift; sourceTree = "<group>"; };
 		619255B3290204AB00D399B8 /* PomoTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomoTime.swift; sourceTree = "<group>"; };
@@ -672,6 +681,7 @@
 				61E734AC2B251E43001C5B2A /* PomoStatus+properties.swift */,
 				61C3623A2B26DFD500E2DDDD /* WidgetConfiguration+disfavoredLocations.swift */,
 				611D9AB82B2DABCE0011F389 /* ScenePhase+CustomStringConvertible.swift */,
+				6191ACAF2B453730000A4937 /* UserDefaults+pomo.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1298,6 +1308,7 @@
 				612D8F97290B67EB0089CDD1 /* PomoTime.swift in Sources */,
 				610515BA2AD4A2D400F6DD30 /* Color+isDark.swift in Sources */,
 				61D5808E29BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */,
+				6191ACB62B453932000A4937 /* UserDefaults+pomo.swift in Sources */,
 				61C362382B26C90A00E2DDDD /* DraggableTask.swift in Sources */,
 				61C362332B26C8BE00E2DDDD /* TasksData.swift in Sources */,
 				612D8F95290B67E50089CDD1 /* PomoTimer.swift in Sources */,
@@ -1324,6 +1335,7 @@
 				611D9AA92B2D358C0011F389 /* AppNotifications.swift in Sources */,
 				6172B4B3297F5EC600E53D8F /* iOSWidget.swift in Sources */,
 				6172B4C5297F646800E53D8F /* TimeInterval+formatter.swift in Sources */,
+				6191ACB72B453933000A4937 /* UserDefaults+pomo.swift in Sources */,
 				61C3622F2B26BFCF00E2DDDD /* StatusWidget.swift in Sources */,
 				61C362302B26C80400E2DDDD /* TasksOnBar.swift in Sources */,
 				610515BB2AD4A2D500F6DD30 /* Color+isDark.swift in Sources */,
@@ -1381,6 +1393,7 @@
 				61D5809129BA5F81006F0BB0 /* TaskAdderView.swift in Sources */,
 				61E734AD2B251E43001C5B2A /* PomoStatus+properties.swift in Sources */,
 				61B17253285CFCF8001C8245 /* UIView+ClosestVC.swift in Sources */,
+				6191ACB02B453730000A4937 /* UserDefaults+pomo.swift in Sources */,
 				61B17251285CFCBB001C8245 /* View+Modifier.swift in Sources */,
 				614533CB2A27353B00388136 /* Color+Interpolate.swift in Sources */,
 				61E734B42B2529C8001C5B2A /* DynamicIslandTimerView.swift in Sources */,
@@ -1441,6 +1454,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				61F7363129C00CCE00289149 /* Pomodoro.xcdatamodeld in Sources */,
+				6191ACB22B45392F000A4937 /* UserDefaults+pomo.swift in Sources */,
 				617789C42856A1F400BD43D7 /* PomodoroTests.swift in Sources */,
 				614A86C5290A4E1E008DFA26 /* PomoTimeTests.swift in Sources */,
 				61BE18C62A295E3700082875 /* Date+compare.swift in Sources */,
@@ -1526,6 +1540,7 @@
 				61D5809329BA5F81006F0BB0 /* TaskAdderView.swift in Sources */,
 				61F21DA0299233F400C3DACC /* LiveActivities.swift in Sources */,
 				61569CDC2B0031E600DFC977 /* MainPage.swift in Sources */,
+				6191ACB12B453730000A4937 /* UserDefaults+pomo.swift in Sources */,
 				61D01EC42B3B55B700A58360 /* DismissSwipeAction.swift in Sources */,
 				618D67DE2979ECD7000A9D8A /* Background.swift in Sources */,
 				6162B7DE2B22EA9D00C83714 /* WidgetProgressBar.swift in Sources */,
@@ -1580,6 +1595,7 @@
 				611A3CA529076BEF00B7AFD3 /* ProgressBar.swift in Sources */,
 				61F425412908EAE300300C83 /* PomoTimer.swift in Sources */,
 				61D5808B29BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */,
+				6191ACB32B45392F000A4937 /* UserDefaults+pomo.swift in Sources */,
 				614DA2AA2997BE3C00EFC91C /* PopStyle.swift in Sources */,
 				6139AE51290C64D000C5CB19 /* ChangerPage.swift in Sources */,
 				61FAEAB129065FDC00CACF78 /* PomodoroWatchApp.swift in Sources */,
@@ -1597,6 +1613,7 @@
 				6187511129BBF3170017BF8E /* Haptics.swift in Sources */,
 				6187510D29BBF3030017BF8E /* PomoTimer.swift in Sources */,
 				614DA2B42997BE6C00EFC91C /* Color+isDark.swift in Sources */,
+				6191ACB42B453930000A4937 /* UserDefaults+pomo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1619,6 +1636,7 @@
 				61B2EAA529DF4DD200CABD09 /* BuddyView.swift in Sources */,
 				61D5808D29BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */,
 				61FAEACC29065FDE00CACF78 /* PomodoroWatch_Watch_AppUITests.swift in Sources */,
+				6191ACB52B453932000A4937 /* UserDefaults+pomo.swift in Sources */,
 				61FAEACE29065FDE00CACF78 /* PomodoroWatch_Watch_AppUITestsLaunchTests.swift in Sources */,
 				614DA2B52997BE6C00EFC91C /* Color+isDark.swift in Sources */,
 			);

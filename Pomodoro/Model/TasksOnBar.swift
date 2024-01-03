@@ -52,12 +52,11 @@ class TasksOnBar: ObservableObject {
     }
 
     func saveToUserDefaults() {
-        UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.set(tasksOnBar, forKey: "taskNotes")
+        UserDefaults.pomo?.set(tasksOnBar, forKey: "taskNotes")
     }
 
     func restoreFromUserDefaults() {
-        tasksOnBar = UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!
-            .object(forKey: "taskNotes") as? [String] ?? tasksOnBar
+        tasksOnBar = UserDefaults.pomo?.object(forKey: "taskNotes") as? [String] ?? tasksOnBar
         Logger().log("RESTORE::tasks=\(self.tasksOnBar)")
     }
 }

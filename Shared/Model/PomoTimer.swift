@@ -125,20 +125,19 @@ class PomoTimer: SequenceTimer {
 
     override func saveToUserDefaults() {
         if let encoded = try? PropertyListEncoder().encode(order) {
-            UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.set(encoded, forKey: "order")
+            UserDefaults.pomo?.set(encoded, forKey: "order")
         }
-        UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.set(pomoCount, forKey: "pomoCount")
+        UserDefaults.pomo?.set(pomoCount, forKey: "pomoCount")
         super.saveToUserDefaults()
     }
 
     override func restoreFromUserDefaults() {
-        if let data = UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!.object(forKey: "order") as? Data {
+        if let data = UserDefaults.pomo?.object(forKey: "order") as? Data {
             if let orderDecoded = try? PropertyListDecoder().decode([PomoTime].self, from: data) {
                 order = orderDecoded
             }
         }
-        pomoCount = UserDefaults(suiteName: "group.com.po-gl-a.pomodoro")!
-            .object(forKey: "pomoCount") as? Int ?? pomoCount
+        pomoCount = UserDefaults.pomo?.object(forKey: "pomoCount") as? Int ?? pomoCount
         Logger().log("RESTORE::order=\(self.order.map { $0.getStatusString() })  pomoCount=\(self.pomoCount)")
         super.restoreFromUserDefaults()
     }
