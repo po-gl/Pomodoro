@@ -177,6 +177,12 @@
 		618D67DD2979ECD7000A9D8A /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618D67DC2979ECD7000A9D8A /* Background.swift */; };
 		618D67DE2979ECD7000A9D8A /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618D67DC2979ECD7000A9D8A /* Background.swift */; };
 		618F465F29DF4E470043131C /* BuddyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6131C0A92911F6E200D1E6F1 /* BuddyView.swift */; };
+		6191ACA82B44B32C000A4937 /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6191ACA72B44B32C000A4937 /* SettingsPage.swift */; };
+		6191ACA92B44B32C000A4937 /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6191ACA72B44B32C000A4937 /* SettingsPage.swift */; };
+		6191ACAB2B44EF47000A4937 /* Buddy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6191ACAA2B44EF47000A4937 /* Buddy.swift */; };
+		6191ACAC2B44EF47000A4937 /* Buddy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6191ACAA2B44EF47000A4937 /* Buddy.swift */; };
+		6191ACAD2B44EF6C000A4937 /* Buddy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6191ACAA2B44EF47000A4937 /* Buddy.swift */; };
+		6191ACAE2B44EF6D000A4937 /* Buddy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6191ACAA2B44EF47000A4937 /* Buddy.swift */; };
 		6191ACB02B453730000A4937 /* UserDefaults+pomo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6191ACAF2B453730000A4937 /* UserDefaults+pomo.swift */; };
 		6191ACB12B453730000A4937 /* UserDefaults+pomo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6191ACAF2B453730000A4937 /* UserDefaults+pomo.swift */; };
 		6191ACB22B45392F000A4937 /* UserDefaults+pomo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6191ACAF2B453730000A4937 /* UserDefaults+pomo.swift */; };
@@ -505,6 +511,8 @@
 		618C796929BD096C007EADBC /* EndTimerHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndTimerHandler.swift; sourceTree = "<group>"; };
 		618C796D29BD0A46007EADBC /* BackgroundSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundSession.swift; sourceTree = "<group>"; };
 		618D67DC2979ECD7000A9D8A /* Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Background.swift; sourceTree = "<group>"; };
+		6191ACA72B44B32C000A4937 /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
+		6191ACAA2B44EF47000A4937 /* Buddy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buddy.swift; sourceTree = "<group>"; };
 		6191ACAF2B453730000A4937 /* UserDefaults+pomo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+pomo.swift"; sourceTree = "<group>"; };
 		619255AC290121DA00D399B8 /* TimerDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDisplay.swift; sourceTree = "<group>"; };
 		619255B02901F4CB00D399B8 /* PomoTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomoTimer.swift; sourceTree = "<group>"; };
@@ -667,6 +675,7 @@
 				613D6D9B285C82FD0020C194 /* SequenceTimer.swift */,
 				619255B02901F4CB00D399B8 /* PomoTimer.swift */,
 				619255B3290204AB00D399B8 /* PomoTime.swift */,
+				6191ACAA2B44EF47000A4937 /* Buddy.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -886,6 +895,7 @@
 				6101A6F229996B5F00DC5FC5 /* PomoStepper.swift */,
 				61F7361229BEBBC800289149 /* TopButton.swift */,
 				611AE62D2903A9AF00FA24F0 /* ButtonCluster.swift */,
+				6191ACA72B44B32C000A4937 /* SettingsPage.swift */,
 				61C4F01F29DF4C3F00BC70C7 /* TaskListViews */,
 				61B17254285CFD40001C8245 /* Helpers */,
 			);
@@ -1438,7 +1448,9 @@
 				61E4681A2AEC6961001F6D7B /* View+overrideAction.swift in Sources */,
 				61F67BA32A3B042F00318CDC /* ProjectInfoView.swift in Sources */,
 				61D5808829BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */,
+				6191ACA82B44B32C000A4937 /* SettingsPage.swift in Sources */,
 				61569CDE2B0036B200DFC977 /* View+verticalDragGesture.swift in Sources */,
+				6191ACAB2B44EF47000A4937 /* Buddy.swift in Sources */,
 				617CF50E2AE8C0A90040E50B /* ObservableBool.swift in Sources */,
 				611A7CE12A380F2D0038AE56 /* View+draggableTask.swift in Sources */,
 				611D9AB92B2DABCE0011F389 /* ScenePhase+CustomStringConvertible.swift in Sources */,
@@ -1517,6 +1529,7 @@
 				61E734B92B252AD5001C5B2A /* DynamicIslandProgressView.swift in Sources */,
 				618A3B202A3B1AFC00A86441 /* ArchivedProjectsView.swift in Sources */,
 				611D9AA62B2D039F0011F389 /* StartStop.swift in Sources */,
+				6191ACAC2B44EF47000A4937 /* Buddy.swift in Sources */,
 				61E468202AEC77FA001F6D7B /* TinyProjectTag.swift in Sources */,
 				61F7362D29C00B4500289149 /* Persistence.swift in Sources */,
 				6187559C2AE21AAB00FC1564 /* ProjectsHeader.swift in Sources */,
@@ -1530,6 +1543,7 @@
 				61F62A1A2AE0C778005DE8A4 /* TodaysTasksHeader.swift in Sources */,
 				61F7363729C01A5000289149 /* ProjectsData.swift in Sources */,
 				61ED2E06297A682F0080C29F /* ContentView.swift in Sources */,
+				6191ACA92B44B32C000A4937 /* SettingsPage.swift in Sources */,
 				614DA2A92997BE3C00EFC91C /* PopStyle.swift in Sources */,
 				61F7363229C00CCE00289149 /* Pomodoro.xcdatamodeld in Sources */,
 				61E734B52B2529C8001C5B2A /* DynamicIslandTimerView.swift in Sources */,
@@ -1596,6 +1610,7 @@
 				61F425412908EAE300300C83 /* PomoTimer.swift in Sources */,
 				61D5808B29BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */,
 				6191ACB32B45392F000A4937 /* UserDefaults+pomo.swift in Sources */,
+				6191ACAD2B44EF6C000A4937 /* Buddy.swift in Sources */,
 				614DA2AA2997BE3C00EFC91C /* PopStyle.swift in Sources */,
 				6139AE51290C64D000C5CB19 /* ChangerPage.swift in Sources */,
 				61FAEAB129065FDC00CACF78 /* PomodoroWatchApp.swift in Sources */,
@@ -1631,6 +1646,7 @@
 				61147F062A33CE78000F4BBA /* WatchConnection.swift in Sources */,
 				610515B62AD49B9D00F6DD30 /* AppNotifications.swift in Sources */,
 				610515B42AD49B4800F6DD30 /* AnimatedImage.swift in Sources */,
+				6191ACAE2B44EF6D000A4937 /* Buddy.swift in Sources */,
 				6187510E29BBF3040017BF8E /* PomoTimer.swift in Sources */,
 				61E734B02B251E43001C5B2A /* PomoStatus+properties.swift in Sources */,
 				61B2EAA529DF4DD200CABD09 /* BuddyView.swift in Sources */,

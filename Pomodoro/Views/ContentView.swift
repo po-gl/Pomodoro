@@ -44,8 +44,8 @@ struct ContentView: View {
             TaskList()
                 .tabItem { Label("Tasks", systemImage: "checklist") }
                 .badge(errors.coreDataError != nil ? "!" : nil)
-//            Text("Settings page")
-//                .tabItem { Label("Settings", systemImage: "gearshape") }
+            SettingsPage()
+                .tabItem { Label("Settings", systemImage: "gearshape") }
         }
         .environmentObject(pomoTimer)
         .environmentObject(tasksOnBar)

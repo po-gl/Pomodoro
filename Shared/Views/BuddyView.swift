@@ -21,11 +21,13 @@ struct BuddyView: View {
     var endingXOffset: Double { barWidth - 55 }
 #endif
 
-    @State var buddies: [Buddy] = [.tomato, .blueberry, .banana]
+    @AppStorage("enableBuddies", store: UserDefaults.pomo) var enableBuddies = true
+    @State var buddies: [Buddy] = []
 
     var xOffsetForProgress: Double {
-        let safeBarWidth = max(endingXOffset, 40)
-        return (barWidth * pomoTimer.getProgress()).clamped(to: 40...safeBarWidth)
+        let startXOffset = Double(buddies.count) * 13
+        let safeBarWidth = max(endingXOffset, startingXOffset)
+        return (barWidth * pomoTimer.getProgress()).clamped(to: startXOffset...safeBarWidth)
     }
 
     var startStopAnimation: Animation = .interpolatingSpring(stiffness: 190, damping: 13)
@@ -38,12 +40,13 @@ struct BuddyView: View {
             }
         }
         .onAppear {
-            buddies.shuffle()
+            buddies = BuddySelection.shared.selectedBuddies.shuffled()
         }
         .animation(startStopAnimation, value: pomoTimer.isPaused)
         .offset(x: -metrics.size.width/2 + startingXOffset)
         .offset(x: xOffsetForProgress)
         .animation(pomoTimer.isPaused ? .spring(duration: 1.8) : startStopAnimation, value: xOffsetForProgress)
+        .opacity(enableBuddies ? 1.0 : 0.0)
     }
 
     @ViewBuilder
@@ -55,12 +58,6 @@ struct BuddyView: View {
                                                        loops: true)
         AnimatedImage(data: animationData)
     }
-}
-
-enum Buddy: String {
-    case tomato
-    case blueberry
-    case banana
 }
 
 struct BuddyView_Previews: PreviewProvider {
