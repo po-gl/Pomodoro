@@ -42,9 +42,9 @@ struct TaskInfoView: View {
                             HStack(spacing: 15) {
                                 Image(systemName: "leaf.fill")
                                     .foregroundColor(Color("BarWork"))
-                                    .frame(width: 20, height: 20)
                                     .saturation(editflagged ? 1.0 : 0.0)
                                     .animation(.spring, value: editflagged)
+                                    .frame(width: 20, height: 20)
                                 Text("Flagged")
                             }
                         }.tint(Color("AccentColor"))
