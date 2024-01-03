@@ -47,7 +47,16 @@ struct SettingsPage: View {
                     }
                     HStack {
                         Spacer()
-                        Button(action: {}) {
+                        Button(action: {
+                            resetHaptic()
+                            withAnimation {
+                                workDuration = PomoTimer.defaultWorkTime
+                                restDuration = PomoTimer.defaultRestTime
+                                breakDuration = PomoTimer.defaultBreakTime
+                                enableBuddies = true
+                                buddySelection.resetToDefault()
+                            }
+                        }) {
                             Text("Reset to default settings")
                                 .font(.callout)
                         }
