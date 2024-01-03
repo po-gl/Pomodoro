@@ -38,7 +38,10 @@ class BuddySelection: ObservableObject {
     func toggle(_ buddy: Buddy) {
         selection[buddy]?.toggle()
     }
-    
+
+    func resetToDefault() {
+        selection = Dictionary(uniqueKeysWithValues: Buddy.allCases.map { ($0, true)})
+    }
 
     private func saveSelection() {
         if let encodedSelection = try? PropertyListEncoder().encode(selection) {
