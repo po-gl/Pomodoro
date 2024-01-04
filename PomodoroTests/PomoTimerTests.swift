@@ -133,6 +133,30 @@ final class PomoTimerTests: XCTestCase {
         XCTAssertEqual(pomoTimer.isPaused, true)
     }
 
+    func testPomoTimer_customDurations() throws {
+        var time = 0
+        let workDuration = 2.0 * 60
+        let restDuration = 1.0 * 60
+        let breakDuration = 5.0 * 60
+        pomoTimer.reset(pomos: 1, work: workDuration, rest: restDuration, longBreak: breakDuration)
+        XCTAssertEqual(pomoTimer.isPaused, true)
+        pomoTimer.unpause()
+        XCTAssertEqual(pomoTimer.isPaused, false)
+        XCTAssertEqual(pomoTimer.getStatus(), .work)
+        
+        time += Int(workDuration) + 1
+        passTime(seconds: time)
+        XCTAssertEqual(status, .rest)
+
+        time += Int(restDuration) + 1
+        passTime(seconds: time)
+        XCTAssertEqual(status, .longBreak)
+        
+        time += Int(breakDuration) + 1
+        passTime(seconds: time)
+        XCTAssertEqual(status, .end)
+    }
+
     func testPomoTimer_saveAndRestore() throws {
         pomoTimer.saveToUserDefaults()
         pomoTimer.restoreFromUserDefaults()

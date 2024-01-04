@@ -13,13 +13,12 @@ class PomoTimer: SequenceTimer {
     @Published var order: [PomoTime]
     @Published var pomoCount: Int
 
-    private var longBreakTime: Double
+    private var workDuration: Double
+    private var restDuration: Double
+    private var breakDuration: Double
 
     private let maxPomos: Int = 6
 
-//    static let defaultWorkTime: Double = 4.0
-//    static let defaultRestTime: Double = 2.0
-//    static let defaultBreakTime: Double = 6.0
     static let defaultWorkTime: Double = 25.0 * 60.0
     static let defaultRestTime: Double = 5.0 * 60.0
     static let defaultBreakTime: Double = 30.0 * 60.0
@@ -27,13 +26,17 @@ class PomoTimer: SequenceTimer {
     private var pomoAction: (PomoStatus) -> Void
 
     init(pomos: Int = 4,
+         work: Double = defaultWorkTime,
+         rest: Double = defaultRestTime,
          longBreak: Double = defaultBreakTime,
          perform action: @escaping (PomoStatus) -> Void = { _ in return },
          timeProvider: Timer.Type = Timer.self) {
         pomoCount = pomos
-        longBreakTime = longBreak
+        workDuration = work
+        restDuration = rest
+        breakDuration = longBreak
         pomoAction = action
-        let pomoTimes = getPomoTimes(pomos, longBreak)
+        let pomoTimes = getPomoTimes(pomos, work, rest, longBreak)
         let timeIntervals = pomoTimes.map { $0.getTime() }
         order = pomoTimes
 
@@ -71,7 +74,10 @@ class PomoTimer: SequenceTimer {
     }
 
     public override func setPercentage(to percent: Double) {
-        self.reset(pomos: pomoCount, longBreak: longBreakTime)
+        self.reset(pomos: pomoCount,
+                   work: workDuration,
+                   rest: restDuration,
+                   longBreak: breakDuration)
         super.setPercentage(to: percent)
     }
 
@@ -86,19 +92,27 @@ class PomoTimer: SequenceTimer {
     public func incrementPomos() {
         pomoCount += 1
         if pomoCount > maxPomos { pomoCount = maxPomos }
-        reset(pomos: pomoCount, longBreak: longBreakTime)
+        reset(pomos: pomoCount,
+              work: workDuration,
+              rest: restDuration,
+              longBreak: breakDuration)
     }
 
     public func decrementPomos() {
         pomoCount -= 1
         if pomoCount < 1 { pomoCount = 1 }
-        reset(pomos: pomoCount, longBreak: longBreakTime)
+        reset(pomos: pomoCount,
+              work: workDuration,
+              rest: restDuration,
+              longBreak: breakDuration)
     }
 
-    public func reset(pomos: Int, longBreak: Double) {
+    public func reset(pomos: Int, work: Double, rest: Double, longBreak: Double) {
         pomoCount = pomos
-        longBreakTime = longBreak
-        let pomoTimes = getPomoTimes(pomos, longBreak)
+        workDuration = work
+        restDuration = rest
+        breakDuration = longBreak
+        let pomoTimes = getPomoTimes(pomos, work, rest, longBreak)
         let timeIntervals = pomoTimes.map { $0.getTime() }
         order = pomoTimes
 
@@ -119,7 +133,9 @@ class PomoTimer: SequenceTimer {
     public func sync(with otherTimer: PomoTimer) {
         order = otherTimer.order
         pomoCount = otherTimer.pomoCount
-        longBreakTime = otherTimer.longBreakTime
+        workDuration = otherTimer.workDuration
+        restDuration = otherTimer.restDuration
+        breakDuration = otherTimer.breakDuration
         super.sync(with: otherTimer)
     }
 
@@ -146,7 +162,9 @@ class PomoTimer: SequenceTimer {
     required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         pomoCount = try values.decode(Int.self, forKey: .pomoCount)
-        longBreakTime = try values.decode(Double.self, forKey: .longBreak)
+        workDuration = try values.decode(Double.self, forKey: .work)
+        restDuration = try values.decode(Double.self, forKey: .rest)
+        breakDuration = try values.decode(Double.self, forKey: .longBreak)
         let pomoTimes = try values.decode([PomoTime].self, forKey: .order)
         order = pomoTimes
         pomoAction = { _ in }
@@ -157,29 +175,33 @@ class PomoTimer: SequenceTimer {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(order, forKey: .order)
         try container.encode(pomoCount, forKey: .pomoCount)
-        try container.encode(longBreakTime, forKey: .longBreak)
+        try container.encode(workDuration, forKey: .work)
+        try container.encode(restDuration, forKey: .rest)
+        try container.encode(breakDuration, forKey: .longBreak)
         try super.encode(to: encoder)
     }
 
     enum CodingKeys: String, CodingKey {
         case order
         case pomoCount
+        case work
+        case rest
         case longBreak
         case action
     }
 }
 
-private func getPomoTimes(_ pomos: Int, _ longBreak: Double) -> [PomoTime] {
+private func getPomoTimes(_ pomos: Int, _ work: Double, _ rest: Double, _ longBreak: Double) -> [PomoTime] {
     var pomoTimes: [PomoTime] = []
-    addPomos(pomos, &pomoTimes)
+    addPomos(pomos, work, rest, &pomoTimes)
     addLongBreak(longBreak, &pomoTimes)
     return pomoTimes
 }
 
-private func addPomos(_ pomos: Int, _ pomoTimes: inout [PomoTime]) {
+private func addPomos(_ pomos: Int, _ work: Double, _ rest: Double, _ pomoTimes: inout [PomoTime]) {
     for _ in 0..<pomos {
-        pomoTimes.append(PomoTime(PomoTimer.defaultWorkTime, .work))
-        pomoTimes.append(PomoTime(PomoTimer.defaultRestTime, .rest))
+        pomoTimes.append(PomoTime(work, .work))
+        pomoTimes.append(PomoTime(rest, .rest))
     }
 }
 

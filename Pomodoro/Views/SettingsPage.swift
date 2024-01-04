@@ -10,6 +10,7 @@ import SwiftUI
 
 struct SettingsPage: View {
     @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var pomoTimer: PomoTimer
 
     @AppStorage("workDuration", store: UserDefaults.pomo) var workDuration: TimeInterval = PomoTimer.defaultWorkTime
     @AppStorage("restDuration", store: UserDefaults.pomo) var restDuration: TimeInterval = PomoTimer.defaultRestTime
@@ -55,6 +56,11 @@ struct SettingsPage: View {
                                 breakDuration = PomoTimer.defaultBreakTime
                                 enableBuddies = true
                                 buddySelection.resetToDefault()
+
+                                pomoTimer.reset(pomos: pomoTimer.pomoCount,
+                                                work: workDuration,
+                                                rest: restDuration,
+                                                longBreak: breakDuration)
                             }
                         }) {
                             Text("Reset to default settings")
@@ -153,11 +159,19 @@ struct SettingsPage: View {
             Text(value.wrappedValue.compactTimerFormatted())
                 .monospacedDigit()
         }
-        Slider(value: value, in: range, step: 60)
+        Slider(value: value, in: range, step: 60, onEditingChanged: { isEditing in
+            if !isEditing {
+                pomoTimer.reset(pomos: pomoTimer.pomoCount,
+                                work: workDuration,
+                                rest: restDuration,
+                                longBreak: breakDuration)
+            }
+        })
             .labelStyle(.titleAndIcon)
     }
 }
 
 #Preview {
     SettingsPage()
+        .environmentObject(PomoTimer())
 }
