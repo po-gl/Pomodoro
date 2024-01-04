@@ -50,17 +50,6 @@ struct SettingsPage: View {
                         durationSlider("Long Break Duration", value: $breakDuration, in: 60*10...60*60)
                             .tint(Color("BarLongBreak"))
                     }
-                    Divider()
-                        .padding(.vertical, 10)
-                    GroupBox {
-                        buddySelectors
-                        Divider()
-                            .padding(.vertical, 5)
-                        Toggle(isOn: $enableBuddies, label: {
-                            Text("Pixel Buddies")
-                        })
-                        .tint(Color("End"))
-                    }
                     HStack {
                         Spacer()
                         Button(action: {
@@ -69,9 +58,6 @@ struct SettingsPage: View {
                                 workDuration = PomoTimer.defaultWorkTime
                                 restDuration = PomoTimer.defaultRestTime
                                 breakDuration = PomoTimer.defaultBreakTime
-                                enableBuddies = true
-                                buddySelection.resetToDefault()
-
                                 pomoTimer.reset(pomos: pomoTimer.pomoCount,
                                                 work: workDuration,
                                                 rest: restDuration,
@@ -82,7 +68,18 @@ struct SettingsPage: View {
                                 .font(.callout)
                         }
                     }
-                    .padding()
+                    .padding(.horizontal)
+                    Divider()
+                        .padding(.vertical, 5)
+                    GroupBox {
+                        buddySelectors
+                        Divider()
+                            .padding(.vertical, 5)
+                        Toggle(isOn: $enableBuddies, label: {
+                            Text("Pixel Buddies")
+                        })
+                        .tint(Color("End"))
+                    }
                 }
                 .padding()
             }
