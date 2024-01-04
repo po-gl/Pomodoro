@@ -13,9 +13,9 @@ class PomoTimer: SequenceTimer {
     @Published var order: [PomoTime]
     @Published var pomoCount: Int
 
-    private var workDuration: Double
-    private var restDuration: Double
-    private var breakDuration: Double
+    var workDuration: Double
+    var restDuration: Double
+    var breakDuration: Double
 
     private let maxPomos: Int = 6
 
