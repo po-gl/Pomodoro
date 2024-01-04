@@ -60,6 +60,7 @@ struct ProjectCell: View {
                     HStack {
                         progressCheck
                             .offset(y: isCollapsed.value && !editNoteText.wrappedValue.isEmpty ? 10 : 0)
+                            .padding(.trailing, 3)
                         mainTextField
                         if !isCollapsed.value {
                             infoButton.offset(y: -1)
@@ -75,7 +76,7 @@ struct ProjectCell: View {
                             projectStats
                         }
                     }
-                    .padding(.leading, 32)
+                    .padding(.leading, 35)
                 }
 
                 Spacer()
