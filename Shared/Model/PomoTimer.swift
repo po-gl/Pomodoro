@@ -144,6 +144,9 @@ class PomoTimer: SequenceTimer {
             UserDefaults.pomo?.set(encoded, forKey: "order")
         }
         UserDefaults.pomo?.set(pomoCount, forKey: "pomoCount")
+        UserDefaults.pomo?.set(workDuration, forKey: "pomoWorkDuration")
+        UserDefaults.pomo?.set(restDuration, forKey: "pomoRestDuration")
+        UserDefaults.pomo?.set(breakDuration, forKey: "pomoBreakDuration")
         super.saveToUserDefaults()
     }
 
@@ -154,7 +157,10 @@ class PomoTimer: SequenceTimer {
             }
         }
         pomoCount = UserDefaults.pomo?.object(forKey: "pomoCount") as? Int ?? pomoCount
-        Logger().log("RESTORE::order=\(self.order.map { $0.getStatusString() })  pomoCount=\(self.pomoCount)")
+        workDuration = UserDefaults.pomo?.object(forKey: "pomoWorkDuration") as? Double ?? workDuration
+        restDuration = UserDefaults.pomo?.object(forKey: "pomoRestDuration") as? Double ?? restDuration
+        breakDuration = UserDefaults.pomo?.object(forKey: "pomoBreakDuration") as? Double ?? breakDuration
+        Logger().log("RESTORE::order=\(self.order.map { $0.getStatusString() })  pomoCount=\(self.pomoCount)  workDuration=\(self.workDuration.rounded())  restDuration=\(self.restDuration.rounded())  breakDuration=\(self.breakDuration.rounded())")
         super.restoreFromUserDefaults()
     }
 
