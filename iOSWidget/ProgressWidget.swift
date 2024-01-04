@@ -76,6 +76,9 @@ struct ProgressWidget_Previews: PreviewProvider {
                                       isPaused: false,
                                       currentSegment: 3,
                                       segmentCount: 6,
+                                      workDuration: pomoTimer.workDuration,
+                                      restDuration: pomoTimer.restDuration,
+                                      breakDuration: pomoTimer.breakDuration,
                                       configuration: ConfigurationIntent())
         Group {
             ProgressWidgetView(entry: entry)

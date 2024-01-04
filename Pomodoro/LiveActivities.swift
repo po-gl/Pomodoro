@@ -53,7 +53,9 @@ class LiveActivities {
             do {
                 try await sendPomoDataToServer(pomoTimer, tasksOnBar)
 
-                let pomoAttrs = PomoAttributes()
+                let pomoAttrs = PomoAttributes(workDuration: pomoTimer.workDuration,
+                                               restDuration: pomoTimer.restDuration,
+                                               breakDuration: pomoTimer.breakDuration)
                 let content = getLiveActivityContentFor(pomoTimer, tasksOnBar)
 
                 if let activity = Activity<PomoAttributes>.activities.first {

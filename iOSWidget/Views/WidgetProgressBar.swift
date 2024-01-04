@@ -16,7 +16,11 @@ struct WidgetProgressBar: View {
     let segmentCount: Int
 
     let pausedAt: Date?
-    
+
+    let workDuration: TimeInterval
+    let restDuration: TimeInterval
+    let breakDuration: TimeInterval
+
     var body: some View {
         let spacing: CGFloat = 2
 
@@ -63,17 +67,13 @@ struct WidgetProgressBar: View {
 
     /// This function makes assumptions about the sequence
     func getPercent(for status: PomoStatus) -> Double {
-        let work = PomoTimer.defaultWorkTime
-        let rest = PomoTimer.defaultRestTime
-        let longBreak = PomoTimer.defaultBreakTime
-        
         switch status {
         case .work:
-            return work / totalTime
+            return workDuration / totalTime
         case .rest:
-            return rest / totalTime
+            return restDuration / totalTime
         case .longBreak:
-            return longBreak / totalTime
+            return breakDuration / totalTime
         case .end:
             return 0.0
         }
@@ -81,12 +81,9 @@ struct WidgetProgressBar: View {
 
     /// This property makes assumptions about the sequence
     private var totalTime: Double {
-        let work = PomoTimer.defaultWorkTime
-        let rest = PomoTimer.defaultRestTime
-        let longBreak = PomoTimer.defaultBreakTime
         let count = Double(segmentCount - 2) / 2  // -2 to take off ".end" segment
 
-        return work * count + rest * count + longBreak
+        return workDuration * count + restDuration * count + breakDuration
     }
 }
 
@@ -122,7 +119,10 @@ struct ProgressBarStyle: ProgressViewStyle {
         WidgetProgressBar(timerInterval: Date.now...Date.now.addingTimeInterval(5),
                           currentSegment: 2,
                           segmentCount: 5,
-                          pausedAt: nil)
+                          pausedAt: nil,
+                          workDuration: PomoTimer.defaultWorkTime,
+                          restDuration: PomoTimer.defaultRestTime,
+                          breakDuration: PomoTimer.defaultBreakTime)
         .padding()
     }
     .padding()

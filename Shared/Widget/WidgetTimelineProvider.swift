@@ -22,6 +22,9 @@ struct WidgetTimelineProvider: IntentTimelineProvider {
                                  isPaused: true,
                                  currentSegment: 0,
                                  segmentCount: 6, // work-rest-work-rest-break-end
+                                 workDuration: PomoTimer.defaultWorkTime,
+                                 restDuration: PomoTimer.defaultRestTime,
+                                 breakDuration: PomoTimer.defaultBreakTime,
                                  configuration: ConfigurationIntent())
     }
 

@@ -35,7 +35,10 @@ struct BannerLiveActivityView: View {
                 WidgetProgressBar(timerInterval: segmentStartDate...endDate,
                                   currentSegment: context.state.currentSegment,
                                   segmentCount: context.state.segmentCount,
-                                  pausedAt: context.state.isPaused ? startDate : nil)
+                                  pausedAt: context.state.isPaused ? startDate : nil,
+                                  workDuration: context.attributes.workDuration,
+                                  restDuration: context.attributes.restDuration,
+                                  breakDuration: context.attributes.breakDuration)
             }
         }
         .padding(.horizontal)

@@ -78,7 +78,10 @@ struct iOSWidgetView: View {
             WidgetProgressBar(timerInterval: entry.timerInterval,
                               currentSegment: entry.currentSegment,
                               segmentCount: entry.segmentCount,
-                              pausedAt: entry.isPaused ? entry.timerInterval.lowerBound : nil)
+                              pausedAt: entry.isPaused ? entry.timerInterval.lowerBound : nil,
+                              workDuration: entry.workDuration,
+                              restDuration: entry.restDuration,
+                              breakDuration: entry.breakDuration)
             .frame(height: 5)
         }
     }
@@ -100,7 +103,10 @@ struct iOSWidgetView: View {
             WidgetProgressBar(timerInterval: entry.timerInterval,
                               currentSegment: entry.currentSegment,
                               segmentCount: entry.segmentCount,
-                              pausedAt: entry.isPaused ? entry.timerInterval.lowerBound : nil)
+                              pausedAt: entry.isPaused ? entry.timerInterval.lowerBound : nil,
+                              workDuration: entry.workDuration,
+                              restDuration: entry.restDuration,
+                              breakDuration: entry.breakDuration)
             .frame(height: 5)
         }
     }
@@ -178,6 +184,9 @@ struct iOSWidget_Previews: PreviewProvider {
                                       isPaused: false,
                                       currentSegment: 5,
                                       segmentCount: 6,
+                                      workDuration: pomoTimer.workDuration,
+                                      restDuration: pomoTimer.restDuration,
+                                      breakDuration: pomoTimer.breakDuration,
                                       configuration: ConfigurationIntent())
         Group {
             iOSWidgetView(entry: entry)

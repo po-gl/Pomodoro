@@ -27,6 +27,9 @@ struct PomoAttributes: ActivityAttributes {
         var isPaused: Bool
     }
     // Fixed non-changing properties about your activity go here!
+    var workDuration: TimeInterval
+    var restDuration: TimeInterval
+    var breakDuration: TimeInterval
 }
 
 @available(iOS 16.1, *)
@@ -130,7 +133,10 @@ struct iOSWidgetLiveActivity: Widget {
             WidgetProgressBar(timerInterval: segmentStart...end,
                               currentSegment: context.state.currentSegment,
                               segmentCount: context.state.segmentCount,
-                              pausedAt: context.state.isPaused ? start : nil)
+                              pausedAt: context.state.isPaused ? start : nil,
+                              workDuration: context.attributes.workDuration,
+                              restDuration: context.attributes.restDuration,
+                              breakDuration: context.attributes.breakDuration)
             .padding(.horizontal, 3)
         }
     }
@@ -160,11 +166,11 @@ struct iOSWidgetLiveActivity: Widget {
         }
         switch getStatus(for: context){
         case .work:
-            return getEndDate(for: context).addingTimeInterval(-PomoTimer.defaultWorkTime)
+            return getEndDate(for: context).addingTimeInterval(-context.attributes.workDuration)
         case .rest:
-            return getEndDate(for: context).addingTimeInterval(-PomoTimer.defaultRestTime)
+            return getEndDate(for: context).addingTimeInterval(-context.attributes.restDuration)
         case .longBreak:
-            return getEndDate(for: context).addingTimeInterval(-PomoTimer.defaultBreakTime)
+            return getEndDate(for: context).addingTimeInterval(-context.attributes.breakDuration)
         case .end:
             return getEndDate(for: context)
         }
@@ -176,11 +182,11 @@ struct iOSWidgetLiveActivity: Widget {
         }
         switch getStatus(for: context) {
         case .work:
-            return getStartDate(for: context).addingTimeInterval(PomoTimer.defaultWorkTime)
+            return getStartDate(for: context).addingTimeInterval(context.attributes.workDuration)
         case .rest:
-            return getStartDate(for: context).addingTimeInterval(PomoTimer.defaultRestTime)
+            return getStartDate(for: context).addingTimeInterval(context.attributes.restDuration)
         case .longBreak:
-            return getStartDate(for: context).addingTimeInterval(PomoTimer.defaultBreakTime)
+            return getStartDate(for: context).addingTimeInterval(context.attributes.breakDuration)
         case .end:
             return getStartDate(for: context)
         }

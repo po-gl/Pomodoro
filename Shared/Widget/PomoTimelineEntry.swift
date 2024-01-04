@@ -16,6 +16,9 @@ struct PomoTimelineEntry: TimelineEntry {
     var isPaused: Bool
     var currentSegment: Int
     var segmentCount: Int
+    var workDuration: TimeInterval
+    var restDuration: TimeInterval
+    var breakDuration: TimeInterval
     let configuration: ConfigurationIntent
 
     static func new(for entryDate: Date, _ pomoTimer: PomoTimer, _ tasksOnBar: TasksOnBar, _ configuration: ConfigurationIntent) -> PomoTimelineEntry {
@@ -36,6 +39,9 @@ struct PomoTimelineEntry: TimelineEntry {
                                  isPaused: isPaused,
                                  currentSegment: status == .end ? pomoTimer.order.count : index,
                                  segmentCount: pomoTimer.order.count + 1, // +1 for .end segment
+                                 workDuration: pomoTimer.workDuration,
+                                 restDuration: pomoTimer.restDuration,
+                                 breakDuration: pomoTimer.breakDuration,
                                  configuration: configuration)
     }
 }

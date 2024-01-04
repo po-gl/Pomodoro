@@ -218,6 +218,9 @@ struct WatchWidget_Previews: PreviewProvider {
                                       isPaused: false,
                                       currentSegment: 2,
                                       segmentCount: 6,
+                                      workDuration: pomoTimer.workDuration,
+                                      restDuration: pomoTimer.restDuration,
+                                      breakDuration: pomoTimer.breakDuration,
                                       configuration: ConfigurationIntent())
         Group {
             CornerProgressWidgetView(entry: entry)

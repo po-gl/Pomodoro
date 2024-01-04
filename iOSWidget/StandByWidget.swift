@@ -56,7 +56,10 @@ struct StandByWidgetView: View {
             WidgetProgressBar(timerInterval: entry.timerInterval,
                               currentSegment: entry.currentSegment,
                               segmentCount: entry.segmentCount,
-                              pausedAt: entry.isPaused ? entry.timerInterval.lowerBound : nil)
+                              pausedAt: entry.isPaused ? entry.timerInterval.lowerBound : nil,
+                              workDuration: entry.workDuration,
+                              restDuration: entry.restDuration,
+                              breakDuration: entry.breakDuration)
             .frame(height: 5)
         }
     }
@@ -135,6 +138,9 @@ struct StandByWidget_Previews: PreviewProvider {
                                       isPaused: false,
                                       currentSegment: 3,
                                       segmentCount: 6,
+                                      workDuration: pomoTimer.workDuration,
+                                      restDuration: pomoTimer.restDuration,
+                                      breakDuration: pomoTimer.breakDuration,
                                       configuration: ConfigurationIntent())
         StandByWidgetView(entry: entry)
             .previewContext(WidgetPreviewContext(family: .systemMedium))
