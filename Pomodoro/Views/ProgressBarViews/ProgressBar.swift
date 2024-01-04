@@ -17,6 +17,8 @@ struct ProgressBar: View {
 
     var metrics: GeometryProxy
 
+    var showsLabels = true
+
     @EnvironmentObject var taskNotes: TasksOnBar
     @Binding var taskFromAdder: DraggableTask
 
@@ -60,28 +62,34 @@ struct ProgressBar: View {
     @ViewBuilder private var timeLineColorBars: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: pomoTimer.isPaused ? 60.0 : 1.0)) { context in
             VStack(spacing: 0) {
-                HStack {
-                    Spacer()
-                    Text("\(Int(pomoTimer.getProgress(atDate: context.date) * 100))%")
-                        .font(.system(.subheadline, design: .monospaced))
+                if showsLabels {
+                    HStack {
+                        Spacer()
+                        Text("\(Int(pomoTimer.getProgress(atDate: context.date) * 100))%")
+                            .font(.system(.subheadline, design: .monospaced))
+                    }
+                    .padding(.bottom, 8)
                 }
-                .padding(.bottom, 8)
 
                 ZStack {
                     Group {
                         colorBars(isMask: false)
                             .accessibilityIdentifier("DraggableProgressBar")
                             .mask { RoundedRectangle(cornerRadius: 7) }
-                        progressIndicator(at: context.date)
-                            .opacity(shouldShowProgressIndicator(at: context.date) ? 1.0 : 0.0)
-                            .allowsHitTesting(false)
+                        if showsLabels {
+                            progressIndicator(at: context.date)
+                                .opacity(shouldShowProgressIndicator(at: context.date) ? 1.0 : 0.0)
+                                .allowsHitTesting(false)
+                        }
 
                     }
                     .gesture(drag)
 
-                    tasksView(at: context.date)
-
-                    breakTimeLabel(at: context.date)
+                    if showsLabels {
+                        tasksView(at: context.date)
+                        
+                        breakTimeLabel(at: context.date)
+                    }
                 }
                 .padding(.vertical, 2)
                 .padding(.horizontal, barOutlinePadding)
