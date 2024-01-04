@@ -173,6 +173,7 @@ struct SettingsPage: View {
             Spacer()
             Text(value.wrappedValue.compactTimerFormatted())
                 .monospacedDigit()
+                .fontWeight(.medium)
         }
         Slider(value: value, in: range, step: 60, onEditingChanged: { isEditing in
             if !isEditing {
