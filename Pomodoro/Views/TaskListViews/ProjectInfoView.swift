@@ -37,8 +37,10 @@ struct ProjectInfoView: View {
                         TextField("Project Name", text: $editText, axis: .vertical)
                             .font(.title2)
                             .foregroundColor(Color(editColor))
+                            .padding(.bottom, 5)
                         Divider()
                         TextField("Note", text: $editNote, axis: .vertical)
+                            .padding(.top, 5)
                     }
 
                     GroupBox {

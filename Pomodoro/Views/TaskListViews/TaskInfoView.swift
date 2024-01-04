@@ -33,8 +33,11 @@ struct TaskInfoView: View {
                 VStack(spacing: 15) {
                     GroupBox {
                         TextField("Task", text: $editText, axis: .vertical)
+                            .fontWeight(.semibold)
+                            .padding(.bottom, 5)
                         Divider()
                         TextField("Note", text: $editNote, axis: .vertical)
+                            .padding(.top, 5)
                     }
 
                     GroupBox {
