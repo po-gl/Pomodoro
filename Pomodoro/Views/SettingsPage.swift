@@ -19,10 +19,25 @@ struct SettingsPage: View {
     @StateObject var buddySelection = BuddySelection.shared
     @AppStorage("enableBuddies", store: UserDefaults.pomo) var enableBuddies = true
 
+    @State var draggableTaskStub = DraggableTask()
+    let durationChangeAnim: Animation = .interpolatingSpring(stiffness: 190, damping: 13)
+
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 15) {
+                    GeometryReader { geometry in
+                        ZStack {
+                            ProgressBar(metrics: geometry, showsLabels: false, taskFromAdder: $draggableTaskStub)
+                                .disabled(true)
+                            BuddyView(metrics: geometry)
+                                .offset(y: -20)
+                                .brightness(colorScheme == .dark ? 0.0 : 0.1)
+                        }
+                        .position(x: geometry.size.width/2, y: geometry.size.height/2)
+                    }
+                    .frame(height: 25)
+
                     GroupBox {
                         durationSlider("Work Duration", value: $workDuration, in: 60*5...60*40)
                             .tint(Color("BarWork"))
@@ -161,10 +176,12 @@ struct SettingsPage: View {
         }
         Slider(value: value, in: range, step: 60, onEditingChanged: { isEditing in
             if !isEditing {
-                pomoTimer.reset(pomos: pomoTimer.pomoCount,
-                                work: workDuration,
-                                rest: restDuration,
-                                longBreak: breakDuration)
+                withAnimation(durationChangeAnim) {
+                    pomoTimer.reset(pomos: pomoTimer.pomoCount,
+                                    work: workDuration,
+                                    rest: restDuration,
+                                    longBreak: breakDuration)
+                }
             }
         })
             .labelStyle(.titleAndIcon)
@@ -174,4 +191,5 @@ struct SettingsPage: View {
 #Preview {
     SettingsPage()
         .environmentObject(PomoTimer())
+        .environmentObject(TasksOnBar())
 }
