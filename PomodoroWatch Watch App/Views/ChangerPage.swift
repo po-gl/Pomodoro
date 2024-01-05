@@ -21,7 +21,8 @@ struct ChangerPage: View {
             }
             Spacer()
             PomoStepper
-                .padding()
+                .padding(.horizontal, 13)
+                .padding(.vertical, 13)
         }
         .ignoresSafeArea(.container, edges: .bottom)
     }
@@ -40,20 +41,33 @@ struct ChangerPage: View {
             }
         }
     }
-
+    
     @ViewBuilder private var PomoStepper: some View {
-        Stepper {
-        } onIncrement: {
-            basicHaptic()
-            withAnimation(pomoChangeAnimation) {
-                pomoTimer.incrementPomos()
+        HStack {
+            Button(action: {
+                basicHaptic()
+                withAnimation(pomoChangeAnimation) {
+                    pomoTimer.decrementPomos()
+                }
+            }) {
+                Image(systemName: "minus.circle.fill")
+                    .resizable()
+                    .foregroundStyle(Color("AccentColor"))
+                    .frame(width: 30, height: 30)
             }
-        } onDecrement: {
-            basicHaptic()
-            withAnimation(pomoChangeAnimation) {
-                pomoTimer.decrementPomos()
+            Spacer()
+            Button(action: {
+                basicHaptic()
+                withAnimation(pomoChangeAnimation) {
+                    pomoTimer.incrementPomos()
+                }
+            }) {
+                Image(systemName: "plus.circle.fill")
+                    .resizable()
+                    .foregroundStyle(Color("AccentColor"))
+                    .frame(width: 30, height: 30)
             }
         }
-        .focusable(false)
+        .buttonStyle(.plain)
     }
 }
