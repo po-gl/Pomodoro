@@ -32,7 +32,7 @@ struct TimerDisplay: View {
                 StatusBox(at: date)
                 Spacer()
                 EndingTime(at: date)
-                    .offset(x: 4, y: 5)
+                    .offset(x: 4, y: 0)
             }
             .frame(width: metrics.size.width - 20)
             TimerView(at: date)
@@ -52,7 +52,7 @@ struct TimerDisplay: View {
                     .shadow(radius: 2, x: 2, y: 2)
                     .background(RoundedRectangle(cornerRadius: 5).offset(x: 3, y: 3).foregroundColor(color).brightness(-0.3))
             )
-            .font(.system(size: 24, weight: .medium, design: .serif))
+            .font(.system(.title2, design: .rounded, weight: .semibold))
     }
 
     @ViewBuilder
