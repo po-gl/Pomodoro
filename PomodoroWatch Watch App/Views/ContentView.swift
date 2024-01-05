@@ -33,7 +33,9 @@ struct ContentView: View {
     var body: some View {
         TabView {
             MainPage()
-            ChangerPage()
+            GeometryReader { geometry in
+                SettingsPage(geometry: geometry)
+            }
         }
         .environmentObject(pomoTimer)
         .opacity(isLuminanceReduced ? 0.6 : 1.0)

@@ -17,6 +17,8 @@ struct BuddySelector: View {
     var radius: CGFloat = 8
     private var padding: CGFloat { isSelected ? 28 : 38 }
 
+    var font: Font = .callout
+
     var body: some View {
         VStack(spacing: 0) {
             Image("\(buddy.rawValue)1")
@@ -50,7 +52,7 @@ struct BuddySelector: View {
                 )
                 .animation(.default, value: isSelected)
             Text(buddy.rawValue.capitalized)
-                .font(.callout)
+                .font(font)
                 .frame(width: size.width)
                 .background(
                     UnevenRoundedRectangle(cornerRadii: .init(topLeading: 0, bottomLeading: radius,
