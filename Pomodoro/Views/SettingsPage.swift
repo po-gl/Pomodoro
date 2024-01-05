@@ -85,6 +85,11 @@ struct SettingsPage: View {
             }
             .background(Color("Background"))
             .navigationTitle("Settings")
+            .onAppear {
+                workDuration = pomoTimer.workDuration
+                restDuration = pomoTimer.restDuration
+                breakDuration = pomoTimer.breakDuration
+            }
         }
     }
 

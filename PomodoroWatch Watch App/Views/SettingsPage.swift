@@ -81,6 +81,11 @@ struct SettingsPage: View {
                         .font(.callout)
                 }
                 .tint(Color("End"))
+                .onAppear {
+                    workDuration = pomoTimer.workDuration
+                    restDuration = pomoTimer.restDuration
+                    breakDuration = pomoTimer.breakDuration
+                }
             }
         }
     }
