@@ -127,7 +127,8 @@ struct SettingsPage: View {
                     UnevenRoundedRectangle(cornerRadii: .init(topLeading: radius, bottomLeading: 0,
                                                               bottomTrailing: 0, topTrailing: radius))
                     .fill(Color(buddy.rawValue))
-                    .brightness(colorScheme == .dark ? 0.0 : 0.15)
+                    .brightness(colorScheme == .dark ? -0.08 : 0.35)
+                    .saturation(colorScheme == .dark ? 0.85 : 1.05)
                     .opacity(isSelected ? 0.7 : 0.0)
                     .reverseMask {
                         Circle()
