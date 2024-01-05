@@ -39,7 +39,7 @@ struct MainPage: View {
                     .verticalOffsetEffect(for: dragOffset, .spring, factor: 0.15)
 
                 Color.clear.contentShape(Rectangle())
-                    .verticalDragGesture(offset: $dragOffset, clampedTo: -20..<80, onStart: {
+                    .verticalDragGesture(offset: $dragOffset, clampedTo: -20..<120, onStart: {
                         Task { @MainActor in
                             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
                                                             to: nil, from: nil, for: nil)
@@ -61,7 +61,7 @@ struct MainPage: View {
                         .padding(20)
                 }
                 .padding(.bottom, 10)
-                .verticalOffsetEffect(for: dragOffset, .bouncy)
+                .verticalOffsetEffect(for: dragOffset, .bouncy, factor: 0.8)
 
                 ButtonCluster()
                     .padding(.bottom, 30)
