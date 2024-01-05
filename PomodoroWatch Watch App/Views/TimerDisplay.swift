@@ -52,7 +52,7 @@ struct TimerDisplay: View {
                     .shadow(radius: 2, x: 2, y: 2)
                     .background(RoundedRectangle(cornerRadius: 5).offset(x: 3, y: 3).foregroundColor(color).brightness(-0.3))
             )
-            .font(.system(.title2, design: .rounded, weight: .semibold))
+            .font(.system(size: 22.0, weight: .semibold, design: .rounded))
     }
 
     @ViewBuilder
