@@ -103,9 +103,11 @@ struct TimerDisplay: View {
     private func currentPomoView(at date: Date) -> some View {
         HStack(spacing: 0) {
             ForEach(0..<pomoTimer.pomoCount, id: \.self) { i in
+                let status = pomoTimer.getStatus(atDate: date)
+                let isBreakOrEnd = status == .longBreak || status == .end
                 Text("🍅")
                     .font(.title2)
-                    .opacity(pomoTimer.currentPomo(atDate: date) <= i+1 ? 1.0 : 0.3)
+                    .opacity(pomoTimer.currentPomo(atDate: date) <= i+1 && !isBreakOrEnd ? 1.0 : 0.3)
                     .background(
                         Text("🍅")
                             .font(.title2)
