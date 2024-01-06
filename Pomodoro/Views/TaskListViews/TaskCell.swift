@@ -120,18 +120,6 @@ struct TaskCell: View {
                 assignToTopProjectButton
             }
         }
-
-        .onChange(of: taskItem.completed) { _ in
-            guard !isAdderCell else { return }
-            Task {
-                try? await Task.sleep(for: .seconds(0.3))
-                withAnimation {
-                    viewContext.undoManager?.disableUndoRegistration()
-                    TasksData.separateCompleted(todaysTasks, context: viewContext)
-                    viewContext.undoManager?.enableUndoRegistration()
-                }
-            }
-        }
     }
 
     private func focusIfJustAdded() {
@@ -216,6 +204,17 @@ struct TaskCell: View {
         .onTapGesture {
             basicHaptic()
             TasksData.toggleCompleted(for: taskItem, context: viewContext)
+
+            if !isAdderCell {
+                Task {
+                    try? await Task.sleep(for: .seconds(0.3))
+                    withAnimation {
+                        viewContext.undoManager?.disableUndoRegistration()
+                        TasksData.separateCompleted(todaysTasks, context: viewContext)
+                        viewContext.undoManager?.enableUndoRegistration()
+                    }
+                }
+            }
         }
     }
 
