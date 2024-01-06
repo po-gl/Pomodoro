@@ -184,13 +184,14 @@ struct TaskCell: View {
                               flagged: taskItem.flagged,
                               order: taskItem.order,
                               date: Date.now-1,
+                              projects: taskItem.projects as? Set<Project> ?? [],
                               context: viewContext)
             TasksData.separateCompleted(todaysTasks, context: viewContext)
             
             editText.wrappedValue = ""
             editNoteText.wrappedValue = ""
             taskItem.completed = false
-            TasksData.edit("", note: "", flagged: false, for: taskItem, context: viewContext)
+            TasksData.edit("", note: "", flagged: false, projects: [], for: taskItem, context: viewContext)
             Task { @MainActor in
                 TaskListViewController.focusedIndexPath = indexPath
                 scrollTaskList()
