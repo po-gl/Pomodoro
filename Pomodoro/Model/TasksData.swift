@@ -17,10 +17,12 @@ struct TasksData {
             SortDescriptor(\TaskNote.order, order: .reverse),
             SortDescriptor(\TaskNote.timestamp, order: .forward)
         ].map { descriptor in NSSortDescriptor(descriptor) }
+        let startOfDay = Calendar.current.startOfDay(for: Date.now)
+        let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
         fetchRequest.predicate = NSPredicate(
             format: "timestamp >= %@ && timestamp <= %@",
-            Calendar.current.startOfDay(for: Date()) as CVarArg,
-            Calendar.current.startOfDay(for: Date() + 86400) as CVarArg
+            startOfDay as NSDate,
+            endOfDay as NSDate
         )
         return fetchRequest
     }
@@ -43,10 +45,12 @@ struct TasksData {
             SortDescriptor(\TaskNote.order, order: .reverse),
             SortDescriptor(\TaskNote.timestamp, order: .forward)
         ].map { descriptor in NSSortDescriptor(descriptor) }
+        let startOfToday = Calendar.current.startOfDay(for: Date.now)
+        let startOfYesterday = Calendar.current.date(byAdding: .day, value: -1, to: startOfToday)!
         fetchRequest.predicate = NSPredicate(
-            format: "timestamp >= %@ && timestamp <= %@",
-            Calendar.current.startOfDay(for: Date() - 86401) as CVarArg,
-            Calendar.current.startOfDay(for: Date() - 1) as CVarArg
+            format: "timestamp >= %@ && timestamp < %@",
+            startOfYesterday as NSDate,
+            startOfToday as NSDate
         )
         return fetchRequest
     }
