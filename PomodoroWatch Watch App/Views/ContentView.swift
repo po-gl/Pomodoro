@@ -26,7 +26,6 @@ struct ContentView: View {
         pomoTimer = PomoTimer(pomos: 4, work: workDuration, rest: restDuration, longBreak: breakDuration) { status in
             EndTimerHandler.shared.handle(status: status)
         }
-        pomoTimer.pause()
         pomoTimer.restoreFromUserDefaults()
     }
 
