@@ -62,5 +62,9 @@ struct PersistenceController {
             }
         })
         container.viewContext.automaticallyMergesChangesFromParent = true
+
+        if !inMemory {
+            Migrations.performTimestampDayMigrationIfNeeded(context: container.viewContext)
+        }
     }
 }

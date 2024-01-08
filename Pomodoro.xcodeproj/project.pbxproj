@@ -211,6 +211,9 @@
 		61A7FE2729BD5767000137E7 /* PomodoroWatch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 61FAEAAE29065FDC00CACF78 /* PomodoroWatch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		61A7FE2C29BD6E74000137E7 /* Color+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9089285CD2E4003F1990 /* Color+hex.swift */; };
 		61A7FE2E29BD6F73000137E7 /* WatchWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A7FE2D29BD6F73000137E7 /* WatchWidgetBundle.swift */; };
+		61AA34CC2B4BB34700809140 /* Migrations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AA34CB2B4BB34700809140 /* Migrations.swift */; };
+		61AA34CD2B4BB34700809140 /* Migrations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AA34CB2B4BB34700809140 /* Migrations.swift */; };
+		61AA34D02B4BB45E00809140 /* Migrations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AA34CB2B4BB34700809140 /* Migrations.swift */; };
 		61AEA85D29CE56F8007AA1AD /* Publishers+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AEA85C29CE56F8007AA1AD /* Publishers+Keyboard.swift */; };
 		61AEA85E29CE56F8007AA1AD /* Publishers+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AEA85C29CE56F8007AA1AD /* Publishers+Keyboard.swift */; };
 		61AEA86029CE59D0007AA1AD /* View+scrollToOnFocus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AEA85F29CE59D0007AA1AD /* View+scrollToOnFocus.swift */; };
@@ -532,6 +535,7 @@
 		619ED26A29073299004E344D /* ButtonCluster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCluster.swift; sourceTree = "<group>"; };
 		619ED26D29073A7E004E344D /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		61A7FE2D29BD6F73000137E7 /* WatchWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchWidgetBundle.swift; sourceTree = "<group>"; };
+		61AA34CB2B4BB34700809140 /* Migrations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Migrations.swift; sourceTree = "<group>"; };
 		61AEA85C29CE56F8007AA1AD /* Publishers+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publishers+Keyboard.swift"; sourceTree = "<group>"; };
 		61AEA85F29CE59D0007AA1AD /* View+scrollToOnFocus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+scrollToOnFocus.swift"; sourceTree = "<group>"; };
 		61B17250285CFCBB001C8245 /* View+Modifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Modifier.swift"; sourceTree = "<group>"; };
@@ -917,6 +921,7 @@
 			isa = PBXGroup;
 			children = (
 				61F7362A29C00B4500289149 /* Persistence.swift */,
+				61AA34CB2B4BB34700809140 /* Migrations.swift */,
 				618750F829BB69400017BF8E /* TasksOnBar.swift */,
 				61C6BC1529C12D0F00AF48DE /* DraggableTask.swift */,
 				61F7362629BFEAFA00289149 /* TasksData.swift */,
@@ -1440,6 +1445,7 @@
 				617CF52C2AEB80F90040E50B /* WrappingHStack.swift in Sources */,
 				61D01EB42B34534400A58360 /* Errors.swift in Sources */,
 				61F7363029C00CCE00289149 /* Pomodoro.xcdatamodeld in Sources */,
+				61AA34CC2B4BB34700809140 /* Migrations.swift in Sources */,
 				612B9088285CC863003F1990 /* TimeInterval+formatter.swift in Sources */,
 				61569CE12B005FAF00DFC977 /* View+verticalOffsetEffect.swift in Sources */,
 				617789B22856A1F300BD43D7 /* PomodoroApp.swift in Sources */,
@@ -1490,6 +1496,7 @@
 				613D6D9E285C85FE0020C194 /* SequenceTimerTests.swift in Sources */,
 				614533CD2A27354200388136 /* Color+Interpolate.swift in Sources */,
 				61F7362C29C00B4500289149 /* Persistence.swift in Sources */,
+				61AA34D02B4BB45E00809140 /* Migrations.swift in Sources */,
 				619255B5290204AB00D399B8 /* PomoTime.swift in Sources */,
 				619255B22901F4CB00D399B8 /* PomoTimer.swift in Sources */,
 				61F7362829BFEAFA00289149 /* TasksData.swift in Sources */,
@@ -1579,6 +1586,7 @@
 				6101A6F729998C4A00DC5FC5 /* EndTimerHandler.swift in Sources */,
 				611D9AAD2B2D97190011F389 /* Env.swift in Sources */,
 				61E22A9D297B31010080CA6E /* ProgressBar.swift in Sources */,
+				61AA34CD2B4BB34700809140 /* Migrations.swift in Sources */,
 				61F7361529BEBBC800289149 /* TopButton.swift in Sources */,
 				61E22AA3297B311E0080CA6E /* PomoTimer.swift in Sources */,
 				61C6BC1429C0364000AF48DE /* View+onSubmitWithVerticalText.swift in Sources */,

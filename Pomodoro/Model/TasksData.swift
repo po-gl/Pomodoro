@@ -83,6 +83,7 @@ struct TasksData {
         newTask.flagged = flagged
         newTask.order = order
         newTask.timestamp = date
+        newTask.timestampDay = TaskNote.timestampDayFormatter.string(from: date)
         newTask.projects = projects as NSSet
 
         try? context.obtainPermanentIDs(for: [newTask])
@@ -212,6 +213,14 @@ struct TasksData {
 
 extension TaskNote {
 
+    override public func willSave() {
+        super.willSave()
+
+        if let timestamp = self.timestamp, self.changedValues()["timestamp"] != nil && self.changedValues()["timestampDay"] == nil {
+            self.timestampDay = TaskNote.timestampDayFormatter.string(from: timestamp)
+        }
+    }
+
     public var projectsArray: [Project] {
         let set = projects as? Set<Project> ?? []
         return set.sorted {
@@ -230,6 +239,12 @@ extension TaskNote {
     static let sectionFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.setLocalizedDateFormatFromTemplate("MMM d y")
+        return formatter
+    }()
+
+    static let timestampDayFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
         return formatter
     }()
 }
