@@ -30,7 +30,8 @@ struct TasksData {
     static var pastTasksRequest: NSFetchRequest<TaskNote> {
         let fetchRequest = TaskNote.fetchRequest()
         fetchRequest.sortDescriptors = [
-            SortDescriptor(\TaskNote.timestamp, order: .reverse)
+            SortDescriptor(\TaskNote.timestampDay, order: .reverse),
+            SortDescriptor(\TaskNote.completed, order: .forward)
         ].map { descriptor in NSSortDescriptor(descriptor) }
         fetchRequest.predicate = NSPredicate(
             format: "timestamp < %@",
