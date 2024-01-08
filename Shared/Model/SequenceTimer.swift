@@ -31,9 +31,6 @@ class SequenceTimer: ObservableObject, Codable {
         timeAmounts = sequenceOfIntervals
         action = perform
         self.timerProvider = timerProvider
-        if !sequenceOfIntervals.isEmpty {
-            start(sequenceOfIntervals)
-        }
     }
 
     public func timeRemaining(atDate now: Date = Date()) -> TimeInterval {
