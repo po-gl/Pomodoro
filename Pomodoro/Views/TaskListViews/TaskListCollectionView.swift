@@ -172,7 +172,6 @@ class TaskListViewController: UIViewController {
                     let newContentOffset = originY + height - offset
                     // if new offset would be below navigationBar, just return
                     if let navigationController, navigationController.navigationBar.frame.maxY + newContentOffset < 0 { return }
-                    print("Scroll called! \(newContentOffset)")
                     collectionView.setContentOffset(CGPoint(x: 0, y: newContentOffset), animated: true)
                 }
             } else {
