@@ -103,8 +103,10 @@ struct ProjectCell: View {
 
         .focused($focus)
         .onChange(of: focus) { _ in
-            guard !focus else { return }
-            deleteOrEditProject()
+            TaskListViewController.focusedIndexPath = nil
+            if !focus {
+                deleteOrEditProject()
+            }
         }
 
         .doneButton(isPresented: focus)
