@@ -196,7 +196,7 @@ class TaskListViewController: UIViewController {
     }
 
     private struct LayoutMetrics {
-        static let horizontalMargin = 16.0
+        static let horizontalMargin = 4.0
         static let sectionSpacing = 10.0
         static let headerHeight = 20.0
     }
@@ -204,7 +204,7 @@ class TaskListViewController: UIViewController {
     private func configureLayout() {
         let layout = UICollectionViewCompositionalLayout { [unowned self] section, layoutEnvironment in
             if !showProjects {
-                return createProjectsLayout(layoutEnvironment)
+                return createTasksLayout(layoutEnvironment)
             }
 
             if section == 0 {
@@ -246,8 +246,6 @@ class TaskListViewController: UIViewController {
         config.backgroundColor = .clear
         let section = NSCollectionLayoutSection.list(using: config, layoutEnvironment: layoutEnvironment)
         section.contentInsets = .zero
-        section.contentInsets.leading = LayoutMetrics.horizontalMargin
-        section.contentInsets.trailing = LayoutMetrics.horizontalMargin
         section.contentInsets.bottom = LayoutMetrics.sectionSpacing
 
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
