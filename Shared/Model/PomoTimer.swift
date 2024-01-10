@@ -85,6 +85,19 @@ class PomoTimer: SequenceTimer {
         return getStatus(atDate: atDate).rawValue
     }
 
+    public func getDuration(for status: PomoStatus) -> Double {
+        switch status {
+        case .work:
+            return workDuration
+        case .rest:
+            return restDuration
+        case .longBreak:
+            return breakDuration
+        case .end:
+            return 0.0
+        }
+    }
+
     public func currentPomo(atDate date: Date = Date()) -> Int {
         return min((getIndex(atDate: date))/2 + 1, pomoCount)
     }
