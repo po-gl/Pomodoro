@@ -184,6 +184,7 @@ class TaskListViewController: UIViewController {
         static let horizontalMargin = 4.0
         static let sectionSpacing = 10.0
         static let headerHeight = 20.0
+        static let footerHeight = 18.0
     }
 
     private func configureLayout() -> UICollectionViewCompositionalLayout {
@@ -230,7 +231,7 @@ class TaskListViewController: UIViewController {
         // swiftlint:disable:next line_length
         let headerElement = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
 
-        let dividerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(1.0))
+        let dividerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(LayoutMetrics.footerHeight))
         let divider = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: dividerSize, elementKind: UICollectionView.elementKindSectionFooter, alignment: .bottom)
 
         section.boundarySupplementaryItems = [headerElement, divider]
@@ -313,9 +314,18 @@ class TaskListViewController: UIViewController {
         }
 
         footerCellRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewCell>(elementKind: UICollectionView.elementKindSectionFooter) { cell, _, _ in
-            cell.backgroundColor = .systemFill
+            cell.contentConfiguration = UIHostingConfiguration {
+                TodaysTasksFooter()
+            }
+            .margins(.all, 0)
         }
         pastFooterCellRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewCell>(elementKind: UICollectionView.elementKindSectionFooter) { cell, _, _ in
+            cell.contentConfiguration = UIHostingConfiguration {
+                Line()
+                    .stroke(style: .init(lineWidth: 3, lineCap: .round, dash: [0, 6]))
+                    .foregroundStyle(Color(UIColor.systemFill))
+                    .frame(height: 1)
+            }
         }
     }
 
