@@ -110,7 +110,8 @@ class TaskListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureLayout()
+        let layout = configureLayout()
+        configureCollectionView(layout: layout)
         configureCellRegistrations()
         configureDataSource()
 
@@ -204,27 +205,19 @@ class TaskListViewController: UIViewController {
         static let headerHeight = 20.0
     }
 
-    private func configureLayout() {
+    private func configureLayout() -> UICollectionViewCompositionalLayout {
         let layout = UICollectionViewCompositionalLayout { [unowned self] section, layoutEnvironment in
             if !showProjects {
                 return createTasksLayout(layoutEnvironment)
             }
-
+            
             if section == 0 {
                 return createProjectsLayout(layoutEnvironment)
             } else {
                 return createTasksLayout(layoutEnvironment)
             }
         }
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.autoresizingMask = [.flexibleHeight]
-        collectionView.allowsSelection = false
-        collectionView.allowsFocus = true
-        collectionView.dragInteractionEnabled = true
-        collectionView.dragDelegate = self
-        collectionView.dropDelegate = self
-        collectionView.keyboardDismissMode = .interactive
-        collectionView.delegate = self // UIScrollViewDelegate
+        return layout
     }
 
     private func createProjectsLayout(_ layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
@@ -261,6 +254,18 @@ class TaskListViewController: UIViewController {
 
         section.boundarySupplementaryItems = [headerElement, divider]
         return section
+    }
+
+    private func configureCollectionView(layout: UICollectionViewCompositionalLayout) {
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.autoresizingMask = [.flexibleHeight]
+        collectionView.allowsSelection = false
+        collectionView.allowsFocus = true
+        collectionView.dragInteractionEnabled = true
+        collectionView.dragDelegate = self
+        collectionView.dropDelegate = self
+        collectionView.keyboardDismissMode = .interactive
+        collectionView.delegate = self // UIScrollViewDelegate
     }
 
     // swiftlint:disable line_length
