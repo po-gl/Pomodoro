@@ -47,6 +47,7 @@ class TaskListViewController: UIViewController {
 
     // TODO: implement a solution that doesn't involve a static property
     static var focusedIndexPath: IndexPath?
+    static var keyboardFrameEnd: CGRect? = nil
 
     private var collectionView: UICollectionView! = nil
     private var diffableDataSource: UICollectionViewDiffableDataSource<Section, ListItem>! = nil
@@ -88,11 +89,6 @@ class TaskListViewController: UIViewController {
 
     private var dismissSwipe: DismissSwipeAction
 
-    /// For some reason there is extra padding on top of keyboard immediately after being shown; this property helps remove the padding
-    private var keyboardFirstShownAt: Date?
-    private var keyboardOffsetConstraint: NSLayoutConstraint! = nil
-    private var keyboardWithoutOffsetConstraint: NSLayoutConstraint! = nil
-
     init(viewContext: NSManagedObjectContext,
          dismissSwipe: DismissSwipeAction,
          showProjects: Bool,
@@ -127,24 +123,16 @@ class TaskListViewController: UIViewController {
         view = wrappingView
         view.backgroundColor = UIColor(Color("Background"))
 
-        keyboardWithoutOffsetConstraint = view.keyboardLayoutGuide.topAnchor
-            .constraint(equalTo: collectionView.bottomAnchor)
-        keyboardOffsetConstraint = view.keyboardLayoutGuide.topAnchor
-            .constraint(equalTo: collectionView.bottomAnchor, constant: -34.0)
-
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            keyboardWithoutOffsetConstraint
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
 
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow),
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow(notification:)),
                                                name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide),
-                                               name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
 
         projectStackSubscriber = isProjectStackCollapsed.$value
@@ -158,45 +146,39 @@ class TaskListViewController: UIViewController {
             }
     }
 
-    @objc func handleKeyboardWillShow() {
+    @objc func handleKeyboardWillShow(notification: Notification) {
         Task { @MainActor in
-            if let keyboardFirstShownAt {
-                if Date.now.timeIntervalSince(keyboardFirstShownAt) < 0.1 {
-                    setBottomConstraint(withOffset: true)
-                } else {
-                    setBottomConstraint(withOffset: false)
-                }
-            } else {
-                keyboardFirstShownAt = .now
-            }
+            guard let userInfo = notification.userInfo else { return }
+            guard let screen = notification.object as? UIScreen,
+                  let keyboardFrameEnd = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+            
+            let fromCoordinateSpace = screen.coordinateSpace
+            let toCoordinateSpace: UICoordinateSpace = view
+            let convertedKeyboardFrameEnd = fromCoordinateSpace.convert(keyboardFrameEnd, to: toCoordinateSpace)
 
+            TaskListViewController.keyboardFrameEnd = convertedKeyboardFrameEnd
             scrollToFocusedIndexPath()
         }
     }
 
     func scrollToFocusedIndexPath() {
         if let indexPath = TaskListViewController.focusedIndexPath {
-            collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
+            if let keyboardFrame = TaskListViewController.keyboardFrameEnd {
+                if let attributes = collectionView.collectionViewLayout.layoutAttributesForItem(at: indexPath) {
+                    guard let screenHeight = view.window?.screen.bounds.height else { return }
+                    let offset = screenHeight - keyboardFrame.height
+                    let originY = attributes.frame.origin.y
+                    let height = attributes.frame.height
+                    let newContentOffset = originY + height - offset
+                    // if new offset would be below navigationBar, just return
+                    if let navigationController, navigationController.navigationBar.frame.maxY + newContentOffset < 0 { return }
+                    print("Scroll called! \(newContentOffset)")
+                    collectionView.setContentOffset(CGPoint(x: 0, y: newContentOffset), animated: true)
+                }
+            } else {
+                collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
+            }
         }
-    }
-
-    @objc func handleKeyboardWillHide() {
-        Task { @MainActor in
-            setBottomConstraint(withOffset: false)
-            keyboardFirstShownAt = nil
-        }
-    }
-
-    private func setBottomConstraint(withOffset: Bool) {
-        // Note the order is important to avoid constraint conflicts
-        if withOffset {
-            keyboardWithoutOffsetConstraint.isActive = !withOffset
-            keyboardOffsetConstraint.isActive = withOffset
-        } else {
-            keyboardOffsetConstraint.isActive = withOffset
-            keyboardWithoutOffsetConstraint.isActive = !withOffset
-        }
-        view.setNeedsUpdateConstraints()
     }
 
     private struct LayoutMetrics {
