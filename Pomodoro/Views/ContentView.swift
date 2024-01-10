@@ -131,7 +131,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ForEach(["iPhone 14 Pro", "iPhone 13 mini"], id: \.self) { device in
+        ForEach(["iPhone 15 Pro", "iPhone 13 mini"], id: \.self) { device in
             ContentView()
                 .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
                 .previewDevice(PreviewDevice(rawValue: device))
