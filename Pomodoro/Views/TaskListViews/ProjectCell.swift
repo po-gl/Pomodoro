@@ -104,7 +104,7 @@ struct ProjectCell: View {
         .focused($focus)
         .onChange(of: focus) { _ in
             TaskListViewController.focusedIndexPath = nil
-            if !focus {
+            if !focus && !showingProjectInfo {
                 deleteOrEditProject()
             }
         }

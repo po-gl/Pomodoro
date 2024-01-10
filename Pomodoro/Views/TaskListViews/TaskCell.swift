@@ -87,7 +87,7 @@ struct TaskCell: View {
         .onChange(of: focus) { _ in
             if focus {
                 TaskListViewController.focusedIndexPath = indexPath
-            } else {
+            } else if !showTaskInfo {
                 TaskListViewController.focusedIndexPath = nil
                 if !isAdderCell {
                     deleteOrEditTask()
