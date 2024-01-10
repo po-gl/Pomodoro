@@ -146,12 +146,15 @@ class TaskListViewController: UIViewController {
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
 
-        projectStackSubscriber = isProjectStackCollapsed.$value.sink(receiveValue: { [weak self] isCollapsed in
-            guard let self = self else { return }
-            if let projectStackIndex, !isCollapsed {
-                collectionView.scrollToItem(at: projectStackIndex, at: .centeredVertically, animated: true)
+        projectStackSubscriber = isProjectStackCollapsed.$value
+            .delay(for: .seconds(0.1), scheduler: RunLoop.main)
+            .sink { [weak self] isCollapsed in
+                guard let self = self else { return }
+                if !isCollapsed, let navigationController {
+                    let inset = navigationController.navigationBar.frame.maxY
+                    collectionView.setContentOffset(CGPoint(x: 0, y: -inset), animated: true)
+                }
             }
-        })
     }
 
     @objc func handleKeyboardWillShow() {
