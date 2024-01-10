@@ -57,7 +57,8 @@ struct ProgressWidgetView: View {
             ProgressView(timerInterval: entry.timerInterval, countsDown: true, label: {}, currentValueLabel: label)
                 .progressViewStyle(.circular)
         } else {
-            let progressPercent = (entry.timerInterval.upperBound.timeIntervalSince1970 - entry.date.timeIntervalSince1970) / entry.status.defaultTime
+            let total = entry.timerInterval.upperBound.timeIntervalSince(entry.timerInterval.lowerBound)
+            let progressPercent = (entry.timerInterval.upperBound.timeIntervalSince1970 - entry.date.timeIntervalSince1970) / total
             ProgressView(value: progressPercent, label: label)
                 .progressViewStyle(.circular)
         }

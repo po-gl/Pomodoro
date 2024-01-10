@@ -29,7 +29,7 @@ struct PomoTimelineEntry: TimelineEntry {
         let task = index < tasksOnBar.tasksOnBar.count ? tasksOnBar.tasksOnBar[index] : nil
 
         let timeRemaining = pomoTimer.timeRemaining(atDate: entryDate)
-        let timeStart = entryDate.addingTimeInterval(timeRemaining - status.defaultTime)
+        let timeStart = entryDate.addingTimeInterval(timeRemaining - pomoTimer.getDuration(for: status))
         let timeEnd = entryDate.addingTimeInterval(timeRemaining)
 
         return PomoTimelineEntry(date: entryDate,
