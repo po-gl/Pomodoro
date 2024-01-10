@@ -181,6 +181,7 @@ struct TaskCell: View {
             taskItem.completed = false
             TasksData.edit("", note: "", flagged: false, projects: [], for: taskItem, context: viewContext)
             Task { @MainActor in
+                try? await Task.sleep(for: .seconds(0.1))
                 TaskListViewController.focusedIndexPath = indexPath
                 scrollTaskList()
             }
