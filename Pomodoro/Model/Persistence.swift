@@ -62,6 +62,7 @@ struct PersistenceController {
             }
         })
         container.viewContext.automaticallyMergesChangesFromParent = true
+        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
 
         if !inMemory {
             Migrations.performTimestampDayMigrationIfNeeded(context: container.viewContext)
