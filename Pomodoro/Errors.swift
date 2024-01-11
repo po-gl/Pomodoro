@@ -18,6 +18,6 @@ class Errors: ObservableObject {
     static var shared = Errors()
 
     @Published var coreDataError: NSError?
-    static var coreDataPomoError = PomoError(title: "Error Saving Data", advice: "Check if your device has free space and that you are signed in to iCloud")
+    static var coreDataPomoError = PomoError(title: "Error While Saving Data", advice: "Check if your device has free space and that you are signed in to iCloud")
 }
 
