@@ -44,31 +44,32 @@ struct TaskAdderView: View {
                     .offset(x: 153, y: -125)
                     .opacity(showAutoComplete ? 1.0 : 0.0)
                     .animation(.easeInOut, value: showAutoComplete)
-                    .onChange(of: taskFromAdder.isDragging) { isDragging in
-                        if isDragging {
-                            taskFocus = false
-                        }
-                    }
-                    .onChange(of: taskFocus) { focus in
-                        if focus {
-                            Task {
-                                try? await Task.sleep(for: .seconds(0.2))
-                                showAutoComplete = true
-                            }
-                        } else {
-                            showAutoComplete = false
-                        }
-                    }
             }
             .frame(height: 50)
             .padding(.bottom, 60)
         }
         .frame(height: 0)
-        .onChange(of: taskFromAdder.isDragging) { _ in
-            taskFromAdder.dragHasEnded = !taskFromAdder.isDragging
-        }
         .onAppear {
             taskFromAdder.startLocation = startLocation
+        }
+
+        .onChange(of: taskFromAdder.isDragging) { isDragging in
+            taskFromAdder.dragHasEnded = !taskFromAdder.isDragging
+            if isDragging {
+                print("focus false")
+                taskFocus = false
+            }
+        }
+
+        .onChange(of: taskFocus) { focus in
+            if focus {
+                Task {
+                    try? await Task.sleep(for: .seconds(0.2))
+                    showAutoComplete = true
+                }
+            } else {
+                showAutoComplete = false
+            }
         }
     }
 
