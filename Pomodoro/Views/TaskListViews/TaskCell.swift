@@ -74,6 +74,15 @@ struct TaskCell: View {
             }
         }
         .opacity(deleted ? 0.0 : 1.0)
+        .onChange(of: deleted) { deleted in
+            // Since cells are reused, reset deleted property
+            if deleted {
+                Task { @MainActor in
+                    try? await Task.sleep(for: .seconds(0.5))
+                    self.deleted = false
+                }
+            }
+        }
 
         .onAppear {
             focusIfJustAdded()
