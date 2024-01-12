@@ -274,7 +274,7 @@ struct TaskCell: View {
     var deleteTaskButton: some View {
         Button(role: .destructive, action: {
             withAnimation { TasksData.delete(taskItem, context: viewContext) }
-            withAnimation(.easeInOut(duration: 0.2)) { deleted = true }
+            deleted = true
         }) {
             Label("Delete", systemImage: "trash")
         }.tint(.red)
