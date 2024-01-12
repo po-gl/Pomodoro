@@ -272,6 +272,7 @@ class TaskListViewController: UIViewController {
                          cell: cell)
                     .environment(\.managedObjectContext, viewContext)
             }
+            .background(Color("Background"))
         }
 
         taskAdderCellRegistration = UICollectionView.CellRegistration<UICollectionViewCell, NSNull> { [unowned self] cell, indexPath, _ in
