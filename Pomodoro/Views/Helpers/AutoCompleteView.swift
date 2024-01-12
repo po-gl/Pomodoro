@@ -17,9 +17,9 @@ struct AutoCompleteView: View {
     private var todaysTasks: FetchedResults<TaskNote>
 
     @Binding var text: String
+    let itemsToShow = 5
 
     var body: some View {
-        let itemsToShow = 5
         VStack {
             Spacer()
             VStack(alignment: .leading, spacing: 11) {
