@@ -39,11 +39,19 @@ struct TaskAdderView: View {
                     .animation(.easeInOut(duration: 3), value: taskFromAdder.text.isEmpty)
                     .animation(.easeInOut(duration: 3), value: taskFromAdder.isDragging)
 
-                AutoCompleteView(text: $taskFromAdder.text)
-                    .position(startLocation)
-                    .offset(x: 153, y: -125)
-                    .opacity(showAutoComplete ? 1.0 : 0.0)
-                    .animation(.easeInOut, value: showAutoComplete)
+                if showAutoComplete {
+                    if #available(iOS 17, *) {
+                        AutoCompleteView(text: $taskFromAdder.text)
+                            .position(startLocation)
+                            .offset(x: 153, y: -125)
+                            .transition(BlurReplaceTransition(configuration: .downUp))
+                    } else {
+                        AutoCompleteView(text: $taskFromAdder.text)
+                            .position(startLocation)
+                            .offset(x: 153, y: -125)
+                            .transition(.opacity)
+                    }
+                }
             }
             .frame(height: 50)
             .padding(.bottom, 60)
@@ -65,10 +73,14 @@ struct TaskAdderView: View {
             if focus {
                 Task {
                     try? await Task.sleep(for: .seconds(0.2))
-                    showAutoComplete = true
+                    withAnimation {
+                        showAutoComplete = true
+                    }
                 }
             } else {
-                showAutoComplete = false
+                withAnimation {
+                    showAutoComplete = false
+                }
             }
         }
     }
