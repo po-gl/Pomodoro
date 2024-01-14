@@ -105,6 +105,12 @@ struct TaskCell: View {
                 }
             }
         }
+        .onReceive(Publishers.focusOnAdder) { _ in
+            if isAdderCell {
+                focus = true
+            }
+        }
+
         .doneButton(isPresented: focus)
 
         .onChange(of: scenePhase) { scenePhase in

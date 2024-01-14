@@ -47,6 +47,7 @@ class TaskListViewController: UIViewController {
 
     // TODO: implement a solution that doesn't involve a static property
     static var focusedIndexPath: IndexPath?
+    static var adderIndexPath: IndexPath?
     static var keyboardFrameEnd: CGRect? = nil
 
     private var collectionView: UICollectionView! = nil
@@ -134,6 +135,9 @@ class TaskListViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow(notification:)),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(scrollToAdder),
+                                               name: .focusOnAdder,
+                                               object: nil)
 
         projectStackSubscriber = isProjectStackCollapsed.$value
             .delay(for: .seconds(0.1), scheduler: RunLoop.main)
@@ -157,26 +161,40 @@ class TaskListViewController: UIViewController {
             let convertedKeyboardFrameEnd = fromCoordinateSpace.convert(keyboardFrameEnd, to: toCoordinateSpace)
 
             TaskListViewController.keyboardFrameEnd = convertedKeyboardFrameEnd
-            scrollToFocusedIndexPath()
+            scrollToFocusedCell()
         }
     }
 
-    func scrollToFocusedIndexPath() {
+    func scrollToFocusedCell() {
         if let indexPath = TaskListViewController.focusedIndexPath {
-            if let keyboardFrame = TaskListViewController.keyboardFrameEnd {
-                if let attributes = collectionView.collectionViewLayout.layoutAttributesForItem(at: indexPath) {
-                    guard let screenHeight = view.window?.screen.bounds.height else { return }
-                    let offset = screenHeight - keyboardFrame.height
-                    let originY = attributes.frame.origin.y
-                    let height = attributes.frame.height
-                    let newContentOffset = originY + height - offset
-                    // if new offset would be below navigationBar, just return
-                    if let navigationController, navigationController.navigationBar.frame.maxY + newContentOffset < 0 { return }
-                    collectionView.setContentOffset(CGPoint(x: 0, y: newContentOffset), animated: true)
-                }
+            scrollTo(indexPath: indexPath)
+        }
+    }
+
+    @objc func scrollToAdder() {
+        if let indexPath = TaskListViewController.adderIndexPath {
+            if collectionView.indexPathsForVisibleItems.contains(where: { $0 == indexPath }) {
+                scrollTo(indexPath: indexPath)
             } else {
                 collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
             }
+        }
+    }
+
+    func scrollTo(indexPath: IndexPath) {
+        if let keyboardFrame = TaskListViewController.keyboardFrameEnd {
+            if let attributes = collectionView.collectionViewLayout.layoutAttributesForItem(at: indexPath) {
+                guard let screenHeight = view.window?.screen.bounds.height else { return }
+                let offset = screenHeight - keyboardFrame.height
+                let originY = attributes.frame.origin.y
+                let height = attributes.frame.height
+                let newContentOffset = originY + height - offset
+                // if new offset would be below navigationBar, just return
+                if let navigationController, navigationController.navigationBar.frame.maxY + newContentOffset < 0 { return }
+                collectionView.setContentOffset(CGPoint(x: 0, y: newContentOffset), animated: true)
+            }
+        } else {
+            collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
         }
     }
 
@@ -276,6 +294,7 @@ class TaskListViewController: UIViewController {
         }
 
         taskAdderCellRegistration = UICollectionView.CellRegistration<UICollectionViewCell, NSNull> { [unowned self] cell, indexPath, _ in
+            TaskListViewController.adderIndexPath = indexPath
             cell.contentConfiguration = UIHostingConfiguration {
                 let taskItem = TaskNote(context: self.viewContext)
                 TaskCell(taskItem: taskItem,
@@ -283,7 +302,7 @@ class TaskListViewController: UIViewController {
                          initialIndexPath: indexPath,
                          collectionView: self.collectionView,
                          cell: cell,
-                         scrollTaskList: self.scrollToFocusedIndexPath)
+                         scrollTaskList: self.scrollToFocusedCell)
                     .environment(\.managedObjectContext, self.viewContext)
             }
         }

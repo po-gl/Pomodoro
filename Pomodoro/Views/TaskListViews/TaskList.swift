@@ -34,6 +34,16 @@ struct TaskList: View {
             .navigationTitle("Task List")
 
             .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    HStack(spacing: 0) {
+                        focusNewTaskButton
+                        Spacer()
+                    }
+                    .offset(x: -2, y: -3)
+                }
+            }
+
+            .toolbar {
                 Menu {
                     showArchivedProjectsButton
                     Divider()
@@ -66,6 +76,27 @@ struct TaskList: View {
             }
         }
         .tint(Color("NavigationAccent"))
+    }
+
+    @ViewBuilder private var focusNewTaskButton: some View {
+        Button(action: {
+            basicHaptic()
+            NotificationCenter.default.post(name: .focusOnAdder, object: nil)
+        }) {
+            HStack(spacing: 15) {
+                Image(systemName: "plus.circle.fill")
+                    .resizable()
+                    .frame(width: 23, height: 23)
+                Text("New Task")
+                    .fontWeight(.bold)
+                    .fontDesign(.rounded)
+                Spacer()
+            }
+            .padding(.vertical)
+            .contentShape(Rectangle())
+            .foregroundStyle(Color("AccentColor"))
+        }
+        .buttonStyle(.plain)
     }
 
     @ViewBuilder private var showArchivedProjectsButton: some View {
