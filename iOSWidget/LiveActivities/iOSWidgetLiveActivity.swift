@@ -5,6 +5,7 @@
 //  Created by Porter Glines on 1/23/23.
 //
 
+#if os(iOS)
 import ActivityKit
 import WidgetKit
 import SwiftUI
@@ -198,3 +199,4 @@ private let timeFormatter: DateFormatter = {
     formatter.dateFormat = "hh:mm"
     return formatter
 }()
+#endif
