@@ -14,10 +14,11 @@ struct MainPage: View {
     @State var taskFromAdder = DraggableTask()
 
     @State var dragOffset = CGFloat.zero
+    @State var metalDragOffset = CGFloat.zero
 
     var body: some View {
         ZStack {
-            Background(pickOffset: dragOffset)
+            Background(pickOffset: dragOffset, metalPickOffset: metalDragOffset)
                 .animation(.default, value: pomoTimer.isPaused)
 
             TaskAdderView(taskFromAdder: $taskFromAdder)
@@ -39,7 +40,10 @@ struct MainPage: View {
                     .verticalOffsetEffect(for: dragOffset, .spring, factor: 0.15)
 
                 Color.clear.contentShape(Rectangle())
-                    .verticalDragGesture(offset: $dragOffset, clampedTo: -20..<120, onStart: {
+                    .verticalDragGesture(offset: $dragOffset,
+                                         metalOffset:$metalDragOffset,
+                                         clampedTo: -20..<120,
+                                         onStart: {
                         Task { @MainActor in
                             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
                                                             to: nil, from: nil, for: nil)

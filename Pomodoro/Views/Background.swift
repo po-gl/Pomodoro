@@ -13,6 +13,8 @@ struct Background: View {
     @EnvironmentObject var pomoTimer: PomoTimer
 
     var pickOffset = CGFloat.zero
+    /// Workaround due to metal views not updating for Transaction-based SwiftUI animations
+    var metalPickOffset = CGFloat.zero
 
     var body: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: pomoTimer.isPaused ? 60.0 : 1.0)) { context in
@@ -20,7 +22,7 @@ struct Background: View {
                 VStack(spacing: 0) {
                     top(at: context.date)
                         .frame(height: getTopFrameHeight(proxy: geometry))
-                    pickGradient.zIndex(2)
+                    BackgroundDivider(metalPickOffset: metalPickOffset).zIndex(2)
                         .verticalOffsetEffect(for: pickOffset, .spring, factor: 0.14)
                     bottom(at: context.date, geometry: geometry)
                 }
@@ -62,27 +64,6 @@ struct Background: View {
                     // edges during navigation animations
                     .frame(maxWidth: max(geometry.size.width - 2, 0))
             )
-    }
-
-    @ViewBuilder private var pickGradient: some View {
-        ZStack(alignment: .top) {
-            softGradient
-                .frame(height: 30)
-                .offset(y: colorScheme == .dark ? 25 : -5)
-                .rotationEffect(.degrees(colorScheme == .dark ? 180 : 0))
-            Image("PickGradient")
-                .frame(width: 0, height: 0)
-                .offset(y: colorScheme == .dark ? 15 : 45)
-                .rotationEffect(.degrees(colorScheme == .dark ? 180 : 0))
-        }
-        .animation(nil, value: colorScheme)
-        .compositingGroup()
-        .frame(height: 0)
-    }
-
-    @ViewBuilder private var softGradient: some View {
-        Rectangle()
-            .fill(LinearGradient(colors: [.clear, .black], startPoint: .bottom, endPoint: .top))
     }
 
     private func getBottomColor(at date: Date) -> Color {
