@@ -19,6 +19,7 @@ struct TaskInfoView: View {
 
     @State var editText = ""
     @State var editNote = ""
+    @State var editCompleted = false
     @State var editflagged = false
     @State var editProjects = Set<Project>()
     @State var initialArchivedProjects = [Project]()
@@ -38,6 +39,12 @@ struct TaskInfoView: View {
                         Divider()
                         TextField("Note", text: $editNote, axis: .vertical)
                             .padding(.top, 5)
+                    }
+
+                    GroupBox {
+                        Toggle(isOn: $editCompleted) {
+                            Text("Completed")
+                        }.tint(Color("End"))
                     }
 
                     GroupBox {
@@ -83,6 +90,7 @@ struct TaskInfoView: View {
             .onAppear {
                 editText = taskItem.text ?? ""
                 editNote = taskItem.note ?? ""
+                editCompleted = taskItem.completed
                 editflagged = taskItem.flagged
                 editProjects = taskItem.projects as? Set<Project> ?? []
                 initialArchivedProjects = editProjects.filter { $0.archivedDate != nil }
@@ -155,6 +163,7 @@ struct TaskInfoView: View {
     func saveEdits() {
         TasksData.edit(editText,
                        note: editNote,
+                       completed: editCompleted,
                        flagged: editflagged,
                        projects: editProjects,
                        for: taskItem, context: viewContext)
