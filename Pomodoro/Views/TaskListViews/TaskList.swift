@@ -21,7 +21,7 @@ struct TaskList: View {
     @FetchRequest(fetchRequest: TasksData.limitedPastTasksRequest)
     var limitedPastTasks: FetchedResults<TaskNote>
 
-    @State var hasShownError = false
+    @AppStorage("hasShownError") var hasShownError = false
 
     var body: some View {
         NavigationStack {
