@@ -43,6 +43,24 @@ class TasksOnBar: ObservableObject {
         }
     }
 
+    @discardableResult
+    func addTaskFromList(_ text: String, context: NSManagedObjectContext) -> Bool {
+        guard !text.isEmpty else { return false }
+        
+        for i in tasksOnBar.indices {
+            if isWorkIndex(i) && tasksOnBar[i] == "" {
+                tasksOnBar[i] = text
+                saveToUserDefaults()
+                return true
+            }
+        }
+        return false
+    }
+
+    private func isWorkIndex(_ index: Int) -> Bool {
+        return index % 2 == 0 && index < tasksOnBar.count-2
+    }
+
     func renameTask(_ text: String, index: Int, context: NSManagedObjectContext) {
         let oldText = tasksOnBar[index]
         tasksOnBar[index] = text

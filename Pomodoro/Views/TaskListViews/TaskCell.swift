@@ -122,7 +122,7 @@ struct TaskCell: View {
         .swipeActions(edge: .leading) {
             if !isAdderCell {
                 deleteTaskButton
-                infoSwipeButton
+                addToBarButton
             }
         }
         .swipeActions(edge: .trailing) {
@@ -275,6 +275,15 @@ struct TaskCell: View {
         }, label: {
             Label("Details", systemImage: "info.circle")
         }).tint(Color(.lightGray))
+    }
+
+    var addToBarButton: some View {
+        Button(action: {
+            basicHaptic()
+            TasksOnBar.shared.addTaskFromList(taskItem.text ?? "", context: viewContext)
+        }) {
+            Label("Add to Bar", systemImage: "arrow.turn.up.left")
+        }.tint(Color("End"))
     }
 
     var deleteTaskButton: some View {
