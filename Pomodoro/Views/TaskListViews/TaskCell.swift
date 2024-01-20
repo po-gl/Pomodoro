@@ -271,6 +271,7 @@ struct TaskCell: View {
 
     var infoSwipeButton: some View {
         Button(action: {
+            basicHaptic()
             withAnimation { showTaskInfo = true }
         }, label: {
             Label("Details", systemImage: "info.circle")
@@ -288,6 +289,7 @@ struct TaskCell: View {
 
     var deleteTaskButton: some View {
         Button(role: .destructive, action: {
+            basicHaptic()
             withAnimation { TasksData.delete(taskItem, context: viewContext) }
             deleted = true
         }) {
@@ -297,6 +299,7 @@ struct TaskCell: View {
 
     var assignToTopProjectButton: some View {
         Button(action: {
+            basicHaptic()
             Task {
                 if let project = ProjectsData.getTopProject(context: viewContext) {
                     if !taskItem.projectsArray.contains(project) {
@@ -313,6 +316,7 @@ struct TaskCell: View {
 
     var flagTaskButton: some View {
         Button(action: {
+            basicHaptic()
             withAnimation { TasksData.toggleFlagged(for: taskItem, context: viewContext) }
         }) {
             Label(taskItem.flagged ? "Unflag" : "Flag",
@@ -322,6 +326,7 @@ struct TaskCell: View {
 
     var reAddToTodaysTasksButton: some View {
         Button(action: {
+            basicHaptic()
             if let taskText = taskItem.text {
                 guard !TasksData.todaysTasksContains(taskText, context: viewContext) else { return }
                 withAnimation {

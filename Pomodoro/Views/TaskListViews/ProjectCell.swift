@@ -219,6 +219,7 @@ struct ProjectCell: View {
 
     @ViewBuilder private var infoButton: some View {
         Button(action: {
+            basicHaptic()
             editProject()
             withAnimation { showingProjectInfo = true }
         }) {
@@ -230,6 +231,7 @@ struct ProjectCell: View {
 
     @ViewBuilder private var slideInfoButton: some View {
         Button(action: {
+            basicHaptic()
             editProject()
             withAnimation { showingProjectInfo = true }
         }) {
@@ -239,6 +241,7 @@ struct ProjectCell: View {
 
     @ViewBuilder private var sendToTopButton: some View {
         Button(action: {
+            basicHaptic()
             withAnimation { ProjectsData.setAsTopProject(project, context: viewContext) }
         }) {
             Label("Send to Top", systemImage: "square.3.layers.3d.top.filled")
@@ -247,6 +250,7 @@ struct ProjectCell: View {
 
     @ViewBuilder private var toggleProjectArchiveButton: some View {
         Button(action: {
+            basicHaptic()
             ProjectsData.toggleArchive(project, context: viewContext)
         }) {
             Label(project.archivedDate != nil ? "Unarchive" : "Archive",
@@ -256,6 +260,7 @@ struct ProjectCell: View {
 
     @ViewBuilder private var deleteProjectButton: some View {
         Button(role: .destructive, action: {
+            basicHaptic()
             ProjectsData.delete(project, context: viewContext)
         }) {
             Label("Delete", systemImage: "trash.fill")
