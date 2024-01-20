@@ -49,6 +49,7 @@ class TaskListViewController: UIViewController {
     static var focusedIndexPath: IndexPath?
     static var adderIndexPath: IndexPath?
     static var keyboardFrameEnd: CGRect? = nil
+    static var floatingButtonOffset: CGFloat = 51 // 23 + 28 padding
 
     private var collectionView: UICollectionView! = nil
     private var diffableDataSource: UICollectionViewDiffableDataSource<Section, ListItem>! = nil
@@ -135,6 +136,9 @@ class TaskListViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow(notification:)),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(scrollToAdder),
                                                name: .focusOnAdder,
                                                object: nil)
@@ -165,6 +169,10 @@ class TaskListViewController: UIViewController {
         }
     }
 
+    @objc func handleKeyboardWillHide() {
+        TaskListViewController.keyboardFrameEnd = nil
+    }
+
     func scrollToFocusedCell() {
         if let indexPath = TaskListViewController.focusedIndexPath {
             scrollTo(indexPath: indexPath)
@@ -182,17 +190,25 @@ class TaskListViewController: UIViewController {
     }
 
     func scrollTo(indexPath: IndexPath) {
-        if let keyboardFrame = TaskListViewController.keyboardFrameEnd {
-            if let attributes = collectionView.collectionViewLayout.layoutAttributesForItem(at: indexPath) {
-                guard let screenHeight = view.window?.screen.bounds.height else { return }
-                let offset = screenHeight - keyboardFrame.height
-                let originY = attributes.frame.origin.y
-                let height = attributes.frame.height
-                let newContentOffset = originY + height - offset
-                // if new offset would be below navigationBar, just return
-                if let navigationController, navigationController.navigationBar.frame.maxY + newContentOffset < 0 { return }
-                collectionView.setContentOffset(CGPoint(x: 0, y: newContentOffset), animated: true)
+        var offsetHeight = CGFloat.zero
+        if let keyboardFrame = TaskListViewController.keyboardFrameEnd, keyboardFrame.height > 150 {
+            offsetHeight = keyboardFrame.height
+        } else {
+            offsetHeight = TaskListViewController.floatingButtonOffset
+            if let tabBarController {
+                offsetHeight += tabBarController.tabBar.frame.height
             }
+        }
+
+        if let attributes = collectionView.collectionViewLayout.layoutAttributesForItem(at: indexPath) {
+            guard let screenHeight = view.window?.screen.bounds.height else { return }
+            let offset = screenHeight - offsetHeight
+            let originY = attributes.frame.origin.y
+            let height = attributes.frame.height
+            let newContentOffset = originY + height - offset
+            // if new offset would be below navigationBar, just return
+            if let navigationController, navigationController.navigationBar.frame.maxY + newContentOffset < 0 { return }
+            collectionView.setContentOffset(CGPoint(x: 0, y: newContentOffset), animated: true)
         } else {
             collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
         }
@@ -259,6 +275,7 @@ class TaskListViewController: UIViewController {
     private func configureCollectionView(layout: UICollectionViewCompositionalLayout) {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.autoresizingMask = [.flexibleHeight]
+        collectionView.contentInset.bottom += TaskListViewController.floatingButtonOffset
         collectionView.allowsSelection = false
         collectionView.allowsFocus = true
         collectionView.dragInteractionEnabled = true

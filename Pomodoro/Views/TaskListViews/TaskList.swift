@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TaskList: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.colorScheme) private var colorScheme
     @ObservedObject var errors = Errors.shared
 
     @State var showingArchivedProjects = false
@@ -25,55 +26,52 @@ struct TaskList: View {
 
     var body: some View {
         NavigationStack {
-            TaskListCollectionView(showProjects: showProjects,
-                                   showPastTasks: showPastTasks)
-            .ignoresSafeArea(.keyboard)
-
-            .navigationBarTitleDisplayMode(.inline)
-            .ignoresSafeArea(edges: .vertical)
-            .navigationTitle("Task List")
-
-            .toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                    HStack(spacing: 0) {
-                        focusNewTaskButton
-                        Spacer()
+            ZStack(alignment: .bottomLeading) {
+                TaskListCollectionView(showProjects: showProjects,
+                                       showPastTasks: showPastTasks)
+                .ignoresSafeArea(.keyboard)
+                
+                .navigationBarTitleDisplayMode(.inline)
+                .ignoresSafeArea(edges: .vertical)
+                .navigationTitle("Task List")
+                
+                .toolbar {
+                    Menu {
+                        showArchivedProjectsButton
+                        Divider()
+                        showProjectsButton
+                        showPastTasksButton
+                        Divider()
+                        markTodaysTasksAsDoneButton
+                        addUnfinishedTasksButton
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
                     }
-                    .offset(x: -2, y: -3)
+                    .navigationDestination(isPresented: $showingArchivedProjects) {
+                        ArchivedProjectsView()
+                    }
                 }
+                
+                .toolbar {
+                    if let coreDataError = errors.coreDataError {
+                        ErrorView(pomoError: Errors.coreDataPomoError,
+                                  nsError: coreDataError,
+                                  showImmediately: !hasShownError)
+                    }
+                }
+                .onChange(of: errors.coreDataError) { error in
+                    guard error != nil else { return }
+                    Task {
+                        try? await Task.sleep(for: .seconds(0.5))
+                        hasShownError = true
+                    }
+                }
+                
+                focusNewTaskButton
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 8)
             }
-
-            .toolbar {
-                Menu {
-                    showArchivedProjectsButton
-                    Divider()
-                    showProjectsButton
-                    showPastTasksButton
-                    Divider()
-                    markTodaysTasksAsDoneButton
-                    addUnfinishedTasksButton
-                } label: {
-                    Image(systemName: "ellipsis.circle")
-                }
-                .navigationDestination(isPresented: $showingArchivedProjects) {
-                    ArchivedProjectsView()
-                }
-            }
-
-            .toolbar {
-                if let coreDataError = errors.coreDataError {
-                    ErrorView(pomoError: Errors.coreDataPomoError,
-                              nsError: coreDataError,
-                              showImmediately: !hasShownError)
-                }
-            }
-            .onChange(of: errors.coreDataError) { error in
-                guard error != nil else { return }
-                Task {
-                    try? await Task.sleep(for: .seconds(0.5))
-                    hasShownError = true
-                }
-            }
+            .ignoresSafeArea(.keyboard)
         }
         .tint(Color("NavigationAccent"))
     }
@@ -83,18 +81,24 @@ struct TaskList: View {
             basicHaptic()
             NotificationCenter.default.post(name: .focusOnAdder, object: nil)
         }) {
-            HStack(spacing: 15) {
+            HStack(spacing: 10) {
                 Image(systemName: "plus.circle.fill")
                     .resizable()
                     .frame(width: 23, height: 23)
                 Text("New Task")
                     .fontWeight(.bold)
                     .fontDesign(.rounded)
-                Spacer()
+                    .padding(.trailing, 2)
             }
-            .padding(.vertical)
-            .contentShape(Rectangle())
+            .frame(height: 23)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 10)
             .foregroundStyle(Color("AccentColor"))
+            .background(
+                Capsule()
+                    .fill(.ultraThinMaterial)
+                    .brightness(colorScheme == .dark ? -0.06 : 0.012)
+            )
         }
         .buttonStyle(.plain)
     }
