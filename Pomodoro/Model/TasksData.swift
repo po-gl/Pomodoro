@@ -93,6 +93,7 @@ struct TasksData {
 
     static func edit(_ text: String,
                      note: String? = nil,
+                     completed: Bool? = nil,
                      flagged: Bool? = nil,
                      projects: Set<Project>? = nil,
                      for task: TaskNote,
@@ -100,6 +101,9 @@ struct TasksData {
         task.text = text
         if let note {
             task.note = note
+        }
+        if let completed {
+            task.completed = completed
         }
         if let flagged {
             task.flagged = flagged
