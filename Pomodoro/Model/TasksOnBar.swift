@@ -10,6 +10,8 @@ import CoreData
 import OSLog
 
 class TasksOnBar: ObservableObject {
+    static let shared = TasksOnBar()
+
     @Published var tasksOnBar: [String] = []
     @Published var pomoHighlight: [Bool] = []
     @Published var draggableTasksOnBar: [DraggableTask] = []

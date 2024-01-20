@@ -23,7 +23,7 @@ struct ContentView: View {
     @ObservedObject var errors = Errors.shared
 
     @ObservedObject var pomoTimer: PomoTimer
-    @StateObject var tasksOnBar = TasksOnBar()
+    @StateObject var tasksOnBar = TasksOnBar.shared
 
     @State var didReceiveSyncFromWatchConnection = false
     @State var didPerformInactiveSetup = false
