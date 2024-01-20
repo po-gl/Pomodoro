@@ -20,7 +20,7 @@ struct TaskInfoView: View {
     @State var editText = ""
     @State var editNote = ""
     @State var editCompleted = false
-    @State var editflagged = false
+    @State var editFlagged = false
     @State var editProjects = Set<Project>()
     @State var initialArchivedProjects = [Project]()
 
@@ -48,12 +48,12 @@ struct TaskInfoView: View {
                     }
 
                     GroupBox {
-                        Toggle(isOn: $editflagged) {
+                        Toggle(isOn: $editFlagged) {
                             HStack(spacing: 15) {
                                 Image(systemName: "leaf.fill")
                                     .foregroundColor(Color("BarWork"))
-                                    .saturation(editflagged ? 1.0 : 0.0)
-                                    .animation(.spring, value: editflagged)
+                                    .saturation(editFlagged ? 1.0 : 0.0)
+                                    .animation(.spring, value: editFlagged)
                                     .frame(width: 20, height: 20)
                                 Text("Flagged")
                             }
@@ -91,7 +91,7 @@ struct TaskInfoView: View {
                 editText = taskItem.text ?? ""
                 editNote = taskItem.note ?? ""
                 editCompleted = taskItem.completed
-                editflagged = taskItem.flagged
+                editFlagged = taskItem.flagged
                 editProjects = taskItem.projects as? Set<Project> ?? []
                 initialArchivedProjects = editProjects.filter { $0.archivedDate != nil }
             }
@@ -164,7 +164,7 @@ struct TaskInfoView: View {
         TasksData.edit(editText,
                        note: editNote,
                        completed: editCompleted,
-                       flagged: editflagged,
+                       flagged: editFlagged,
                        projects: editProjects,
                        for: taskItem, context: viewContext)
     }
