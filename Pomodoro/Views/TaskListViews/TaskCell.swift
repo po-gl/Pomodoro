@@ -39,6 +39,8 @@ struct TaskCell: View {
     var cell: UICollectionViewCell?
     var scrollTaskList: () -> Void = {}
 
+    var isScrolledToTop = ObservableBool(false)
+
     @FocusState var focus
 
     @State var showTaskInfo = false
@@ -50,8 +52,9 @@ struct TaskCell: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: 15) {
-            check
-                .offset(y: 2)
+            TaskCheck(taskItem: taskItem, isAdderCell: isAdderCell,
+                      todaysTasks: todaysTasks, isScrolledToTop: isScrolledToTop)
+            .offset(y: 2)
             VStack(spacing: 5) {
                 mainTextField
                     .frame(minHeight: 25)
@@ -62,16 +65,8 @@ struct TaskCell: View {
             .overrideAction(predicate: isEmbedded ?? false) {
                 withAnimation { showTaskInfo = true }
             }
-            HStack {
-                if taskItem.flagged {
-                    flag
-                }
-                projectIndicators
-                    .offset(y: 2)
-                if focus {
-                    infoButton
-                }
-            }
+            TaskInfoCluster(taskItem: taskItem, showTaskInfo: $showTaskInfo,
+                            focus: _focus, isScrolledToTop: isScrolledToTop)
         }
         .opacity(deleted ? 0.0 : 1.0)
         .onChange(of: deleted) { deleted in
@@ -203,72 +198,6 @@ struct TaskCell: View {
         }
     }
 
-    @ViewBuilder var check: some View {
-        let width: Double = 20
-        let radius = width/2
-        let pi = Double.pi
-        ZStack {
-            Circle().stroke(style: StrokeStyle(lineWidth: 1.2,
-                                               miterLimit: 0,
-                                               dash: !isAdderCell ? [] : [2, 2.0*pi*radius/14-2]))
-                .opacity(taskItem.completed ? 1.0 : 0.5)
-            Circle().frame(width: width/1.5)
-                .opacity(taskItem.completed ? 1.0 : 0.0)
-        }
-        .foregroundColor(taskItem.completed ? Color("AccentColor") : .primary)
-        .frame(width: width)
-        .onTapGesture {
-            basicHaptic()
-            TasksData.toggleCompleted(for: taskItem, context: viewContext)
-
-            if !isAdderCell {
-                Task {
-                    try? await Task.sleep(for: .seconds(0.3))
-                    withAnimation {
-                        viewContext.undoManager?.disableUndoRegistration()
-                        TasksData.separateCompleted(todaysTasks, context: viewContext)
-                        viewContext.undoManager?.enableUndoRegistration()
-                    }
-                }
-            }
-        }
-    }
-
-    @ViewBuilder var projectIndicators: some View {
-        let projects = Array(taskItem.projectsArray.prefix(4))
-        let count = taskItem.projectsArray.count
-        if count > 0 {
-            WrappingHStack(models: projects, horizontalSpacing: 1.2, verticalSpacing: 1.2) { project in
-                TinyProjectTag(color: Color(project.color ?? ""), size: 8)
-            }
-            .frame(width: 25, height: count > 2 ? 20 : 10, alignment: .top)
-            .rotationEffect(.degrees(90))
-            .frame(width: count > 2 ? 20 : 10, height: 25)
-        }
-    }
-
-    var flag: some View {
-        Image(systemName: "leaf.fill")
-            .foregroundColor(Color("BarWork"))
-            .frame(width: 20, height: 20)
-    }
-
-    var infoButton: some View {
-        Button(action: {
-            if !isAdderCell {
-                TasksData.saveContext(viewContext, errorMessage: "Saving task cell")
-                focus = false
-                withAnimation { showTaskInfo = true }
-            } else {
-                TasksData.saveContext(viewContext, errorMessage: "Saving task cell")
-                withAnimation { showTaskInfo = true }
-            }
-        }, label: {
-            Image(systemName: "info.circle")
-                .font(.title3)
-        }).tint(Color("AccentColor"))
-    }
-
     var infoSwipeButton: some View {
         Button(action: {
             basicHaptic()
@@ -340,5 +269,119 @@ struct TaskCell: View {
         }) {
             Label("Re-add", systemImage: "arrow.uturn.up")
         }.tint(.blue)
+    }
+}
+
+struct TaskCheck: View {
+    @Environment(\.managedObjectContext) private var viewContext
+    @ObservedObject var taskItem: TaskNote
+
+    var isAdderCell: Bool = false
+
+    var todaysTasks: FetchedResults<TaskNote>
+
+    @ObservedObject var isScrolledToTop = ObservableBool(false)
+    var shouldDimCell: Bool {
+        !(taskItem.timestamp?.isToday() ?? false)
+    }
+
+    let width: Double = 20
+    let pi = Double.pi
+
+    var body: some View {
+        let radius = width/2
+        ZStack {
+            Circle().stroke(style: StrokeStyle(lineWidth: 1.2,
+                                               miterLimit: 0,
+                                               dash: !isAdderCell ? [] : [2, 2.0*pi*radius/14-2]))
+                .opacity(taskItem.completed ? 1.0 : 0.5)
+            Circle().frame(width: width/1.5)
+                .opacity(taskItem.completed ? 1.0 : 0.0)
+        }
+        .foregroundColor(taskItem.completed ? Color("AccentColor") : .primary)
+        .frame(width: width)
+        .onTapGesture {
+            basicHaptic()
+            TasksData.toggleCompleted(for: taskItem, context: viewContext)
+
+            if !isAdderCell {
+                Task {
+                    try? await Task.sleep(for: .seconds(0.3))
+                    withAnimation {
+                        viewContext.undoManager?.disableUndoRegistration()
+                        TasksData.separateCompleted(todaysTasks, context: viewContext)
+                        viewContext.undoManager?.enableUndoRegistration()
+                    }
+                }
+            }
+        }
+        .opacity(shouldDimCell && isScrolledToTop.value ? 0.6 : 1.0)
+        .animation(.default, value: isScrolledToTop.value)
+    }
+}
+
+struct TaskInfoCluster: View {
+    @Environment(\.managedObjectContext) private var viewContext
+    @ObservedObject var taskItem: TaskNote
+
+    var isAdderCell: Bool = false
+
+    @Binding var showTaskInfo: Bool
+
+    @FocusState var focus
+
+    @ObservedObject var isScrolledToTop = ObservableBool(false)
+    var shouldDimCell: Bool {
+        !(taskItem.timestamp?.isToday() ?? false)
+    }
+
+    var body: some View {
+        HStack {
+            if taskItem.flagged {
+                flag
+            }
+            projectIndicators
+                .offset(y: 2)
+            if focus {
+                infoButton
+            }
+        }
+        .opacity(shouldDimCell && isScrolledToTop.value ? 0.6 : 1.0)
+        .animation(.default, value: isScrolledToTop.value)
+    }
+
+    @ViewBuilder var projectIndicators: some View {
+        let projects = Array(taskItem.projectsArray.prefix(4))
+        let count = taskItem.projectsArray.count
+        if count > 0 {
+            WrappingHStack(models: projects, horizontalSpacing: 1.2, verticalSpacing: 1.2) { project in
+                TinyProjectTag(color: Color(project.color ?? ""), size: 8)
+            }
+            .frame(width: 25, height: count > 2 ? 20 : 10, alignment: .top)
+            .rotationEffect(.degrees(90))
+            .frame(width: count > 2 ? 20 : 10, height: 25)
+        }
+    }
+
+    var flag: some View {
+        Image(systemName: "leaf.fill")
+            .foregroundColor(Color("BarWork"))
+            .frame(width: 20, height: 20)
+    }
+
+    var infoButton: some View {
+        Button(action: {
+            if !isAdderCell {
+                TasksData.saveContext(viewContext, errorMessage: "Saving task cell")
+                focus = false
+                withAnimation { showTaskInfo = true }
+            } else {
+                TasksData.saveContext(viewContext, errorMessage: "Saving task cell")
+                withAnimation { showTaskInfo = true }
+            }
+        }, label: {
+            Image(systemName: "info.circle")
+                .font(.title3)
+        }).tint(Color("AccentColor"))
     }
 }

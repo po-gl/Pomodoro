@@ -91,6 +91,8 @@ class TaskListViewController: UIViewController {
 
     private var dismissSwipe: DismissSwipeAction
 
+    private var isScrolledToTop = ObservableBool(true)
+
     init(viewContext: NSManagedObjectContext,
          dismissSwipe: DismissSwipeAction,
          showProjects: Bool,
@@ -304,7 +306,8 @@ class TaskListViewController: UIViewController {
                 TaskCell(taskItem: taskItem,
                          initialIndexPath: indexPath,
                          collectionView: self.collectionView,
-                         cell: cell)
+                         cell: cell,
+                         isScrolledToTop: self.isScrolledToTop)
                     .environment(\.managedObjectContext, viewContext)
             }
             .background(Color("Background"))
@@ -345,7 +348,8 @@ class TaskListViewController: UIViewController {
             if case let .pastTask(taskItem) = identifier,
                let pastTask = self.viewContext.object(with: taskItem) as? TaskNote {
                 cell.contentConfiguration = UIHostingConfiguration {
-                    PastTasksHeader(dateString: pastTask.section)
+                    PastTasksHeader(dateString: pastTask.section,
+                                    isScrolledToTop: self.isScrolledToTop)
                 }
             }
         }
@@ -557,6 +561,13 @@ extension TaskListViewController: UICollectionViewDelegate, UIScrollViewDelegate
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         Task { @MainActor in
             dismissSwipe()
+
+            let scrollOffset = scrollView.contentOffset.y + scrollView.safeAreaInsets.top
+            if !isScrolledToTop.value && scrollOffset <= 0 {
+                isScrolledToTop.value = true
+            } else if isScrolledToTop.value && scrollOffset > 0 {
+                isScrolledToTop.value = false
+            }
         }
     }
 }
