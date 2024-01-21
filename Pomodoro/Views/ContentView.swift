@@ -42,11 +42,14 @@ struct ContentView: View {
         TabView {
             MainPage()
                 .reverseStatusBarColor()
+                .toasts()
                 .tabItem { Label { Text("Pomodoro") } icon: { Image("pomo_timer") } }
             TaskList()
+                .toasts(bottomPadding: 50)
                 .tabItem { Label { Text("Tasks") } icon: { Image("pomo_checklist") } }
                 .badge(errors.coreDataError != nil ? "!" : nil)
             SettingsPage()
+                .toasts()
                 .tabItem { Label { Text("Settings") } icon: { Image("pomo_gear") } }
         }
         .environmentObject(pomoTimer)

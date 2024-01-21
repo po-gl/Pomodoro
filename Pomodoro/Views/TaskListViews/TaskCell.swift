@@ -207,6 +207,7 @@ struct TaskCell: View {
         Button(action: {
             basicHaptic()
             TasksOnBar.shared.addTaskFromList(taskItem.text ?? "", context: viewContext)
+            NotificationCenter.default.post(name: .toast, object: Toast(message: "", action: .addedToBar))
         }) {
             Label("Add to Bar", systemImage: "arrow.turn.up.left")
         }.tint(Color("End"))
@@ -229,8 +230,10 @@ struct TaskCell: View {
                 if let project = ProjectsData.getTopProject(context: viewContext) {
                     if !taskItem.projectsArray.contains(project) {
                         withAnimation { TasksData.add(project: project, for: taskItem, context: viewContext) }
+                        NotificationCenter.default.post(name: .toast, object: Toast(message: project.name ?? "", action: .assignedProject))
                     } else {
                         withAnimation { TasksData.remove(project: project, for: taskItem, context: viewContext) }
+                        NotificationCenter.default.post(name: .toast, object: Toast(message: project.name ?? "", action: .unassignedProject))
                     }
                 }
             }
@@ -261,6 +264,7 @@ struct TaskCell: View {
                                         date: Date().addingTimeInterval(-1),
                                         context: viewContext)
                 }
+                NotificationCenter.default.post(name: .toast, object: Toast(message: "", action: .reAdded))
             }
         }) {
             Label("Re-add", systemImage: "arrow.uturn.up")

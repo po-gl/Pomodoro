@@ -143,6 +143,7 @@ struct TaskLabel: View {
         Button {
             basicHaptic()
             TasksData.addTask(text, order: -1, context: viewContext)
+            NotificationCenter.default.post(name: .toast, object: Toast(message: "", action: .addedToList))
         } label: {
             Label("Add to Today's tasks", systemImage: "clock.arrow.circlepath")
         }
