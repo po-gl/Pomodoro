@@ -12,7 +12,7 @@ struct PastTasksHeader: View {
 
     let dateString: String
 
-    @ObservedObject var isScrolledToTop = ObservableBool(false)
+    @ObservedObject var isScrolledToTop = TaskListViewController.isScrolledToTop
 
     var body: some View {
         let color = colorForDateString(dateString)

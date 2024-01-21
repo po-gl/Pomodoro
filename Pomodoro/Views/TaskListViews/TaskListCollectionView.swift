@@ -51,6 +51,8 @@ class TaskListViewController: UIViewController {
     static var keyboardFrameEnd: CGRect? = nil
     static var floatingButtonOffset: CGFloat = 51 // 23 + 28 padding
 
+    static var isScrolledToTop = ObservableBool(true)
+
     private var collectionView: UICollectionView! = nil
     private var diffableDataSource: UICollectionViewDiffableDataSource<Section, ListItem>! = nil
 
@@ -90,8 +92,6 @@ class TaskListViewController: UIViewController {
     private var projectStackIndex: IndexPath?
 
     private var dismissSwipe: DismissSwipeAction
-
-    private var isScrolledToTop = ObservableBool(true)
 
     init(viewContext: NSManagedObjectContext,
          dismissSwipe: DismissSwipeAction,
@@ -306,8 +306,7 @@ class TaskListViewController: UIViewController {
                 TaskCell(taskItem: taskItem,
                          initialIndexPath: indexPath,
                          collectionView: self.collectionView,
-                         cell: cell,
-                         isScrolledToTop: self.isScrolledToTop)
+                         cell: cell)
                     .environment(\.managedObjectContext, viewContext)
             }
             .background(Color("Background"))
@@ -348,8 +347,7 @@ class TaskListViewController: UIViewController {
             if case let .pastTask(taskItem) = identifier,
                let pastTask = self.viewContext.object(with: taskItem) as? TaskNote {
                 cell.contentConfiguration = UIHostingConfiguration {
-                    PastTasksHeader(dateString: pastTask.section,
-                                    isScrolledToTop: self.isScrolledToTop)
+                    PastTasksHeader(dateString: pastTask.section)
                 }
             }
         }
@@ -563,10 +561,10 @@ extension TaskListViewController: UICollectionViewDelegate, UIScrollViewDelegate
             dismissSwipe()
 
             let scrollOffset = scrollView.contentOffset.y + scrollView.safeAreaInsets.top
-            if !isScrolledToTop.value && scrollOffset <= 0 {
-                isScrolledToTop.value = true
-            } else if isScrolledToTop.value && scrollOffset > 0 {
-                isScrolledToTop.value = false
+            if !TaskListViewController.isScrolledToTop.value && scrollOffset <= 0 {
+                TaskListViewController.isScrolledToTop.value = true
+            } else if TaskListViewController.isScrolledToTop.value && scrollOffset > 0 {
+                TaskListViewController.isScrolledToTop.value = false
             }
         }
     }

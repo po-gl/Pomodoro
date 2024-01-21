@@ -39,8 +39,6 @@ struct TaskCell: View {
     var cell: UICollectionViewCell?
     var scrollTaskList: () -> Void = {}
 
-    var isScrolledToTop = ObservableBool(false)
-
     @FocusState var focus
 
     @State var showTaskInfo = false
@@ -52,8 +50,7 @@ struct TaskCell: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: 15) {
-            TaskCheck(taskItem: taskItem, isAdderCell: isAdderCell,
-                      todaysTasks: todaysTasks, isScrolledToTop: isScrolledToTop)
+            TaskCheck(taskItem: taskItem, isAdderCell: isAdderCell, todaysTasks: todaysTasks)
             .offset(y: 2)
             VStack(spacing: 5) {
                 mainTextField
@@ -65,8 +62,7 @@ struct TaskCell: View {
             .overrideAction(predicate: isEmbedded ?? false) {
                 withAnimation { showTaskInfo = true }
             }
-            TaskInfoCluster(taskItem: taskItem, showTaskInfo: $showTaskInfo,
-                            focus: _focus, isScrolledToTop: isScrolledToTop)
+            TaskInfoCluster(taskItem: taskItem, showTaskInfo: $showTaskInfo, focus: _focus)
         }
         .opacity(deleted ? 0.0 : 1.0)
         .onChange(of: deleted) { deleted in
@@ -280,7 +276,7 @@ struct TaskCheck: View {
 
     var todaysTasks: FetchedResults<TaskNote>
 
-    @ObservedObject var isScrolledToTop = ObservableBool(false)
+    @ObservedObject var isScrolledToTop = TaskListViewController.isScrolledToTop
     var shouldDimCell: Bool {
         !(taskItem.timestamp?.isToday() ?? false)
     }
@@ -330,7 +326,7 @@ struct TaskInfoCluster: View {
 
     @FocusState var focus
 
-    @ObservedObject var isScrolledToTop = ObservableBool(false)
+    @ObservedObject var isScrolledToTop = TaskListViewController.isScrolledToTop
     var shouldDimCell: Bool {
         !(taskItem.timestamp?.isToday() ?? false)
     }
