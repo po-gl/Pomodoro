@@ -311,8 +311,8 @@ struct TaskCheck: View {
                 }
             }
         }
-        .opacity(shouldDimCell && isScrolledToTop.value ? 0.6 : 1.0)
-        .animation(.default, value: isScrolledToTop.value)
+//        .opacity(shouldDimCell && isScrolledToTop.value ? 0.6 : 1.0)
+//        .animation(.default, value: isScrolledToTop.value)
     }
 }
 
@@ -342,8 +342,8 @@ struct TaskInfoCluster: View {
                 infoButton
             }
         }
-        .opacity(shouldDimCell && isScrolledToTop.value ? 0.6 : 1.0)
-        .animation(.default, value: isScrolledToTop.value)
+//        .opacity(shouldDimCell && isScrolledToTop.value ? 0.6 : 1.0)
+//        .animation(.default, value: isScrolledToTop.value)
     }
 
     @ViewBuilder var projectIndicators: some View {
