@@ -80,14 +80,14 @@ struct BannerLiveActivityView: View {
     @ViewBuilder var timerView: some View {
         if context.state.isPaused {
             Text(endDate.timeIntervalSince(startDate).compactTimerFormatted())
-                .font(.system(size: 42, weight: .light))
+                .font(.system(size: 42, weight: .light, design: .rounded))
                 .monospacedDigit()
                 .frame(width: 115, alignment: .trailing)
                 .foregroundStyle(.white)
         } else {
             Text(timerInterval: startDate...endDate, countsDown: true)
                 .multilineTextAlignment(.trailing)
-                .font(.system(size: 42, weight: .light))
+                .font(.system(size: 42, weight: .light, design: .rounded))
                 .monospacedDigit()
                 .frame(width: 115)
                 .foregroundStyle(.white)

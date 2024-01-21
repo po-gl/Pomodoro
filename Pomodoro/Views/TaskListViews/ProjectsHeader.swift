@@ -17,7 +17,7 @@ struct ProjectsHeader: View {
         HStack(spacing: 20) {
             Text("Projects")
                 .textCase(.uppercase)
-                .font(.system(.footnote, weight: .medium))
+                .font(.system(.footnote, design: .rounded, weight: .medium))
                 .foregroundStyle(.secondary)
             Spacer()
             Group {
@@ -36,7 +36,7 @@ struct ProjectsHeader: View {
         }) {
             Text("Add Project")
                 .textCase(.uppercase)
-                .font(.system(.footnote, weight: .medium))
+                .font(.system(.footnote, design: .rounded, weight: .medium))
                 .foregroundColor(Color("BarRest"))
                 .brightness(colorScheme == .dark ? 0.4 : -0.1)
                 .saturation(colorScheme == .dark ? 1.5 : 0.9)

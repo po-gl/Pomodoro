@@ -22,6 +22,13 @@ struct SettingsPage: View {
     @State var draggableTaskStub = DraggableTask()
     let durationChangeAnim: Animation = .interpolatingSpring(stiffness: 190, damping: 13)
 
+    init() {
+        let titleFont = UIFont.preferredFont(forTextStyle: .body).asBoldRounded()
+        let largeTitleFont = UIFont.preferredFont(forTextStyle: .largeTitle).asBoldRounded()
+        UINavigationBar.appearance().titleTextAttributes = [.font: titleFont]
+        UINavigationBar.appearance().largeTitleTextAttributes = [.font: largeTitleFont]
+    }
+
     var body: some View {
         NavigationStack {
             ScrollView {

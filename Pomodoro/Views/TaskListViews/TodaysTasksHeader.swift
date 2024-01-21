@@ -12,7 +12,7 @@ struct TodaysTasksHeader: View {
         HStack {
             Text("Today's Tasks")
                 .textCase(.uppercase)
-                .font(.system(.footnote, weight: .medium))
+                .font(.system(.footnote, design: .rounded, weight: .medium))
                 .foregroundStyle(.secondary)
             Spacer()
         }

@@ -155,7 +155,7 @@ struct ProjectCell: View {
 
     @ViewBuilder private var mainTextField: some View {
         TextField("", text: editText, axis: .vertical)
-            .font(.system(.title2, weight: .medium))
+            .font(.system(.title2, design: .rounded, weight: .medium))
             .frame(minHeight: 30)
             .lineLimit(isCollapsed.value ? 1 : Int.max, reservesSpace: false)
             .disabled(isCollapsed.value)

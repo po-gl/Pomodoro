@@ -116,7 +116,7 @@ struct iOSWidgetView: View {
         let endDate = entry.timerInterval.upperBound
         if entry.isPaused {
             Text(endDate.timeIntervalSince(startDate).compactTimerFormatted())
-                .font(.system(size: 42, weight: .light))
+                .font(.system(size: 42, weight: .light, design: .rounded))
                 .foregroundStyle(entry.status.color)
                 .brightness(0.4)
                 .monospacedDigit()
@@ -124,7 +124,7 @@ struct iOSWidgetView: View {
         } else {
             Text(timerInterval: entry.timerInterval, countsDown: true)
                 .multilineTextAlignment(.trailing)
-                .font(.system(size: 42, weight: .light))
+                .font(.system(size: 42, weight: .light, design: .rounded))
                 .foregroundStyle(entry.status.color)
                 .brightness(0.4)
                 .monospacedDigit()

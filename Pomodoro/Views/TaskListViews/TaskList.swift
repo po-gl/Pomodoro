@@ -24,6 +24,13 @@ struct TaskList: View {
 
     @AppStorage("hasShownError") var hasShownError = false
 
+    init() {
+        let titleFont = UIFont.preferredFont(forTextStyle: .body).asBoldRounded()
+        let largeTitleFont = UIFont.preferredFont(forTextStyle: .largeTitle).asBoldRounded()
+        UINavigationBar.appearance().titleTextAttributes = [.font: titleFont]
+        UINavigationBar.appearance().largeTitleTextAttributes = [.font: largeTitleFont]
+    }
+
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottomLeading) {
@@ -87,7 +94,7 @@ struct TaskList: View {
                     .frame(width: 23, height: 23)
                 Text("New Task")
                     .fontWeight(.bold)
-                    .fontDesign(.rounded)
+                    .fontDesign(.monospaced)
                     .padding(.trailing, 2)
             }
             .frame(height: 23)

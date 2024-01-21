@@ -43,7 +43,7 @@ struct ProgressWidgetView: View {
                     LeafView(size: 22)
                 } else {
                     Text(entry.status.icon)
-                        .font(.system(size: 22, weight: .medium, design: .serif))
+                        .font(.system(size: 22, weight: .bold, design: .rounded))
                 }
             }
             .progressViewStyle(.circular)

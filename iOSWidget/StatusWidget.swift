@@ -43,7 +43,7 @@ struct StatusWidgetView: View {
                 LeafView()
             } else {
                 Text(entry.status.icon)
-                    .font(.system(size: 20, weight: .medium, design: .serif))
+                    .font(.system(size: 20, weight: .bold, design: .rounded))
             }
         }
         .widgetAccentable()

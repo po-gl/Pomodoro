@@ -17,7 +17,7 @@ struct PastTasksHeader: View {
 
         HStack {
             Text(dateString)
-                .font(.system(.footnote, weight: .medium))
+                .font(.system(.footnote, design: .rounded, weight: .medium))
                 .textCase(.uppercase)
                 .padding(.vertical, 2).padding(.horizontal, 8)
                 .foregroundColor(color)

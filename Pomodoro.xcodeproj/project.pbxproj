@@ -18,6 +18,8 @@
 		610515BB2AD4A2D500F6DD30 /* Color+isDark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */; };
 		610515BC2AD4A2DE00F6DD30 /* TimeInterval+formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9087285CC863003F1990 /* TimeInterval+formatter.swift */; };
 		610595A42A4B783C00A83804 /* View+globalPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610595A32A4B783B00A83804 /* View+globalPosition.swift */; };
+		610D84302B5D94C700659B41 /* UIFont+rounded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610D842F2B5D94C700659B41 /* UIFont+rounded.swift */; };
+		610D84312B5D94C700659B41 /* UIFont+rounded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610D842F2B5D94C700659B41 /* UIFont+rounded.swift */; };
 		610F99C329BD736A00608F41 /* iOSWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6172B4AA297F5EC600E53D8F /* iOSWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		610F99C829BE4BC600608F41 /* HostingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610F99C729BE4BC600608F41 /* HostingView.swift */; };
 		610F99C929BE4BC600608F41 /* HostingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610F99C729BE4BC600608F41 /* HostingView.swift */; };
@@ -452,6 +454,7 @@
 		6101A6F229996B5F00DC5FC5 /* PomoStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomoStepper.swift; sourceTree = "<group>"; };
 		6101A6F429998C4A00DC5FC5 /* EndTimerHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndTimerHandler.swift; sourceTree = "<group>"; };
 		610595A32A4B783B00A83804 /* View+globalPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+globalPosition.swift"; sourceTree = "<group>"; };
+		610D842F2B5D94C700659B41 /* UIFont+rounded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+rounded.swift"; sourceTree = "<group>"; };
 		610F99C729BE4BC600608F41 /* HostingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingView.swift; sourceTree = "<group>"; };
 		61147F022A33BC9A000F4BBA /* WatchConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnection.swift; sourceTree = "<group>"; };
 		611A3CA429076BEF00B7AFD3 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
@@ -747,6 +750,7 @@
 				61B17252285CFCF8001C8245 /* UIView+ClosestVC.swift */,
 				614533CA2A27353B00388136 /* Color+Interpolate.swift */,
 				618750F429BABCFE0017BF8E /* Point+Extensions.swift */,
+				610D842F2B5D94C700659B41 /* UIFont+rounded.swift */,
 				61AEA85C29CE56F8007AA1AD /* Publishers+Keyboard.swift */,
 				619DD47C2B53E6AE00601D38 /* Publishers+TaskList.swift */,
 				619DD47F2B53E75400601D38 /* Notification+TaskList.swift */,
@@ -1512,6 +1516,7 @@
 				611A7CE12A380F2D0038AE56 /* View+draggableTask.swift in Sources */,
 				611D9AB92B2DABCE0011F389 /* ScenePhase+CustomStringConvertible.swift in Sources */,
 				6131C0AA2911F6E200D1E6F1 /* BuddyView.swift in Sources */,
+				610D84302B5D94C700659B41 /* UIFont+rounded.swift in Sources */,
 				619255B12901F4CB00D399B8 /* PomoTimer.swift in Sources */,
 				619255B4290204AB00D399B8 /* PomoTime.swift in Sources */,
 				61D01EC32B3B55B700A58360 /* DismissSwipeAction.swift in Sources */,
@@ -1583,6 +1588,7 @@
 				61E4681B2AEC6961001F6D7B /* View+overrideAction.swift in Sources */,
 				6187559F2AE21BE200FC1564 /* ProjectStack.swift in Sources */,
 				61E22AA0297B310B0080CA6E /* BuddyView.swift in Sources */,
+				610D84312B5D94C700659B41 /* UIFont+rounded.swift in Sources */,
 				61E734AE2B251E43001C5B2A /* PomoStatus+properties.swift in Sources */,
 				617789D02856A1F400BD43D7 /* PomodoroUITestsLaunchTests.swift in Sources */,
 				617789CE2856A1F400BD43D7 /* PomodoroUITests.swift in Sources */,

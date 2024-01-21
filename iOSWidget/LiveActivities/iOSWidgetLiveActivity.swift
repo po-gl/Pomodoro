@@ -86,7 +86,8 @@ struct iOSWidgetLiveActivity: Widget {
                     }
                 }
                 .font(.subheadline)
-                .fontWeight(.semibold)
+                .fontWeight(.bold)
+                .fontDesign(.rounded)
                 .brightness(0.2)
                 .offset(x: 4)
 
