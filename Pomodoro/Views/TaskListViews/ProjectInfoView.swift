@@ -121,7 +121,7 @@ struct ProjectInfoView: View {
 
     @ViewBuilder var assignedTasksList: some View {
         VStack(spacing: 10) {
-            ForEach(taskNotes) { taskItem in
+            ForEach(taskNotes.sorted(by: { !$0.completed && $1.completed })) { taskItem in
                 TaskCell(taskItem: taskItem,
                          isEmbedded: true)
                 Divider()
