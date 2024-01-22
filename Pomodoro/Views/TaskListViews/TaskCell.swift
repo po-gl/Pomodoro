@@ -154,12 +154,30 @@ struct TaskCell: View {
                     adderAction()
                 }
             }
+            .onChangeWithThrottle(of: editText.wrappedValue, for: 0.6) { _ in
+                if focus {
+                    Task { @MainActor in
+                        try? await Task.sleep(for: .seconds(0.1))
+                        TaskListViewController.focusedIndexPath = indexPath
+                        scrollTaskList()
+                    }
+                }
+            }
     }
 
     var noteTextField: some View {
         TextField("Add Note", text: editNoteText, axis: .vertical)
             .font(.footnote)
             .foregroundColor(.secondary)
+            .onChangeWithThrottle(of: editNoteText.wrappedValue, for: 0.6) { _ in
+                if focus {
+                    Task { @MainActor in
+                        try? await Task.sleep(for: .seconds(0.1))
+                        TaskListViewController.focusedIndexPath = indexPath
+                        scrollTaskList()
+                    }
+                }
+            }
     }
 
     private func deleteOrEditTask() {

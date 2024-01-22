@@ -339,7 +339,8 @@ class TaskListViewController: UIViewController {
                 TaskCell(taskItem: taskItem,
                          initialIndexPath: indexPath,
                          collectionView: self.collectionView,
-                         cell: cell)
+                         cell: cell,
+                         scrollTaskList: self.scrollToFocusedCell)
                     .environment(\.managedObjectContext, viewContext)
             }
             .background(Color("Background"))
