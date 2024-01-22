@@ -147,7 +147,10 @@ struct TaskList: View {
 
     @ViewBuilder private var markTodaysTasksAsDoneButton: some View {
         Button(action: {
-            todaysTasks.forEach { TasksData.setCompleted(for: $0, context: viewContext) }
+            let unfinishedTasks = todaysTasks.filter({ !$0.completed })
+            unfinishedTasks.forEach { TasksData.setCompleted(for: $0, context: viewContext) }
+            NotificationCenter.default.post(name: .toast, object: Toast(message: String(unfinishedTasks.count),
+                                                                        action: .markedTodayAsDone))
         }) {
             Label("Mark Today as Done", systemImage: "checklist.checked")
         }
@@ -156,10 +159,12 @@ struct TaskList: View {
     @ViewBuilder private var addUnfinishedTasksButton: some View {
         Button(action: {
             let lastUnfinishedDate = limitedPastTasks.first?.timestamp ?? Date()
-            limitedPastTasks
+            let unfinishedTasks = limitedPastTasks
                 .filter({ $0.timestamp?.isSameDay(as: lastUnfinishedDate) ?? false })
                 .filter({ !$0.completed })
                 .filter({ task in !todaysTasks.contains(where: { $0.text == task.text })})
+
+            unfinishedTasks
                 .forEach { taskToAdd in
                     withAnimation {
                         TasksData.duplicate(taskToAdd,
@@ -169,7 +174,8 @@ struct TaskList: View {
                                             context: viewContext)
                     }
                 }
-
+            NotificationCenter.default.post(name: .toast, object: Toast(message: String(unfinishedTasks.count),
+                                                                        action: .addedUnfinishedTasks))
         }) {
             Label("Add Unfinished Tasks", systemImage: "arrow.uturn.up")
         }

@@ -16,11 +16,14 @@ struct Toast: Identifiable {
 
 enum ToastAction {
     case none
+    case undone
     case reAdded
     case addedToBar
     case addedToList
     case assignedProject
     case unassignedProject
+    case markedTodayAsDone
+    case addedUnfinishedTasks
 }
 
 extension View {
@@ -30,9 +33,6 @@ extension View {
 }
 
 struct ToastsModifier: ViewModifier {
-    @Environment(\.colorScheme) var colorScheme
-    @Environment(\.managedObjectContext) var viewContext
-
     var bottomPadding = CGFloat.zero
 
     @State var queue: [Toast] = []
@@ -45,7 +45,8 @@ struct ToastsModifier: ViewModifier {
                     queue.insert(toast, at: 0)
                 }
                 Task { @MainActor in
-                    try? await Task.sleep(for: .seconds(2.5))
+                    let seconds = seconds(for: toast.action)
+                    try? await Task.sleep(for: .seconds(seconds))
                     withAnimation(.bouncy) {
                         _ = queue.popLast()
                     }
@@ -55,10 +56,10 @@ struct ToastsModifier: ViewModifier {
                 VStack {
                     ForEach(queue) { toast in
                         if #available(iOS 17, *) {
-                            toastView(toast)
+                            ToastView(toast: toast)
                                 .transition(BlurReplaceTransition(configuration: .downUp))
                         } else {
-                            toastView(toast)
+                            ToastView(toast: toast)
                                 .transition(.opacity)
                         }
                     }
@@ -67,12 +68,33 @@ struct ToastsModifier: ViewModifier {
             }
     }
 
-    @ViewBuilder
-    func toastView(_ toast: Toast) -> some View {
+    func seconds(for action: ToastAction) -> Double {
+        switch action {
+        case .markedTodayAsDone:
+            6.0
+        case .addedUnfinishedTasks:
+            6.0
+        default:
+            2.5
+        }
+    }
+}
+
+struct ToastView: View {
+    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.managedObjectContext) var viewContext
+
+    var toast: Toast
+
+    @State var hasBeenTapped = false
+
+    var body: some View {
         Group {
             switch toast.action {
             case .none:
                 Text(toast.message)
+            case .undone:
+                Text("Undone")
             case .reAdded:
                 HStack {
                     Text("Re-added task")
@@ -112,6 +134,51 @@ struct ToastsModifier: ViewModifier {
                         Image(systemName: "square.stack.3d.up")
                             .foregroundStyle(.secondary)
                     }
+                    .onTapGesture {
+                        viewContext.undoManager?.undo()
+                    }
+                }
+            case .markedTodayAsDone:
+                VStack(alignment: .leading) {
+                    Text("Tap to undo")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                    HStack {
+                        if let taskCount = Int(toast.message) {
+                            Text("Marked \(taskCount) task\(taskCount > 1 || taskCount == 0 ? "s" : "") as done")
+                        } else {
+                            Text("Marked task(s) as done")
+                        }
+                        Image(systemName: "checkmark.circle")
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .onTapGesture {
+                    guard !hasBeenTapped else { return }
+                    hasBeenTapped = true
+                    viewContext.undoManager?.undo()
+                    NotificationCenter.default.post(name: .toast, object: Toast(message: "", action: .undone))
+                }
+            case .addedUnfinishedTasks:
+                VStack(alignment: .leading) {
+                    Text("Tap to undo")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                    HStack {
+                        if let taskCount = Int(toast.message) {
+                            Text("Re-added \(taskCount) task\(taskCount > 1 || taskCount == 0 ? "s" : "")")
+                        } else {
+                            Text("Re-added task(s)")
+                        }
+                        Image(systemName: "arrow.uturn.up")
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .onTapGesture {
+                    guard !hasBeenTapped else { return }
+                    hasBeenTapped = true
+                    viewContext.undoManager?.undo()
+                    NotificationCenter.default.post(name: .toast, object: Toast(message: "", action: .undone))
                 }
             }
         }
