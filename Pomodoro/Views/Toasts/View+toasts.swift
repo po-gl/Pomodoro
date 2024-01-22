@@ -75,7 +75,7 @@ struct ToastsModifier: ViewModifier {
                 Text(toast.message)
             case .reAdded:
                 HStack {
-                    Text("Re-added Task")
+                    Text("Re-added task")
                     Image(systemName: "arrow.uturn.up")
                         .foregroundStyle(.secondary)
                 }
@@ -83,11 +83,11 @@ struct ToastsModifier: ViewModifier {
                 HStack {
                     Image(systemName: "arrow.turn.up.left")
                         .foregroundStyle(.secondary)
-                    Text("Added to Bar")
+                    Text("Added to bar")
                 }
             case .addedToList:
                 HStack {
-                    Text("Added to Task List")
+                    Text("Added to task list")
                     Image(systemName: "arrow.turn.up.right")
                         .foregroundStyle(.secondary)
                 }
