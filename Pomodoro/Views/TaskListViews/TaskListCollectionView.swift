@@ -70,6 +70,8 @@ class TaskListViewController: UIViewController {
     private var pastTasksController: NSFetchedResultsController<TaskNote>! = nil
 
     private var fetchTask: Task<(), Never>?
+    private var lastFetchDate: Date?
+    private var startOfDayFetchSubscriber: AnyCancellable?
 
     public var showProjects: Bool {
         didSet {
@@ -153,6 +155,37 @@ class TaskListViewController: UIViewController {
                     let inset = navigationController.navigationBar.frame.maxY
                     collectionView.setContentOffset(CGPoint(x: 0, y: -inset), animated: true)
                 }
+            }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let lastFetchDate, !lastFetchDate.isToday() {
+            try? todaysTasksController.performFetch()
+            try? pastTasksController.performFetch()
+        }
+
+        let startOfDay = Calendar.current.startOfDay(for: Date.now)
+        let startOfNextDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
+        startOfDayFetchSubscriber?.cancel()
+        startOfDayFetchSubscriber = Timer.publish(every: startOfNextDay.timeIntervalSinceNow, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                try? todaysTasksController.performFetch()
+                try? pastTasksController.performFetch()
+
+                // Reschedule to refresh every 24 hours afterwards
+                // this assumes the next day starts in exactly 24 hours
+                // but it is unlikely that the app is open for a full 24 hours anyways
+                startOfDayFetchSubscriber?.cancel()
+                startOfDayFetchSubscriber = Timer.publish(every: 24 * 60 * 60, on: .main, in: .common)
+                    .autoconnect()
+                    .sink { [weak self] _ in
+                        guard let self = self else { return }
+                        try? todaysTasksController.performFetch()
+                        try? pastTasksController.performFetch()
+                    }
             }
     }
 
@@ -488,6 +521,7 @@ extension TaskListViewController: NSFetchedResultsControllerDelegate {
 
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
                     didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
+        lastFetchDate = Date.now
         fetchTask?.cancel()
         fetchTask = Task { @MainActor in
             guard let dataSource = collectionView.dataSource
