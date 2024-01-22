@@ -27,6 +27,9 @@ struct TaskLabel: View {
         index < taskNotes.tasksOnBar.count ? taskNotes.tasksOnBar[index] : ""
     }
 
+    @FetchRequest(fetchRequest: TasksData.todaysTasksRequest)
+    var todaysTasks: FetchedResults<TaskNote>
+
     var body: some View {
         GeometryReader { geometry in
             let text: String = index < taskNotes.tasksOnBar.count ? taskNotes.tasksOnBar[index] : ""
@@ -142,7 +145,8 @@ struct TaskLabel: View {
     @ViewBuilder private var addToTodayButton: some View {
         Button {
             basicHaptic()
-            TasksData.addTask(text, order: -1, context: viewContext)
+            TasksData.addTask(text, order: 0, context: viewContext)
+            TasksData.separateCompleted(todaysTasks, context: viewContext)
             NotificationCenter.default.post(name: .toast, object: Toast(message: "", action: .addedToList))
         } label: {
             Label("Add to Today's tasks", systemImage: "clock.arrow.circlepath")
