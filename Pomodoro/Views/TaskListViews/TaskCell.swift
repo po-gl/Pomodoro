@@ -54,7 +54,6 @@ struct TaskCell: View {
             .offset(y: 2)
             VStack(spacing: 5) {
                 mainTextField
-                    .frame(minHeight: 25)
                 if focus || !editNoteText.wrappedValue.isEmpty {
                     noteTextField
                 }
