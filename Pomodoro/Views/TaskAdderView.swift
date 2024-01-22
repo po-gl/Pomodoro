@@ -64,7 +64,6 @@ struct TaskAdderView: View {
         .onChange(of: taskFromAdder.isDragging) { isDragging in
             taskFromAdder.dragHasEnded = !taskFromAdder.isDragging
             if isDragging {
-                print("focus false")
                 taskFocus = false
             }
         }
