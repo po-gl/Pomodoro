@@ -233,8 +233,10 @@ struct TaskCell: View {
     var deleteTaskButton: some View {
         Button(role: .destructive, action: {
             basicHaptic()
-            withAnimation { TasksData.delete(taskItem, context: viewContext) }
             deleted = true
+            Task { @MainActor in
+                TasksData.delete(taskItem, context: viewContext)
+            }
         }) {
             Label("Delete", systemImage: "trash")
         }.tint(.red)
@@ -243,13 +245,13 @@ struct TaskCell: View {
     var assignToTopProjectButton: some View {
         Button(action: {
             basicHaptic()
-            Task {
+            Task { @MainActor in
                 if let project = ProjectsData.getTopProject(context: viewContext) {
                     if !taskItem.projectsArray.contains(project) {
-                        withAnimation { TasksData.add(project: project, for: taskItem, context: viewContext) }
+                        TasksData.add(project: project, for: taskItem, context: viewContext)
                         NotificationCenter.default.post(name: .toast, object: Toast(message: project.name ?? "", action: .assignedProject))
                     } else {
-                        withAnimation { TasksData.remove(project: project, for: taskItem, context: viewContext) }
+                        TasksData.remove(project: project, for: taskItem, context: viewContext)
                         NotificationCenter.default.post(name: .toast, object: Toast(message: project.name ?? "", action: .unassignedProject))
                     }
                 }
@@ -262,7 +264,9 @@ struct TaskCell: View {
     var flagTaskButton: some View {
         Button(action: {
             basicHaptic()
-            withAnimation { TasksData.toggleFlagged(for: taskItem, context: viewContext) }
+            Task { @MainActor in
+                TasksData.toggleFlagged(for: taskItem, context: viewContext)
+            }
         }) {
             Label(taskItem.flagged ? "Unflag" : "Flag",
                   systemImage: taskItem.flagged ? "flag.slash.fill" : "flag.fill")
@@ -274,14 +278,14 @@ struct TaskCell: View {
             basicHaptic()
             if let taskText = taskItem.text {
                 guard !TasksData.todaysTasksContains(taskText, context: viewContext) else { return }
-                withAnimation {
+                Task { @MainActor in
                     TasksData.duplicate(taskItem,
                                         completed: false,
                                         order: 0,
                                         date: Date().addingTimeInterval(-1),
                                         context: viewContext)
+                    NotificationCenter.default.post(name: .toast, object: Toast(message: "", action: .reAdded))
                 }
-                NotificationCenter.default.post(name: .toast, object: Toast(message: "", action: .reAdded))
             }
         }) {
             Label("Re-add", systemImage: "arrow.uturn.up")
