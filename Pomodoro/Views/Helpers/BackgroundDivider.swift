@@ -13,9 +13,9 @@ struct BackgroundDivider: View {
 
     var metalPickOffset = CGFloat.zero
 
+    private let min = -20.0
+    private let max = 120.0
     var normalizedMetalPickOffset: CGFloat {
-        let min = -20.0
-        let max = 120.0
         return (metalPickOffset - min) / (max - min)
     }
 
