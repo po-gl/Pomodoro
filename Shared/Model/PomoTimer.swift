@@ -12,6 +12,7 @@ import OSLog
 class PomoTimer: SequenceTimer {
     @Published var order: [PomoTime]
     @Published var pomoCount: Int
+    @Published var status: PomoStatus
 
     var workDuration: Double
     var restDuration: Double
@@ -39,13 +40,16 @@ class PomoTimer: SequenceTimer {
         let pomoTimes = getPomoTimes(pomos, work, rest, longBreak)
         let timeIntervals = pomoTimes.map { $0.getTime() }
         order = pomoTimes
+        status = pomoTimes.first?.getStatus() ?? .work
 
         weak var selfInstance: PomoTimer?
         super.init(timeIntervals, perform: { index in
             if index < pomoTimes.count {
+                selfInstance?.status = pomoTimes[index].getStatus()
                 action(pomoTimes[index].getStatus())
             } else {
                 selfInstance?.toggle()
+                selfInstance?.status = .end
                 action(.end)
             }
         }, timerProvider: timeProvider)
@@ -79,6 +83,7 @@ class PomoTimer: SequenceTimer {
                    rest: restDuration,
                    longBreak: breakDuration)
         super.setPercentage(to: percent)
+        self.status = self.getStatus()
     }
 
     public func getStatusString(atDate: Date = Date()) -> String {
@@ -128,19 +133,23 @@ class PomoTimer: SequenceTimer {
         let pomoTimes = getPomoTimes(pomos, work, rest, longBreak)
         let timeIntervals = pomoTimes.map { $0.getTime() }
         order = pomoTimes
+        status = pomoTimes.first?.getStatus() ?? .work
 
-        super.reset(timeIntervals) { index in
+        super.reset(timeIntervals) { [weak self] index in
             if index < pomoTimes.count {
-                self.pomoAction(pomoTimes[index].getStatus())
+                self?.status = pomoTimes[index].getStatus()
+                self?.pomoAction(pomoTimes[index].getStatus())
             } else {
-                self.toggle()
-                self.pomoAction(.end)
+                self?.toggle()
+                self?.status = .end
+                self?.pomoAction(.end)
             }
         }
     }
 
     public func reset() {
         super.reset([])
+        status = getStatus()
     }
 
     public func sync(with otherTimer: PomoTimer) {
@@ -175,12 +184,14 @@ class PomoTimer: SequenceTimer {
         breakDuration = UserDefaults.pomo?.object(forKey: "pomoBreakDuration") as? Double ?? breakDuration
         Logger().log("RESTORE::order=\(self.order.map { $0.getStatusString() })  pomoCount=\(self.pomoCount)  workDuration=\(self.workDuration.rounded())  restDuration=\(self.restDuration.rounded())  breakDuration=\(self.breakDuration.rounded())")
         super.restoreFromUserDefaults()
+        status = getStatus()
     }
 
     // Note that the action closure in not encoded/decoded
     required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         pomoCount = try values.decode(Int.self, forKey: .pomoCount)
+        status = .work
         workDuration = try values.decode(Double.self, forKey: .work)
         restDuration = try values.decode(Double.self, forKey: .rest)
         breakDuration = try values.decode(Double.self, forKey: .longBreak)
@@ -188,6 +199,7 @@ class PomoTimer: SequenceTimer {
         order = pomoTimes
         pomoAction = { _ in }
         try super.init(from: decoder)
+        status = getStatus()
     }
 
     override func encode(to encoder: Encoder) throws {
