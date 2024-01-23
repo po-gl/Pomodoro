@@ -92,6 +92,11 @@ struct SettingsPage: View {
             }
             .background(Color("Background"))
             .navigationTitle("Settings")
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    TimerStatus()
+                }
+            }
             .onAppear {
                 workDuration = pomoTimer.workDuration
                 restDuration = pomoTimer.restDuration

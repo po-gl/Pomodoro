@@ -28,6 +28,8 @@ struct ContentView: View {
     @State var didReceiveSyncFromWatchConnection = false
     @State var didPerformInactiveSetup = false
 
+    @State var selectedTab = 0
+
     init() {
         let workDuration = UserDefaults.pomo?.value(forKey: "workDuration") as? Double ?? PomoTimer.defaultWorkTime
         let restDuration = UserDefaults.pomo?.value(forKey: "restDuration") as? Double ?? PomoTimer.defaultRestTime
@@ -39,21 +41,27 @@ struct ContentView: View {
     }
 
     var body: some View {
-        TabView {
+        TabView(selection: $selectedTab) {
             MainPage()
                 .reverseStatusBarColor()
                 .toasts()
                 .tabItem { Label { Text("Pomodoro") } icon: { Image("pomo_timer") } }
+                .tag(0)
             TaskList()
                 .toasts(bottomPadding: 50)
                 .tabItem { Label { Text("Tasks") } icon: { Image("pomo_checklist") } }
+                .tag(1)
                 .badge(errors.coreDataError != nil ? "!" : nil)
             SettingsPage()
                 .toasts()
                 .tabItem { Label { Text("Settings") } icon: { Image("pomo_gear") } }
+                .tag(2)
         }
         .environmentObject(pomoTimer)
         .environmentObject(tasksOnBar)
+        .onReceive(Publishers.selectFirstTab) { _ in
+            selectedTab = 0
+        }
         .onAppear {
             AppNotifications.shared.getNotificationPermissions()
             UIApplication.shared.registerForRemoteNotifications()

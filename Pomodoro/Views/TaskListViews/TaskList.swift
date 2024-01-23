@@ -73,7 +73,13 @@ struct TaskList: View {
                         hasShownError = true
                     }
                 }
-                
+
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        TimerStatus()
+                    }
+                }
+
                 focusNewTaskButton
                     .padding(.horizontal, 10)
                     .padding(.vertical, 8)
@@ -186,5 +192,6 @@ struct TaskList: View {
     NavigationStack {
         TaskList()
             .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+            .environmentObject(PomoTimer())
     }
 }
