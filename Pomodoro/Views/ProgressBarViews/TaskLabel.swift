@@ -156,8 +156,10 @@ struct TaskLabel: View {
     @ViewBuilder private var removeFromProgressBarButton: some View {
         Button(role: .destructive) {
             resetHaptic()
-            withAnimation { taskNotes.tasksOnBar[index] = "" }
-            taskNotes.saveToUserDefaults()
+            Task { @MainActor in
+                withAnimation { taskNotes.tasksOnBar[index] = "" }
+                taskNotes.saveToUserDefaults()
+            }
         } label: {
             Label("Remove from progress bar", systemImage: "trash")
         }
