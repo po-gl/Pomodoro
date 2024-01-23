@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 extension View {
     func verticalDragGesture(offset: Binding<CGFloat>,
@@ -31,6 +32,7 @@ struct VerticalDragGestureModifier: ViewModifier {
     let onStart: () -> Void
     let onEnd: () -> Void
 
+    @State var rawOffset: CGFloat = .zero
     @State var gestureStarted: Bool = false
 
     func body(content: Content) -> some View {
@@ -41,15 +43,12 @@ struct VerticalDragGestureModifier: ViewModifier {
                         if !gestureStarted {
                             onStart()
                         }
-                        withAnimation {
-                            gestureStarted = true
-                            if let bounds {
-                                offset = max(bounds.lowerBound, min(event.translation.height, bounds.upperBound))
-                            } else {
-                                offset = event.translation.height
-                            }
+                        gestureStarted = true
+                        if let bounds {
+                            rawOffset = max(bounds.lowerBound, min(event.translation.height, bounds.upperBound))
+                        } else {
+                            rawOffset = event.translation.height
                         }
-                        metalOffset = offset
                     }
                     .onEnded { _ in
                         onEnd()
@@ -64,6 +63,12 @@ struct VerticalDragGestureModifier: ViewModifier {
                 offset = 0
                 metalOffset = 0
                 gestureStarted = false
+            }
+            .onChangeWithThrottle(of: rawOffset, for: .seconds(1.0 / 60.0)) { throttledOffset in
+                withAnimation {
+                    offset = throttledOffset
+                }
+                metalOffset = throttledOffset
             }
     }
 
