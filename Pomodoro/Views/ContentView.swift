@@ -73,7 +73,6 @@ struct ContentView: View {
             if newPhase == .active {
                 pomoTimer.restoreFromUserDefaults()
                 AppNotifications.shared.cancelPendingNotifications()
-                Haptics.shared.prepareHaptics()
                 setupWatchConnection()
                 didPerformInactiveSetup = false
                 if #available(iOS 16.2, *) {

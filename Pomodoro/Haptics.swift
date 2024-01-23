@@ -16,8 +16,11 @@ class Haptics {
 
     private var engine: CHHapticEngine?
 
+    private var stopTask: Task<(), Never>?
+
     public func prepareHaptics() {
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
+        stopTask?.cancel()
 
         do {
             engine = try CHHapticEngine()
@@ -28,20 +31,24 @@ class Haptics {
     }
 
     public func workHaptic() {
+        prepareHaptics()
         buildUpHaptic(softness: 1.1)
     }
 
     public func restHaptic() {
+        prepareHaptics()
         buildUpHaptic(softness: 0.9)
     }
 
     public func breakHaptic() {
+        prepareHaptics()
         buildUpHaptic(softness: 0.9)
     }
 
     private func buildUpHaptic(softness: Float = 1.0) {
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
         let duration = 1.6 // 2.2
+        let overallDuration = 5.0
         var events: [CHHapticEvent] = []
 
         events.append(CHHapticEvent(eventType: .hapticContinuous,
@@ -64,7 +71,7 @@ class Haptics {
             CHHapticParameterCurve.ControlPoint(relativeTime: duration*0.81, value: 0.4147),
             CHHapticParameterCurve.ControlPoint(relativeTime: duration*0.95, value: 0.77),
             CHHapticParameterCurve.ControlPoint(relativeTime: duration, value: 1),
-            CHHapticParameterCurve.ControlPoint(relativeTime: 5.0, value: 1)
+            CHHapticParameterCurve.ControlPoint(relativeTime: overallDuration, value: 1)
         ]
         let parameter = CHHapticParameterCurve(parameterID: .hapticIntensityControl,
                                                controlPoints: controlPoints,
@@ -74,6 +81,12 @@ class Haptics {
             let pattern = try CHHapticPattern(events: events, parameterCurves: [parameter])
             let player = try engine?.makePlayer(with: pattern)
             try player?.start(atTime: 0.0)
+
+            stopTask = Task {
+                try? await Task.sleep(for: .seconds(overallDuration))
+                guard !Task.isCancelled else { return }
+                try? await engine?.stop()
+            }
         } catch {
             Logger().error("Failed to play pattern: \(error.localizedDescription)")
         }
