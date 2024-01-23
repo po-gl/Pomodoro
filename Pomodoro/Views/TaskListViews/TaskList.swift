@@ -97,17 +97,17 @@ struct TaskList: View {
                     .fontDesign(.monospaced)
                     .padding(.trailing, 2)
             }
-            .frame(height: 23)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 10)
-            .foregroundStyle(Color("AccentColor"))
-            .background(
-                Capsule()
-                    .fill(.ultraThinMaterial)
-                    .brightness(colorScheme == .dark ? -0.06 : 0.012)
-            )
         }
+        .foregroundStyle(Color("AccentColor"))
         .buttonStyle(.plain)
+        .frame(height: 23)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 10)
+        .background(
+            Capsule()
+                .fill(.ultraThinMaterial)
+                .brightness(colorScheme == .dark ? -0.06 : 0.012)
+        )
     }
 
     @ViewBuilder private var showArchivedProjectsButton: some View {
