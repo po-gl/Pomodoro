@@ -51,7 +51,7 @@ class TaskListViewController: UIViewController {
     static var keyboardFrameEnd: CGRect? = nil
     static var floatingButtonOffset: CGFloat = 51 // 23 + 28 padding
 
-    static var isScrolledToTop = ObservableBool(true)
+    static var isScrolledToTop = ObservableValue(true)
 
     private var collectionView: UICollectionView! = nil
     private var diffableDataSource: UICollectionViewDiffableDataSource<Section, ListItem>! = nil
@@ -89,7 +89,7 @@ class TaskListViewController: UIViewController {
     }
 
     private var projectStackCell: UICollectionViewCell?
-    private var isProjectStackCollapsed = ObservableBool(true)
+    private var isProjectStackCollapsed = ObservableValue(true)
     private var projectStackSubscriber: AnyCancellable?
     private var projectStackIndex: IndexPath?
 

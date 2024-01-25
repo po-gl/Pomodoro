@@ -27,7 +27,7 @@ struct ProjectCell: View {
 
     @State var taskNotes = [TaskNote]()
 
-    @ObservedObject var isCollapsed: ObservableBool
+    @ObservedObject var isCollapsed: ObservableValue<Bool>
 
     var cellHeight: Double
 

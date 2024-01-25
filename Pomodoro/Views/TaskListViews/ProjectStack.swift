@@ -15,7 +15,7 @@ struct ProjectStack: View {
     @FetchRequest(fetchRequest: ProjectsData.currentProjectsRequest)
     private var currentProjects: FetchedResults<Project>
 
-    @ObservedObject var isCollapsed: ObservableBool
+    @ObservedObject var isCollapsed: ObservableValue<Bool>
 
     var collapsedRowHeight: Double { !dynamicTypeSize.isAccessibilitySize ? 85 : 135 }
 
@@ -48,7 +48,7 @@ struct ProjectStack: View {
 
 #Preview {
     ScrollView {
-        ProjectStack(isCollapsed: ObservableBool(false))
+        ProjectStack(isCollapsed: ObservableValue(false))
             .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
             .padding(.horizontal)
     }

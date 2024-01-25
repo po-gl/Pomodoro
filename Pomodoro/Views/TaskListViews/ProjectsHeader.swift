@@ -11,7 +11,7 @@ struct ProjectsHeader: View {
     @Environment(\.managedObjectContext) var viewContext
     @Environment(\.colorScheme) var colorScheme
 
-    @ObservedObject var isCollapsed: ObservableBool
+    @ObservedObject var isCollapsed: ObservableValue<Bool>
 
     var body: some View {
         HStack(spacing: 20) {

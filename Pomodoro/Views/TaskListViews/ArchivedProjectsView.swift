@@ -11,7 +11,7 @@ struct ArchivedProjectsView: View {
     @FetchRequest(fetchRequest: ProjectsData.archivedProjectsRequest)
     private var archivedProjects: FetchedResults<Project>
 
-    @StateObject var isCollapsed = ObservableBool(false)
+    @StateObject var isCollapsed = ObservableValue(false)
 
     var body: some View {
         ScrollView {
