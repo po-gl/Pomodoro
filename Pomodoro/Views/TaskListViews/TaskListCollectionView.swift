@@ -118,11 +118,6 @@ class TaskListViewController: UIViewController {
         configureDataSource()
 
         configureFetchControllers()
-        Task.detached { @MainActor in
-            if let todaysTasks = self.todaysTasksController.fetchedObjects {
-                TasksData.separateCompleted(todaysTasks, context: self.viewContext)
-            }
-        }
 
         let wrappingView = UIView(frame: .zero)
         wrappingView.addSubview(collectionView)
@@ -161,8 +156,7 @@ class TaskListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if let lastFetchDate, !lastFetchDate.isToday() {
-            try? todaysTasksController.performFetch()
-            try? pastTasksController.performFetch()
+            configureFetchControllers()
         }
 
         let startOfDay = Calendar.current.startOfDay(for: Date.now)
@@ -172,8 +166,7 @@ class TaskListViewController: UIViewController {
             .autoconnect()
             .sink { [weak self] _ in
                 guard let self = self else { return }
-                try? todaysTasksController.performFetch()
-                try? pastTasksController.performFetch()
+                configureFetchControllers()
 
                 // Reschedule to refresh every 24 hours afterwards
                 // this assumes the next day starts in exactly 24 hours
@@ -183,10 +176,15 @@ class TaskListViewController: UIViewController {
                     .autoconnect()
                     .sink { [weak self] _ in
                         guard let self = self else { return }
-                        try? todaysTasksController.performFetch()
-                        try? pastTasksController.performFetch()
+                        configureFetchControllers()
                     }
             }
+
+        Task.detached { @MainActor in
+            if let todaysTasks = self.todaysTasksController.fetchedObjects {
+                TasksData.separateCompleted(todaysTasks, context: self.viewContext)
+            }
+        }
     }
 
     @objc func handleKeyboardWillShow(notification: Notification) {
