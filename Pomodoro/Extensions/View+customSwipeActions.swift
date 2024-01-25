@@ -23,7 +23,8 @@ extension View {
 }
 
 struct CustomSwipeActionsModifier<L: View, T: View>: ViewModifier {
-    @Environment(\.dismissSwipe) var dismissSwipe: DismissSwipeAction
+    @Environment(\.dismissSwipe) var dismissSwipe
+    @Environment(\.swipeActionsDisabled) var swipeActionsDisabled
 
     let leadingButtonCount: Int
     let trailingButtonCount: Int
@@ -62,7 +63,7 @@ struct CustomSwipeActionsModifier<L: View, T: View>: ViewModifier {
     var dragGesture: some Gesture {
         DragGesture(minimumDistance: 25, coordinateSpace: .local)
             .onChanged { event in
-                guard !disabled else { return }
+                guard !disabled && !swipeActionsDisabled.value else { return }
                 if !gestureStarted {
                     gestureStarted = true
                     dismissSwipe()
@@ -84,7 +85,7 @@ struct CustomSwipeActionsModifier<L: View, T: View>: ViewModifier {
                 }
             }
             .onEnded { _ in
-                guard !disabled else { return }
+                guard !disabled && !swipeActionsDisabled.value else { return }
                 let stop = gestureEdge == .trailing ? trailingStop : leadingStop
                 gestureStarted = false
                 withAnimation {
@@ -118,6 +119,11 @@ struct CustomSwipeActionsModifier<L: View, T: View>: ViewModifier {
             .offset(x: offset)
             .simultaneousGesture(dragGesture)
             .onChange(of: disabled) { _ in
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    resetGesture()
+                }
+            }
+            .onChange(of: swipeActionsDisabled.value) { _ in
                 withAnimation(.easeInOut(duration: 0.2)) {
                     resetGesture()
                 }

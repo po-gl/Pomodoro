@@ -11,14 +11,14 @@ struct ProjectStack: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.managedObjectContext) private var viewContext
-
+    
     @FetchRequest(fetchRequest: ProjectsData.currentProjectsRequest)
     private var currentProjects: FetchedResults<Project>
-
+    
     @ObservedObject var isCollapsed: ObservableValue<Bool>
-
+    
     var collapsedRowHeight: Double { !dynamicTypeSize.isAccessibilitySize ? 85 : 135 }
-
+    
     var body: some View {
         HStack(alignment: .top) {
             VStack {
@@ -28,8 +28,7 @@ struct ProjectStack: View {
                         ProjectCell(project: project,
                                     isCollapsed: isCollapsed,
                                     cellHeight: collapsedRowHeight,
-                                    isFirstProject: i == 0)
-                        .zIndex(-iDouble)
+                                    index: i)
                         .opacity(isCollapsed.value ? 1 - (0.3 * iDouble) : 1.0)
                         .scaleEffect(isCollapsed.value ? 1 - (0.08 * iDouble) : 1.0)
                         .offset(y: isCollapsed.value ? -iDouble * collapsedRowHeight + (iDouble * 3) : 0.0)

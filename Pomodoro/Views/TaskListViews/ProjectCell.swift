@@ -31,7 +31,14 @@ struct ProjectCell: View {
 
     var cellHeight: Double
 
-    var isFirstProject: Bool = false
+    var index: Int? = nil
+    var isFirstProject: Bool {
+        if let index {
+            return index == 0
+        } else {
+            return false
+        }
+    }
 
     @FocusState var focus
 
@@ -111,16 +118,6 @@ struct ProjectCell: View {
 
         .doneButton(isPresented: focus)
 
-        .customSwipeActions(leadingButtonCount: 2, trailingButtonCount: project.archivedDate == nil ? 2 : 1, leading: {
-            deleteProjectButton
-            slideInfoButton
-        }, trailing: {
-            toggleProjectArchiveButton
-            if project.archivedDate == nil {
-                sendToTopButton
-            }
-        }, disabled: isCollapsed.value)
-
         .onChange(of: isCollapsed.value) { isCollapsed in
             if isCollapsed {
                 focus = false
@@ -131,6 +128,19 @@ struct ProjectCell: View {
                 isCollapsed.value = false
             }
         }
+
+        .modifier(VStackDraggable(disabled: isCollapsed,
+                                  zIndex: -Double(index ?? 0)))
+
+        .customSwipeActions(leadingButtonCount: 2, trailingButtonCount: project.archivedDate == nil ? 2 : 1, leading: {
+            deleteProjectButton
+            slideInfoButton
+        }, trailing: {
+            toggleProjectArchiveButton
+            if project.archivedDate == nil {
+                sendToTopButton
+            }
+        }, disabled: isCollapsed.value)
     }
 
     private func focusIfJustAdded() {
