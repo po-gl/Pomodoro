@@ -7,7 +7,7 @@
 
 import Combine
 
-class ObservableValue<V: Equatable & Hashable>: ObservableObject {
+class ObservableValue<V: Equatable>: ObservableObject {
     @Published var value: V
 
     init(_ value: V) {
