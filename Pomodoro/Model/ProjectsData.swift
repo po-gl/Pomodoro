@@ -135,8 +135,13 @@ struct ProjectsData {
 
     static func setAsTopProject(_ project: Project, context: NSManagedObjectContext) {
         if let currentProjects = try? context.fetch(currentProjectsRequest) {
+            let oldOrder = project.order
             for project in currentProjects {
-                project.order = 1
+                if project.order < oldOrder {
+                    project.order += 1
+                } else {
+                    break
+                }
             }
             project.order = 0
             saveContext(context, errorMessage: "CoreData error setting project as top.")
