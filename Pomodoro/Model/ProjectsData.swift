@@ -128,6 +128,16 @@ struct ProjectsData {
         }
     }
 
+    static func saveContextSync(_ context: NSManagedObjectContext, errorMessage: String = "CoreData error.") {
+        do {
+            try context.save()
+        } catch {
+            let error = error as NSError
+            Errors.shared.coreDataError = error
+            Logger().error("CoreData synchronous error: \(error), \(error.userInfo)")
+        }
+    }
+
     static func getTopProject(context: NSManagedObjectContext) -> Project? {
         guard let currentProjects = try? context.fetch(currentProjectsRequest) else { return nil }
         return currentProjects.first
@@ -144,8 +154,12 @@ struct ProjectsData {
                 }
             }
             project.order = 0
-            saveContext(context, errorMessage: "CoreData error setting project as top.")
+            saveContextSync(context, errorMessage: "CoreData error setting project as top.")
         }
+    }
+
+    static func setOrderWithoutSaving(_ order: Int, for project: Project, context: NSManagedObjectContext) {
+        project.order = Int16(order)
     }
 }
 
