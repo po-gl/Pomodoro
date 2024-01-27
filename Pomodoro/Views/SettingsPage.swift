@@ -49,14 +49,17 @@ struct SettingsPage: View {
                         durationSlider("Work Duration", value: $workDuration, in: 60*5...60*40)
                             .tint(Color("BarWork"))
                     }
+                    .backgroundStyle(GroupBoxBackgroundStyle())
                     GroupBox {
                         durationSlider("Rest Duration", value: $restDuration, in: 60*3...60*30)
                             .tint(Color("BarRest"))
                     }
+                    .backgroundStyle(GroupBoxBackgroundStyle())
                     GroupBox {
                         durationSlider("Long Break Duration", value: $breakDuration, in: 60*10...60*60)
                             .tint(Color("BarLongBreak"))
                     }
+                    .backgroundStyle(GroupBoxBackgroundStyle())
                     HStack {
                         Spacer()
                         Button(action: {
@@ -87,6 +90,7 @@ struct SettingsPage: View {
                         })
                         .tint(Color("End"))
                     }
+                    .backgroundStyle(GroupBoxBackgroundStyle())
                 }
                 .padding()
             }

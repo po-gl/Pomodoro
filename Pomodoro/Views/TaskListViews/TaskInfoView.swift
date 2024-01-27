@@ -40,12 +40,14 @@ struct TaskInfoView: View {
                         TextField("Note", text: $editNote, axis: .vertical)
                             .padding(.top, 5)
                     }
+                    .backgroundStyle(GroupBoxBackgroundStyle())
 
                     GroupBox {
                         Toggle(isOn: $editCompleted) {
                             Text("Completed")
                         }.tint(Color("End"))
                     }
+                    .backgroundStyle(GroupBoxBackgroundStyle())
 
                     GroupBox {
                         Toggle(isOn: $editFlagged) {
@@ -59,6 +61,7 @@ struct TaskInfoView: View {
                             }
                         }.tint(Color("AccentColor"))
                     }
+                    .backgroundStyle(GroupBoxBackgroundStyle())
 
                     GroupBox {
                         VStack(alignment: .leading) {
@@ -81,6 +84,7 @@ struct TaskInfoView: View {
                                 .offset(x: -5)
                         }
                     }
+                    .backgroundStyle(GroupBoxBackgroundStyle())
                     .animation(.spring(duration: 0.3), value: editingAssignedProjects)
                 }
                 .padding()

@@ -44,6 +44,7 @@ struct ProjectInfoView: View {
                         TextField("Note", text: $editNote, axis: .vertical)
                             .padding(.top, 5)
                     }
+                    .backgroundStyle(GroupBoxBackgroundStyle())
 
                     GroupBox {
                         Grid {
@@ -55,6 +56,7 @@ struct ProjectInfoView: View {
                             .frame(maxWidth: .infinity)
                         }
                     }
+                    .backgroundStyle(GroupBoxBackgroundStyle())
                     .accessibilityLabel("Color selection")
 
                     GroupBox {
@@ -69,6 +71,7 @@ struct ProjectInfoView: View {
                             }
                         }
                     }
+                    .backgroundStyle(GroupBoxBackgroundStyle())
 
                     GroupBox {
                         VStack {
@@ -85,6 +88,7 @@ struct ProjectInfoView: View {
                             assignedTasksList
                         }
                     }
+                    .backgroundStyle(GroupBoxBackgroundStyle())
                 }
                 .padding()
             }
