@@ -24,10 +24,6 @@ struct TaskCell: View {
 
     var isAdderCell: Bool = false
 
-    // Set true if embedded in an info view and tapping text fields should
-    // open the task's info page instead of editing text
-    var isEmbedded: Bool? = false
-
     var initialIndexPath: IndexPath?
     ///  Reliably gets the indexPath on reorderings where CellRegistration doesn't
     var indexPath: IndexPath? {
@@ -57,9 +53,6 @@ struct TaskCell: View {
                 if focus || !editNoteText.wrappedValue.isEmpty {
                     noteTextField
                 }
-            }
-            .overrideAction(predicate: isEmbedded ?? false) {
-                withAnimation { showTaskInfo = true }
             }
             TaskInfoCluster(taskItem: taskItem, showTaskInfo: $showTaskInfo, focus: _focus)
         }
