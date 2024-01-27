@@ -51,6 +51,10 @@ class TaskListViewController: UIViewController {
     static var keyboardFrameEnd: CGRect? = nil
     static var floatingButtonOffset: CGFloat = 51 // 23 + 28 padding
 
+    static var height: CGFloat?
+    static var scrollUp: () -> Void = { } // this is terrible
+    static var scrollDown: () -> Void = { }
+
     static var isScrolledToTop = ObservableValue(true)
 
     private var collectionView: UICollectionView! = nil
@@ -155,6 +159,10 @@ class TaskListViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        TaskListViewController.height = view.frame.height
+        TaskListViewController.scrollUp = { self.scrollTo(.up) }
+        TaskListViewController.scrollDown = { self.scrollTo(.down) }
+
         if let lastFetchDate, !lastFetchDate.isToday() {
             configureFetchControllers()
         }
@@ -244,6 +252,23 @@ class TaskListViewController: UIViewController {
             collectionView.setContentOffset(CGPoint(x: 0, y: newContentOffset), animated: true)
         } else {
             collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
+        }
+    }
+
+    enum ScrollToDirection {
+        case up
+        case down
+    }
+
+    func scrollTo(_ direction: ScrollToDirection) {
+        let currentOffset = collectionView.contentOffset
+        let magnitude = 50.0
+        switch direction {
+        case .up:
+            guard currentOffset.y > -100.0 else { return }
+            collectionView.setContentOffset(CGPoint(x: currentOffset.x, y: currentOffset.y - magnitude), animated: true)
+        case .down:
+            collectionView.setContentOffset(CGPoint(x: currentOffset.x, y: currentOffset.y + magnitude), animated: true)
         }
     }
 

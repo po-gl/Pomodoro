@@ -53,6 +53,15 @@ struct VStackDraggable: ViewModifier {
                 case .second(true, let event):
                     state.offset = event?.translation.height ?? .zero
                     selectedReorderingRect.value = rect
+
+                    // This is not a great solution for auto edge scrolling
+                    if let taskListHeight = TaskListViewController.height {
+                        if rect.minY < taskListHeight * 0.15 {
+                            TaskListViewController.scrollUp()
+                        } else if rect.maxY > taskListHeight * 0.85 {
+                            TaskListViewController.scrollDown()
+                        }
+                    }
                 default:
                     break
                 }
