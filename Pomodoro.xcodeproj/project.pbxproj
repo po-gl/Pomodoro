@@ -319,6 +319,8 @@
 		61DFEB512B659791005459F7 /* Color+adjust.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DFEB4B2B659783005459F7 /* Color+adjust.swift */; };
 		61DFEB522B659791005459F7 /* Color+adjust.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DFEB4B2B659783005459F7 /* Color+adjust.swift */; };
 		61DFEB532B659792005459F7 /* Color+adjust.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DFEB4B2B659783005459F7 /* Color+adjust.swift */; };
+		61DFEB552B65A305005459F7 /* LightweightTaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DFEB542B65A305005459F7 /* LightweightTaskCell.swift */; };
+		61DFEB562B65A305005459F7 /* LightweightTaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61DFEB542B65A305005459F7 /* LightweightTaskCell.swift */; };
 		61E22A9C297B30FA0080CA6E /* TimerDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619255AC290121DA00D399B8 /* TimerDisplay.swift */; };
 		61E22A9D297B31010080CA6E /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F4220E2900AC350036400A /* ProgressBar.swift */; };
 		61E22A9E297B31040080CA6E /* ButtonCluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611AE62D2903A9AF00FA24F0 /* ButtonCluster.swift */; };
@@ -629,6 +631,7 @@
 		61DC12122B62348700C00158 /* VStackDraggable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VStackDraggable.swift; sourceTree = "<group>"; };
 		61DFEB482B658F2E005459F7 /* GroupBoxBackgroundStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupBoxBackgroundStyle.swift; sourceTree = "<group>"; };
 		61DFEB4B2B659783005459F7 /* Color+adjust.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+adjust.swift"; sourceTree = "<group>"; };
+		61DFEB542B65A305005459F7 /* LightweightTaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightweightTaskCell.swift; sourceTree = "<group>"; };
 		61E468142AEC5360001F6D7B /* ProjectTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTag.swift; sourceTree = "<group>"; };
 		61E468192AEC6961001F6D7B /* View+overrideAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+overrideAction.swift"; sourceTree = "<group>"; };
 		61E4681E2AEC77FA001F6D7B /* TinyProjectTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TinyProjectTag.swift; sourceTree = "<group>"; };
@@ -1045,6 +1048,7 @@
 				617CF5062AE889C00040E50B /* TaskList.swift */,
 				6186894A2AD9D27A00ED5ED9 /* TaskListCollectionView.swift */,
 				61F7361629BFD78F00289149 /* TaskCell.swift */,
+				61DFEB542B65A305005459F7 /* LightweightTaskCell.swift */,
 				618755A02AE21D6200FC1564 /* ProjectCell.swift */,
 				6187559D2AE21BE200FC1564 /* ProjectStack.swift */,
 				617CF4FF2AE8849F0040E50B /* PastTasksHeader.swift */,
@@ -1528,6 +1532,7 @@
 				619DD47D2B53E6AE00601D38 /* Publishers+TaskList.swift in Sources */,
 				61E734B82B252AD5001C5B2A /* DynamicIslandProgressView.swift in Sources */,
 				610595A42A4B783C00A83804 /* View+globalPosition.swift in Sources */,
+				61DFEB552B65A305005459F7 /* LightweightTaskCell.swift in Sources */,
 				612D433429C14AB800FF38F8 /* AutoCompleteView.swift in Sources */,
 				617611492B31F41E0009910B /* View+showTabBarForOffset.swift in Sources */,
 				61C6BC1629C12D0F00AF48DE /* DraggableTask.swift in Sources */,
@@ -1687,6 +1692,7 @@
 				61E734AE2B251E43001C5B2A /* PomoStatus+properties.swift in Sources */,
 				617789D02856A1F400BD43D7 /* PomodoroUITestsLaunchTests.swift in Sources */,
 				617789CE2856A1F400BD43D7 /* PomodoroUITests.swift in Sources */,
+				61DFEB562B65A305005459F7 /* LightweightTaskCell.swift in Sources */,
 				6198E96C2B4ED7E0001961A2 /* Line.swift in Sources */,
 				614DA2B22997BE6C00EFC91C /* Color+isDark.swift in Sources */,
 				61E734B92B252AD5001C5B2A /* DynamicIslandProgressView.swift in Sources */,

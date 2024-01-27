@@ -28,6 +28,9 @@ struct ProjectInfoView: View {
     var backgroundBrightness: Double { colorScheme == .dark ? -0.7 : 0.33 }
     var backgroundSaturation: Double { colorScheme == .dark ? 0.8 : 0.33 }
 
+    @FetchRequest(fetchRequest: TasksData.todaysTasksRequest)
+    var todaysTasks: FetchedResults<TaskNote>
+
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -104,9 +107,7 @@ struct ProjectInfoView: View {
             }
             .task {
                 let result = await project.tasksArray
-                await MainActor.run {
-                    taskNotes = result
-                }
+                taskNotes = result.sorted(by: { !$0.completed && $1.completed })
             }
 
             .navigationBarTitleDisplayMode(.inline)
@@ -125,9 +126,8 @@ struct ProjectInfoView: View {
 
     @ViewBuilder var assignedTasksList: some View {
         VStack(spacing: 10) {
-            ForEach(taskNotes.sorted(by: { !$0.completed && $1.completed })) { taskItem in
-                TaskCell(taskItem: taskItem,
-                         isEmbedded: true)
+            ForEach(taskNotes) { taskItem in
+                LightweightTaskCell(taskItem: taskItem, todaysTasks: todaysTasks)
                 Divider()
             }
         }
