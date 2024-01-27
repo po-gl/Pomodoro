@@ -292,7 +292,7 @@ struct ProgressBar: View {
         if isWithinDropRect(draggableTask, adjusted: adjusted, geometry: geometry) {
             if !taskNotes.pomoHighlight[i] {
                 if i != j {
-                    basicHaptic()
+                    ThrottledHaptics.shared.basic()
                 }
             }
             taskNotes.pomoHighlight[i] = true
