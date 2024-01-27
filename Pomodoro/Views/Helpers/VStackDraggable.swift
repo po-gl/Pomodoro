@@ -11,6 +11,10 @@ struct VStackDraggable: ViewModifier {
     @Environment(\.dismissSwipe) var dismissSwipe
     @Environment(\.swipeActionsDisabled) var swipeActionsDisabled
 
+    @Environment(\.isReordering) var isReordering
+    @Environment(\.selectedReorderingIndex) var selectedReorderingIndex
+    @Environment(\.selectedReorderingRect) var selectedReorderingRect
+
     struct DraggableState {
         var offset = CGFloat.zero
         var pressed = false
@@ -20,7 +24,9 @@ struct VStackDraggable: ViewModifier {
 
     @ObservedObject var disabled = ObservableValue(false)
 
-    @State var zIndex = Double.zero
+    var index: Int = .zero
+    var rect: CGRect = .zero
+    var zIndex = Double.zero
 
     var pressDuration = 0.5
 
@@ -31,8 +37,13 @@ struct VStackDraggable: ViewModifier {
                 guard !disabled.value else { return }
                 if !state.pressed {
                     state.pressed = true
+                    selectedReorderingIndex.value = index
+                    isReordering.value = true
+
                     swipeActionsDisabled.value = true
                     dismissSwipe()
+
+                    basicHaptic()
                     Task { @MainActor in
                         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
                                                         to: nil, from: nil, for: nil)
@@ -41,6 +52,7 @@ struct VStackDraggable: ViewModifier {
                 switch value {
                 case .second(true, let event):
                     state.offset = event?.translation.height ?? .zero
+                    selectedReorderingRect.value = rect
                 default:
                     break
                 }
@@ -49,7 +61,13 @@ struct VStackDraggable: ViewModifier {
                 guard !disabled.value else { return }
                 switch value {
                 case .second(true, _):
+                    isReordering.value = false
                     swipeActionsDisabled.value = false
+                    Task { @MainActor in
+                        try? await Task.sleep(for: .seconds(0.1))
+                        selectedReorderingIndex.value = -1
+                        selectedReorderingRect.value = .zero
+                    }
                 default:
                     break
                 }
@@ -59,7 +77,7 @@ struct VStackDraggable: ViewModifier {
     func body(content: Content) -> some View {
         content
             .offset(y: dragState.offset)
-            .scaleEffect(dragState.pressed ? 1.06 : 1.0)
+            .scaleEffect(dragState.pressed ? 1.08 : 1.0)
             .zIndex(dragState.pressed ? 999.0 : zIndex)
             .gesture(draggableGesture)
 

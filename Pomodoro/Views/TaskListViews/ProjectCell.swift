@@ -11,6 +11,8 @@ import Combine
 struct ProjectCell: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.isReordering) private var isReordering
+    @Environment(\.selectedReorderingIndex) private var selectedReorderingIndex
     @ObservedObject var project: Project
 
     var editText: Binding<String> {
@@ -43,6 +45,9 @@ struct ProjectCell: View {
     @FocusState var focus
 
     @State var showingProjectInfo = false
+
+    @State var totalRect = CGRect.zero
+    @Binding var rect: CGRect
 
     var primaryBrightness: Double { colorScheme == .dark ? 0.5 : -0.5 }
     var primarySaturation: Double { colorScheme == .dark ? 1.8 : 1.2 }
@@ -128,8 +133,15 @@ struct ProjectCell: View {
                 isCollapsed.value = false
             }
         }
+        .background(
+            // For performance, throttle view reader to 30fps on selected reordering cell and 0.4 strides otherwise
+            ThrottledViewReader(binding: $rect,
+                                interval: .seconds(selectedReorderingIndex.value == index ?? -2 ? 1.0/30.0 : 0.4))
+        )
 
         .modifier(VStackDraggable(disabled: isCollapsed,
+                                  index: index ?? -1,
+                                  rect: rect,
                                   zIndex: -Double(index ?? 0)))
 
         .customSwipeActions(leadingButtonCount: 2, trailingButtonCount: project.archivedDate == nil ? 2 : 1, leading: {
@@ -252,7 +264,7 @@ struct ProjectCell: View {
     @ViewBuilder private var sendToTopButton: some View {
         Button(action: {
             basicHaptic()
-            withAnimation { ProjectsData.setAsTopProject(project, context: viewContext) }
+            withAnimation(.bouncy) { ProjectsData.setAsTopProject(project, context: viewContext) }
         }) {
             Label("Send to Top", systemImage: "square.3.layers.3d.top.filled")
         }.tint(Color("BarWork"))

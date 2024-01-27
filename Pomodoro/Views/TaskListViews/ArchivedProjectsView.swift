@@ -20,7 +20,8 @@ struct ArchivedProjectsView: View {
                     ForEach(archivedProjects) { project in
                         ProjectCell(project: project,
                                     isCollapsed: isCollapsed,
-                                    cellHeight: 85)
+                                    cellHeight: 85,
+                                    rect: Binding<CGRect>(get: { .zero }, set: { _ in }))
                     }
                 } else {
                     emptyState
