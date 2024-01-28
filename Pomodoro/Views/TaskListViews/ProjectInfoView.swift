@@ -11,6 +11,7 @@ struct ProjectInfoView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.refreshInfo) private var refreshInfo
 
     @ObservedObject var project: Project
     @State var editText = ""
@@ -127,8 +128,13 @@ struct ProjectInfoView: View {
                 }
             }
             .task {
-                let result = await project.tasksArray
-                taskNotes = result.sorted(by: { !$0.completed && $1.completed })
+                await setTasksArray()
+            }
+
+            .onReceive(refreshInfo.signal) {
+                Task { @MainActor in
+                    await setTasksArray()
+                }
             }
 
             .navigationBarTitleDisplayMode(.inline)
@@ -143,6 +149,11 @@ struct ProjectInfoView: View {
             }
             .background(Color("Background").ignoresSafeArea())
         }
+    }
+
+    func setTasksArray() async {
+        let result = await project.tasksArray
+        taskNotes = result.sorted(by: { !$0.completed && $1.completed })
     }
 
     @ViewBuilder var assignedTasksList: some View {

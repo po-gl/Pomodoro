@@ -9,6 +9,8 @@ import SwiftUI
 
 struct LightweightTaskCell: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.refreshInfo) private var refreshInfo
+
     @ObservedObject var taskItem: TaskNote
 
     var todaysTasks: FetchedResults<TaskNote>
@@ -35,6 +37,11 @@ struct LightweightTaskCell: View {
         }
         .sheet(isPresented: $showTaskInfo) {
             TaskInfoView(taskItem: taskItem)
+        }
+        .onChange(of: showTaskInfo) { showing in
+            if !showing {
+                refreshInfo()
+            }
         }
     }
 
