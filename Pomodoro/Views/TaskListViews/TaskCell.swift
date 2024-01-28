@@ -314,6 +314,7 @@ struct TaskCheck: View {
         }
         .foregroundColor(taskItem.completed ? Color("AccentColor") : .primary)
         .frame(width: width)
+        .contentShape(Rectangle())
         .onTapGesture {
             basicHaptic()
             TasksData.toggleCompleted(for: taskItem, context: viewContext)
