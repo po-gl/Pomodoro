@@ -11,7 +11,7 @@ import SwiftUI
 struct WrappingHStack<Model, V>: View where Model: Identifiable, Model: Hashable, V: View {
     typealias ViewGenerator = (Model) -> V
 
-    var models: [Model]
+    var models: ObservableValue<[Model]>
     var viewGenerator: ViewGenerator
     var horizontalSpacing: CGFloat
     var verticalSpacing: CGFloat
@@ -22,7 +22,7 @@ struct WrappingHStack<Model, V>: View where Model: Identifiable, Model: Hashable
          horizontalSpacing: CGFloat = 4,
          verticalSpacing: CGFloat = 5,
          @ViewBuilder viewGenerator: @escaping ViewGenerator) {
-        self.models = models
+        self.models = ObservableValue(models)
         self.horizontalSpacing = horizontalSpacing
         self.verticalSpacing = verticalSpacing
         self.viewGenerator = viewGenerator
@@ -42,7 +42,7 @@ struct WrappingHStack<Model, V>: View where Model: Identifiable, Model: Hashable
         var height = CGFloat.zero
 
         return ZStack(alignment: .topLeading) {
-            ForEach(self.models) { model in
+            ForEach(self.models.value) { model in
                 viewGenerator(model)
                     .padding(.horizontal, horizontalSpacing)
                     .padding(.vertical, verticalSpacing)
@@ -52,7 +52,7 @@ struct WrappingHStack<Model, V>: View where Model: Identifiable, Model: Hashable
                             height -= dimension.height
                         }
                         let result = width
-                        if model == self.models.last! {
+                        if model == self.models.value.last! {
                             width = 0 // last item
                         } else {
                             width -= dimension.width
@@ -61,7 +61,7 @@ struct WrappingHStack<Model, V>: View where Model: Identifiable, Model: Hashable
                     })
                     .alignmentGuide(.top, computeValue: { _ in
                         let result = height
-                        if model == self.models.last! {
+                        if model == self.models.value.last! {
                             height = 0 // last item
                         }
                         return result
