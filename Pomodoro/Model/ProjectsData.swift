@@ -77,26 +77,31 @@ struct ProjectsData {
         if let archivedDate {
             project.archivedDate = archivedDate
         }
+        updateRelationships(project)
         saveContext(context, errorMessage: "CoreData error editing project.")
     }
 
     static func editNote(_ note: String, for project: Project, context: NSManagedObjectContext) {
         project.note = note
+        updateRelationships(project)
         saveContext(context, errorMessage: "CoreData error editing project note.")
     }
 
     static func setColor(_ colorName: String, for project: Project, context: NSManagedObjectContext) {
         project.color = colorName
+        updateRelationships(project)
         saveContext(context, errorMessage: "CoreData error setting project color.")
     }
 
     static func setProgress(_ progress: Double, for project: Project, context: NSManagedObjectContext) {
         project.progress = progress
+        updateRelationships(project)
         saveContext(context, errorMessage: "CoreData error setting project progress.")
     }
 
     static func archive(_ project: Project, context: NSManagedObjectContext) {
         project.archivedDate = Date.now
+        updateRelationships(project)
         saveContext(context, errorMessage: "CoreData error archiving project.")
     }
 
@@ -106,12 +111,20 @@ struct ProjectsData {
         } else {
             project.archivedDate = Date.now
         }
+        updateRelationships(project)
         saveContext(context, errorMessage: "CoreData error toggle archive project.")
     }
 
     static func delete(_ project: Project, context: NSManagedObjectContext) {
         context.delete(project)
+        updateRelationships(project)
         saveContext(context, errorMessage: "CoreData error deleting project.")
+    }
+
+    static private func updateRelationships(_ project: Project) {
+        for taskNote in project.tasks?.allObjects as? [TaskNote] ?? [] {
+            taskNote.objectWillChange.send()
+        }
     }
 
     // MARK: Save Context

@@ -88,6 +88,7 @@ struct TasksData {
         newTask.projects = projects as NSSet
 
         try? context.obtainPermanentIDs(for: [newTask])
+        updateRelationships(newTask)
         saveContext(context, errorMessage: "CoreData error adding task.")
     }
 
@@ -111,41 +112,49 @@ struct TasksData {
         if let projects {
             task.projects = projects as NSSet
         }
+        updateRelationships(task)
         saveContext(context, errorMessage: "CoreData error editing task text.")
     }
 
     static func editNote(_ note: String, for task: TaskNote, context: NSManagedObjectContext) {
         task.note = note
+        updateRelationships(task)
         saveContext(context, errorMessage: "CoreData error editing task note.")
     }
 
     static func toggleCompleted(for task: TaskNote, context: NSManagedObjectContext) {
         task.completed.toggle()
+        updateRelationships(task)
         saveContext(context, errorMessage: "CoreData error toggle task completion.")
     }
 
     static func setCompleted(for task: TaskNote, context: NSManagedObjectContext) {
         task.completed = true
+        updateRelationships(task)
         saveContext(context, errorMessage: "CoreData error setting task completion to true.")
     }
 
     static func toggleFlagged(for task: TaskNote, context: NSManagedObjectContext) {
         task.flagged.toggle()
+        updateRelationships(task)
         saveContext(context, errorMessage: "CoreData error toggle task flagging.")
     }
 
     static func add(project: Project, for task: TaskNote, context: NSManagedObjectContext) {
         task.addToProjects(project)
+        updateRelationships(task)
         saveContext(context, errorMessage: "CoreData error assigning project to task note.")
     }
 
     static func remove(project: Project, for task: TaskNote, context: NSManagedObjectContext) {
         task.removeFromProjects(project)
+        updateRelationships(task)
         saveContext(context, errorMessage: "CoreData error removing project assignment from task note.")
     }
 
     static func delete(_ task: TaskNote, context: NSManagedObjectContext) {
         context.delete(task)
+        updateRelationships(task)
         saveContext(context, errorMessage: "CoreData error deleting task.")
     }
 
@@ -166,6 +175,12 @@ struct TasksData {
                           date: date ?? task.timestamp ?? Date(),
                           projects: projects ?? task.projects as? Set<Project> ?? [],
                           context: context)
+    }
+
+    static private func updateRelationships(_ task: TaskNote) {
+        for project in task.projects?.allObjects as? [Project] ?? [] {
+            project.objectWillChange.send()
+        }
     }
 
     // MARK: Save Context
