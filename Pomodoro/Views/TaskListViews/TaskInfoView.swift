@@ -27,6 +27,7 @@ struct TaskInfoView: View {
     @State var editingAssignedProjects = false
 
     @State var cancelled = false
+    @State var isDeleting = false
 
     var body: some View {
         NavigationStack {
@@ -62,6 +63,26 @@ struct TaskInfoView: View {
                         }.tint(Color("AccentColor"))
                     }
                     .backgroundStyle(GroupBoxBackgroundStyle())
+
+                    GroupBox {
+                        Button(role: .destructive, action: {
+                            isDeleting = true
+                        }) {
+                            Text("Delete Task")
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                    .backgroundStyle(GroupBoxBackgroundStyle())
+                    .confirmationDialog("Delete Task", isPresented: $isDeleting) {
+                        Button(role: .destructive, action: {
+                            dismiss()
+                            TasksData.delete(taskItem, context: viewContext)
+                        }) {
+                            Text("Delete This Task")
+                        }
+                    } message: {
+                        Text("Are you sure you want to delete this task?")
+                    }
 
                     GroupBox {
                         VStack(alignment: .leading) {

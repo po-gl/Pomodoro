@@ -20,6 +20,7 @@ struct ProjectInfoView: View {
     @State var taskNotes = [TaskNote]()
 
     @State var cancelled = false
+    @State var isDeleting = false
 
     var colorNames: [String] = ["BarRest", "BarWork", "BarLongBreak", "End", "AccentColor"]
 
@@ -75,6 +76,26 @@ struct ProjectInfoView: View {
                         }
                     }
                     .backgroundStyle(GroupBoxBackgroundStyle())
+
+                    GroupBox {
+                        Button(role: .destructive, action: {
+                            isDeleting = true
+                        }) {
+                            Text("Delete Project")
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                    .backgroundStyle(GroupBoxBackgroundStyle())
+                    .confirmationDialog("Delete Project", isPresented: $isDeleting) {
+                        Button(role: .destructive, action: {
+                            dismiss()
+                            ProjectsData.delete(project, context: viewContext)
+                        }) {
+                            Text("Delete This Project")
+                        }
+                    } message: {
+                        Text("Are you sure you want to delete this project?")
+                    }
 
                     GroupBox {
                         VStack {
