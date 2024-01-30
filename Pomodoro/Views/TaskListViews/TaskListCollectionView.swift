@@ -55,8 +55,6 @@ class TaskListViewController: UIViewController {
     static var scrollUp: () -> Void = { } // this is terrible
     static var scrollDown: () -> Void = { }
 
-    static var isScrolledToTop = ObservableValue(true)
-
     private var collectionView: UICollectionView! = nil
     private var diffableDataSource: UICollectionViewDiffableDataSource<Section, ListItem>! = nil
 
@@ -620,13 +618,6 @@ extension TaskListViewController: UICollectionViewDelegate, UIScrollViewDelegate
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         Task { @MainActor in
             dismissSwipe()
-
-            let scrollOffset = scrollView.contentOffset.y + scrollView.safeAreaInsets.top
-            if !TaskListViewController.isScrolledToTop.value && scrollOffset <= 0 {
-                TaskListViewController.isScrolledToTop.value = true
-            } else if TaskListViewController.isScrolledToTop.value && scrollOffset > 0 {
-                TaskListViewController.isScrolledToTop.value = false
-            }
         }
     }
 }

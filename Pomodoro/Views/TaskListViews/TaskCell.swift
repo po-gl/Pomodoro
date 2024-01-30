@@ -294,11 +294,6 @@ struct TaskCheck: View {
 
     var todaysTasks: FetchedResults<TaskNote>
 
-    @ObservedObject var isScrolledToTop = TaskListViewController.isScrolledToTop
-    var shouldDimCell: Bool {
-        !(taskItem.timestamp?.isToday() ?? false)
-    }
-
     let width: Double = 20
     let pi = Double.pi
 
@@ -330,8 +325,6 @@ struct TaskCheck: View {
                 }
             }
         }
-//        .opacity(shouldDimCell && isScrolledToTop.value ? 0.6 : 1.0)
-//        .animation(.default, value: isScrolledToTop.value)
     }
 }
 
@@ -345,11 +338,6 @@ struct TaskInfoCluster: View {
 
     @FocusState var focus
 
-    @ObservedObject var isScrolledToTop = TaskListViewController.isScrolledToTop
-    var shouldDimCell: Bool {
-        !(taskItem.timestamp?.isToday() ?? false)
-    }
-
     var body: some View {
         HStack {
             if taskItem.flagged {
@@ -361,8 +349,6 @@ struct TaskInfoCluster: View {
                 infoButton
             }
         }
-//        .opacity(shouldDimCell && isScrolledToTop.value ? 0.6 : 1.0)
-//        .animation(.default, value: isScrolledToTop.value)
     }
 
     @ViewBuilder var projectIndicators: some View {
