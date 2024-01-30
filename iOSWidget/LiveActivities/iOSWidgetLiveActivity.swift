@@ -76,10 +76,17 @@ struct iOSWidgetLiveActivity: Widget {
             Group {
                 Group {
                     if context.state.isPaused {
-                        Text(Image(systemName: "leaf.fill"))
-                            .foregroundColor(Color(hex: 0x31E377))
-                            .saturation(0.6)
-                            .scaleEffect(0.8)
+                        HStack(spacing: 5) {
+                            Text(Image(systemName: "leaf.fill"))
+                                .foregroundColor(Color(hex: 0x31E377))
+                                .saturation(0.6)
+                                .scaleEffect(0.8)
+                            Text("paused")
+                                .font(.footnote)
+                                .fontDesign(.rounded)
+                                .fontWeight(.regular)
+                                .foregroundStyle(.secondary)
+                        }
                     } else {
                         Text(status.icon)
                             .foregroundStyle(status.color)
@@ -95,7 +102,9 @@ struct iOSWidgetLiveActivity: Widget {
 
                 let task = context.state.task
                 Text(task != "" ? task : status.rawValue)
-                    .font(.system(.title3, design: .rounded, weight: .semibold))
+                    .font(.title3)
+                    .fontDesign(.rounded)
+                    .fontWeight(.medium)
                     .lineLimit(1)
                     .foregroundStyle(.black)
                     .padding(.horizontal, 5)
@@ -123,7 +132,9 @@ struct iOSWidgetLiveActivity: Widget {
                 let isFinished = context.state.currentSegment == context.state.segmentCount-1
                 let endTime = context.state.isPaused || isFinished ? "--:--" : timeFormatter.string(from: end)
                 Text("Ends at \(endTime)")
-                    .font(.system(.footnote, design: .rounded, weight: .regular))
+                    .font(.footnote)
+                    .fontDesign(.rounded)
+                    .fontWeight(.regular)
                     .monospacedDigit()
                     .opacity(0.6)
                     .offset(x: -3, y: -3)
