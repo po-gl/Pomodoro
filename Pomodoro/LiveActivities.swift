@@ -51,6 +51,8 @@ class LiveActivities {
 
         Task {
             do {
+                try await waitForDeviceToken()
+
                 try await sendPomoDataToServer(pomoTimer, tasksOnBar)
 
                 let pomoAttrs = PomoAttributes(workDuration: pomoTimer.workDuration,
@@ -147,6 +149,23 @@ class LiveActivities {
                 await activity.end(finalContent, dismissalPolicy: .immediate)
             }
         }
+    }
+
+    /// Wait for device token with exponential backoff
+    private func waitForDeviceToken() async throws {
+        let attemptLimit = 8
+        var attempt = 0
+        var expSeconds = 2.0
+
+        while attempt < attemptLimit {
+            if AppNotifications.shared.deviceToken != nil {
+                return
+            }
+            try? await Task.sleep(for: .seconds(expSeconds))
+            expSeconds = expSeconds * expSeconds
+            attempt += 1
+        }
+        throw LiveActivityError.missingDeviceToken
     }
 
     func sendPomoDataToServer(_ pomoTimer: PomoTimer, _ tasksOnBar: TasksOnBar) async throws {
@@ -252,6 +271,7 @@ class LiveActivities {
 enum LiveActivityError: Error {
     case notOkResponse
     case badURL
+    case missingDeviceToken
 }
 
 extension LiveActivityError: LocalizedError {
@@ -261,6 +281,8 @@ extension LiveActivityError: LocalizedError {
             NSLocalizedString("Not OK response from remote server.", comment: "")
         case .badURL:
             NSLocalizedString("Bad URL", comment: "")
+        case .missingDeviceToken:
+            NSLocalizedString("Missing Device Token", comment: "")
         }
     }
 }
