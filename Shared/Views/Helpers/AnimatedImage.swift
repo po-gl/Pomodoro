@@ -33,7 +33,6 @@ struct AnimatedImage: View {
             timer?.invalidate()
         }
         .onChange(of: data) { newData in
-            timer?.invalidate()
             animate(images: newData.imageNames, interval: newData.interval, loops: newData.loops)
         }
     }
@@ -43,6 +42,7 @@ struct AnimatedImage: View {
         let imageViews = images.map { Image($0) }
         image = imageViews.first
 
+        timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { timer in
             image = imageViews[imageIndex]
             imageIndex = (imageIndex+1) % imageViews.count
