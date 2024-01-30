@@ -45,16 +45,16 @@ struct ContentView: View {
             MainPage()
                 .reverseStatusBarColor()
                 .toasts()
-                .tabItem { Label { Text("Pomodoro") } icon: { Image("pomo_timer") } }
+                .tabItem { Label { Text("Pomodoro") } icon: { Image(.pomoTimer) } }
                 .tag(0)
             TaskList()
                 .toasts(bottomPadding: 50)
-                .tabItem { Label { Text("Tasks") } icon: { Image("pomo_checklist") } }
+                .tabItem { Label { Text("Tasks") } icon: { Image(.pomoChecklist) } }
                 .tag(1)
                 .badge(errors.coreDataError != nil ? "!" : nil)
             SettingsPage()
                 .toasts()
-                .tabItem { Label { Text("Settings") } icon: { Image("pomo_gear") } }
+                .tabItem { Label { Text("Settings") } icon: { Image(.pomoGear) } }
                 .tag(2)
         }
         .environmentObject(pomoTimer)
