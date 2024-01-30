@@ -64,7 +64,6 @@ struct ContentView: View {
         }
         .onAppear {
             AppNotifications.shared.getNotificationPermissions()
-            UIApplication.shared.registerForRemoteNotifications()
             viewContext.undoManager = undoManager
         }
         
@@ -78,6 +77,7 @@ struct ContentView: View {
                 if #available(iOS 16.2, *) {
                     LiveActivities.shared.startPollingPushTokenUpdates()
                 }
+                UIApplication.shared.registerForRemoteNotifications()
                 
             } else if newPhase == .inactive || newPhase == .background {
                 guard !didPerformInactiveSetup else { return }
@@ -94,7 +94,8 @@ struct ContentView: View {
             WidgetCenter.shared.reloadAllTimelines()
             let wcSent = updateWatchConnection(pomoTimer)
             didReceiveSyncFromWatchConnection = !wcSent
-            
+            UIApplication.shared.registerForRemoteNotifications()
+
             if #available(iOS 16.2, *) {
                 if isPaused {
                     LiveActivities.shared.stopLiveActivity(pomoTimer, tasksOnBar)
