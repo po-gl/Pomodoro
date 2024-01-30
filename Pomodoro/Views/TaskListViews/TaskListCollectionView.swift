@@ -128,14 +128,6 @@ class TaskListViewController: UIViewController {
         view = wrappingView
         view.backgroundColor = UIColor(Color("Background"))
 
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow(notification:)),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
@@ -155,6 +147,17 @@ class TaskListViewController: UIViewController {
                     collectionView.setContentOffset(CGPoint(x: 0, y: -inset), animated: true)
                 }
             }
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor, constant: view.safeAreaInsets.bottom),
+        ])
     }
 
     override func viewWillAppear(_ animated: Bool) {
