@@ -182,9 +182,7 @@ struct ProgressBar: View {
                 .frame(width: max(getBarWidth() * (1 - pomoTimer.getProgress(atDate: date)), 0), height: barHeight)
                 .overlay(alignment: .leading) {
                     Rectangle().fill(.clear).frame(width: 1, height: barHeight).overlay(
-                        AnimatedImage(data: AnimatedImageData(imageNames: (1...10).map { "PickIndicator\($0)" },
-                                                              interval: 0.2,
-                                                              loops: true))
+                        AnimatedImage(data: Animations.pickIndicator)
                         .scaleEffect(50)
                         .opacity(0.7)
                     )

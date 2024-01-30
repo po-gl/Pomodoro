@@ -55,11 +55,7 @@ struct BuddyView: View {
 
     @ViewBuilder
     private func animatedBuddy(_ buddy: Buddy) -> some View {
-        let paused = pomoTimer.isPaused
-        let animationData = paused ? AnimatedImageData(imageNames: (19...21).map { "\(buddy.rawValue)\($0)" },
-                                                       interval: 0.6)
-                                   : AnimatedImageData(imageNames: (1...10).map { "\(buddy.rawValue)\($0)" },
-                                                       loops: true)
+        let animationData = pomoTimer.isPaused ? Animations.sit(for: buddy) : Animations.run(for: buddy)
         AnimatedImage(data: animationData)
     }
 }
