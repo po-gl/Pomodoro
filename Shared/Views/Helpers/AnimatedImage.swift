@@ -40,11 +40,12 @@ struct AnimatedImage: View {
 
     private func animate(images: [String], interval: Double, loops: Bool) {
         var imageIndex: Int = 0
-        image = Image(images[0])
+        let imageViews = images.map { Image($0) }
+        image = imageViews.first
 
         timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { timer in
-            image = Image(images[imageIndex])
-            imageIndex = (imageIndex+1) % images.count
+            image = imageViews[imageIndex]
+            imageIndex = (imageIndex+1) % imageViews.count
 
             if !loops && imageIndex == 0 {
                 timer.invalidate()
