@@ -20,8 +20,8 @@ struct TodaysTasksFooter: View {
             Rectangle()
                 .fill(
                     LinearGradient(stops: [
-                        .init(color: Color("BarLongBreak"), location: 0.0),
-                        .init(color: Color("BarRest").opacity(opacity), location: 0.3),
+                        .init(color: .barLongBreak, location: 0.0),
+                        .init(color: .barRest.opacity(opacity), location: 0.3),
                         .init(color: .clear, location: 1.0)
                     ], startPoint: .top, endPoint: .bottom)
                 )

@@ -128,19 +128,19 @@ struct BannerLiveActivityView: View {
     private func getGradientForStatus(_ status: PomoStatus) -> LinearGradient {
         switch status {
         case .work:
-            return LinearGradient(stops: [.init(color: Color("BarWork"), location: 0.7),
+            return LinearGradient(stops: [.init(color: .barWork, location: 0.7),
                                           .init(color: Color(hex: 0xD3EDDD), location: 1.2)],
                                   startPoint: .leading, endPoint: .trailing)
         case .rest:
-            return LinearGradient(stops: [.init(color: Color("BarRest"), location: 0.7),
+            return LinearGradient(stops: [.init(color: .barRest, location: 0.7),
                                           .init(color: Color(hex: 0xE8BEB1), location: 1.2)],
                                   startPoint: .leading, endPoint: .trailing)
         case .longBreak:
-            return LinearGradient(stops: [.init(color: Color("BarLongBreak"), location: 0.7),
+            return LinearGradient(stops: [.init(color: .barLongBreak, location: 0.7),
                                           .init(color: Color(hex: 0xF5E1E1), location: 1.3)],
                                   startPoint: .leading, endPoint: .trailing)
         case .end:
-            return LinearGradient(stops: [.init(color: Color("End"), location: 0.7),
+            return LinearGradient(stops: [.init(color: .end, location: 0.7),
                                           .init(color: Color(hex: 0xD3EDDD), location: 1.3)],
                                   startPoint: .leading, endPoint: .trailing)
         }

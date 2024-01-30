@@ -47,17 +47,17 @@ struct SettingsPage: View {
 
                     GroupBox {
                         durationSlider("Work Duration", value: $workDuration, in: 60*5...60*40)
-                            .tint(Color("BarWork"))
+                            .tint(.barWork)
                     }
                     .backgroundStyle(GroupBoxBackgroundStyle())
                     GroupBox {
                         durationSlider("Rest Duration", value: $restDuration, in: 60*3...60*30)
-                            .tint(Color("BarRest"))
+                            .tint(.barRest)
                     }
                     .backgroundStyle(GroupBoxBackgroundStyle())
                     GroupBox {
                         durationSlider("Long Break Duration", value: $breakDuration, in: 60*10...60*60)
-                            .tint(Color("BarLongBreak"))
+                            .tint(.barLongBreak)
                     }
                     .backgroundStyle(GroupBoxBackgroundStyle())
                     HStack {
@@ -88,13 +88,13 @@ struct SettingsPage: View {
                         Toggle(isOn: $enableBuddies, label: {
                             Text("Pixel Buddies")
                         })
-                        .tint(Color("End"))
+                        .tint(.end)
                     }
                     .backgroundStyle(GroupBoxBackgroundStyle())
                 }
                 .padding()
             }
-            .background(Color("Background"))
+            .background(Color.background)
             .navigationTitle("Settings")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {

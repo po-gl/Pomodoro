@@ -12,7 +12,7 @@ struct EmptyProjectsView: View {
     @Environment(\.colorScheme) private var colorScheme
 
     var cellHeight: Double = 85
-    var color: Color = Color("EmptyGray")
+    var color: Color = .emptyGray
 
     var primaryBrightness: Double { colorScheme == .dark ? 0.5 : -0.5 }
     var primarySaturation: Double { colorScheme == .dark ? 1.8 : 1.2 }

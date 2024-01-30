@@ -48,7 +48,7 @@ struct AutoCompleteView: View {
             }
             .background {
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(Color("BackgroundStopped"))
+                    .fill(.backgroundStopped)
                     .brightness(colorScheme == .dark ? 0.13 : -0.03)
                     .saturation(colorScheme == .dark ? 0.0 : 1.2)
             }

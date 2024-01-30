@@ -124,7 +124,7 @@ class TaskListViewController: UIViewController {
         let wrappingView = UIView(frame: .zero)
         wrappingView.addSubview(collectionView)
         view = wrappingView
-        view.backgroundColor = UIColor(Color("Background"))
+        view.backgroundColor = UIColor(.background)
 
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow(notification:)),
                                                name: UIResponder.keyboardWillShowNotification,
@@ -367,7 +367,7 @@ class TaskListViewController: UIViewController {
                          scrollTaskList: self.scrollToFocusedCell)
                     .environment(\.managedObjectContext, viewContext)
             }
-            .background(Color("Background"))
+            .background(Color.background)
         }
 
         taskAdderCellRegistration = UICollectionView.CellRegistration<UICollectionViewCell, NSNull> { [unowned self] cell, indexPath, _ in

@@ -37,7 +37,7 @@ struct ProjectsHeader: View {
             Text("Add Project")
                 .textCase(.uppercase)
                 .font(.system(.footnote, design: .rounded, weight: .medium))
-                .foregroundColor(Color("BarRest"))
+                .foregroundColor(.barRest)
                 .brightness(colorScheme == .dark ? 0.4 : -0.1)
                 .saturation(colorScheme == .dark ? 1.5 : 0.9)
         }
@@ -51,12 +51,12 @@ struct ProjectsHeader: View {
         }) {
             Image(systemName: "chevron.compact.up")
                 .font(.system(size: 26))
-                .foregroundColor(Color("BarRest"))
+                .foregroundColor(.barRest)
                 .brightness(colorScheme == .dark ? 0.4 : -0.1)
                 .saturation(colorScheme == .dark ? 1.5 : 0.9)
                 .padding(.vertical, 2).padding(.horizontal, 4)
                 .background(
-                    RoundedRectangle(cornerRadius: 8).fill(Color("BarRest"))
+                    RoundedRectangle(cornerRadius: 8).fill(.barRest)
                         .brightness(colorScheme == .dark ? -0.5 : 0.3)
                         .saturation(colorScheme == .dark ? 0.8 : 0.7)
                 )

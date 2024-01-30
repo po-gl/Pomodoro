@@ -70,18 +70,18 @@ struct Background: View {
         if colorScheme == .dark {
             return .black
         } else if pomoTimer.isPaused {
-            return Color("BackgroundStopped")
+            return Color(.backgroundStopped)
         }
 
         switch pomoTimer.getStatus(atDate: date) {
         case .work:
-            return Color("BackgroundWork")
+            return Color(.backgroundWork)
         case .rest:
-            return Color("BackgroundRest")
+            return Color(.backgroundRest)
         case .longBreak:
-            return Color("BackgroundLongBreak")
+            return Color(.backgroundLongBreak)
         case .end:
-            return Color("BackgroundStopped")
+            return Color(.backgroundStopped)
         }
     }
 

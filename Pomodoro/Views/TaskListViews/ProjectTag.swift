@@ -17,7 +17,7 @@ struct ProjectTag: View {
     var font: Font = .callout
 
     var name: String = "error"
-    var color: Color = Color("BarRest")
+    var color: Color = .barRest
 
     var body: some View {
         let name = project.name ?? name
@@ -51,10 +51,10 @@ struct ProjectTag: View {
     VStack {
         let context = PersistenceController.preview.container.viewContext
         let project = Project(context: context)
-        ProjectTag(project: project, name: "Apps", color: Color("BarRest"))
-        ProjectTag(project: project, name: "Work", color: Color("BarWork"))
-        ProjectTag(project: project, name: "Dev Environment", color: Color("BarLongBreak"))
-        ProjectTag(project: project, name: "Issues", color: Color("End"))
-        ProjectTag(project: project, name: "Embedded Project", color: Color("AccentColor"))
+        ProjectTag(project: project, name: "Apps", color: .barRest)
+        ProjectTag(project: project, name: "Work", color: .barWork)
+        ProjectTag(project: project, name: "Dev Environment", color: .barLongBreak)
+        ProjectTag(project: project, name: "Issues", color: .end)
+        ProjectTag(project: project, name: "Embedded Project", color: .accent)
     }
 }

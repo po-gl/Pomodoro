@@ -36,7 +36,7 @@ struct ButtonCluster: View {
         }
         .accessibilityIdentifier("resetButton\(isEnabled ? "On" : "Off")")
         .frame(width: 130, height: 60)
-        .buttonStyle(PopStyle(color: isEnabled ? Color("BarRest") : Color("GrayedOut")))
+        .buttonStyle(PopStyle(color: isEnabled ? .barRest : .grayedOut))
         .foregroundColor(isEnabled ? .black : .white)
         .animation(.default, value: pomoTimer.isPaused)
     }
@@ -70,10 +70,10 @@ struct ButtonCluster: View {
 
     private func getStartStopButtonColor() -> Color {
         if pomoTimer.getStatus() == .end {
-            return Color("GrayedOut")
+            return .grayedOut
         } else if pomoTimer.isPaused {
-            return Color("BarWork")
+            return .barWork
         }
-        return Color("BarLongBreak")
+        return .barLongBreak
     }
 }

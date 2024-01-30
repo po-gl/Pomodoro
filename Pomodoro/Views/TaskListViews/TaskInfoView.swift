@@ -46,7 +46,7 @@ struct TaskInfoView: View {
                     GroupBox {
                         Toggle(isOn: $editCompleted) {
                             Text("Completed")
-                        }.tint(Color("End"))
+                        }.tint(.end)
                     }
                     .backgroundStyle(GroupBoxBackgroundStyle())
 
@@ -54,13 +54,13 @@ struct TaskInfoView: View {
                         Toggle(isOn: $editFlagged) {
                             HStack(spacing: 15) {
                                 Image(systemName: "leaf.fill")
-                                    .foregroundColor(Color("BarWork"))
+                                    .foregroundColor(.barWork)
                                     .saturation(editFlagged ? 1.0 : 0.0)
                                     .animation(.spring, value: editFlagged)
                                     .frame(width: 20, height: 20)
                                 Text("Flagged")
                             }
-                        }.tint(Color("AccentColor"))
+                        }.tint(.accent)
                     }
                     .backgroundStyle(GroupBoxBackgroundStyle())
 
@@ -97,7 +97,7 @@ struct TaskInfoView: View {
                                     Text(editingAssignedProjects ? "Done" : "Edit")
                                         .font(.headline)
                                         .fontWeight(.bold)
-                                        .tint(editingAssignedProjects ? Color("End") : Color("AccentColor"))
+                                        .tint(editingAssignedProjects ? .end : .accent)
                                 }
                                 .padding(.trailing, 10)
                             }
@@ -136,7 +136,7 @@ struct TaskInfoView: View {
                     cancelButton
                 }
             }
-            .background(Color("Background").ignoresSafeArea())
+            .background(Color.background.ignoresSafeArea())
         }
     }
 

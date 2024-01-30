@@ -29,7 +29,7 @@ struct ChangerPage: View {
 
     @ViewBuilder private var PomodorosText: some View {
         Text("Pomodoros")
-            .foregroundStyle(LinearGradient(stops: [.init(color: Color("BarWork"), location: 0), .init(color: .primary, location: 1.5)], startPoint: .leading, endPoint: .trailing))
+            .foregroundStyle(LinearGradient(stops: [.init(color: .barWork, location: 0), .init(color: .primary, location: 1.5)], startPoint: .leading, endPoint: .trailing))
             .font(.system(size: 24, weight: .semibold, design: .monospaced))
     }
 
@@ -52,7 +52,7 @@ struct ChangerPage: View {
             }) {
                 Image(systemName: "minus.circle.fill")
                     .resizable()
-                    .foregroundStyle(Color("AccentColor"))
+                    .foregroundStyle(Color.accent)
                     .frame(width: 30, height: 30)
             }
             Spacer()
@@ -64,7 +64,7 @@ struct ChangerPage: View {
             }) {
                 Image(systemName: "plus.circle.fill")
                     .resizable()
-                    .foregroundStyle(Color("AccentColor"))
+                    .foregroundStyle(Color.accent)
                     .frame(width: 30, height: 30)
             }
         }

@@ -12,7 +12,7 @@ struct GroupBoxBackgroundStyle: ShapeStyle {
         if environment.colorScheme == .dark {
             return Color.black.lighten(by: 0.07)
         } else {
-            return Color("Background").lighten(by: 0.2)
+            return Color.background.lighten(by: 0.2)
         }
     }
 }

@@ -53,17 +53,17 @@ struct SettingsPage: View {
                     self.workDuration = newValue
                     resetDurations()
                 }), in: 60*5...60*40)
-                .tint(Color("BarWork"))
+                .tint(.barWork)
                 durationSlider("Rest", value: Binding(get: { self.restDuration }, set: { newValue in
                     self.restDuration = newValue
                     resetDurations()
                 }), in: 60*5...60*30)
-                .tint(Color("BarRest"))
+                .tint(.barRest)
                 durationSlider("Break", value: Binding(get: { self.breakDuration }, set: { newValue in
                     self.breakDuration = newValue
                     resetDurations()
                 }), in: 60*10...60*60)
-                .tint(Color("BarLongBreak"))
+                .tint(.barLongBreak)
 
                 Button(action: {
                     resetHaptic()
@@ -80,7 +80,7 @@ struct SettingsPage: View {
                     Text("Reset to default settings")
                         .font(.callout)
                 }
-                .tint(Color("End"))
+                .tint(.end)
                 .onAppear {
                     workDuration = pomoTimer.workDuration
                     restDuration = pomoTimer.restDuration
@@ -122,7 +122,7 @@ struct SettingsPage: View {
                 Toggle(isOn: $enableBuddies, label: {
                     Text("Pixel Buddies")
                 })
-                .tint(Color("End"))
+                .tint(.end)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 14)
                 .background(RoundedRectangle(cornerRadius: 11).fill(.tertiary).opacity(0.5))
@@ -168,7 +168,7 @@ struct SettingsPage_Previews: PreviewProvider {
             if #available(watchOS 10, *) {
                 TabView {
                     SettingsPage(geometry: geometry)
-                        .containerBackground(Color("BarWork").gradient.opacity(0.4), for: .tabView)
+                        .containerBackground(.barWork.gradient.opacity(0.4), for: .tabView)
                         .environmentObject(pomoTimer)
                 }
             } else {

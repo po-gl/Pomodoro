@@ -86,7 +86,7 @@ struct TaskList: View {
             }
             .ignoresSafeArea(.keyboard)
         }
-        .tint(Color("NavigationAccent"))
+        .tint(.navigationAccent)
     }
 
     @ViewBuilder private var focusNewTaskButton: some View {
@@ -104,7 +104,7 @@ struct TaskList: View {
                     .padding(.trailing, 2)
             }
         }
-        .foregroundStyle(Color("AccentColor"))
+        .foregroundStyle(Color.accent)
         .buttonStyle(.plain)
         .frame(height: 23)
         .padding(.horizontal, 10)

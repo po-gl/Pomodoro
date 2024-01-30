@@ -220,7 +220,7 @@ struct TaskCell: View {
             NotificationCenter.default.post(name: .toast, object: Toast(message: "", action: .addedToBar))
         }) {
             Label("Add to Bar", systemImage: "arrow.turn.up.left")
-        }.tint(Color("End"))
+        }.tint(.end)
     }
 
     var deleteTaskButton: some View {
@@ -251,7 +251,7 @@ struct TaskCell: View {
             }
         }) {
             Label("Assign To Top Project", systemImage: "square.3.layers.3d.top.filled")
-        }.tint(Color("BarRest"))
+        }.tint(.barRest)
     }
 
     var flagTaskButton: some View {
@@ -263,7 +263,7 @@ struct TaskCell: View {
         }) {
             Label(taskItem.flagged ? "Unflag" : "Flag",
                   systemImage: taskItem.flagged ? "flag.slash.fill" : "flag.fill")
-        }.tint(Color("BarWork"))
+        }.tint(.barWork)
     }
 
     var reAddToTodaysTasksButton: some View {
@@ -307,7 +307,7 @@ struct TaskCheck: View {
             Circle().frame(width: width/1.5)
                 .opacity(taskItem.completed ? 1.0 : 0.0)
         }
-        .foregroundColor(taskItem.completed ? Color("AccentColor") : .primary)
+        .foregroundColor(taskItem.completed ? .accent : .primary)
         .frame(width: width)
         .contentShape(Rectangle())
         .onTapGesture {
@@ -366,7 +366,7 @@ struct TaskInfoCluster: View {
 
     var flag: some View {
         Image(systemName: "leaf.fill")
-            .foregroundColor(Color("BarWork"))
+            .foregroundColor(.barWork)
             .frame(width: 20, height: 20)
     }
 
@@ -383,6 +383,6 @@ struct TaskInfoCluster: View {
         }, label: {
             Image(systemName: "info.circle")
                 .font(.title3)
-        }).tint(Color("AccentColor"))
+        }).tint(Color.accent)
     }
 }

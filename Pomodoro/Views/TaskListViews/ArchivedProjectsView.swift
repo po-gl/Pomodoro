@@ -31,7 +31,7 @@ struct ArchivedProjectsView: View {
         }
         .navigationTitle("Archived Projects")
         .navigationBarTitleDisplayMode(.large)
-        .background(Color("Background"))
+        .background(Color.background)
     }
 
     var emptyState: some View {

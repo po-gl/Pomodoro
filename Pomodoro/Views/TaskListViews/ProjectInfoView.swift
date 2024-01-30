@@ -68,7 +68,7 @@ struct ProjectInfoView: View {
                         Toggle(isOn: $editArchived) {
                             HStack(spacing: 15) {
                                 Image(systemName: "archivebox.fill")
-                                    .foregroundColor(Color("End"))
+                                    .foregroundColor(.end)
                                     .frame(width: 20, height: 20)
                                     .saturation(editArchived ? 1.0 : 0.0)
                                     .animation(.spring, value: editArchived)
@@ -147,7 +147,7 @@ struct ProjectInfoView: View {
                     cancelButton
                 }
             }
-            .background(Color("Background").ignoresSafeArea())
+            .background(Color.background.ignoresSafeArea())
         }
     }
 

@@ -26,15 +26,15 @@ struct TinyProjectTag: View {
 #Preview {
     Grid(horizontalSpacing: 2, verticalSpacing: 2) {
         GridRow {
-            TinyProjectTag(color: Color("BarRest"))
-            TinyProjectTag(color: Color("BarWork"))
+            TinyProjectTag(color: .barRest)
+            TinyProjectTag(color: .barWork)
         }
         GridRow {
-            TinyProjectTag(color: Color("BarLongBreak"))
-            TinyProjectTag(color: Color("End"))
+            TinyProjectTag(color: .barLongBreak)
+            TinyProjectTag(color: .end)
         }
         GridRow {
-            TinyProjectTag(color: Color("AccentColor"))
+            TinyProjectTag(color: .accent)
         }
     }
 }

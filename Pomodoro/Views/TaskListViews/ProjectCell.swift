@@ -267,7 +267,7 @@ struct ProjectCell: View {
             withAnimation(.bouncy) { ProjectsData.setAsTopProject(project, context: viewContext) }
         }) {
             Label("Send to Top", systemImage: "square.3.layers.3d.top.filled")
-        }.tint(Color("BarWork"))
+        }.tint(.barWork)
     }
 
     @ViewBuilder private var toggleProjectArchiveButton: some View {
@@ -277,7 +277,7 @@ struct ProjectCell: View {
         }) {
             Label(project.archivedDate != nil ? "Unarchive" : "Archive",
                   systemImage: project.archivedDate != nil ? "arrow.uturn.up" : "archivebox.fill")
-        }.tint(Color("End"))
+        }.tint(.end)
     }
 
     @ViewBuilder private var deleteProjectButton: some View {
