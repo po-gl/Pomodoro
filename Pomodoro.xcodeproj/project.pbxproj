@@ -808,10 +808,58 @@
 			path = Toasts;
 			sourceTree = "<group>";
 		};
+		61157BB32B699F0800A8916F /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				61F7361629BFD78F00289149 /* TaskCell.swift */,
+				61DFEB542B65A305005459F7 /* LightweightTaskCell.swift */,
+				6187559D2AE21BE200FC1564 /* ProjectStack.swift */,
+				618755A02AE21D6200FC1564 /* ProjectCell.swift */,
+				618A3B212A3B251500A86441 /* EmptyProjectsView.swift */,
+				617CF5182AE9EF800040E50B /* EmptyTasksView.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		61157BB42B699F2C00A8916F /* Supplementary */ = {
+			isa = PBXGroup;
+			children = (
+				617CF4FF2AE8849F0040E50B /* PastTasksHeader.swift */,
+				6187559A2AE21AAB00FC1564 /* ProjectsHeader.swift */,
+				61F62A182AE0C778005DE8A4 /* TodaysTasksHeader.swift */,
+				6198E9672B4ECA7E001961A2 /* TodaysTasksFooter.swift */,
+			);
+			path = Supplementary;
+			sourceTree = "<group>";
+		};
+		61157BB52B699FAC00A8916F /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				61E468142AEC5360001F6D7B /* ProjectTag.swift */,
+				61E4681E2AEC77FA001F6D7B /* TinyProjectTag.swift */,
+				61DFEB572B6637F4005459F7 /* RefreshInfoAction.swift */,
+				61D01EC22B3B55B700A58360 /* DismissSwipeAction.swift */,
+				61DC12122B62348700C00158 /* VStackDraggable.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		61157BB62B699FEE00A8916F /* Environment */ = {
+			isa = PBXGroup;
+			children = (
+				61D01EC52B3B610700A58360 /* EnvironmentValues+dismissSwipe.swift */,
+				61DC120F2B622D8F00C00158 /* EnvironmentValues+swipeActionsDisable.swift */,
+				612C042A2B63079C007D5C7D /* EnvironmentValues+isReordering.swift */,
+				612C042D2B630A8B007D5C7D /* EnvironmentValues+selectedReorderingIndex.swift */,
+				613F4F742B6388D100CD1A86 /* EnvironmentValues+selectedReorderingRect.swift */,
+				61DFEB5A2B6638D7005459F7 /* EnvironmentValues+refreshInfo.swift */,
+			);
+			path = Environment;
+			sourceTree = "<group>";
+		};
 		612B9085285CC80D003F1990 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				61BE18C42A295E3700082875 /* Date+compare.swift */,
 				61B17250285CFCBB001C8245 /* View+Modifier.swift */,
 				611EE30C2A107CD000DDF171 /* View+doneButton.swift */,
 				61E468192AEC6961001F6D7B /* View+overrideAction.swift */,
@@ -824,13 +872,8 @@
 				61569CE02B005FAF00DFC977 /* View+verticalOffsetEffect.swift */,
 				617611482B31F41E0009910B /* View+showTabBarForOffset.swift */,
 				61D01EBC2B34866A00A58360 /* View+customSwipeActions.swift */,
-				61D01EC52B3B610700A58360 /* EnvironmentValues+dismissSwipe.swift */,
-				61DC120F2B622D8F00C00158 /* EnvironmentValues+swipeActionsDisable.swift */,
-				612C042A2B63079C007D5C7D /* EnvironmentValues+isReordering.swift */,
-				612C042D2B630A8B007D5C7D /* EnvironmentValues+selectedReorderingIndex.swift */,
-				613F4F742B6388D100CD1A86 /* EnvironmentValues+selectedReorderingRect.swift */,
-				61DFEB5A2B6638D7005459F7 /* EnvironmentValues+refreshInfo.swift */,
 				61B17252285CFCF8001C8245 /* UIView+ClosestVC.swift */,
+				61BE18C42A295E3700082875 /* Date+compare.swift */,
 				614533CA2A27353B00388136 /* Color+Interpolate.swift */,
 				618750F429BABCFE0017BF8E /* Point+Extensions.swift */,
 				610D842F2B5D94C700659B41 /* UIFont+rounded.swift */,
@@ -947,6 +990,7 @@
 				6172B4C8297F82E300E53D8F /* LiveActivities.swift */,
 				61D01EB32B34534400A58360 /* Errors.swift */,
 				612B9085285CC80D003F1990 /* Extensions */,
+				61157BB62B699FEE00A8916F /* Environment */,
 				61B884B22B59D1D100F2305A /* Shaders */,
 				617789B52856A1F300BD43D7 /* Assets.xcassets */,
 				61F7362E29C00CCE00289149 /* Pomodoro.xcdatamodeld */,
@@ -997,8 +1041,6 @@
 				610D84422B5F949A00659B41 /* TimerStatus.swift */,
 				61D01EBF2B3A56FF00A58360 /* SwipeStyle.swift */,
 				61DFEB482B658F2E005459F7 /* GroupBoxBackgroundStyle.swift */,
-				61D01EC22B3B55B700A58360 /* DismissSwipeAction.swift */,
-				61DC12122B62348700C00158 /* VStackDraggable.swift */,
 				613F4F772B64C2CF00CD1A86 /* ThrottledViewReader.swift */,
 				61B884B92B5A136D00F2305A /* BackgroundDivider.swift */,
 			);
@@ -1060,22 +1102,12 @@
 			children = (
 				617CF5062AE889C00040E50B /* TaskList.swift */,
 				6186894A2AD9D27A00ED5ED9 /* TaskListCollectionView.swift */,
-				61F7361629BFD78F00289149 /* TaskCell.swift */,
-				61DFEB542B65A305005459F7 /* LightweightTaskCell.swift */,
-				618755A02AE21D6200FC1564 /* ProjectCell.swift */,
-				6187559D2AE21BE200FC1564 /* ProjectStack.swift */,
-				617CF4FF2AE8849F0040E50B /* PastTasksHeader.swift */,
-				6187559A2AE21AAB00FC1564 /* ProjectsHeader.swift */,
-				61F62A182AE0C778005DE8A4 /* TodaysTasksHeader.swift */,
-				6198E9672B4ECA7E001961A2 /* TodaysTasksFooter.swift */,
-				618A3B212A3B251500A86441 /* EmptyProjectsView.swift */,
-				617CF5182AE9EF800040E50B /* EmptyTasksView.swift */,
+				61157BB32B699F0800A8916F /* Cells */,
+				61157BB42B699F2C00A8916F /* Supplementary */,
 				618A3B1E2A3B1AFC00A86441 /* ArchivedProjectsView.swift */,
 				617CF5282AEB36650040E50B /* TaskInfoView.swift */,
 				61F67BA22A3B042F00318CDC /* ProjectInfoView.swift */,
-				61E468142AEC5360001F6D7B /* ProjectTag.swift */,
-				61E4681E2AEC77FA001F6D7B /* TinyProjectTag.swift */,
-				61DFEB572B6637F4005459F7 /* RefreshInfoAction.swift */,
+				61157BB52B699FAC00A8916F /* Helpers */,
 			);
 			path = TaskListViews;
 			sourceTree = "<group>";
