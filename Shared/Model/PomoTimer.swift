@@ -48,9 +48,11 @@ class PomoTimer: SequenceTimer {
                 selfInstance?.status = pomoTimes[index].getStatus()
                 action(pomoTimes[index].getStatus())
             } else {
-                selfInstance?.toggle()
                 selfInstance?.status = .end
                 action(.end)
+                withAnimation {
+                    selfInstance?.pause()
+                }
             }
         }, timerProvider: timeProvider)
         selfInstance = self
@@ -140,9 +142,11 @@ class PomoTimer: SequenceTimer {
                 self?.status = pomoTimes[index].getStatus()
                 self?.pomoAction(pomoTimes[index].getStatus())
             } else {
-                self?.toggle()
                 self?.status = .end
                 self?.pomoAction(.end)
+                withAnimation {
+                    self?.pause()
+                }
             }
         }
     }
