@@ -80,14 +80,18 @@ struct BannerLiveActivityView: View {
     @ViewBuilder var timerView: some View {
         if context.state.isPaused {
             Text(endDate.timeIntervalSince(startDate).compactTimerFormatted())
-                .font(.system(size: 42, weight: .light, design: .rounded))
+                .font(.system(size: 42))
+                .fontDesign(.rounded)
+                .fontWeight(.light)
                 .monospacedDigit()
                 .frame(width: 115, alignment: .trailing)
                 .foregroundStyle(.white)
         } else {
             Text(timerInterval: startDate...endDate, countsDown: true)
                 .multilineTextAlignment(.trailing)
-                .font(.system(size: 42, weight: .light, design: .rounded))
+                .font(.system(size: 42))
+                .fontDesign(.rounded)
+                .fontWeight(.light)
                 .monospacedDigit()
                 .frame(width: 115)
                 .foregroundStyle(.white)
@@ -98,7 +102,9 @@ struct BannerLiveActivityView: View {
     @ViewBuilder var statusView: some View {
         let task = context.state.task
         Text(task != "" ? task : status.rawValue)
-            .font(.system(.headline, design: .rounded, weight: .light))
+            .font(.headline)
+            .fontDesign(.rounded)
+            .fontWeight(.medium)
             .lineLimit(1)
             .foregroundStyle(.black)
             .padding(.horizontal, 5)
@@ -119,7 +125,9 @@ struct BannerLiveActivityView: View {
     @ViewBuilder var timerEndView: some View {
         let endTime = context.state.isPaused ? "--:--" : timeFormatter.string(from: endDate)
         Text("until \(endTime)")
-            .font(.system(.subheadline, design: .rounded, weight: .regular))
+            .font(.footnote)
+            .fontDesign(.rounded)
+            .fontWeight(.regular)
             .monospacedDigit()
             .opacity(0.6)
             .foregroundStyle(.white)
