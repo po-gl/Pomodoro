@@ -39,7 +39,7 @@ struct ProjectsData {
     static func addProject(_ name: String,
                            note: String = "",
                            progress: Double = 0.0,
-                           color: String = "BarRest",
+                           color: String? = nil,
                            archivedDate: Date? = nil,
                            order: Int16 = 0,
                            date: Date = Date(),
@@ -48,7 +48,7 @@ struct ProjectsData {
         newProject.name = name
         newProject.note = note
         newProject.progress = progress
-        newProject.color = color
+        newProject.color = color != nil ? color : Project.colorStrings.randomElement()
         newProject.timestamp = date
         newProject.archivedDate = archivedDate
         newProject.order = order
