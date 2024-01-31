@@ -123,6 +123,12 @@ struct ToastView: View {
                         Image(systemName: "square.3.layers.3d.top.filled")
                             .foregroundStyle(.secondary)
                     }
+                    .onTapGesture {
+                        guard !hasBeenTapped else { return }
+                        hasBeenTapped = true
+                        viewContext.undoManager?.undo()
+                        NotificationCenter.default.post(name: .toast, object: Toast(message: "", action: .undone))
+                    }
                 }
             case .unassignedProject:
                 VStack(alignment: .leading) {
@@ -135,7 +141,10 @@ struct ToastView: View {
                             .foregroundStyle(.secondary)
                     }
                     .onTapGesture {
+                        guard !hasBeenTapped else { return }
+                        hasBeenTapped = true
                         viewContext.undoManager?.undo()
+                        NotificationCenter.default.post(name: .toast, object: Toast(message: "", action: .undone))
                     }
                 }
             case .markedTodayAsDone:
