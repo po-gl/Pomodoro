@@ -224,8 +224,10 @@ struct ProgressBar: View {
             Spacer()
 
             ZStack {
-                let breakDate = date.addingTimeInterval(pomoTimer.timeRemaining(for: i-1, atDate: date))
-                AngledText(text: timeFormatter.string(from: breakDate))
+                let breakDate = pomoTimer.status == .longBreak ?
+                date.addingTimeInterval(-(pomoTimer.getDuration(for: .longBreak) - pomoTimer.timeRemaining(for: i, atDate: date))) :
+                date.addingTimeInterval(pomoTimer.timeRemaining(for: i-1, atDate: date))
+                AngledText(text: pomoTimer.status == .end ? " --:--" : timeFormatter.string(from: breakDate))
                     .id("BreakTime")
                     .scaleEffect(0.85)
                     .offset(x: -(getBarWidth() * getProportion(i) - barOutlinePadding)/2 + 3)
