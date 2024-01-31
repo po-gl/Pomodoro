@@ -120,6 +120,7 @@ struct ToastView: View {
                         .foregroundStyle(.secondary)
                     HStack {
                         Text(toast.message)
+                            .lineLimit(1)
                         Image(systemName: "square.3.layers.3d.top.filled")
                             .foregroundStyle(.secondary)
                     }
@@ -137,6 +138,7 @@ struct ToastView: View {
                         .foregroundStyle(.secondary)
                     HStack {
                         Text(toast.message)
+                            .lineLimit(1)
                         Image(systemName: "square.stack.3d.up")
                             .foregroundStyle(.secondary)
                     }
@@ -195,6 +197,7 @@ struct ToastView: View {
         .padding(.vertical, 10)
         .padding(.horizontal)
         .background { background }
+        .frame(maxWidth: 200)
     }
 
     @ViewBuilder var background: some View {
