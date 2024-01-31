@@ -49,6 +49,7 @@ struct TaskList: View {
                         showProjectsButton
                         showPastTasksButton
                         Divider()
+                        clearPastTasksButton
                         markTodaysTasksAsDoneButton
                         addUnfinishedTasksButton
                     } label: {
@@ -184,6 +185,73 @@ struct TaskList: View {
                                                                         action: .addedUnfinishedTasks))
         }) {
             Label("Add Unfinished Tasks", systemImage: "arrow.uturn.up")
+        }
+    }
+
+    @ViewBuilder private var clearPastTasksButton: some View {
+        Menu {
+            Button(action: {
+                Task { @MainActor in
+                    do {
+                        let deletedCount = try TasksData.deleteOlderThanToday(context: viewContext)
+                        NotificationCenter.default.post(name: .toast, object: Toast(message: String(deletedCount), action: .clearedPastTasks))
+                    } catch {
+                        NotificationCenter.default.post(name: .toast, object: Toast(message: "", action: .error))
+                    }
+                }
+            }) {
+                Text("Older Than Today")
+            }
+            Button(action: {
+                Task { @MainActor in
+                    do {
+                        let deletedCount = try TasksData.deleteOlderThan(.month, value: 1, context: viewContext)
+                        NotificationCenter.default.post(name: .toast, object: Toast(message: String(deletedCount), action: .clearedPastTasks))
+                    } catch {
+                        NotificationCenter.default.post(name: .toast, object: Toast(message: "", action: .error))
+                    }
+                }
+            }) {
+                Text("Older Than a Month")
+            }
+            Button(action: {
+                Task { @MainActor in
+                    do {
+                        let deletedCount = try TasksData.deleteOlderThan(.month, value: 6, context: viewContext)
+                        NotificationCenter.default.post(name: .toast, object: Toast(message: String(deletedCount), action: .clearedPastTasks))
+                    } catch {
+                        NotificationCenter.default.post(name: .toast, object: Toast(message: "", action: .error))
+                    }
+                }
+            }) {
+                Text("Older Than 6 Months")
+            }
+            Button(action: {
+                Task { @MainActor in
+                    do {
+                        let deletedCount = try TasksData.deleteOlderThan(.month, value: 12, context: viewContext)
+                        NotificationCenter.default.post(name: .toast, object: Toast(message: String(deletedCount), action: .clearedPastTasks))
+                    } catch {
+                        NotificationCenter.default.post(name: .toast, object: Toast(message: "", action: .error))
+                    }
+                }
+            }) {
+                Text("Older Than a Year")
+            }
+            Button(action: {
+                Task { @MainActor in
+                    do {
+                        let deletedCount = try TasksData.deleteOlderThan(.second, value: 0, context: viewContext)
+                        NotificationCenter.default.post(name: .toast, object: Toast(message: String(deletedCount), action: .clearedPastTasks))
+                    } catch {
+                        NotificationCenter.default.post(name: .toast, object: Toast(message: "", action: .error))
+                    }
+                }
+            }) {
+                Text("All")
+            }
+        } label: {
+            Label("Clear Past Tasks", systemImage: "clear")
         }
     }
 }

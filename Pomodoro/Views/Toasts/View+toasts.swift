@@ -17,6 +17,7 @@ struct Toast: Identifiable {
 enum ToastAction {
     case none
     case undone
+    case error
     case reAdded
     case addedToBar
     case addedToList
@@ -24,6 +25,7 @@ enum ToastAction {
     case unassignedProject
     case markedTodayAsDone
     case addedUnfinishedTasks
+    case clearedPastTasks
 }
 
 extension View {
@@ -74,6 +76,8 @@ struct ToastsModifier: ViewModifier {
             6.0
         case .addedUnfinishedTasks:
             6.0
+        case .clearedPastTasks:
+            8.0
         default:
             2.5
         }
@@ -95,6 +99,8 @@ struct ToastView: View {
                 Text(toast.message)
             case .undone:
                 Text("Undone")
+            case .error:
+                Text("An Error Occurred")
             case .reAdded:
                 HStack {
                     Text("Re-added task")
@@ -182,6 +188,27 @@ struct ToastView: View {
                             Text("Re-added task(s)")
                         }
                         Image(systemName: "arrow.uturn.up")
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .onTapGesture {
+                    guard !hasBeenTapped else { return }
+                    hasBeenTapped = true
+                    viewContext.undoManager?.undo()
+                    NotificationCenter.default.post(name: .toast, object: Toast(message: "", action: .undone))
+                }
+            case .clearedPastTasks:
+                VStack(alignment: .leading) {
+                    Text("Tap to undo")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                    HStack {
+                        if let deletedCount = Int(toast.message) {
+                            Text("Cleared \(deletedCount) task\(deletedCount > 1 || deletedCount == 0 ? "s" : "")")
+                        } else {
+                            Text("Cleared task(s)")
+                        }
+                        Image(systemName: "clear")
                             .foregroundStyle(.secondary)
                     }
                 }
