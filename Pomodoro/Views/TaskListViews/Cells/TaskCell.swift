@@ -112,10 +112,11 @@ struct TaskCell: View {
             if !isAdderCell {
                 if let timeStamp = taskItem.timestamp, timeStamp < Calendar.current.startOfDay(for: Date()) {
                     reAddToTodaysTasksButton
+                    assignToTopProjectButton
                 } else {
+                    assignToTopProjectButton
                     flagTaskButton
                 }
-                assignToTopProjectButton
             }
         }
     }
