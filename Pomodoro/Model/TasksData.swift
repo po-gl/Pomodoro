@@ -69,6 +69,18 @@ struct TasksData {
         return fetchRequest
     }
 
+    static func pastTasksRequest(olderThan date: Date) -> NSFetchRequest<TaskNote> {
+        let fetchRequest = TaskNote.fetchRequest()
+        fetchRequest.sortDescriptors = [
+            SortDescriptor(\TaskNote.timestamp, order: .reverse)
+        ].map { descriptor in NSSortDescriptor(descriptor) }
+        fetchRequest.predicate = NSPredicate(
+            format: "timestamp < %@",
+            date as NSDate
+        )
+        return fetchRequest
+    }
+
     static func addTask(_ text: String,
                         note: String = "",
                         completed: Bool = false,
@@ -158,6 +170,37 @@ struct TasksData {
         saveContext(context, errorMessage: "CoreData error deleting task.")
     }
 
+    /// Returns count of deleted tasks
+    static func deleteOlderThanToday(context: NSManagedObjectContext) throws -> Int {
+        guard let tasksToDelete = try? context.fetch(pastTasksRequest)
+        else { throw TasksDataError.failedFetch }
+        let tasksDeleted = tasksToDelete.count
+
+        for task in tasksToDelete {
+            context.delete(task)
+            updateRelationships(task)
+        }
+        saveContext(context, errorMessage: "CoreData error deleting tasks older than today.")
+        return tasksDeleted
+    }
+
+    /// Returns count of deleted tasks
+    static func deleteOlderThan(_ component: Calendar.Component, value: Int, context: NSManagedObjectContext) throws -> Int {
+        guard let date = Calendar.current.date(byAdding: component, value: -value, to: Date.now)
+        else { throw TasksDataError.failedDateCreation }
+
+        guard let tasksToDelete = try? context.fetch(pastTasksRequest(olderThan: date))
+        else { throw TasksDataError.failedFetch }
+        let tasksDeleted = tasksToDelete.count
+
+        for task in tasksToDelete {
+            context.delete(task)
+            updateRelationships(task)
+        }
+        saveContext(context, errorMessage: "CoreData error deleting tasks older than date.")
+        return tasksDeleted
+    }
+
     static func duplicate(_ task: TaskNote,
                           text: String? = nil,
                           note: String? = nil,
@@ -228,7 +271,11 @@ struct TasksData {
         let todaysTasks = try? context.fetch(todaysTasksRequest)
         return todaysTasks?.first(where: { $0.text == text })
     }
+}
 
+enum TasksDataError: Error {
+    case failedFetch
+    case failedDateCreation
 }
 
 extension TaskNote {
