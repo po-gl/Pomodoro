@@ -23,8 +23,6 @@ struct ProjectInfoView: View {
     @State var cancelled = false
     @State var isDeleting = false
 
-    var colorNames: [String] = ["BarRest", "BarWork", "BarLongBreak", "End", "AccentColor"]
-
     var collapsedBackgroundBrightness: Double { colorScheme == .dark ? -0.09 : 0.1 }
     var collapsedBackgroundSaturation: Double { colorScheme == .dark ? 0.8 : 1.1 }
     var backgroundBrightness: Double { colorScheme == .dark ? -0.7 : 0.33 }
@@ -54,7 +52,7 @@ struct ProjectInfoView: View {
                     GroupBox {
                         Grid {
                             GridRow {
-                                ForEach(colorNames, id: \.self) { name in
+                                ForEach(Project.colorStrings, id: \.self) { name in
                                     colorSelect(name: name)
                                 }
                             }

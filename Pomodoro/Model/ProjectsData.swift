@@ -183,4 +183,6 @@ extension Project {
             return self.tasks?.sortedArray(using: sortDescriptors) as? [TaskNote] ?? []
         }
     }
+
+    static let colorStrings: [String] = ["BarRest", "BarWork", "BarLongBreak", "End", "AccentColor"]
 }
