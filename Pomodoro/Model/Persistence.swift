@@ -45,6 +45,22 @@ struct PersistenceController {
             TasksData.addTask("Next next day \(i)", date: Date() - 200000, context: viewContext)
         }
 
+        for i in 0..<3 {
+            TasksData.addTask("14 days ago \(i)", date: Date() - 1209600, context: viewContext)
+        }
+
+        for i in 0..<3 {
+            TasksData.addTask("2 months ago \(i)", date: Date() - 5259486, context: viewContext)
+        }
+
+        for i in 0..<3 {
+            TasksData.addTask("7 months ago \(i)", date: Date() - 18408201, context: viewContext)
+        }
+
+        for i in 0..<3 {
+            TasksData.addTask("1 year ago \(i)", date: Date() - 34186659, context: viewContext)
+        }
+
         return result
     }()
 
