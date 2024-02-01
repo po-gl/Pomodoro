@@ -333,6 +333,7 @@ struct TaskCheck: View {
 
 struct TaskInfoCluster: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.colorScheme) private var colorScheme
     @ObservedObject var taskItem: TaskNote
 
     var isAdderCell: Bool = false
@@ -342,14 +343,16 @@ struct TaskInfoCluster: View {
     @FocusState var focus
 
     var body: some View {
-        HStack {
+        HStack(spacing: focus ? 2 : 5) {
             if taskItem.flagged {
                 flag
             }
+            pomosActualOrEstimate
             projectIndicators
                 .offset(y: 2)
             if focus {
                 infoButton
+                    .padding(.leading, 3)
             }
         }
     }
@@ -364,6 +367,20 @@ struct TaskInfoCluster: View {
             .frame(width: 25, height: count > 2 ? 20 : 10, alignment: .top)
             .rotationEffect(.degrees(90))
             .frame(width: count > 2 ? 20 : 10, height: 25)
+        }
+    }
+
+    @ViewBuilder var pomosActualOrEstimate: some View {
+        let pomos: Int16 = taskItem.pomosActual >= 0 && taskItem.completed ? taskItem.pomosActual : taskItem.pomosEstimate
+        let color: Color = taskItem.pomosActual >= 0 && taskItem.completed ? .end : .barRest
+        if pomos >= 0 {
+            Text("\(pomos)")
+                .font(.system(size: 14.0))
+                .fontDesign(.rounded)
+                .fontWeight(.bold)
+                .foregroundStyle(color)
+                .brightness(colorScheme == .dark ? 0.1 : -0.15)
+                .saturation(colorScheme == .dark ? 0.9 : 1.1)
         }
     }
 
