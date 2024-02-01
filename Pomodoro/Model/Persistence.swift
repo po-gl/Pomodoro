@@ -33,6 +33,9 @@ struct PersistenceController {
         for i in 0..<6 {
             TasksData.addTask("Task \(i)",
                               completed: i == 3 ? true : false,
+                              flagged: i == 1 ? true : false,
+                              pomosEstimate: i == 1 || i == 2 ? 3 : -1,
+                              pomosActual: i == 2 || i == 3 || i == 4 ? 4 : -1,
                               date: Date() - 5,
                               projects: i == 0 ? assignedProjects.union([extraProject]) : assignedProjects,
                               context: viewContext)
