@@ -176,6 +176,8 @@ struct TaskList: View {
                     withAnimation {
                         TasksData.duplicate(taskToAdd,
                                             completed: false,
+                                            pomosEstimate: taskToAdd.pomosEstimate,
+                                            pomosActual: -1,
                                             order: 0,
                                             date: Date().addingTimeInterval(-1),
                                             context: viewContext)

@@ -21,6 +21,8 @@ struct TaskInfoView: View {
     @State var editNote = ""
     @State var editCompleted = false
     @State var editFlagged = false
+    @State var editPomosEstimate = -1
+    @State var editPomosActual = -1
     @State var editProjects = Set<Project>()
     @State var initialArchivedProjects = [Project]()
 
@@ -56,11 +58,25 @@ struct TaskInfoView: View {
                                 Image(systemName: "leaf.fill")
                                     .foregroundColor(.barWork)
                                     .saturation(editFlagged ? 1.0 : 0.0)
-                                    .animation(.spring, value: editFlagged)
                                     .frame(width: 20, height: 20)
                                 Text("Flagged")
                             }
                         }.tint(.accent)
+                    }
+                    .backgroundStyle(GroupBoxBackgroundStyle())
+
+                    GroupBox {
+                        VStack(alignment: .leading, spacing: 15) {
+                            pomosEstimateView
+                            if editCompleted {
+                                Group {
+                                    Divider()
+                                        .padding(.vertical, 5)
+                                    pomosActualView
+                                }
+                                .transition(transition)
+                            }
+                        }
                     }
                     .backgroundStyle(GroupBoxBackgroundStyle())
 
@@ -117,6 +133,8 @@ struct TaskInfoView: View {
                 editNote = taskItem.note ?? ""
                 editCompleted = taskItem.completed
                 editFlagged = taskItem.flagged
+                editPomosEstimate = Int(taskItem.pomosEstimate)
+                editPomosActual = Int(taskItem.pomosActual)
                 editProjects = taskItem.projects as? Set<Project> ?? []
                 initialArchivedProjects = editProjects.filter { $0.archivedDate != nil }
             }
@@ -137,6 +155,45 @@ struct TaskInfoView: View {
                 }
             }
             .background(Color.background.ignoresSafeArea())
+        }
+    }
+
+    @ViewBuilder var pomosEstimateView: some View {
+        HStack(alignment: .firstTextBaseline) {
+            Text("🍅")
+            Text(try! AttributedString(markdown: "How many Pomodoros do you ___estimate___ you will need for this task?"))
+        }
+        Picker("pomosEstimate", selection: $editPomosEstimate) {
+            Text("< 1").tag(0)
+            ForEach(1...6, id: \.self) { i in
+                Text("\(i)").tag(i)
+            }
+        }
+        .pickerStyle(SegmentedPickerStyle())
+        if editPomosEstimate >= 0 {
+            deselect(for: $editPomosEstimate)
+        }
+    }
+
+    @ViewBuilder var pomosActualView: some View {
+        HStack(alignment: .firstTextBaseline) {
+            Text("🍅")
+                .overlay {
+                    Color.end.mask { Text("🍅") }
+                        .opacity(0.6)
+                        .blendMode(.hardLight)
+                }
+            Text(try! AttributedString(markdown: "How many Pomodoros were ___actually___ needed for this task?"))
+        }
+        Picker("pomosActual", selection: $editPomosActual) {
+            Text("< 1").tag(0)
+            ForEach(1...6, id: \.self) { i in
+                Text("\(i)").tag(i)
+            }
+        }
+        .pickerStyle(SegmentedPickerStyle())
+        if editPomosActual >= 0 {
+            deselect(for: $editPomosActual)
         }
     }
 
@@ -185,11 +242,26 @@ struct TaskInfoView: View {
         }
     }
 
+    @ViewBuilder
+    func deselect(for value: Binding<Int>) -> some View {
+        HStack {
+            Spacer()
+            Button("Deselect") {
+                value.wrappedValue = -1
+            }
+            .tint(.barLongBreak)
+            .opacity(0.8)
+        }
+        .transition(transition)
+    }
+
     func saveEdits() {
         TasksData.edit(editText,
                        note: editNote,
                        completed: editCompleted,
                        flagged: editFlagged,
+                       pomosEstimate: Int16(editPomosEstimate),
+                       pomosActual: Int16(editPomosActual),
                        projects: editProjects,
                        for: taskItem, context: viewContext)
     }
@@ -210,6 +282,14 @@ struct TaskInfoView: View {
         }, label: {
             Text("Cancel")
         })
+    }
+
+    var transition: AnyTransition {
+        if #available(iOS 17, *) {
+            return AnyTransition(BlurReplaceTransition(configuration: .downUp).animation(.easeInOut))
+        } else {
+            return AnyTransition.opacity.animation(.easeInOut)
+        }
     }
 }
 

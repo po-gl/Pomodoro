@@ -275,6 +275,8 @@ struct TaskCell: View {
                 Task { @MainActor in
                     TasksData.duplicate(taskItem,
                                         completed: false,
+                                        pomosEstimate: taskItem.pomosEstimate,
+                                        pomosActual: -1,
                                         order: 0,
                                         date: Date().addingTimeInterval(-1),
                                         context: viewContext)

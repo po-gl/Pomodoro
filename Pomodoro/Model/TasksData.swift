@@ -85,6 +85,8 @@ struct TasksData {
                         note: String = "",
                         completed: Bool = false,
                         flagged: Bool = false,
+                        pomosEstimate: Int16 = -1,
+                        pomosActual: Int16 = -1,
                         order: Int16 = 0,
                         date: Date = Date(),
                         projects: Set<Project> = [],
@@ -94,6 +96,8 @@ struct TasksData {
         newTask.note = note
         newTask.completed = completed
         newTask.flagged = flagged
+        newTask.pomosEstimate = pomosEstimate
+        newTask.pomosActual = pomosActual
         newTask.order = order
         newTask.timestamp = date
         newTask.timestampDay = TaskNote.timestampDayFormatter.string(from: date)
@@ -108,6 +112,8 @@ struct TasksData {
                      note: String? = nil,
                      completed: Bool? = nil,
                      flagged: Bool? = nil,
+                     pomosEstimate: Int16? = nil,
+                     pomosActual: Int16? = nil,
                      projects: Set<Project>? = nil,
                      for task: TaskNote,
                      context: NSManagedObjectContext) {
@@ -120,6 +126,12 @@ struct TasksData {
         }
         if let flagged {
             task.flagged = flagged
+        }
+        if let pomosEstimate {
+            task.pomosEstimate = pomosEstimate
+        }
+        if let pomosActual {
+            task.pomosActual = pomosActual
         }
         if let projects {
             task.projects = projects as NSSet
@@ -206,6 +218,8 @@ struct TasksData {
                           note: String? = nil,
                           completed: Bool? = nil,
                           flagged: Bool? = nil,
+                          pomosEstimate: Int16? = nil,
+                          pomosActual: Int16? = nil,
                           order: Int16? = nil,
                           date: Date? = nil,
                           projects: Set<Project>? = nil,
@@ -214,6 +228,8 @@ struct TasksData {
                           note: note ?? task.note ?? "",
                           completed: completed ?? task.completed,
                           flagged: flagged ?? task.flagged,
+                          pomosEstimate: pomosEstimate ?? task.pomosEstimate,
+                          pomosActual: pomosActual ?? task.pomosActual,
                           order: order ?? task.order,
                           date: date ?? task.timestamp ?? Date(),
                           projects: projects ?? task.projects as? Set<Project> ?? [],
