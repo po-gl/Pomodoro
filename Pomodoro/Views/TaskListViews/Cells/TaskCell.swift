@@ -81,6 +81,11 @@ struct TaskCell: View {
         .sheet(isPresented: $showTaskInfo) {
             TaskInfoView(taskItem: taskItem)
         }
+        .onChange(of: showTaskInfo) { showTaskInfo in
+            if isAdderCell && !showTaskInfo {
+                focus = true
+            }
+        }
 
         .focused($focus)
         .onChange(of: focus) { _ in
