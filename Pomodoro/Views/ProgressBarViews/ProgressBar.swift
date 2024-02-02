@@ -115,7 +115,7 @@ struct ProgressBar: View {
                             .position(x: geometry.size.width/2, y: geometry.size.height/2)
                             .scaleEffect(x: 2.0, anchor: .trailing)
                             .shadow(radius: 5)
-                            .foregroundStyle(getGradient(for: status))
+                            .foregroundStyle(ProgressBar.getGradient(for: status))
                             .brightness(i<taskNotes.pomoHighlight.count && taskNotes.pomoHighlight[i] ? 0.18 : 0.0)
 
                             .onChange(of: taskFromAdder.dragHasEnded) { _ in
@@ -322,7 +322,7 @@ struct ProgressBar: View {
         return intervals[index] / total
     }
 
-    private func getGradient(for status: PomoStatus) -> LinearGradient {
+    static func getGradient(for status: PomoStatus) -> LinearGradient {
         switch status {
         case .work:
             return LinearGradient(stops: [.init(color: .barWork, location: 0.5),
