@@ -51,7 +51,7 @@ struct OnBoardViewBackground: View {
         .drawingGroup()
     }
     @ViewBuilder var PickDivider: some View {
-        if #available(iOS 18, *) {
+        if #available(iOS 17, *) {
             Rectangle()
                 .colorEffect(ShaderLibrary.pickGradient(.boundingRect,
                                                         .float(t0.timeIntervalSinceNow),
