@@ -224,7 +224,7 @@ struct ToastView: View {
         .padding(.vertical, 10)
         .padding(.horizontal)
         .background { background }
-        .frame(maxWidth: 200)
+        .frame(maxWidth: 300)
     }
 
     @ViewBuilder var background: some View {
