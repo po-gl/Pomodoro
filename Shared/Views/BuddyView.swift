@@ -27,6 +27,7 @@ struct BuddyView: View {
     var xOffsetForProgress: Double {
         let startXOffset = Double(buddies.count) * 13
         let safeBarWidth = max(endingXOffset, startingXOffset)
+        guard startXOffset < safeBarWidth else { return 0.0 }
         return (barWidth * pomoTimer.getProgress()).clamped(to: startXOffset...safeBarWidth)
     }
 
