@@ -34,11 +34,11 @@ class TasksOnBar: ObservableObject {
         }
     }
 
-    func addTask(_ text: String, index: Int, context: NSManagedObjectContext) {
+    func addTask(_ text: String, index: Int, context: NSManagedObjectContext?) {
         tasksOnBar[index] = text
         saveToUserDefaults()
 
-        if !text.isEmpty && !TasksData.todaysTasksContains(text, context: context) {
+        if let context, !text.isEmpty && !TasksData.todaysTasksContains(text, context: context) {
             TasksData.addTask(text, order: -1, context: context)
         }
     }
