@@ -187,6 +187,8 @@ struct TaskCell: View {
                               note: editNoteText.wrappedValue,
                               completed: taskItem.completed,
                               flagged: taskItem.flagged,
+                              pomosEstimate: taskItem.pomosEstimate,
+                              pomosActual: taskItem.pomosActual,
                               order: taskItem.order,
                               date: Date.now-1,
                               projects: taskItem.projects as? Set<Project> ?? [],
@@ -196,7 +198,11 @@ struct TaskCell: View {
             editText.wrappedValue = ""
             editNoteText.wrappedValue = ""
             taskItem.completed = false
-            TasksData.edit("", note: "", flagged: false, projects: [], for: taskItem, context: viewContext)
+            taskItem.pomosEstimate = -1
+            taskItem.pomosActual = -1
+            TasksData.edit("", note: "", flagged: false,
+                           pomosEstimate: -1, pomosActual: -1,
+                           projects: [], for: taskItem, context: viewContext)
             Task { @MainActor in
                 try? await Task.sleep(for: .seconds(0.1))
                 TaskListViewController.focusedIndexPath = indexPath
