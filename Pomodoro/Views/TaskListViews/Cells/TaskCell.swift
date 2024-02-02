@@ -70,6 +70,13 @@ struct TaskCell: View {
         .onAppear {
             focusIfJustAdded()
         }
+        .onDisappear {
+            if !isAdderCell {
+                deleteOrEditTask()
+            } else {
+                adderAction()
+            }
+        }
 
         .sheet(isPresented: $showTaskInfo) {
             TaskInfoView(taskItem: taskItem)

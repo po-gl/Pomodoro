@@ -104,6 +104,9 @@ struct ProjectCell: View {
         .onAppear {
             focusIfJustAdded()
         }
+        .onDisappear {
+            deleteOrEditProject()
+        }
         .task {
             await reloadTaskNotes()
         }
