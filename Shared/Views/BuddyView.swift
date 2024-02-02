@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct BuddyView: View {
+    @Environment(\.isOnBoarding) var isOnBoarding
     @EnvironmentObject var pomoTimer: PomoTimer
 
     var metrics: GeometryProxy
@@ -31,7 +32,9 @@ struct BuddyView: View {
         return (barWidth * pomoTimer.getProgress()).clamped(to: startXOffset...safeBarWidth)
     }
 
-    var startStopAnimation: Animation = .interpolatingSpring(stiffness: 190, damping: 13)
+    var startStopAnimation: Animation? {
+        isOnBoarding ? nil : .interpolatingSpring(stiffness: 190, damping: 13)
+    }
 
     var body: some View {
         HStack(spacing: -3) {

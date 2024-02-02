@@ -20,6 +20,8 @@ struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.undoManager) private var undoManager
 
+    @AppStorage("shouldOnBoard", store: UserDefaults.pomo) var shouldOnBoard = true
+
     @ObservedObject var errors = Errors.shared
 
     @ObservedObject var pomoTimer: PomoTimer
@@ -66,7 +68,12 @@ struct ContentView: View {
             AppNotifications.shared.getNotificationPermissions()
             viewContext.undoManager = undoManager
         }
-        
+
+        .sheet(isPresented: $shouldOnBoard) {
+            OnBoardView()
+                .presentationDragIndicator(.visible)
+        }
+
         .onChange(of: scenePhase) { newPhase in
             Logger().log("Phase \(newPhase)")
             if newPhase == .active {

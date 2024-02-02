@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct AngledText: View {
+    @Environment(\.isOnBoarding) private var isOnBoarding
+
     var text: String
     var height: Double = 150
     var lineWidth: Double = 20
@@ -33,6 +35,14 @@ struct AngledText: View {
     @ViewBuilder private var angledText: some View {
         let calculatedWidth = textWidth
         Text(text)
+            .opacity(isOnBoarding ? 0.0 : 1.0)
+            .overlay {
+                if isOnBoarding {
+                    RoundedRectangle(cornerRadius: 8)
+                        .opacity(0.6)
+                        .frame(height: 14)
+                }
+            }
             .font(.system(.callout, design: .monospaced, weight: .medium))
             .frame(width: calculatedWidth, alignment: .leading)
             .offset(x: calculatedWidth/2)

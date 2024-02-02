@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TaskLabel: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.isOnBoarding) private var isOnBoarding
 
     var index: Int
     @ObservedObject var taskNotes: TasksOnBar
@@ -158,6 +159,7 @@ struct TaskLabel: View {
             resetHaptic()
             Task { @MainActor in
                 withAnimation { taskNotes.tasksOnBar[index] = "" }
+                guard !isOnBoarding else { return }
                 taskNotes.saveToUserDefaults()
             }
         } label: {

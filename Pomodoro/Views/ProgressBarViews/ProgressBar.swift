@@ -13,6 +13,8 @@ struct ProgressBar: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.isOnBoarding) private var isOnBoarding
+
     @EnvironmentObject var pomoTimer: PomoTimer
 
     var metrics: GeometryProxy
@@ -50,6 +52,7 @@ struct ProgressBar: View {
             }
 
             .onChange(of: scenePhase) { newPhase in
+                guard !isOnBoarding else { return }
                 if newPhase == .active {
                     taskNotes.restoreFromUserDefaults()
                     taskNotes.setTaskAmount(for: pomoTimer)
@@ -232,6 +235,7 @@ struct ProgressBar: View {
                     .scaleEffect(0.85)
                     .offset(x: -(getBarWidth() * getProportion(i) - barOutlinePadding)/2 + 3)
                     .opacity(0.6)
+                    .environment(\.isOnBoarding, false)
             }
             .frame(width: max(getBarWidth() * getProportion(i) - barOutlinePadding, 0), height: barHeight)
             .padding(.horizontal, 1)

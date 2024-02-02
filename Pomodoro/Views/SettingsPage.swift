@@ -19,6 +19,8 @@ struct SettingsPage: View {
     @StateObject var buddySelection = BuddySelection.shared
     @AppStorage("enableBuddies", store: UserDefaults.pomo) var enableBuddies = true
 
+    @State var showWelcomeMessage = false
+
     @State var draggableTaskStub = DraggableTask()
     let durationChangeAnim: Animation = .interpolatingSpring(stiffness: 190, damping: 13)
 
@@ -79,8 +81,10 @@ struct SettingsPage: View {
                         }
                     }
                     .padding(.horizontal)
+
                     Divider()
                         .padding(.vertical, 5)
+
                     GroupBox {
                         buddySelectors
                         Divider()
@@ -91,6 +95,23 @@ struct SettingsPage: View {
                         .tint(.end)
                     }
                     .backgroundStyle(GroupBoxBackgroundStyle())
+
+                    Divider()
+                        .padding(.vertical, 5)
+
+                    GroupBox {
+                        Button(action: {
+                            showWelcomeMessage = true
+                        }) {
+                            Text("Show Welcome Message")
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                    .backgroundStyle(GroupBoxBackgroundStyle())
+                    .sheet(isPresented: $showWelcomeMessage) {
+                        OnBoardView()
+                            .presentationDragIndicator(.visible)
+                    }
                 }
                 .padding()
             }
