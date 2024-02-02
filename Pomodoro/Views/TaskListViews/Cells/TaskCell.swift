@@ -35,6 +35,8 @@ struct TaskCell: View {
     var cell: UICollectionViewCell?
     var scrollTaskList: () -> Void = {}
 
+    @State var scrollOnInputTask: Task<(), Never>?
+
     @FocusState var focus
 
     @State var showTaskInfo = false
@@ -161,11 +163,7 @@ struct TaskCell: View {
             }
             .onChangeWithThrottle(of: editText.wrappedValue, for: 0.6) { _ in
                 if focus {
-                    Task { @MainActor in
-                        try? await Task.sleep(for: .seconds(0.1))
-                        TaskListViewController.focusedIndexPath = indexPath
-                        scrollTaskList()
-                    }
+                    scrollOnInput()
                 }
             }
     }
@@ -176,13 +174,20 @@ struct TaskCell: View {
             .foregroundColor(.secondary)
             .onChangeWithThrottle(of: editNoteText.wrappedValue, for: 0.6) { _ in
                 if focus {
-                    Task { @MainActor in
-                        try? await Task.sleep(for: .seconds(0.1))
-                        TaskListViewController.focusedIndexPath = indexPath
-                        scrollTaskList()
-                    }
+                    scrollOnInput()
                 }
             }
+    }
+
+    private func scrollOnInput() {
+        scrollOnInputTask?.cancel()
+        scrollOnInputTask = Task(priority: .utility) {
+            try? await Task.sleep(for: .seconds(0.2))
+            if !Task.isCancelled {
+                TaskListViewController.focusedIndexPath = indexPath
+                scrollTaskList()
+            }
+        }
     }
 
     private func deleteOrEditTask() {
