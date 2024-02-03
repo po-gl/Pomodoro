@@ -390,6 +390,7 @@ struct TaskInfoCluster: View {
             .frame(width: 25, height: count > 2 ? 20 : 10, alignment: .top)
             .rotationEffect(.degrees(90))
             .frame(width: count > 2 ? 20 : 10, height: 25)
+            .offset(y: projects.count == 1 ? 5 : 0)
         }
     }
 
