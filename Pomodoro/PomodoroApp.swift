@@ -17,7 +17,13 @@ struct PomodoroApp: App {
         WindowGroup {
             ContentView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
+#if targetEnvironment(macCatalyst)
+                .frame(minWidth: 600, idealWidth: 700, minHeight: 900, idealHeight: 1000)
+#endif
         }
+#if targetEnvironment(macCatalyst)
+        .backDeployedDefaultSize(width: 700, height: 1000)
+#endif
     }
 }
 

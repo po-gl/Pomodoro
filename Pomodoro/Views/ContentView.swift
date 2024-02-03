@@ -8,7 +8,9 @@
 import SwiftUI
 import CoreHaptics
 import WidgetKit
+#if canImport(ActivityKit)
 import ActivityKit
+#endif
 import WatchConnectivity
 import Combine
 import OSLog
@@ -82,7 +84,9 @@ struct ContentView: View {
                 setupWatchConnection()
                 didPerformInactiveSetup = false
                 if #available(iOS 16.2, *) {
+#if canImport(ActivityKit)
                     LiveActivities.shared.startPollingPushTokenUpdates()
+#endif
                 }
                 UIApplication.shared.registerForRemoteNotifications()
                 
@@ -104,12 +108,19 @@ struct ContentView: View {
             UIApplication.shared.registerForRemoteNotifications()
 
             if #available(iOS 16.2, *) {
+#if canImport(ActivityKit)
                 if isPaused {
                     LiveActivities.shared.stopLiveActivity(pomoTimer, tasksOnBar)
                 } else {
                     LiveActivities.shared.setupLiveActivity(pomoTimer, tasksOnBar)
                 }
+#endif
             }
+#if targetEnvironment(macCatalyst)
+            if !isPaused {
+                Task { await AppNotifications.shared.setupNotifications(pomoTimer) }
+            }
+#endif
         }
         .onChange(of: pomoTimer.isReset) { isReset in
             if isReset {
@@ -118,7 +129,9 @@ struct ContentView: View {
                 didReceiveSyncFromWatchConnection = !wcSent
                 
                 if #available(iOS 16.2, *) {
+#if canImport(ActivityKit)
                     LiveActivities.shared.stopLiveActivity(pomoTimer, tasksOnBar)
+#endif
                 }
             }
         }

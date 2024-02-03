@@ -5,6 +5,7 @@
 //  Created by Porter Glines on 12/9/23.
 //
 
+#if canImport(ActivityKit)
 import SwiftUI
 import WidgetKit
 
@@ -43,3 +44,4 @@ struct DynamicIslandTimerView: View {
         }
     }
 }
+#endif

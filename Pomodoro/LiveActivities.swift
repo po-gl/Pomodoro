@@ -5,6 +5,7 @@
 //  Created by Porter Glines on 1/23/23.
 //
 
+#if canImport(ActivityKit)
 import ActivityKit
 import WidgetKit
 import SwiftUI
@@ -286,3 +287,4 @@ extension LiveActivityError: LocalizedError {
         }
     }
 }
+#endif

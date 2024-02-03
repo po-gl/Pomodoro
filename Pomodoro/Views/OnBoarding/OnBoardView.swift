@@ -60,6 +60,9 @@ struct OnBoardView: View {
                 changePageIndicators()
             }
         }
+#if targetEnvironment(macCatalyst)
+        .ignoresSafeArea(edges: .horizontal)
+#endif
     }
     
     func changePageIndicators() {

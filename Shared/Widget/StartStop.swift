@@ -7,7 +7,9 @@
 
 import SwiftUI
 import AppIntents
+#if canImport(ActivityKit)
 import ActivityKit
+#endif
 import OSLog
 
 @available(iOS 17.0, *)
@@ -26,11 +28,13 @@ struct StartStop: LiveActivityIntent {
         let tasksOnBar = TasksOnBar()
         tasksOnBar.restoreFromUserDefaults()
 
+#if canImport(ActivityKit)
         if pomoTimer.isPaused {
             LiveActivities.shared.stopLiveActivity(pomoTimer, tasksOnBar)
         } else {
             LiveActivities.shared.setupLiveActivity(pomoTimer, tasksOnBar)
         }
+#endif
 
         pomoTimer.saveToUserDefaults()
         return .result()

@@ -5,6 +5,7 @@
 //  Created by Porter Glines on 12/9/23.
 //
 
+#if canImport(ActivityKit)
 import SwiftUI
 import WidgetKit
 
@@ -160,3 +161,4 @@ private let timeFormatter: DateFormatter = {
     formatter.setLocalizedDateFormatFromTemplate("hh:mm")
     return formatter
 }()
+#endif
