@@ -41,6 +41,10 @@ class LiveActivities {
 
     static let serverURL = Env.shared.vars?.serverURL ?? "http://127.0.0.1:9000"
 
+    var deviceToken: String? {
+        UserDefaults.pomo?.string(forKey: "deviceToken")
+    }
+
     var pushTokenPollingTask: Task<(), Never>?
 
     @available(iOS 16.2, *)
@@ -159,7 +163,7 @@ class LiveActivities {
         var expSeconds = 2.0
 
         while attempt < attemptLimit {
-            if AppNotifications.shared.deviceToken != nil {
+            if deviceToken != nil {
                 return
             }
             try? await Task.sleep(for: .seconds(expSeconds))
@@ -170,7 +174,7 @@ class LiveActivities {
     }
 
     func sendPomoDataToServer(_ pomoTimer: PomoTimer, _ tasksOnBar: TasksOnBar) async throws {
-        guard let deviceToken = AppNotifications.shared.deviceToken else { return }
+        guard let deviceToken else { return }
         guard pomoTimer.getStatus() != .end else { return }
 
         guard let url = URL(string: "\(LiveActivities.serverURL)/request/\(deviceToken)") else { throw LiveActivityError.badURL }
@@ -181,7 +185,7 @@ class LiveActivities {
     }
 
     func sendPushTokenToServer(_ pushToken: String) async throws {
-        guard let deviceToken = AppNotifications.shared.deviceToken else { return }
+        guard let deviceToken else { return }
 
         guard let url = URL(string: "\(LiveActivities.serverURL)/pushtoken/\(deviceToken)") else { throw LiveActivityError.badURL }
         let payload = PushTokenPayload(pushToken: pushToken)
@@ -190,7 +194,7 @@ class LiveActivities {
     }
 
     func cancelServerRequest() async throws {
-        guard let deviceToken = AppNotifications.shared.deviceToken else { return }
+        guard let deviceToken else { return }
 
         guard let url = URL(string: "\(LiveActivities.serverURL)/cancel/\(deviceToken)") else { throw LiveActivityError.badURL }
         var req = URLRequest(url: url)

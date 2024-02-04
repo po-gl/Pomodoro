@@ -145,7 +145,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let deviceTokenString = deviceToken.map { String(format: "%02hhx", $0)}.joined()
         Logger().log("Device token: \(deviceTokenString)")
-        AppNotifications.shared.deviceToken = deviceTokenString
+        UserDefaults.pomo?.set(deviceTokenString, forKey: "deviceToken")
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {

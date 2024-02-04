@@ -21,7 +21,9 @@ import UserNotifications
 class AppNotifications {
     static let shared = AppNotifications()
 
-    public var deviceToken: String?
+    public var deviceToken: String? {
+        UserDefaults.pomo?.string(forKey: "deviceToken")
+    }
 
     func getNotificationPermissions() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, error in
