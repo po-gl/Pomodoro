@@ -24,19 +24,18 @@ struct StartStop: LiveActivityIntent {
         let pomoTimer = PomoTimer()
         pomoTimer.restoreFromUserDefaults()
         pomoTimer.toggle()
+        pomoTimer.saveToUserDefaults()
 
         let tasksOnBar = TasksOnBar()
         tasksOnBar.restoreFromUserDefaults()
 
 #if canImport(ActivityKit)
         if pomoTimer.isPaused {
-            LiveActivities.shared.stopLiveActivity(pomoTimer, tasksOnBar)
+            await LiveActivities.shared.stopLiveActivity(pomoTimer, tasksOnBar)
         } else {
-            LiveActivities.shared.setupLiveActivity(pomoTimer, tasksOnBar)
+            await LiveActivities.shared.setupLiveActivity(pomoTimer, tasksOnBar)
         }
 #endif
-
-        pomoTimer.saveToUserDefaults()
         return .result()
     }
 }

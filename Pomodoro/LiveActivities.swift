@@ -48,52 +48,48 @@ class LiveActivities {
     var pushTokenPollingTask: Task<(), Never>?
 
     @available(iOS 16.2, *)
-    func setupLiveActivity(_ pomoTimer: PomoTimer, _ tasksOnBar: TasksOnBar) {
+    func setupLiveActivity(_ pomoTimer: PomoTimer, _ tasksOnBar: TasksOnBar) async {
         guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
         guard !pomoTimer.isPaused else { return }
 
         Logger().log("URL to live activity server: \(LiveActivities.serverURL)")
 
-        Task {
-            do {
-                try await waitForDeviceToken()
+        do {
+            try await waitForDeviceToken()
 
-                try await sendPomoDataToServer(pomoTimer, tasksOnBar)
+            try await sendPomoDataToServer(pomoTimer, tasksOnBar)
+            
+            let pomoAttrs = PomoAttributes(workDuration: pomoTimer.workDuration,
+                                           restDuration: pomoTimer.restDuration,
+                                           breakDuration: pomoTimer.breakDuration)
+            let content = getLiveActivityContentFor(pomoTimer, tasksOnBar)
 
-                let pomoAttrs = PomoAttributes(workDuration: pomoTimer.workDuration,
-                                               restDuration: pomoTimer.restDuration,
-                                               breakDuration: pomoTimer.breakDuration)
-                let content = getLiveActivityContentFor(pomoTimer, tasksOnBar)
+            if let activity = Activity<PomoAttributes>.activities.first {
+                await activity.update(content)
+                Logger().log("Updated live activity \(String(describing: activity.id)).")
+            } else {
+                let activity = try Activity.request(attributes: pomoAttrs, content: content, pushType: .token)
+                Logger().log("Requested live activity \(String(describing: activity.id)).")
 
-                if let activity = Activity<PomoAttributes>.activities.first {
-                    await activity.update(content)
-                    Logger().log("Updated live activity \(String(describing: activity.id)).")
-                } else {
-                    let activity = try Activity.request(attributes: pomoAttrs, content: content, pushType: .token)
-                    Logger().log("Requested live activity \(String(describing: activity.id)).")
-
-                    startPollingPushTokenUpdates()
-                }
-            } catch {
-                Logger().error("Error requesting live activity: \(error.localizedDescription)")
-                cancelLiveActivity(pomoTimer)
+                startPollingPushTokenUpdates()
             }
+        } catch {
+            Logger().error("Error requesting live activity: \(error.localizedDescription)")
+            cancelLiveActivity(pomoTimer)
         }
     }
 
     @available(iOS 16.2, *)
-    func stopLiveActivity(_ pomoTimer: PomoTimer, _ tasksOnBar: TasksOnBar) {
-        Task {
-            do {
-                if let activity = Activity<PomoAttributes>.activities.first {
-                    let content = getLiveActivityContentFor(pomoTimer, tasksOnBar)
-                    await activity.update(content)
-                    Logger().log("Updated live activity \(String(describing: activity.id)).")
-                }
-                try await cancelServerRequest()
-            } catch {
-                Logger().error("Error stopping live activyt: \(error.localizedDescription)")
+    func stopLiveActivity(_ pomoTimer: PomoTimer, _ tasksOnBar: TasksOnBar) async {
+        do {
+            if let activity = Activity<PomoAttributes>.activities.first {
+                let content = getLiveActivityContentFor(pomoTimer, tasksOnBar)
+                await activity.update(content)
+                Logger().log("Updated live activity \(String(describing: activity.id)).")
             }
+            try await cancelServerRequest()
+        } catch {
+            Logger().error("Error stopping live activyt: \(error.localizedDescription)")
         }
     }
 

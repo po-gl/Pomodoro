@@ -83,10 +83,12 @@ struct PomodoroApp: App {
 
                     if #available(iOS 16.2, *) {
 #if canImport(ActivityKit)
-                        if isPaused {
-                            LiveActivities.shared.stopLiveActivity(pomoTimer, tasksOnBar)
-                        } else {
-                            LiveActivities.shared.setupLiveActivity(pomoTimer, tasksOnBar)
+                        Task { @MainActor in
+                            if isPaused {
+                                await LiveActivities.shared.stopLiveActivity(pomoTimer, tasksOnBar)
+                            } else {
+                                await LiveActivities.shared.setupLiveActivity(pomoTimer, tasksOnBar)
+                            }
                         }
 #endif
                     }
@@ -104,7 +106,9 @@ struct PomodoroApp: App {
                         
                         if #available(iOS 16.2, *) {
 #if canImport(ActivityKit)
-                            LiveActivities.shared.stopLiveActivity(pomoTimer, tasksOnBar)
+                            Task { @MainActor in
+                                await LiveActivities.shared.stopLiveActivity(pomoTimer, tasksOnBar)
+                            }
 #endif
                         }
                     }
