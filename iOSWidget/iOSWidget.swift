@@ -158,7 +158,7 @@ struct iOSWidgetView: View {
     }
 
     @ViewBuilder var subStatusView: some View {
-        Text(entry.isPaused ? "paused" : "until \(timeFormatter.string(from: entry.timerInterval.lowerBound))")
+        Text(entry.isPaused ? "paused" : "until \(timeFormatter.string(from: entry.timerInterval.upperBound))")
             .font(.system(isSmall ? .footnote : .subheadline, design: .rounded, weight: .regular))
             .opacity(0.6)
             .foregroundStyle(.white)

@@ -110,7 +110,7 @@ struct StandByWidgetView: View {
     }
 
     @ViewBuilder var subStatusView: some View {
-        Text(entry.isPaused ? "paused" : "until \(timeFormatter.string(from: entry.timerInterval.lowerBound))")
+        Text(entry.isPaused ? "paused" : "until \(timeFormatter.string(from: entry.timerInterval.upperBound))")
             .font(.system(.subheadline, design: .rounded, weight: .regular))
             .monospacedDigit()
             .opacity(0.6)
