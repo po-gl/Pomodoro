@@ -67,7 +67,7 @@ struct iOSWidgetView: View {
             HStack(spacing: 0) {
                 VStack(alignment:. leading, spacing: 5) {
                     statusView
-                    timerEndView
+                    subStatusView
                         .offset(x: 4)
                 }
                 Spacer()
@@ -94,7 +94,7 @@ struct iOSWidgetView: View {
             HStack(spacing: 0) {
                 VStack(alignment:. leading, spacing: 5) {
                     statusView
-                    timerEndView
+                    subStatusView
                         .offset(x: 4)
                 }
                 Spacer()
@@ -116,7 +116,7 @@ struct iOSWidgetView: View {
         let endDate = entry.timerInterval.upperBound
         if entry.isPaused {
             Text(endDate.timeIntervalSince(startDate).compactTimerFormatted())
-                .font(.system(size: 42, weight: .light, design: .rounded))
+                .font(.system(size: 42, weight: .regular, design: .rounded))
                 .foregroundStyle(entry.status.color)
                 .brightness(0.4)
                 .monospacedDigit()
@@ -124,7 +124,7 @@ struct iOSWidgetView: View {
         } else {
             Text(timerInterval: entry.timerInterval, countsDown: true)
                 .multilineTextAlignment(.trailing)
-                .font(.system(size: 42, weight: .light, design: .rounded))
+                .font(.system(size: 42, weight: .regular, design: .rounded))
                 .foregroundStyle(entry.status.color)
                 .brightness(0.4)
                 .monospacedDigit()
@@ -140,7 +140,7 @@ struct iOSWidgetView: View {
         Text(task != "" ? task : entry.status.rawValue)
             .font(.system(fontStyle, design: .rounded))
             .fontWeight(fontWeight)
-            .lineLimit(isSmall ? 2 : 3)
+            .lineLimit(isSmall ? 1 : 3)
             .foregroundStyle(.black)
             .padding(.horizontal, 5)
             .background(
@@ -157,9 +157,8 @@ struct iOSWidgetView: View {
             )
     }
 
-    @ViewBuilder var timerEndView: some View {
-        let endTime = entry.isPaused ? "--:--" : timeFormatter.string(from: entry.timerInterval.lowerBound)
-        Text("until \(endTime)")
+    @ViewBuilder var subStatusView: some View {
+        Text(entry.isPaused ? "paused" : "until \(timeFormatter.string(from: entry.timerInterval.lowerBound))")
             .font(.system(isSmall ? .footnote : .subheadline, design: .rounded, weight: .regular))
             .opacity(0.6)
             .foregroundStyle(.white)

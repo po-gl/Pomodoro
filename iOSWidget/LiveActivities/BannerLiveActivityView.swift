@@ -26,7 +26,7 @@ struct BannerLiveActivityView: View {
                 HStack(alignment: .top, spacing: 0) {
                     VStack(alignment:. leading, spacing: 5) {
                         statusView
-                        timerEndView
+                        subStatusView
                             .offset(x: 4)
                     }
                     .padding(.top, 4)
@@ -123,9 +123,8 @@ struct BannerLiveActivityView: View {
             )
     }
 
-    @ViewBuilder var timerEndView: some View {
-        let endTime = context.state.isPaused ? "--:--" : timeFormatter.string(from: endDate)
-        Text("until \(endTime)")
+    @ViewBuilder var subStatusView: some View {
+        Text(context.state.isPaused ? "paused" : "until \(timeFormatter.string(from: endDate))")
             .font(.footnote)
             .fontDesign(.rounded)
             .fontWeight(.regular)

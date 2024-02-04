@@ -47,7 +47,7 @@ struct StandByWidgetView: View {
             HStack(spacing: 0) {
                 VStack(alignment:. leading, spacing: 5) {
                     statusView
-                    timerEndView
+                    subStatusView
                         .offset(x: 4)
                 }
                 Spacer()
@@ -69,7 +69,7 @@ struct StandByWidgetView: View {
         let endDate = entry.timerInterval.upperBound
         if entry.isPaused {
             Text(endDate.timeIntervalSince(startDate).compactTimerFormatted())
-                .font(.system(size: 42, weight: .light, design: .rounded))
+                .font(.system(size: 42, weight: .regular, design: .rounded))
                 .foregroundStyle(entry.status.color)
                 .brightness(0.3)
                 .monospacedDigit()
@@ -78,7 +78,7 @@ struct StandByWidgetView: View {
         } else {
             Text(timerInterval: entry.timerInterval, countsDown: true)
                 .multilineTextAlignment(.trailing)
-                .font(.system(size: 42, weight: .light, design: .rounded))
+                .font(.system(size: 42, weight: .regular, design: .rounded))
                 .foregroundStyle(entry.status.color)
                 .brightness(0.3)
                 .monospacedDigit()
@@ -92,7 +92,7 @@ struct StandByWidgetView: View {
         let task = entry.task ?? ""
         Text(task != "" ? task : entry.status.rawValue)
             .font(.system(.headline, design: .rounded, weight: .medium))
-            .lineLimit(2)
+            .lineLimit(1)
             .foregroundStyle(.black)
             .padding(.horizontal, 5)
             .background(
@@ -109,9 +109,8 @@ struct StandByWidgetView: View {
             )
     }
 
-    @ViewBuilder var timerEndView: some View {
-        let endTime = entry.isPaused ? "--:--" : timeFormatter.string(from: entry.timerInterval.lowerBound)
-        Text("until \(endTime)")
+    @ViewBuilder var subStatusView: some View {
+        Text(entry.isPaused ? "paused" : "until \(timeFormatter.string(from: entry.timerInterval.lowerBound))")
             .font(.system(.subheadline, design: .rounded, weight: .regular))
             .monospacedDigit()
             .opacity(0.6)
