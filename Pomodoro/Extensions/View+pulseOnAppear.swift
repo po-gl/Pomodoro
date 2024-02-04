@@ -28,6 +28,7 @@ struct PulseOnAppearModifier: ViewModifier {
                     RoundedRectangle(cornerRadius: 10)
                         .fill(.end)
                         .opacity(pulsed ? 0.3 : 0.0)
+                        .allowsHitTesting(false)
                         .animation(.easeInOut(duration: duration), value: pulsed)
                 }
                 .onAppear {

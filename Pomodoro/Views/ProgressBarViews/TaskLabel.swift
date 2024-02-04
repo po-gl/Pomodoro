@@ -24,6 +24,9 @@ struct TaskLabel: View {
     @State var presentingNoteRename = false
     @State var renameText = ""
 
+    @State var presentingTaskNoteInfo = false
+    @State var selectedTaskNote: TaskNote?
+
     var text: String {
         index < taskNotes.tasksOnBar.count ? taskNotes.tasksOnBar[index] : ""
     }
@@ -85,6 +88,12 @@ struct TaskLabel: View {
                     renameAlertView
                 }
 
+                .sheet(isPresented: $presentingTaskNoteInfo) {
+                    if let selectedTaskNote {
+                        TaskInfoView(taskItem: selectedTaskNote, scrollToIdOnAppear: "estimate")
+                    }
+                }
+
                 .opacity(text != "" ? 1.0 : 0.0)
                 .animation(.easeInOut, value: taskNotes.tasksOnBar)
         }
@@ -113,6 +122,7 @@ struct TaskLabel: View {
         if text != "" {
             if let taskNote = TasksData.taskInTodaysTasks(matching: text, context: viewContext) {
                 markAsCompletedButton(taskNote: taskNote)
+                addEstimationButton(taskNote: taskNote)
             } else {
                 addToTodayButton
             }
@@ -140,6 +150,16 @@ struct TaskLabel: View {
             } else {
                 Label("Mark as Completed", systemImage: "checkmark.circle")
             }
+        }
+    }
+
+    @ViewBuilder private func addEstimationButton(taskNote: TaskNote) -> some View {
+        Button {
+            basicHaptic()
+            selectedTaskNote = taskNote
+            presentingTaskNoteInfo = true
+        } label: {
+            Label("Add Pomodoro Estimation", systemImage: "questionmark.circle")
         }
     }
 

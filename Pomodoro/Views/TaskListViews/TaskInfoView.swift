@@ -14,6 +14,8 @@ struct TaskInfoView: View {
 
     @ObservedObject var taskItem: TaskNote
 
+    var scrollToIdOnAppear: String?
+
     @FetchRequest(fetchRequest: ProjectsData.currentProjectsRequest)
     var currentProjects: FetchedResults<Project>
 
@@ -33,98 +35,112 @@ struct TaskInfoView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 15) {
-                    GroupBox {
-                        TextField("Task", text: $editText, axis: .vertical)
-                            .fontWeight(.semibold)
-                            .padding(.bottom, 5)
-                        Divider()
-                        TextField("Note", text: $editNote, axis: .vertical)
-                            .padding(.top, 5)
-                    }
-                    .backgroundStyle(GroupBoxBackgroundStyle())
+            ScrollViewReader { scroll in
+                ScrollView {
+                    VStack(spacing: 15) {
+                        GroupBox {
+                            TextField("Task", text: $editText, axis: .vertical)
+                                .fontWeight(.semibold)
+                                .padding(.bottom, 5)
+                            Divider()
+                            TextField("Note", text: $editNote, axis: .vertical)
+                                .padding(.top, 5)
+                        }
+                        .backgroundStyle(GroupBoxBackgroundStyle())
+                        
+                        GroupBox {
+                            Toggle(isOn: $editCompleted) {
+                                Text("Completed")
+                            }.tint(.end)
+                        }
+                        .backgroundStyle(GroupBoxBackgroundStyle())
 
-                    GroupBox {
-                        Toggle(isOn: $editCompleted) {
-                            Text("Completed")
-                        }.tint(.end)
-                    }
-                    .backgroundStyle(GroupBoxBackgroundStyle())
-
-                    GroupBox {
-                        Toggle(isOn: $editFlagged) {
-                            HStack(spacing: 15) {
-                                Image(systemName: "leaf.fill")
-                                    .foregroundColor(.barWork)
-                                    .saturation(editFlagged ? 1.0 : 0.0)
-                                    .frame(width: 20, height: 20)
-                                Text("Flagged")
-                            }
-                        }.tint(.accent)
-                    }
-                    .backgroundStyle(GroupBoxBackgroundStyle())
-
-                    GroupBox {
-                        VStack(alignment: .leading, spacing: 15) {
-                            pomosEstimateView
-                            if editCompleted {
-                                Group {
-                                    Divider()
-                                        .padding(.vertical, 5)
-                                    pomosActualView
+                        GroupBox {
+                            Toggle(isOn: $editFlagged) {
+                                HStack(spacing: 15) {
+                                    Image(systemName: "leaf.fill")
+                                        .foregroundColor(.barWork)
+                                        .saturation(editFlagged ? 1.0 : 0.0)
+                                        .frame(width: 20, height: 20)
+                                    Text("Flagged")
                                 }
-                                .transition(transition)
-                            }
+                            }.tint(.accent)
                         }
-                    }
-                    .backgroundStyle(GroupBoxBackgroundStyle())
+                        .backgroundStyle(GroupBoxBackgroundStyle())
 
-                    GroupBox {
-                        VStack(alignment: .leading) {
-                            HStack(spacing: 15) {
-                                Text("Assigned Projects")
-                                    .foregroundStyle(.secondary)
-                                Spacer()
-                                Button(action: {
-                                    basicHaptic()
-                                    editingAssignedProjects.toggle()
-                                }) {
-                                    Text(editingAssignedProjects ? "Done" : "Edit")
-                                        .font(.headline)
-                                        .fontWeight(.bold)
-                                        .tint(editingAssignedProjects ? .end : .accent)
+                        GroupBox {
+                            VStack(alignment: .leading, spacing: 15) {
+                                pomosEstimateView
+                                if editCompleted {
+                                    Group {
+                                        Divider()
+                                            .padding(.vertical, 5)
+                                        pomosActualView
+                                    }
+                                    .transition(transition)
                                 }
-                                .padding(.trailing, 10)
                             }
-                            projectsList
-                                .offset(x: -5)
                         }
-                    }
-                    .backgroundStyle(GroupBoxBackgroundStyle())
-                    .animation(.spring(duration: 0.3), value: editingAssignedProjects)
+                        .backgroundStyle(GroupBoxBackgroundStyle())
+                        .pulseOnAppear(if: scrollToIdOnAppear == "estimate")
+                        .id("estimate")
 
-                    GroupBox {
-                        Button(role: .destructive, action: {
-                            isDeleting = true
-                        }) {
-                            Text("Delete Task")
+                        GroupBox {
+                            VStack(alignment: .leading) {
+                                HStack(spacing: 15) {
+                                    Text("Assigned Projects")
+                                        .foregroundStyle(.secondary)
+                                    Spacer()
+                                    Button(action: {
+                                        basicHaptic()
+                                        editingAssignedProjects.toggle()
+                                    }) {
+                                        Text(editingAssignedProjects ? "Done" : "Edit")
+                                            .font(.headline)
+                                            .fontWeight(.bold)
+                                            .tint(editingAssignedProjects ? .end : .accent)
+                                    }
+                                    .padding(.trailing, 10)
+                                }
+                                projectsList
+                                    .offset(x: -5)
+                            }
                         }
-                        .frame(maxWidth: .infinity)
+                        .backgroundStyle(GroupBoxBackgroundStyle())
+                        .animation(.spring(duration: 0.3), value: editingAssignedProjects)
+
+                        GroupBox {
+                            Button(role: .destructive, action: {
+                                isDeleting = true
+                            }) {
+                                Text("Delete Task")
+                            }
+                            .frame(maxWidth: .infinity)
+                        }
+                        .backgroundStyle(GroupBoxBackgroundStyle())
+                        .confirmationDialog("Delete Task", isPresented: $isDeleting) {
+                            Button(role: .destructive, action: {
+                                dismiss()
+                                TasksData.delete(taskItem, context: viewContext)
+                            }) {
+                                Text("Delete This Task")
+                            }
+                        } message: {
+                            Text("Are you sure you want to delete this task?")
+                        }
                     }
-                    .backgroundStyle(GroupBoxBackgroundStyle())
-                    .confirmationDialog("Delete Task", isPresented: $isDeleting) {
-                        Button(role: .destructive, action: {
-                            dismiss()
-                            TasksData.delete(taskItem, context: viewContext)
-                        }) {
-                            Text("Delete This Task")
+                    .padding()
+                }
+                .onAppear {
+                    if let scrollToIdOnAppear {
+                        Task { @MainActor in
+                            try? await Task.sleep(for: .seconds(0.1))
+                            withAnimation {
+                                scroll.scrollTo(scrollToIdOnAppear, anchor: .center)
+                            }
                         }
-                    } message: {
-                        Text("Are you sure you want to delete this task?")
                     }
                 }
-                .padding()
             }
             .scrollDismissesKeyboard(.interactively)
 
