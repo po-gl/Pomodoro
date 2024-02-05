@@ -111,7 +111,7 @@ struct ProgressBar: View {
         HStack(spacing: 0) {
             ForEach(0..<pomoTimer.order.count, id: \.self) { i in
                 GeometryReader { geometry in
-                    let status = pomoTimer.order[i].getStatus()
+                    let status = pomoTimer.order[i].status
 
                     if i < taskNotes.draggableTasksOnBar.count {
                         RoundedRectangle(cornerRadius: 4)
@@ -203,7 +203,7 @@ struct ProgressBar: View {
         HStack(spacing: 0) {
             ForEach(0..<pomoTimer.order.count, id: \.self) { i in
                 ZStack(alignment: .leading) {
-                    let status = pomoTimer.order[i].getStatus()
+                    let status = pomoTimer.order[i].status
 
                     if status == .work {
                         if i < taskNotes.draggableTasksOnBar.count {
@@ -321,7 +321,7 @@ struct ProgressBar: View {
     }
 
     private func getProportion(_ index: Int) -> Double {
-        let intervals = pomoTimer.order.map { $0.getTime() }
+        let intervals = pomoTimer.order.map { $0.timeInterval }
         let total = intervals.reduce(0, +)
         return intervals[index] / total
     }

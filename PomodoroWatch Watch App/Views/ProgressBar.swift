@@ -78,7 +78,7 @@ struct ProgressBar: View {
     }
 
     private func getProportion(_ index: Int) -> Double {
-        let intervals = pomoTimer.order.map { $0.getTime() }
+        let intervals = pomoTimer.order.map { $0.timeInterval }
         let total = intervals.reduce(0, +)
         return intervals[index] / total
     }
@@ -113,7 +113,7 @@ struct ProgressBar: View {
             ForEach(0..<pomoTimer.order.count, id: \.self) { i in
                 RoundedRectangle(cornerRadius: 3)
                     .scaleEffect(x: 2.0, anchor: .trailing)
-                    .foregroundStyle(getGradient(for: pomoTimer.order[i].getStatus()))
+                    .foregroundStyle(getGradient(for: pomoTimer.order[i].status))
                     .frame(width: getBarWidth() * getProportion(i) - 2, height: barHeight)
                     .padding(.horizontal, 1)
                     .zIndex(Double(pomoTimer.order.count - i))

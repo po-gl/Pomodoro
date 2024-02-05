@@ -38,15 +38,15 @@ class PomoTimer: SequenceTimer {
         breakDuration = longBreak
         pomoAction = action
         let pomoTimes = getPomoTimes(pomos, work, rest, longBreak)
-        let timeIntervals = pomoTimes.map { $0.getTime() }
+        let timeIntervals = pomoTimes.map { $0.timeInterval }
         order = pomoTimes
-        status = pomoTimes.first?.getStatus() ?? .work
+        status = pomoTimes.first?.status ?? .work
 
         weak var selfInstance: PomoTimer?
         super.init(timeIntervals, perform: { index in
             if index < pomoTimes.count {
-                selfInstance?.status = pomoTimes[index].getStatus()
-                action(pomoTimes[index].getStatus())
+                selfInstance?.status = pomoTimes[index].status
+                action(pomoTimes[index].status)
             } else {
                 selfInstance?.status = .end
                 action(.end)
@@ -63,12 +63,12 @@ class PomoTimer: SequenceTimer {
         if index == order.count-1 && timeRemaining(atDate: atDate) == 0.0 {
             return .end
         }
-        return order[index].getStatus()
+        return order[index].status
     }
 
     public func getProgress(atDate: Date = Date()) -> Double {
         let index = getIndex(atDate: atDate)
-        let intervals = order.map { $0.getTime() }
+        let intervals = order.map { $0.timeInterval }
         let total = intervals.reduce(0, +)
         var cumulative = 0.0
         for i in 0..<index {
@@ -133,14 +133,14 @@ class PomoTimer: SequenceTimer {
         restDuration = rest
         breakDuration = longBreak
         let pomoTimes = getPomoTimes(pomos, work, rest, longBreak)
-        let timeIntervals = pomoTimes.map { $0.getTime() }
+        let timeIntervals = pomoTimes.map { $0.timeInterval }
         order = pomoTimes
-        status = pomoTimes.first?.getStatus() ?? .work
+        status = pomoTimes.first?.status ?? .work
 
         super.reset(timeIntervals) { [weak self] index in
             if index < pomoTimes.count {
-                self?.status = pomoTimes[index].getStatus()
-                self?.pomoAction(pomoTimes[index].getStatus())
+                self?.status = pomoTimes[index].status
+                self?.pomoAction(pomoTimes[index].status)
             } else {
                 self?.status = .end
                 self?.pomoAction(.end)
@@ -186,7 +186,7 @@ class PomoTimer: SequenceTimer {
         workDuration = UserDefaults.pomo?.object(forKey: "pomoWorkDuration") as? Double ?? workDuration
         restDuration = UserDefaults.pomo?.object(forKey: "pomoRestDuration") as? Double ?? restDuration
         breakDuration = UserDefaults.pomo?.object(forKey: "pomoBreakDuration") as? Double ?? breakDuration
-        Logger().log("RESTORE::order=\(self.order.map { $0.getStatusString() })  pomoCount=\(self.pomoCount)  workDuration=\(self.workDuration.rounded())  restDuration=\(self.restDuration.rounded())  breakDuration=\(self.breakDuration.rounded())")
+        Logger().log("RESTORE::order=\(self.order.map { $0.statusString })  pomoCount=\(self.pomoCount)  workDuration=\(self.workDuration.rounded())  restDuration=\(self.restDuration.rounded())  breakDuration=\(self.breakDuration.rounded())")
         super.restoreFromUserDefaults()
         status = getStatus()
     }

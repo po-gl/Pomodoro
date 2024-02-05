@@ -243,7 +243,7 @@ class LiveActivities {
         for i in pomoTimer.getIndex()+1..<pomoTimer.order.count {
             let pomo = pomoTimer.order[i]
             
-            let status = pomo.getStatusString().lowercased()
+            let status = pomo.statusString.lowercased()
             let task = i < tasksOnBar.tasksOnBar.count ? tasksOnBar.tasksOnBar[i] : ""
             let startsAt = cumulativeTime + Date.now.timeIntervalSince1970
             
@@ -255,7 +255,7 @@ class LiveActivities {
                                                      startsAt: startsAt,
                                                      currentSegment: i,
                                                      alert: alert))
-            cumulativeTime += pomo.getTime()
+            cumulativeTime += pomo.timeInterval
         }
         
         let finalAlertContent = AppNotifications.shared.getNotificationContent(for: pomoTimer, at: pomoTimer.order.count-1)

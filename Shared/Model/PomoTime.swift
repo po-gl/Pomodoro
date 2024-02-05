@@ -15,24 +15,16 @@ enum PomoStatus: String, Codable {
 }
 
 struct PomoTime: Codable {
-    private var timeInterval: TimeInterval
-    private var status: PomoStatus
+    let timeInterval: TimeInterval
+    let status: PomoStatus
+
+    var statusString: String {
+        status.rawValue
+    }
 
     init(_ time: TimeInterval, _ status: PomoStatus) {
         self.timeInterval = time
         self.status = status
-    }
-
-    func getTime() -> TimeInterval {
-        return timeInterval
-    }
-
-    func getStatus() -> PomoStatus {
-        return status
-    }
-
-    func getStatusString() -> String {
-        return getStatus().rawValue
     }
 
     enum CodingKeys: String, CodingKey {
