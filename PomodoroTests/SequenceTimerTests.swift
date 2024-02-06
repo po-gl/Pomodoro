@@ -13,7 +13,6 @@ final class SequenceTimerTests: XCTestCase {
     var actionsPerformed = 0
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
         let intervals = [2.0, 3.0]
         actionsPerformed = 0
         sequenceTimer = SequenceTimer(intervals, perform: { _ in
@@ -23,7 +22,6 @@ final class SequenceTimerTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
     func testSequenceTimerInitializer() throws {
