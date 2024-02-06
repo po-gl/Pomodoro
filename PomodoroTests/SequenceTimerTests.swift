@@ -19,6 +19,7 @@ final class SequenceTimerTests: XCTestCase {
         sequenceTimer = SequenceTimer(intervals, perform: { _ in
             self.actionsPerformed += 1
         }, timerProvider: MockTimer.self)
+        sequenceTimer.start()
     }
 
     override func tearDownWithError() throws {
@@ -85,6 +86,7 @@ final class SequenceTimerTests: XCTestCase {
     func testSequenceTimerPerformance() throws {
         let sequenceOfIntervals: [TimeInterval] = Array(repeating: 10.0*60.0, count: 100)
         let sequenceTimer = SequenceTimer(sequenceOfIntervals, perform: { _ in return }, timerProvider: MockTimer.self)
+        sequenceTimer.start()
 
         let index = 97.0
         let now = Date().addingTimeInterval((10.0 * 60.0)*index + 1.0*index)

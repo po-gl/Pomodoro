@@ -20,6 +20,7 @@ final class PomoTimerTests: XCTestCase {
             self.status = status
             self.actionsPerformed += 1
         }, timeProvider: MockTimer.self)
+        pomoTimer.start()
     }
 
     override func tearDownWithError() throws {
