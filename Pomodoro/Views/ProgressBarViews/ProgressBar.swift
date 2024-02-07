@@ -118,7 +118,7 @@ struct ProgressBar: View {
                             .position(x: geometry.size.width/2, y: geometry.size.height/2)
                             .scaleEffect(x: 2.0, anchor: .trailing)
                             .shadow(radius: 5)
-                            .foregroundStyle(ProgressBar.getGradient(for: status))
+                            .foregroundStyle(status.gradient())
                             .brightness(i<taskNotes.pomoHighlight.count && taskNotes.pomoHighlight[i] ? 0.18 : 0.0)
 
                             .onChange(of: taskFromAdder.dragHasEnded) { _ in
@@ -324,27 +324,6 @@ struct ProgressBar: View {
         let intervals = pomoTimer.order.map { $0.timeInterval }
         let total = intervals.reduce(0, +)
         return intervals[index] / total
-    }
-
-    static func getGradient(for status: PomoStatus) -> LinearGradient {
-        switch status {
-        case .work:
-            return LinearGradient(stops: [.init(color: .barWork, location: 0.5),
-                                          .init(color: Color(hex: 0xD3EDDD), location: 1.1)],
-                                  startPoint: .leading, endPoint: .trailing)
-        case .rest:
-            return LinearGradient(stops: [.init(color: .barRest, location: 0.2),
-                                          .init(color: Color(hex: 0xE8BEB1), location: 1.0)],
-                                  startPoint: .leading, endPoint: .trailing)
-        case .longBreak:
-            return LinearGradient(stops: [.init(color: .barLongBreak, location: 0.5),
-                                          .init(color: Color(hex: 0xF5E1E1), location: 1.3)],
-                                  startPoint: .leading, endPoint: .trailing)
-        case .end:
-            return LinearGradient(stops: [.init(color: .end, location: 0.5),
-                                          .init(color: Color(hex: 0xD3EDDD), location: 1.1)],
-                                  startPoint: .leading, endPoint: .trailing)
-        }
     }
 
     private func getBarWidth() -> Double {

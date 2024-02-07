@@ -47,4 +47,25 @@ extension PomoStatus {
             return 0.0
         }
     }
+
+    func gradient(startPoint: UnitPoint = .leading, endPoint: UnitPoint = .trailing) -> LinearGradient {
+        switch self {
+        case .work:
+            return LinearGradient(stops: [.init(color: self.color, location: 0.5),
+                                          .init(color: Color(hex: 0xD3EDDD), location: 1.1)],
+                                  startPoint: startPoint, endPoint: endPoint)
+        case .rest:
+            return LinearGradient(stops: [.init(color: self.color, location: 0.2),
+                                          .init(color: Color(hex: 0xE8BEB1), location: 1.0)],
+                                  startPoint: startPoint, endPoint: endPoint)
+        case .longBreak:
+            return LinearGradient(stops: [.init(color: self.color, location: 0.5),
+                                          .init(color: Color(hex: 0xF5E1E1), location: 1.3)],
+                                  startPoint: startPoint, endPoint: endPoint)
+        case .end:
+            return LinearGradient(stops: [.init(color: self.color, location: 0.5),
+                                          .init(color: Color(hex: 0xD3EDDD), location: 1.1)],
+                                  startPoint: startPoint, endPoint: endPoint)
+        }
+    }
 }

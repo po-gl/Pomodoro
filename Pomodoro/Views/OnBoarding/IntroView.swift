@@ -126,7 +126,7 @@ struct IntroView: View {
             .frame(height: 12)
             .overlay {
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(ProgressBar.getGradient(for: status))
+                    .fill(status.gradient())
                     .padding(outline)
             }
     }

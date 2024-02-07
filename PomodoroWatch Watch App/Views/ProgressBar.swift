@@ -83,27 +83,6 @@ struct ProgressBar: View {
         return intervals[index] / total
     }
 
-    private func getGradient(for status: PomoStatus) -> LinearGradient {
-        switch status {
-        case .work:
-            return LinearGradient(stops: [.init(color: .barWork, location: 0.5),
-                                          .init(color: Color(hex: 0xD3EDDD), location: 1.1)],
-                                  startPoint: .leading, endPoint: .trailing)
-        case .rest:
-            return LinearGradient(stops: [.init(color: .barRest, location: 0.2),
-                                          .init(color: Color(hex: 0xE8BEB1), location: 1.0)],
-                                  startPoint: .leading, endPoint: .trailing)
-        case .longBreak:
-            return LinearGradient(stops: [.init(color: .barLongBreak, location: 0.5),
-                                          .init(color: Color(hex: 0xF5E1E1), location: 1.3)],
-                                  startPoint: .leading, endPoint: .trailing)
-        case .end:
-            return LinearGradient(stops: [.init(color: .end, location: 0.5),
-                                          .init(color: Color(hex: 0xD3EDDD), location: 1.1)],
-                                  startPoint: .leading, endPoint: .trailing)
-        }
-    }
-
     private func getBarWidth() -> Double {
         return metrics.size.width - 20.0
     }
@@ -113,7 +92,7 @@ struct ProgressBar: View {
             ForEach(0..<pomoTimer.order.count, id: \.self) { i in
                 RoundedRectangle(cornerRadius: 3)
                     .scaleEffect(x: 2.0, anchor: .trailing)
-                    .foregroundStyle(getGradient(for: pomoTimer.order[i].status))
+                    .foregroundStyle(pomoTimer.order[i].status.gradient())
                     .frame(width: getBarWidth() * getProportion(i) - 2, height: barHeight)
                     .padding(.horizontal, 1)
                     .zIndex(Double(pomoTimer.order.count - i))
