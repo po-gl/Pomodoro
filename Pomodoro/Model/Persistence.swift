@@ -63,6 +63,22 @@ struct PersistenceController {
         for i in 0..<3 {
             TasksData.addTask("1 year ago \(i)", date: Date() - 34186659, context: viewContext)
         }
+        
+        // Add cumulative times data
+        let startOfDay = Calendar.current.startOfDay(for: Date())
+        for day in 1..<30 {
+            for i in 0..<24 {
+                if i > 2 && i < 10 { continue }
+                let work = i % 3 == 0 && i % 7 != 0 ? 45.0 : 25.0
+                let rest = i % 2 == 0 && i % 7 != 0 ? 10.0 : 5.0
+                let longBreak = i % 7 == 0 ? 30.0 : 0.0
+
+                let dayDate = Calendar.current.date(byAdding: .day, value: -day, to: startOfDay)!
+                let hourDate = Calendar.current.date(byAdding: .hour, value: i, to: dayDate)!
+                CumulativeTimeData.addTime(work: work*60, rest: rest*60, longBreak: longBreak*60,
+                                           date: hourDate, context: viewContext)
+            }
+        }
 
         return result
     }()
