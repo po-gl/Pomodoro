@@ -21,6 +21,8 @@ class SequenceTimer: ObservableObject, Codable {
     private var pauseStart = Date()
     private var pauseOffset: TimeInterval = 0.0
 
+    public var endTime = Date()
+
     private var scrubOffset: TimeInterval = 0.0
 
     public private(set) var action: (Int) -> Void
@@ -97,6 +99,17 @@ class SequenceTimer: ObservableObject, Codable {
         return cumulative + currentTime
     }
 
+    private func totalTimeRemaining(atDate: Date = Date()) -> TimeInterval {
+        let index = getIndex(atDate: atDate)
+        var cumulative = 0.0
+        guard index+1 <= timeAmounts.count else { return 0.0 }
+        for i in index+1..<timeAmounts.count {
+            cumulative += timeAmounts[i]
+        }
+        let currentTime = floor(timeRemaining(atDate: atDate))
+        return cumulative + currentTime
+    }
+
     private func totalTime(at percent: Double, atDate: Date = Date()) -> TimeInterval {
         let total = timeAmounts.reduce(0, +)
         var cumulative = 0.0, i = 0
@@ -162,6 +175,7 @@ class SequenceTimer: ObservableObject, Codable {
         isPaused = false
         isReset = false
         unpauseTime = Date()
+        endTime = Date().addingTimeInterval(totalTimeRemaining())
         pauseOffset += Date().timeIntervalSince(pauseStart)
         createTimer(index: getIndex())
     }

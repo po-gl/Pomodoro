@@ -141,13 +141,14 @@ class PomoTimer: SequenceTimer {
     }
 
     func recordTimes() {
+        let endDate = endTime < Date.now ? endTime : Date.now
+
         let indexAtUnpause = getIndex(atDate: unpauseTime)
-        let indexAtPause = getIndex(atDate: Date.now)
+        let indexAtPause = getIndex(atDate: endDate)
         guard indexAtUnpause <= indexAtPause &&
                 indexAtPause < order.count &&
                 indexAtUnpause < order.count else { return }
 
-        let now = Date.now
         var startOfHour = Calendar.current.startOfHour(for: unpauseTime)
         var hourAccumulator = unpauseTime.timeIntervalSince(startOfHour)
 
@@ -157,11 +158,11 @@ class PomoTimer: SequenceTimer {
         for i in indexAtUnpause...indexAtPause {
             var timeToAdd = order[i].timeInterval
             if indexAtUnpause == indexAtPause {
-                timeToAdd = now.timeIntervalSince(unpauseTime)
+                timeToAdd = endDate.timeIntervalSince(unpauseTime)
             } else if i == indexAtUnpause {
                 timeToAdd = timeRemaining(atDate: unpauseTime)
             } else if i == indexAtPause {
-                timeToAdd -= timeRemaining(atDate: now)
+                timeToAdd -= timeRemaining(atDate: endDate)
             }
 
             addToRecordingTimes(timeToAdd, for: order[i].status, &workTime, &restTime, &breakTime)
