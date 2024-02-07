@@ -13,7 +13,9 @@ class SequenceTimer: ObservableObject, Codable {
     @Published var isPaused: Bool = true
     @Published var isReset: Bool = false
 
-    private var startTime = Date()
+    public var unpauseTime = Date()
+
+    public var startTime = Date()
     private var timeAmounts: [TimeInterval] = []
 
     private var pauseStart = Date()
@@ -159,6 +161,7 @@ class SequenceTimer: ObservableObject, Codable {
     public func unpause() {
         isPaused = false
         isReset = false
+        unpauseTime = Date()
         pauseOffset += Date().timeIntervalSince(pauseStart)
         createTimer(index: getIndex())
     }
@@ -192,6 +195,7 @@ class SequenceTimer: ObservableObject, Codable {
         UserDefaults.pomo?.set(isPaused, forKey: "isPaused")
         UserDefaults.pomo?.set(isReset, forKey: "isReset")
         UserDefaults.pomo?.set(startTime, forKey: "startTime")
+        UserDefaults.pomo?.set(unpauseTime, forKey: "unpauseTime")
         UserDefaults.pomo?.set(timeAmounts, forKey: "timeAmounts")
         UserDefaults.pomo?.set(pauseStart, forKey: "pauseStart")
         UserDefaults.pomo?.set(pauseOffset, forKey: "pauseOffset")
@@ -203,6 +207,7 @@ class SequenceTimer: ObservableObject, Codable {
         isPaused = UserDefaults.pomo?.object(forKey: "isPaused") as? Bool ?? isPaused
         isReset = UserDefaults.pomo?.object(forKey: "isReset") as? Bool ?? isReset
         startTime = UserDefaults.pomo?.object(forKey: "startTime") as? Date ?? startTime
+        unpauseTime = UserDefaults.pomo?.object(forKey: "unpauseTime") as? Date ?? unpauseTime
         timeAmounts = UserDefaults.pomo?.object(forKey: "timeAmounts") as? [TimeInterval] ?? timeAmounts
         pauseStart = UserDefaults.pomo?.object(forKey: "pauseStart") as? Date ?? pauseStart
         pauseOffset = UserDefaults.pomo?.object(forKey: "pauseOffset") as? TimeInterval ?? pauseOffset
@@ -225,6 +230,7 @@ class SequenceTimer: ObservableObject, Codable {
         isPaused = try values.decode(Bool.self, forKey: .isPaused)
         isReset = try values.decode(Bool.self, forKey: .isReset)
         startTime = try values.decode(Date.self, forKey: .startTime)
+        unpauseTime = try values.decode(Date.self, forKey: .unpauseTime)
         timeAmounts = try values.decode([TimeInterval].self, forKey: .timeAmounts)
         pauseStart = try values.decode(Date.self, forKey: .pauseStart)
         pauseOffset = try values.decode(TimeInterval.self, forKey: .pauseOffset)
@@ -237,6 +243,7 @@ class SequenceTimer: ObservableObject, Codable {
         try container.encode(isPaused, forKey: .isPaused)
         try container.encode(isReset, forKey: .isReset)
         try container.encode(startTime, forKey: .startTime)
+        try container.encode(unpauseTime, forKey: .unpauseTime)
         try container.encode(timeAmounts, forKey: .timeAmounts)
         try container.encode(pauseStart, forKey: .pauseStart)
         try container.encode(pauseOffset, forKey: .pauseOffset)
@@ -247,6 +254,7 @@ class SequenceTimer: ObservableObject, Codable {
         case isPaused
         case isReset
         case startTime
+        case unpauseTime
         case timeAmounts
         case pauseStart
         case pauseOffset

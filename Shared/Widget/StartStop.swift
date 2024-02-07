@@ -23,7 +23,7 @@ struct StartStop: LiveActivityIntent {
 
         let pomoTimer = PomoTimer()
         pomoTimer.restoreFromUserDefaults()
-        pomoTimer.toggle()
+        pomoTimer.toggleAndRecord()
         pomoTimer.saveToUserDefaults()
 
         let tasksOnBar = TasksOnBar()

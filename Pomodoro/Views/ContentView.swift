@@ -27,10 +27,14 @@ struct ContentView: View {
                 .tabItem { Label { Text("Tasks") } icon: { Image(.pomoChecklist) } }
                 .tag(1)
                 .badge(errors.coreDataError != nil ? "!" : nil)
+            ChartsPage()
+                .toasts()
+                .tabItem { Label("Charts", systemImage: "chart.bar.xaxis")}
+                .tag(2)
             SettingsPage()
                 .toasts()
                 .tabItem { Label { Text("Settings") } icon: { Image(.pomoGear) } }
-                .tag(2)
+                .tag(3)
         }
         .onReceive(Publishers.selectFirstTab) { _ in
             selectedTab = 0
@@ -51,7 +55,7 @@ struct ContentView_Previews: PreviewProvider {
                 .previewDevice(PreviewDevice(rawValue: device))
                 .previewDisplayName(device)
                 .environmentObject(
-                    PomoTimer() { status in
+                    PomoTimer(context: PersistenceController.preview.container.viewContext) { status in
                         EndTimerHandler.shared.handle(status: status)
                     }
                 )

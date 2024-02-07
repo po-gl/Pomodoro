@@ -46,7 +46,7 @@ struct ButtonCluster: View {
         Button(getStartStopButtonString()) {
             guard isEnabled else { return }
             basicHaptic()
-            withAnimation(startStopAnimation) { pomoTimer.toggle() }
+            withAnimation(startStopAnimation) { pomoTimer.toggleAndRecord() }
             EndTimerHandler.shared.hasEndFired = false
         }
         .accessibilityIdentifier("playPauseButton\(isEnabled ? "On" : "Off")")

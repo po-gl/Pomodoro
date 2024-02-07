@@ -33,7 +33,11 @@ struct PomodoroApp: App {
         let workDuration = UserDefaults.pomo?.value(forKey: "workDuration") as? Double ?? PomoTimer.defaultWorkTime
         let restDuration = UserDefaults.pomo?.value(forKey: "restDuration") as? Double ?? PomoTimer.defaultRestTime
         let breakDuration = UserDefaults.pomo?.value(forKey: "breakDuration") as? Double ?? PomoTimer.defaultBreakTime
-        pomoTimer = PomoTimer(pomos: 4, work: workDuration, rest: restDuration, longBreak: breakDuration) { status in
+        pomoTimer = PomoTimer(pomos: 4,
+                              work: workDuration,
+                              rest: restDuration,
+                              longBreak: breakDuration,
+                              context: persistenceController.container.viewContext) { status in
             EndTimerHandler.shared.handle(status: status)
         }
         pomoTimer.restoreFromUserDefaults()

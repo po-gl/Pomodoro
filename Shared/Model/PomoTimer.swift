@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import CoreData
 import OSLog
 
 class PomoTimer: SequenceTimer {
@@ -26,16 +27,21 @@ class PomoTimer: SequenceTimer {
 
     private var pomoAction: (PomoStatus) -> Void
 
+    var lastRecordedAt: Date?
+    var context: NSManagedObjectContext?
+
     init(pomos: Int = 4,
          work: Double = defaultWorkTime,
          rest: Double = defaultRestTime,
          longBreak: Double = defaultBreakTime,
+         context: NSManagedObjectContext? = nil,
          perform action: @escaping (PomoStatus) -> Void = { _ in return },
          timeProvider: Timer.Type = Timer.self) {
         pomoCount = pomos
         workDuration = work
         restDuration = rest
         breakDuration = longBreak
+        self.context = context
         pomoAction = action
         let pomoTimes = getPomoTimes(pomos, work, rest, longBreak)
         let timeIntervals = pomoTimes.map { $0.timeInterval }
@@ -51,7 +57,7 @@ class PomoTimer: SequenceTimer {
                 selfInstance?.status = .end
                 action(.end)
                 withAnimation {
-                    selfInstance?.pause()
+                    selfInstance?.toggleAndRecord()
                 }
             }
         }, timerProvider: timeProvider)
@@ -127,6 +133,77 @@ class PomoTimer: SequenceTimer {
               longBreak: breakDuration)
     }
 
+    func toggleAndRecord() {
+        if !isPaused {
+            recordTimes()
+        }
+        super.toggle()
+    }
+
+    func recordTimes() {
+        let indexAtUnpause = getIndex(atDate: unpauseTime)
+        let indexAtPause = getIndex(atDate: Date.now)
+        guard indexAtUnpause <= indexAtPause &&
+                indexAtPause < order.count &&
+                indexAtUnpause < order.count else { return }
+
+        let now = Date.now
+        var startOfHour = Calendar.current.startOfHour(for: unpauseTime)
+        var hourAccumulator = unpauseTime.timeIntervalSince(startOfHour)
+
+        var workTime = 0.0
+        var restTime = 0.0
+        var breakTime = 0.0
+        for i in indexAtUnpause...indexAtPause {
+            var timeToAdd = order[i].timeInterval
+            if indexAtUnpause == indexAtPause {
+                timeToAdd = now.timeIntervalSince(unpauseTime)
+            } else if i == indexAtUnpause {
+                timeToAdd = timeRemaining(atDate: unpauseTime)
+            } else if i == indexAtPause {
+                timeToAdd -= timeRemaining(atDate: now)
+            }
+
+            addToRecordingTimes(timeToAdd, for: order[i].status, &workTime, &restTime, &breakTime)
+
+            hourAccumulator += timeToAdd
+            while hourAccumulator > 60 * 60 {
+                let excess = hourAccumulator.truncatingRemainder(dividingBy: 60 * 60)
+                addToRecordingTimes(-excess, for: order[i].status, &workTime, &restTime, &breakTime)
+
+                recordTime(workTime: workTime, restTime: restTime, breakTime: breakTime, for: startOfHour)
+
+                workTime = 0.0; restTime = 0.0; breakTime = 0.0
+                addToRecordingTimes(excess, for: order[i].status, &workTime, &restTime, &breakTime)
+
+                startOfHour.addTimeInterval(60 * 60)
+                hourAccumulator -= 60 * 60
+            }
+        }
+        recordTime(workTime: workTime, restTime: restTime, breakTime: breakTime, for: startOfHour)
+    }
+
+    private func recordTime(workTime: Double, restTime: Double, breakTime: Double, for date: Date) {
+        if let context {
+            Logger().log("Recording cumulative time adding: work=\(workTime.rounded()) rest=\(restTime.rounded()) break=\(breakTime.rounded()) for=\(date.formatted())")
+            CumulativeTimeData.addTime(work: workTime, rest: restTime, longBreak: breakTime,
+                                       date: date, context: context)
+        }
+    }
+
+    private func addToRecordingTimes(_ value: Double, for status: PomoStatus, _ workTime: inout Double, _ restTime: inout Double, _ breakTime: inout Double) {
+        switch status {
+        case .work:
+            workTime += value
+        case .rest:
+            restTime += value
+        case .longBreak:
+            breakTime += value
+        case .end:
+            break
+        }
+    }
+
     public func reset(pomos: Int, work: Double, rest: Double, longBreak: Double) {
         pomoCount = pomos
         workDuration = work
@@ -145,7 +222,7 @@ class PomoTimer: SequenceTimer {
                 self?.status = .end
                 self?.pomoAction(.end)
                 withAnimation {
-                    self?.pause()
+                    self?.toggleAndRecord()
                 }
             }
         }
