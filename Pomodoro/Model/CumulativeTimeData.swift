@@ -20,14 +20,20 @@ struct CumulativeTimeData {
     }
 
     static var thisHourRequest: NSFetchRequest<CumulativeTime> {
+        hourRequest(for: Date.now)
+    }
+
+    static func hourRequest(for date: Date) -> NSFetchRequest<CumulativeTime> {
         let fetchRequest = CumulativeTime.fetchRequest()
         fetchRequest.sortDescriptors = [
             SortDescriptor(\CumulativeTime.hourTimestamp, order: .reverse)
         ].map { descriptor in NSSortDescriptor(descriptor) }
-        let startOfHour = Calendar.current.startOfHour(for: Date.now)
+        let startOfHour = Calendar.current.startOfHour(for: date)
+        let endOfHour = Calendar.current.date(byAdding: .minute, value: 60, to: startOfHour)!
         fetchRequest.predicate = NSPredicate(
-            format: "hourTimestamp >= %@",
-            startOfHour as NSDate
+            format: "hourTimestamp >= %@ && hourTimestamp < %@",
+            startOfHour as NSDate,
+            endOfHour as NSDate
         )
         return fetchRequest
     }
@@ -37,7 +43,8 @@ struct CumulativeTimeData {
                         longBreak: Double = 0.0,
                         date: Date = Date(),
                         context: NSManagedObjectContext) {
-        if let existingTimeForHour = try? context.fetch(thisHourRequest).first {
+        let request = date == Date() ? thisHourRequest : hourRequest(for: date)
+        if let existingTimeForHour = try? context.fetch(request).first {
             existingTimeForHour.work += work
             existingTimeForHour.rest += rest
             existingTimeForHour.longBreak += longBreak
