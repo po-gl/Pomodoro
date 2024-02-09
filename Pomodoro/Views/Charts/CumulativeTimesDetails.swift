@@ -104,12 +104,37 @@ struct DailyCumulativeChart: View {
 
         .chartXScale(domain: (cumulativeTimes.last?.hourTimestamp ?? Date.now.startOfDay)...Date.now.endOfDay)
         .chartXVisibleDomain(length: 3600 * 24 + 1)
-        .chartYScale(domain: 0.0...60.0)
         .chartXAxis {
-            AxisMarks(values: AxisMarkValues.stride(by: .hour, count: 6)) { _ in
+            AxisMarks(values: .stride(by: .hour, count: 6)) { _ in
                 AxisTick()
                 AxisGridLine()
-                AxisValueLabel(format: Date.FormatStyle.dateTime.hour())
+                AxisValueLabel(format: .dateTime.hour())
+            }
+        }
+
+        .chartYScale(domain: 0.0...60.0)
+        .chartYAxis {
+            AxisMarks(values: [0, 15, 30, 45, 60]) { value in
+                let valueInt = value.as(Int.self) ?? 0
+                if valueInt == 15 || valueInt == 45 {
+                    AxisGridLine(stroke: StrokeStyle(dash: [2.0, 2.0]))
+                } else {
+                    AxisTick()
+                    AxisGridLine()
+                    AxisValueLabel(collisionResolution: .greedy(priority: 0.0)) {
+                        Text("\(valueInt) min")
+                    }
+                }
+            }
+            if averageFocused {
+                if let average = averages.first(where: { $0.key == scrollPosition.startOfDay }) {
+                    AxisMarks(values: [average.value / 60]) { value in
+                        AxisValueLabel(collisionResolution: .greedy(priority: 1.0)) {
+                            Text(String(format: "%.1f min", value.as(Double.self) ?? 0))
+                                .foregroundStyle(.end)
+                        }
+                    }
+                }
             }
         }
         .aspectRatio(1.5, contentMode: .fit)
@@ -248,12 +273,32 @@ struct WeeklyCumulativeChart: View {
 
         .chartXScale(domain: (cumulativeTimes.last?.hourTimestamp ?? Date.now.startOfWeek)...Date.now.endOfWeek)
         .chartXVisibleDomain(length: 3600 * 24 * 7 + 1)
-        .chartYScale(domain: 0.0...maxOfTimesByDay + 1.0)
         .chartXAxis {
-            AxisMarks(values: AxisMarkValues.stride(by: .day, count: 1)) { _ in
+            AxisMarks(values: .stride(by: .day, count: 1)) { _ in
                 AxisTick()
                 AxisGridLine()
-                AxisValueLabel(format: Date.FormatStyle.dateTime.weekday(.narrow), centered: true)
+                AxisValueLabel(format: .dateTime.weekday(.narrow), centered: true)
+            }
+        }
+
+        .chartYScale(domain: 0.0...maxOfTimesByDay + 1.0)
+        .chartYAxis {
+            AxisMarks(values: .automatic) { value in
+                AxisTick()
+                AxisGridLine()
+                AxisValueLabel(collisionResolution: .greedy(priority: 0.0)) {
+                    Text("\(value.as(Int.self) ?? 0) hrs")
+                }
+            }
+            if averageFocused {
+                if let average = averages.first(where: { $0.key == scrollPosition.startOfWeek }) {
+                    AxisMarks(values: [average.value / 3600]) { value in
+                        AxisValueLabel(collisionResolution: .greedy(priority: 1.0)) {
+                            Text(String(format: "%.1f hrs", value.as(Double.self) ?? 0))
+                                .foregroundStyle(.end)
+                        }
+                    }
+                }
             }
         }
         .aspectRatio(1.5, contentMode: .fit)
