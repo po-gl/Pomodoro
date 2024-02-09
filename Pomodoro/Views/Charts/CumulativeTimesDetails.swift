@@ -24,6 +24,13 @@ struct DailyCumulativeChart: View {
     @FetchRequest(fetchRequest: CumulativeTimeData.pastCumulativeTimeRequest)
     var cumulativeTimes: FetchedResults<CumulativeTime>
 
+    var lastTime: CumulativeTime? {
+        let request = CumulativeTimeData.pastCumulativeTimeRequest
+        request.fetchLimit = 1
+        let lastTime = try? viewContext.fetch(request)
+        return lastTime?.first
+    }
+
     var averages: [(key: Date, value: Double)] {
         let times = try? viewContext.fetch(CumulativeTimeData.pastCumulativeTimeRequest)
         guard let times else { return [] }
@@ -114,7 +121,7 @@ struct DailyCumulativeChart: View {
 //        .chartScrollPosition(x: $scrollPosition)
         .chartScrollPosition(initialX: Date.now.startOfDay)
 
-        .chartXScale(domain: (cumulativeTimes.last?.hourTimestamp ?? Date.now.startOfDay)...Date.now.endOfDay)
+        .chartXScale(domain: (cumulativeTimes.last?.hourTimestamp ?? Date.now.startOfDay)...(lastTime?.hourTimestamp?.endOfDay ?? Date.now.endOfDay))
         .chartXVisibleDomain(length: 3600 * 24 + 1)
         .chartXAxis {
             AxisMarks(values: .stride(by: .hour, count: 6)) { _ in
@@ -184,6 +191,13 @@ struct WeeklyCumulativeChart: View {
 
     @FetchRequest(fetchRequest: CumulativeTimeData.pastCumulativeTimeRequest)
     var cumulativeTimes: FetchedResults<CumulativeTime>
+
+    var lastTime: CumulativeTime? {
+        let request = CumulativeTimeData.pastCumulativeTimeRequest
+        request.fetchLimit = 1
+        let lastTime = try? viewContext.fetch(request)
+        return lastTime?.first
+    }
 
     var cumulativeTimesByDay: [(key: Date, value: [PomoStatus: Double])] {
         let times = try? viewContext.fetch(CumulativeTimeData.pastCumulativeTimeRequest)
@@ -299,7 +313,7 @@ struct WeeklyCumulativeChart: View {
 //        .chartScrollPosition(x: $scrollPosition)
         .chartScrollPosition(initialX: Date.now.startOfWeek)
 
-        .chartXScale(domain: (cumulativeTimes.last?.hourTimestamp ?? Date.now.startOfWeek)...Date.now.endOfWeek)
+        .chartXScale(domain: (cumulativeTimes.last?.hourTimestamp ?? Date.now.startOfWeek)...(lastTime?.hourTimestamp?.endOfWeek ?? Date.now.endOfWeek))
         .chartXVisibleDomain(length: 3600 * 24 * 7 + 1)
         .chartXAxis {
             AxisMarks(values: .stride(by: .day, count: 1)) { _ in
@@ -364,6 +378,13 @@ struct CumulativeTimesDetails: View {
     @State var selection: Date?
     @State var scrollPosition = Calendar.current.startOfDay(for: Date.now)
     @State var visibleDate = Date.now
+
+    var lastTime: CumulativeTime? {
+        let request = CumulativeTimeData.pastCumulativeTimeRequest
+        request.fetchLimit = 1
+        let lastTime = try? viewContext.fetch(request)
+        return lastTime?.first
+    }
 
     var totalsForRange: [PomoStatus: Double] {
         let times = try? viewContext.fetch(CumulativeTimeData.rangeRequest(between: visibleRange))
@@ -449,6 +470,9 @@ struct CumulativeTimesDetails: View {
             .listRowSeparator(.hidden)
             .onChangeWithThrottle(of: scrollPosition, for: 0.6) { date in
                 visibleDate = date
+            }
+            .onAppear {
+                visibleDate = lastTime?.hourTimestamp ?? Date.now
             }
         }
         .listStyle(.plain)
