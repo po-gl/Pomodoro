@@ -134,6 +134,8 @@
 		61518AE12B75D5430033F23D /* DisabledGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61518ADF2B75D5430033F23D /* DisabledGradient.swift */; };
 		61518AE42B75D7AE0033F23D /* DisabledGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61518ADF2B75D5430033F23D /* DisabledGradient.swift */; };
 		61518AE52B75D7AF0033F23D /* DisabledGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61518ADF2B75D5430033F23D /* DisabledGradient.swift */; };
+		61518AEA2B7679A00033F23D /* TimeInterval+minOrHr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61518AE92B7679A00033F23D /* TimeInterval+minOrHr.swift */; };
+		61518AEB2B7679A00033F23D /* TimeInterval+minOrHr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61518AE92B7679A00033F23D /* TimeInterval+minOrHr.swift */; };
 		61569CDB2B0031E600DFC977 /* MainPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61569CDA2B0031E600DFC977 /* MainPage.swift */; };
 		61569CDC2B0031E600DFC977 /* MainPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61569CDA2B0031E600DFC977 /* MainPage.swift */; };
 		61569CDE2B0036B200DFC977 /* View+verticalDragGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61569CDD2B0036B200DFC977 /* View+verticalDragGesture.swift */; };
@@ -610,6 +612,7 @@
 		614DA2A62997BE3C00EFC91C /* PopStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopStyle.swift; sourceTree = "<group>"; };
 		614DA2AF2997BE6C00EFC91C /* Color+isDark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+isDark.swift"; sourceTree = "<group>"; };
 		61518ADF2B75D5430033F23D /* DisabledGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisabledGradient.swift; sourceTree = "<group>"; };
+		61518AE92B7679A00033F23D /* TimeInterval+minOrHr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+minOrHr.swift"; sourceTree = "<group>"; };
 		61569CDA2B0031E600DFC977 /* MainPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPage.swift; sourceTree = "<group>"; };
 		61569CDD2B0036B200DFC977 /* View+verticalDragGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+verticalDragGesture.swift"; sourceTree = "<group>"; };
 		61569CE02B005FAF00DFC977 /* View+verticalOffsetEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+verticalOffsetEffect.swift"; sourceTree = "<group>"; };
@@ -866,6 +869,7 @@
 				61D5808729BA5E5B006F0BB0 /* Comparable+Clamped.swift */,
 				61CD3A412B70D78400E2695F /* Calendar+startOf.swift */,
 				61708F302B74832400DDD941 /* Date+startOf.swift */,
+				61518AE92B7679A00033F23D /* TimeInterval+minOrHr.swift */,
 				61E734AC2B251E43001C5B2A /* PomoStatus+properties.swift */,
 				61C3623A2B26DFD500E2DDDD /* WidgetConfiguration+disfavoredLocations.swift */,
 				611D9AB82B2DABCE0011F389 /* ScenePhase+CustomStringConvertible.swift */,
@@ -1699,6 +1703,7 @@
 				61157BAF2B689C8400A8916F /* Animations.swift in Sources */,
 				61DFEB492B658F2E005459F7 /* GroupBoxBackgroundStyle.swift in Sources */,
 				6187559E2AE21BE200FC1564 /* ProjectStack.swift in Sources */,
+				61518AEA2B7679A00033F23D /* TimeInterval+minOrHr.swift in Sources */,
 				61E468152AEC5360001F6D7B /* ProjectTag.swift in Sources */,
 				61B884B42B59D1FB00F2305A /* PickGradient.metal in Sources */,
 				61CD3A332B70C83800E2695F /* CumulativeTimeData.swift in Sources */,
@@ -1925,6 +1930,7 @@
 				61DFEB4A2B658F2E005459F7 /* GroupBoxBackgroundStyle.swift in Sources */,
 				61D01EC42B3B55B700A58360 /* DismissSwipeAction.swift in Sources */,
 				61CD3A312B6F80EB00E2695F /* View+pulseOnAppear.swift in Sources */,
+				61518AEB2B7679A00033F23D /* TimeInterval+minOrHr.swift in Sources */,
 				61B884B52B59D1FB00F2305A /* PickGradient.metal in Sources */,
 				618D67DE2979ECD7000A9D8A /* Background.swift in Sources */,
 				6162B7DE2B22EA9D00C83714 /* WidgetProgressBar.swift in Sources */,

@@ -452,6 +452,7 @@ struct CumulativeTimesDetails: View {
             }
         }
         .listStyle(.plain)
+        .navigationTitle("Cumulative Times")
     }
 
     @ViewBuilder var chartTitle: some View {
@@ -465,7 +466,7 @@ struct CumulativeTimesDetails: View {
                 }
                 switch chartScale {
                 case .day:
-                    Text("\(visibleDate.formatted(.dateTime.weekday().month().day().year()))")
+                    Text(visibleDate.formatted(.dateTime.weekday().month().day().year()))
                         .foregroundStyle(.secondary)
                 case .week:
                     HStack {
@@ -483,22 +484,23 @@ struct CumulativeTimesDetails: View {
     }
 
     @ViewBuilder var selectedInfo: some View {
+        let total = totalForSelection
         if let selection {
             HStack {
                 VStack(alignment: .leading) {
                     HStack(alignment: .firstTextBaseline) {
-                        Text(String(format: "%.1f", totalForSelection / 60))
+                        Text(total.minOrHr(includeUnit: false))
                             .font(.title)
-                        Text("total minutes")
+                        Text("total \(total < 3600 ? "minutes" : "hours")")
                             .fixedSize()
                             .foregroundStyle(.secondary)
                     }
                     switch chartScale {
                     case .day:
-                        Text("\(selection.formatted(.dateTime.hour().weekday().month().day().year()))")
+                        Text(selection.formatted(.dateTime.hour().weekday().month().day().year()))
                             .foregroundStyle(.secondary)
                     case .week:
-                        Text("\(selection.formatted(.dateTime.weekday().month().day().year()))")
+                        Text(selection.formatted(.dateTime.weekday().month().day().year()))
                             .foregroundStyle(.secondary)
                     default:
                         EmptyView()
@@ -531,7 +533,7 @@ struct CumulativeTimesDetails: View {
     func selectionInfoRow(for status: PomoStatus) -> some View {
         Text(status == .longBreak ? "Break" : status.rawValue)
             .font(.footnote)
-        Text(String(format: "%.1f min", totalsForSelection[status, default: 0] / 60))
+        Text(totalsForSelection[status, default: 0].minOrHr())
             .font(.callout)
             .fontWeight(.medium)
             .foregroundStyle(status.color)
@@ -585,4 +587,10 @@ struct CumulativeTimesDetails: View {
             return Calendar.current.startOfHour(for: date)
         }
     }
+}
+
+@available(iOS 17, *)
+#Preview {
+    CumulativeTimesDetails()
+        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }
