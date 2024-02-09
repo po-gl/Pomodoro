@@ -38,6 +38,19 @@ struct CumulativeTimeData {
         return fetchRequest
     }
 
+    static func rangeRequest(between range: ClosedRange<Date>) -> NSFetchRequest<CumulativeTime> {
+        let fetchRequest = CumulativeTime.fetchRequest()
+        fetchRequest.sortDescriptors = [
+            SortDescriptor(\CumulativeTime.hourTimestamp, order: .reverse)
+        ].map { descriptor in NSSortDescriptor(descriptor) }
+        fetchRequest.predicate = NSPredicate(
+            format: "hourTimestamp >= %@ && hourTimestamp < %@",
+            range.lowerBound as NSDate,
+            range.upperBound as NSDate
+        )
+        return fetchRequest
+    }
+
     static func addTime(work: Double = 0.0,
                         rest: Double = 0.0,
                         longBreak: Double = 0.0,
