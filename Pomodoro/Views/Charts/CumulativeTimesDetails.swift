@@ -172,7 +172,7 @@ struct WeeklyCumulativeChart: View {
     var averageFocused: Bool
 
     let widthRatio = 0.5
-    let radius = 6.0
+    let radius = 4.0
 
     @FetchRequest(fetchRequest: CumulativeTimeData.pastCumulativeTimeRequest)
     var cumulativeTimes: FetchedResults<CumulativeTime>
