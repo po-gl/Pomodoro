@@ -51,6 +51,28 @@ struct CumulativeTimeData {
         return fetchRequest
     }
 
+    static func thisWeeksAverages(context: NSManagedObjectContext) -> [PomoStatus: Double] {
+        let startOfWeek = Date.now.startOfWeek
+        let endOfWeek = startOfWeek.endOfWeek
+        let times = try? context.fetch(CumulativeTimeData.rangeRequest(between: startOfWeek...endOfWeek))
+        guard let times else { return [:] }
+
+        var totals = [PomoStatus: Double]()
+        times.forEach {
+            totals[.work, default: 0] += $0.work
+            totals[.rest, default: 0] += $0.rest
+            totals[.longBreak, default: 0] += $0.longBreak
+        }
+
+        var uniqueDates = Set<Date>()
+        times.forEach {
+            guard let hourTimestamp = $0.hourTimestamp else { return }
+            let startOfDay = hourTimestamp.startOfDay
+            uniqueDates.insert(startOfDay)
+        }
+        return totals.mapValues { $0 / Double(uniqueDates.count) }
+    }
+
     static func addTime(work: Double = 0.0,
                         rest: Double = 0.0,
                         longBreak: Double = 0.0,
