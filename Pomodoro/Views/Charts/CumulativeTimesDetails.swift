@@ -19,6 +19,7 @@ struct DailyCumulativeChart: View {
     var averageFocused: Bool
 
     let widthRatio = 0.4
+    let radius = 5.0
 
     @FetchRequest(fetchRequest: CumulativeTimeData.pastCumulativeTimeRequest)
     var cumulativeTimes: FetchedResults<CumulativeTime>
@@ -59,6 +60,7 @@ struct DailyCumulativeChart: View {
                         width: .ratio(widthRatio)
                     )
                     .foregroundStyle(barStyle(for: .work, isFocused: !averageFocused))
+                    .cornerRadius(radius)
                 }
                 
                 if dataToggles[.rest] ?? false {
@@ -68,6 +70,7 @@ struct DailyCumulativeChart: View {
                         width: .ratio(widthRatio)
                     )
                     .foregroundStyle(barStyle(for: .rest, isFocused: !averageFocused))
+                    .cornerRadius(radius)
                 }
                 
                 if dataToggles[.longBreak] ?? false {
@@ -77,6 +80,7 @@ struct DailyCumulativeChart: View {
                         width: .ratio(widthRatio)
                     )
                     .foregroundStyle(barStyle(for: .longBreak, isFocused: !averageFocused))
+                    .cornerRadius(radius)
                 }
             }
             if averageFocused {
@@ -164,6 +168,7 @@ struct WeeklyCumulativeChart: View {
     var averageFocused: Bool
 
     let widthRatio = 0.5
+    let radius = 6.0
 
     @FetchRequest(fetchRequest: CumulativeTimeData.pastCumulativeTimeRequest)
     var cumulativeTimes: FetchedResults<CumulativeTime>
@@ -228,6 +233,7 @@ struct WeeklyCumulativeChart: View {
                         width: .ratio(widthRatio)
                     )
                     .foregroundStyle(barStyle(for: .work, isFocused: !averageFocused))
+                    .cornerRadius(radius)
                 }
                 
                 if dataToggles[.rest] ?? false {
@@ -237,6 +243,7 @@ struct WeeklyCumulativeChart: View {
                         width: .ratio(widthRatio)
                     )
                     .foregroundStyle(barStyle(for: .rest, isFocused: !averageFocused))
+                    .cornerRadius(radius)
                 }
                 
                 if dataToggles[.longBreak] ?? false {
@@ -246,6 +253,7 @@ struct WeeklyCumulativeChart: View {
                         width: .ratio(widthRatio)
                     )
                     .foregroundStyle(barStyle(for: .longBreak, isFocused: !averageFocused))
+                    .cornerRadius(radius)
                 }
             }
             if averageFocused {
