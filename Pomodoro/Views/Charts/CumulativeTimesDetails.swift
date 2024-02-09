@@ -93,6 +93,14 @@ struct DailyCumulativeChart: View {
                     .foregroundStyle(.end)
                 }
             }
+            if let selection {
+                RuleMark(
+                    x: .value("Selected", selection, unit: .hour)
+                )
+                .foregroundStyle(.tomato)
+                .opacity(0.6)
+                .zIndex(-1)
+            }
         }
         .chartScrollableAxes(.horizontal)
         .chartScrollTargetBehavior(
@@ -270,6 +278,14 @@ struct WeeklyCumulativeChart: View {
                     .foregroundStyle(.end)
                 }
             }
+            if let selection {
+                RuleMark(
+                    x: .value("Selected", selection, unit: .day)
+                )
+                .foregroundStyle(.tomato)
+                .opacity(0.6)
+                .zIndex(-1)
+            }
         }
         .chartScrollableAxes(.horizontal)
         .chartScrollTargetBehavior(
@@ -351,7 +367,7 @@ struct CumulativeTimesDetails: View {
 
     var totalsForRange: [PomoStatus: Double] {
         let times = try? viewContext.fetch(CumulativeTimeData.rangeRequest(between: visibleRange))
-        guard let times else { return [.work: 0.0, .rest: 0.0, .longBreak: 0.0] }
+        guard let times else { return [:] }
 
         var totals: [PomoStatus: Double] = [:]
         times.forEach {
@@ -378,6 +394,24 @@ struct CumulativeTimesDetails: View {
         return totalForRange / Double(uniqueDates.count)
     }
 
+    var totalsForSelection: [PomoStatus: Double] {
+        guard let selection else { return [:] }
+        let times = try? viewContext.fetch(CumulativeTimeData.rangeRequest(between: getRangeForScale(selection)))
+        guard let times, times.count > 0 else { return [:] }
+
+        var totals: [PomoStatus: Double] = [:]
+        times.forEach {
+            totals[.work, default: 0] += $0.work
+            totals[.rest, default: 0] += $0.rest
+            totals[.longBreak, default: 0] += $0.longBreak
+        }
+        return totals.mapValues { $0 }
+    }
+
+    var totalForSelection: Double {
+        totalsForSelection.reduce(0.0, { $0 + $1.value })
+    }
+
     var body: some View {
         List {
             VStack(spacing: 20) {
@@ -386,7 +420,12 @@ struct CumulativeTimesDetails: View {
                     Text("Weekly").tag(ChartScale.week)
                 }
                 .pickerStyle(.segmented)
-                chartTitle
+                ZStack(alignment: .bottomLeading) {
+                    chartTitle
+                        .opacity(selection == nil ? 1.0 : 0.0)
+                    selectedInfo
+                        .opacity(selection == nil ? 0.0 : 1.0)
+                }
                 switch chartScale {
                 case .day:
                     DailyCumulativeChart(selection: $selection,
@@ -442,6 +481,62 @@ struct CumulativeTimesDetails: View {
         }
     }
 
+    @ViewBuilder var selectedInfo: some View {
+        if let selection {
+            HStack {
+                VStack(alignment: .leading) {
+                    HStack(alignment: .firstTextBaseline) {
+                        Text(String(format: "%.1f", totalForSelection / 60))
+                            .font(.title)
+                        Text("total minutes")
+                            .fixedSize()
+                            .foregroundStyle(.secondary)
+                    }
+                    switch chartScale {
+                    case .day:
+                        Text("\(selection.formatted(.dateTime.hour().weekday().month().day().year()))")
+                            .foregroundStyle(.secondary)
+                    case .week:
+                        Text("\(selection.formatted(.dateTime.weekday().month().day().year()))")
+                            .foregroundStyle(.secondary)
+                    default:
+                        EmptyView()
+                    }
+                }
+                .fixedSize()
+                .frame(width: 210, alignment: .leading)
+                Spacer()
+                Grid(alignment: .leading, verticalSpacing: -1) {
+                    GridRow {
+                        selectionInfoRow(for: .work)
+                    }
+                    GridRow {
+                        selectionInfoRow(for: .rest)
+                    }
+                    GridRow {
+                        selectionInfoRow(for: .longBreak)
+                    }
+                }
+                .fixedSize()
+                .frame(width: 100, alignment: .leading)
+                Spacer()
+            }
+        } else {
+            EmptyView()
+        }
+    }
+
+    @ViewBuilder
+    func selectionInfoRow(for status: PomoStatus) -> some View {
+        Text(status == .longBreak ? "Break" : status.rawValue)
+            .font(.footnote)
+        Text(String(format: "%.1f min", totalsForSelection[status, default: 0] / 60))
+            .font(.callout)
+            .fontWeight(.medium)
+            .foregroundStyle(status.color)
+            .brightness(colorScheme == .dark ? 0.1 : 0.0)
+    }
+
     @ViewBuilder var chartToggles: some View {
         VStack(spacing: 15) {
             ForEach([PomoStatus.work, PomoStatus.rest, PomoStatus.longBreak], id: \.self) { status in
@@ -465,6 +560,19 @@ struct CumulativeTimesDetails: View {
             let startOfDay = Calendar.current.startOfDay(for: visibleDate)
             let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)! - 1.0
             return startOfDay...endOfDay
+        }
+    }
+
+    func getRangeForScale(_ date: Date) -> ClosedRange<Date> {
+        switch chartScale {
+        case .week:
+            let startOfDay = Calendar.current.startOfDay(for: date)
+            let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)! - 1.0
+            return startOfDay...endOfDay
+        default:
+            let startOfHour = Calendar.current.startOfHour(for: date)
+            let endOfHour = Calendar.current.date(byAdding: .hour, value: 1, to: startOfHour)! - 1.0
+            return startOfHour...endOfHour
         }
     }
 
