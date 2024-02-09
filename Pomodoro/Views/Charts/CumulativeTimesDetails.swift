@@ -114,6 +114,10 @@ struct DailyCumulativeChart: View {
                 AxisGridLine()
                 AxisValueLabel(format: .dateTime.hour())
             }
+            // This top mark is only necessary while scrollPosition is not viable
+            AxisMarks(position: .top, values: .stride(by: .day)) { _ in
+                AxisValueLabel(format: .dateTime.month().day())
+            }
         }
 
         .chartYScale(domain: 0.0...60.0)
@@ -286,6 +290,12 @@ struct WeeklyCumulativeChart: View {
                 AxisTick()
                 AxisGridLine()
                 AxisValueLabel(format: .dateTime.weekday(.narrow), centered: true)
+            }
+            // This top mark is only necessary while scrollPosition is not viable
+            AxisMarks(position: .top, values: .stride(by: .day)) { value in
+                if let date = value.as(Date.self), date == date.startOfWeek {
+                    AxisValueLabel(format: .dateTime.month().day())
+                }
             }
         }
 
