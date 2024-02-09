@@ -10,42 +10,84 @@ import Charts
 
 @available(iOS 17, *)
 struct DailyCumulativeChart: View {
+    @Environment(\.managedObjectContext) var viewContext
+
     @Binding var selection: Date?
     @Binding var scrollPosition: Date
     var dataToggles: [PomoStatus: Bool]
+
+    var averageFocused: Bool
 
     let widthRatio = 0.4
 
     @FetchRequest(fetchRequest: CumulativeTimeData.pastCumulativeTimeRequest)
     var cumulativeTimes: FetchedResults<CumulativeTime>
 
-    var body: some View {
-        Chart(cumulativeTimes) { item in
+    var averages: [(key: Date, value: Double)] {
+        let times = try? viewContext.fetch(CumulativeTimeData.pastCumulativeTimeRequest)
+        guard let times else { return [] }
+
+        var totalsAndCounts: [Date: (Double, Int)] = [:]
+        times.forEach {
+            guard let hourTimestamp = $0.hourTimestamp else { return }
+            let startOfDay = Calendar.current.startOfDay(for: hourTimestamp)
+
+            var timeToAdd = 0.0
             if dataToggles[.work] ?? false {
-                BarMark(
-                    x: .value("Date", item.hourTimestamp ?? Date.now, unit: .hour),
-                    y: .value("Work Time", item.work / 60),
-                    width: .ratio(widthRatio)
-                )
-                .foregroundStyle(PomoStatus.work.gradient(startPoint: .bottom, endPoint: .top))
+                timeToAdd += $0.work
             }
-            
             if dataToggles[.rest] ?? false {
-                BarMark(
-                    x: .value("Date", item.hourTimestamp ?? Date.now, unit: .hour),
-                    y: .value("Rest Time", item.rest / 60),
-                    width: .ratio(widthRatio)
-                )
-                .foregroundStyle(PomoStatus.rest.gradient(startPoint: .bottom, endPoint: .top))
+                timeToAdd += $0.rest
             }
-            
             if dataToggles[.longBreak] ?? false {
-                BarMark(
-                    x: .value("Date", item.hourTimestamp ?? Date.now, unit: .hour),
-                    y: .value("Break Time", item.longBreak / 60),
-                    width: .ratio(widthRatio)
-                )
-                .foregroundStyle(PomoStatus.longBreak.gradient(startPoint: .bottom, endPoint: .top))
+                timeToAdd += $0.longBreak
+            }
+            totalsAndCounts[startOfDay, default: (0.0, 0)].0 += timeToAdd
+            totalsAndCounts[startOfDay, default: (0.0, 0)].1 += 1
+        }
+        let averages = totalsAndCounts.mapValues { $0 / Double($1) }
+        return averages.sorted { $0.key < $1.key }
+    }
+
+    var body: some View {
+        Chart {
+            ForEach(cumulativeTimes) { item in
+                if dataToggles[.work] ?? false {
+                    BarMark(
+                        x: .value("Date", item.hourTimestamp ?? Date.now, unit: .hour),
+                        y: .value("Work Time", item.work / 60),
+                        width: .ratio(widthRatio)
+                    )
+                    .foregroundStyle(barStyle(for: .work, isFocused: !averageFocused))
+                }
+                
+                if dataToggles[.rest] ?? false {
+                    BarMark(
+                        x: .value("Date", item.hourTimestamp ?? Date.now, unit: .hour),
+                        y: .value("Rest Time", item.rest / 60),
+                        width: .ratio(widthRatio)
+                    )
+                    .foregroundStyle(barStyle(for: .rest, isFocused: !averageFocused))
+                }
+                
+                if dataToggles[.longBreak] ?? false {
+                    BarMark(
+                        x: .value("Date", item.hourTimestamp ?? Date.now, unit: .hour),
+                        y: .value("Break Time", item.longBreak / 60),
+                        width: .ratio(widthRatio)
+                    )
+                    .foregroundStyle(barStyle(for: .longBreak, isFocused: !averageFocused))
+                }
+            }
+            if averageFocused {
+                ForEach(averages, id: \.key) { average in
+                    RuleMark(
+                        xStart: .value("Start of Average", average.key),
+                        xEnd: .value("End of Average", average.key.addingTimeInterval(3600 * 24)),
+                        y: .value("Daily Average", average.value / 60)
+                    )
+                    .foregroundStyle(.end)
+                }
             }
         }
         .chartScrollableAxes(.horizontal)
@@ -76,6 +118,14 @@ struct DailyCumulativeChart: View {
             $0.animation = nil
         }
     }
+
+    func barStyle(for status: PomoStatus, isFocused: Bool) -> LinearGradient {
+        if isFocused {
+            status.gradient(startPoint: .bottom, endPoint: .top)
+        } else {
+            disabledGradient(startPoint: .bottom, endPoint: .top)
+        }
+    }
 }
 
 @available(iOS 17, *)
@@ -85,6 +135,8 @@ struct WeeklyCumulativeChart: View {
     @Binding var selection: Date?
     @Binding var scrollPosition: Date
     var dataToggles: [PomoStatus: Bool]
+
+    var averageFocused: Bool
 
     let widthRatio = 0.5
 
@@ -117,33 +169,69 @@ struct WeeklyCumulativeChart: View {
         }
     }
 
-    var body: some View {
-        Chart(cumulativeTimesByDay, id: \.key) { item in
+    var averages: [(key: Date, value: Double)] {
+        let times = cumulativeTimesByDay
+
+        var totalsAndCounts: [Date: (Double, Int)] = [:]
+        times.forEach {
+            let startOfWeek = Calendar.current.startOfWeek(for: $0.key)
+
+            var timeToAdd = 0.0
             if dataToggles[.work] ?? false {
-                BarMark(
-                    x: .value("Date", item.key, unit: .day),
-                    y: .value("Work Time", item.value[.work, default: 0] / 3600),
-                    width: .ratio(widthRatio)
-                )
-                .foregroundStyle(PomoStatus.work.gradient(startPoint: .bottom, endPoint: .top))
+                timeToAdd += $0.value[.work, default: 0]
             }
-
             if dataToggles[.rest] ?? false {
-                BarMark(
-                    x: .value("Date", item.key, unit: .day),
-                    y: .value("Rest Time", item.value[.rest, default: 0] / 3600),
-                    width: .ratio(widthRatio)
-                )
-                .foregroundStyle(PomoStatus.rest.gradient(startPoint: .bottom, endPoint: .top))
+                timeToAdd += $0.value[.rest, default: 0]
             }
-
             if dataToggles[.longBreak] ?? false {
-                BarMark(
-                    x: .value("Date", item.key, unit: .day),
-                    y: .value("Break Time", item.value[.longBreak, default: 0] / 3600),
-                    width: .ratio(widthRatio)
-                )
-                .foregroundStyle(PomoStatus.longBreak.gradient(startPoint: .bottom, endPoint: .top))
+                timeToAdd += $0.value[.longBreak, default: 0]
+            }
+            totalsAndCounts[startOfWeek, default: (0.0, 0)].0 += timeToAdd
+            totalsAndCounts[startOfWeek, default: (0.0, 0)].1 += 1
+        }
+        let averages = totalsAndCounts.mapValues { $0 / Double($1) }
+        return averages.sorted { $0.key < $1.key }
+    }
+
+    var body: some View {
+        Chart {
+            ForEach(cumulativeTimesByDay, id: \.key) { item in
+                if dataToggles[.work] ?? false {
+                    BarMark(
+                        x: .value("Date", item.key, unit: .day),
+                        y: .value("Work Time", item.value[.work, default: 0] / 3600),
+                        width: .ratio(widthRatio)
+                    )
+                    .foregroundStyle(barStyle(for: .work, isFocused: !averageFocused))
+                }
+                
+                if dataToggles[.rest] ?? false {
+                    BarMark(
+                        x: .value("Date", item.key, unit: .day),
+                        y: .value("Rest Time", item.value[.rest, default: 0] / 3600),
+                        width: .ratio(widthRatio)
+                    )
+                    .foregroundStyle(barStyle(for: .rest, isFocused: !averageFocused))
+                }
+                
+                if dataToggles[.longBreak] ?? false {
+                    BarMark(
+                        x: .value("Date", item.key, unit: .day),
+                        y: .value("Break Time", item.value[.longBreak, default: 0] / 3600),
+                        width: .ratio(widthRatio)
+                    )
+                    .foregroundStyle(barStyle(for: .longBreak, isFocused: !averageFocused))
+                }
+            }
+            if averageFocused {
+                ForEach(averages, id: \.key) { average in
+                    RuleMark(
+                        xStart: .value("Start of Average", average.key),
+                        xEnd: .value("End of Average", average.key.addingTimeInterval(3600 * 24 * 7)),
+                        y: .value("Weekly Average", average.value / 3600)
+                    )
+                    .foregroundStyle(.end)
+                }
             }
         }
         .chartScrollableAxes(.horizontal)
@@ -160,7 +248,7 @@ struct WeeklyCumulativeChart: View {
 
         .chartXScale(domain: (cumulativeTimes.last?.hourTimestamp ?? Date.now.startOfWeek)...Date.now.endOfWeek)
         .chartXVisibleDomain(length: 3600 * 24 * 7 + 1)
-        .chartYScale(domain: 0.0...maxOfTimesByDay)
+        .chartYScale(domain: 0.0...maxOfTimesByDay + 1.0)
         .chartXAxis {
             AxisMarks(values: AxisMarkValues.stride(by: .day, count: 1)) { _ in
                 AxisTick()
@@ -174,6 +262,14 @@ struct WeeklyCumulativeChart: View {
             $0.animation = nil
         }
     }
+
+    func barStyle(for status: PomoStatus, isFocused: Bool) -> LinearGradient {
+        if isFocused {
+            status.gradient(startPoint: .bottom, endPoint: .top)
+        } else {
+            disabledGradient(startPoint: .bottom, endPoint: .top)
+        }
+    }
 }
 
 @available(iOS 17, *)
@@ -181,7 +277,7 @@ struct CumulativeTimesDetails: View {
     @Environment(\.managedObjectContext) var viewContext
     @Environment(\.colorScheme) var colorScheme
     
-    @State var chartScale: ChartScale = .week
+    @State var chartScale: ChartScale = .day
 
     @State var averageFocused: Bool = false
     @State var toggles: [PomoStatus: Bool] = [.work: true, .rest: true, .longBreak: true]
@@ -194,11 +290,11 @@ struct CumulativeTimesDetails: View {
         let times = try? viewContext.fetch(CumulativeTimeData.rangeRequest(between: visibleRange))
         guard let times else { return [.work: 0.0, .rest: 0.0, .longBreak: 0.0] }
 
-        var totals: [PomoStatus: Double] = [.work: 0.0, .rest: 0.0, .longBreak: 0.0]
+        var totals: [PomoStatus: Double] = [:]
         times.forEach {
-            totals[.work]? += $0.work
-            totals[.rest]? += $0.rest
-            totals[.longBreak]? += $0.longBreak
+            totals[.work, default: 0] += $0.work
+            totals[.rest, default: 0] += $0.rest
+            totals[.longBreak, default: 0] += $0.longBreak
         }
         return totals.mapValues { $0 / 3600 }
     }
@@ -208,11 +304,15 @@ struct CumulativeTimesDetails: View {
     }
 
     var averageForRange: Double {
-        // This should be average for the day, not average per hour
-//        let times = try? viewContext.fetch(CumulativeTimeData.rangeRequest(between: visibleRange))
-//        guard let times, times.count > 0 else { return 0.0 }
-//        return totalForRange / Double(times.count)
-        return -1.0
+        let times = try? viewContext.fetch(CumulativeTimeData.rangeRequest(between: visibleRange))
+        guard let times, times.count > 0 else { return 0.0 }
+        var uniqueDates: Set<Date> = Set()
+        times.forEach {
+            guard let hourTimestamp = $0.hourTimestamp else { return }
+            let startOfUnit = startOfUnit(for: hourTimestamp)
+            uniqueDates.insert(startOfUnit)
+        }
+        return totalForRange / Double(uniqueDates.count)
     }
 
     var body: some View {
@@ -228,11 +328,13 @@ struct CumulativeTimesDetails: View {
                 case .day:
                     DailyCumulativeChart(selection: $selection,
                                          scrollPosition: $scrollPosition,
-                                         dataToggles: toggles)
+                                         dataToggles: toggles,
+                                         averageFocused: averageFocused)
                 case .week:
                     WeeklyCumulativeChart(selection: $selection,
                                           scrollPosition: $scrollPosition,
-                                          dataToggles: toggles)
+                                          dataToggles: toggles,
+                                          averageFocused: averageFocused)
                 default:
                     EmptyView()
                 }
@@ -300,6 +402,15 @@ struct CumulativeTimesDetails: View {
             let startOfDay = Calendar.current.startOfDay(for: visibleDate)
             let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)! - 1.0
             return startOfDay...endOfDay
+        }
+    }
+
+    func startOfUnit(for date: Date) -> Date {
+        switch chartScale {
+        case .week:
+            return Calendar.current.startOfDay(for: date)
+        default:
+            return Calendar.current.startOfHour(for: date)
         }
     }
 }
