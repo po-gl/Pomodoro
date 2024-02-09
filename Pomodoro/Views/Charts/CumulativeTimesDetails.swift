@@ -445,6 +445,7 @@ struct CumulativeTimesDetails: View {
                 Divider()
                 chartToggles
             }
+            .fontDesign(.rounded)
             .listRowSeparator(.hidden)
             .onChangeWithThrottle(of: scrollPosition, for: 0.6) { date in
                 visibleDate = date
