@@ -480,31 +480,29 @@ struct CumulativeTimesDetails: View {
     }
 
     @ViewBuilder var chartTitle: some View {
-        HStack {
-            VStack(alignment: .leading) {
-                HStack(alignment: .firstTextBaseline) {
-                    Text(String(format: "%.1f", totalForRange))
-                        .font(.title)
-                    Text("total hours")
-                        .foregroundStyle(.secondary)
-                }
-                switch chartScale {
-                case .day:
-                    Text(visibleDate.formatted(.dateTime.weekday().month().day().year()))
-                        .foregroundStyle(.secondary)
-                case .week:
-                    HStack {
-                        let start = visibleRange.lowerBound.formatted(.dateTime.month().day())
-                        let end = visibleRange.upperBound.formatted(.dateTime.month().day().year())
-                        Text("\(start) - \(end)")
-                            .foregroundStyle(.secondary)
-                    }
-                default:
-                    EmptyView()
-                }
+        VStack(alignment: .leading) {
+            HStack(alignment: .firstTextBaseline) {
+                Text(String(format: "%.1f", totalForRange))
+                    .font(.title)
+                Text("total hours")
+                    .foregroundStyle(.secondary)
             }
-            Spacer()
+            switch chartScale {
+            case .day:
+                Text(visibleDate.formatted(.dateTime.weekday().month().day().year()))
+                    .foregroundStyle(.secondary)
+            case .week:
+                HStack {
+                    let start = visibleRange.lowerBound.formatted(.dateTime.month().day())
+                    let end = visibleRange.upperBound.formatted(.dateTime.month().day().year())
+                    Text("\(start) - \(end)")
+                        .foregroundStyle(.secondary)
+                }
+            default:
+                EmptyView()
+            }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     @ViewBuilder var selectedInfo: some View {
