@@ -13,8 +13,10 @@ struct ChartToggle: View {
     @Binding var isOn: Bool
 
     let label: String
-    let value: Double
-    let unit: String
+
+    var showData: Bool = true
+    var value: Double = 0.0
+    var unit: String = ""
 
     let color: Color
 
@@ -29,6 +31,7 @@ struct ChartToggle: View {
                     .font(.footnote)
                     .foregroundStyle(colorScheme == .light ? .secondary : isOn ? .primary : .secondary)
             }
+            .opacity(showData ? 1.0 : 0.0)
         }
         .font(.callout)
         .padding()
