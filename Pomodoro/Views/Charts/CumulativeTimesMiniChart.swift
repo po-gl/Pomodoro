@@ -52,6 +52,7 @@ struct CumulativeTimesMiniChart: View {
                     )
                     .foregroundStyle(disabledGradient(startPoint: .bottom, endPoint: .top))
                     .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .opacity(0.5)
                 } else {
                     BarMark(
                         x: .value("Date", date, unit: .hour),
