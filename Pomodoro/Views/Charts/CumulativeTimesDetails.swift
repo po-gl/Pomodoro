@@ -379,6 +379,8 @@ struct CumulativeTimesDetails: View {
     @State var scrollPosition = Calendar.current.startOfDay(for: Date.now)
     @State var visibleDate = Date.now
 
+    @State var showData = false
+
     var lastTime: CumulativeTime? {
         let request = CumulativeTimeData.pastCumulativeTimeRequest
         request.fetchLimit = 1
@@ -434,7 +436,7 @@ struct CumulativeTimesDetails: View {
     }
 
     var body: some View {
-        List {
+        ScrollView {
             VStack(spacing: 20) {
                 Picker("Chart Scale", selection: $chartScale) {
                     Text("Daily").tag(ChartScale.day)
@@ -465,7 +467,13 @@ struct CumulativeTimesDetails: View {
                 ChartToggle(isOn: $averageFocused, label: "Daily Average", value: averageForRange, unit: "hours", color: .end)
                 Divider()
                 chartToggles
+                Divider()
+                allDataButton
+                    .navigationDestination(isPresented: $showData) {
+                        CumulativeTimesDataList()
+                    }
             }
+            .padding()
             .fontDesign(.rounded)
             .listRowSeparator(.hidden)
             .onChangeWithThrottle(of: scrollPosition, for: 0.6) { date in
@@ -576,6 +584,18 @@ struct CumulativeTimesDetails: View {
         }
     }
 
+    @ViewBuilder var allDataButton: some View {
+        Button(action: {
+            showData = true
+        }) {
+            Text("All Data")
+                .foregroundStyle(.tomato)
+        }
+        .tint(.tomato)
+        .padding(.horizontal, 8)
+        .frame(maxWidth: .infinity, alignment: .trailing)
+    }
+
     var visibleRange: ClosedRange<Date> {
         switch chartScale {
         case .week:
@@ -614,6 +634,8 @@ struct CumulativeTimesDetails: View {
 
 @available(iOS 17, *)
 #Preview {
-    CumulativeTimesDetails()
-        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    NavigationStack {
+        CumulativeTimesDetails()
+    }
+    .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }
