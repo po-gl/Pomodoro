@@ -33,7 +33,7 @@ struct PersistenceController {
 
         for i in 0..<6 {
             TasksData.addTask("Task \(i)",
-                              completed: i == 3 ? true : false,
+                              completed: i < 3 ? true : false,
                               flagged: i == 1 ? true : false,
                               pomosEstimate: i == 1 || i == 2 ? 3 : -1,
                               pomosActual: i == 2 || i == 3 || i == 4 ? 4 : -1,
@@ -65,6 +65,26 @@ struct PersistenceController {
             TasksData.addTask("1 year ago \(i)", date: Date() - 34186659, context: viewContext)
         }
         
+        // Add random distribution of pomodoro estimations
+        let tasks = try? viewContext.fetch(TasksData.pastTasksRequest(olderThan: Date.now))
+        let estimationGaussianDistribution = GKGaussianDistribution(lowestValue: 0, highestValue: 7)
+        let actualGaussianDistribution = GKGaussianDistribution(lowestValue: 0, highestValue: 7)
+        if let tasks {
+            for taskItem in tasks {
+                let estimationSample = estimationGaussianDistribution.nextInt()
+                let actualSample = actualGaussianDistribution.nextInt()
+                if estimationSample != 7 {
+                    taskItem.pomosEstimate = Int16(estimationSample)
+                }
+                if actualSample != 7 {
+                    taskItem.pomosActual = Int16(actualSample)
+                }
+                if Bool.random() && taskItem.timestamp ?? Date.now < Date.now.startOfDay {
+                    taskItem.completed = true
+                }
+            }
+        }
+
         // Add cumulative times data
         let gaussianDistribution = GKGaussianDistribution(lowestValue: 0, highestValue: 100)
         let startOfDay = Calendar.current.startOfDay(for: Date())
