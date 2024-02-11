@@ -557,6 +557,7 @@ struct CumulativeTimesDetails: View {
             .font(.footnote)
         Text(totalsForSelection[status, default: 0].minOrHr())
             .font(.callout)
+            .monospacedDigit()
             .fontWeight(.medium)
             .foregroundStyle(status.color)
             .brightness(colorScheme == .dark ? 0.1 : 0.0)
