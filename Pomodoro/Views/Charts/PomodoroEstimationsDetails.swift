@@ -200,57 +200,6 @@ struct PomodoroEstimationsDetails: View {
         return averageOfPomos(for: rangeOfSelection)
     }
 
-    private func diffOfPomos(for range: ClosedRange<Date>) -> Double? {
-        let tasks = try? viewContext.fetch(TasksData.rangeRequest(between: range))
-        guard let tasks else { return nil }
-        var difference: Double?
-        tasks.forEach {
-            guard $0.pomosEstimate > 0 && $0.pomosActual > 0 && $0.completed else { return }
-            if difference == nil {
-                difference = 0.0
-            }
-            difference! += Double($0.pomosEstimate - $0.pomosActual)
-        }
-        return difference
-    }
-
-    private func averageOfPomos(for range: ClosedRange<Date>) -> (estimates: Double, actuals: Double) {
-        let tasks = try? viewContext.fetch(TasksData.rangeRequest(between: range))
-        guard let tasks else { return (estimates: 0.0, actuals: 0.0) }
-        var tasksByRange = (estimation: 0, actual: 0, estimationCount: 0, actualCount: 0)
-        tasks.forEach {
-            if $0.pomosEstimate > 0 {
-                tasksByRange.estimation += Int($0.pomosEstimate)
-                tasksByRange.estimationCount += 1
-            }
-            if $0.pomosActual > 0 && $0.completed {
-                tasksByRange.actual += Int($0.pomosActual)
-                tasksByRange.actualCount += 1
-            }
-        }
-        let averageEstimation = tasksByRange.estimationCount == 0 ? 0.0 : Double(tasksByRange.estimation) / Double(tasksByRange.estimationCount)
-        let averageActuals = tasksByRange.actualCount == 0 ? 0.0 : Double(tasksByRange.actual) / Double(tasksByRange.actualCount)
-        return (estimates: averageEstimation, actuals: averageActuals)
-    }
-
-    private func countsOfPomos(for range: ClosedRange<Date>) -> (estimates: Int, actuals: Int, both: Int) {
-        let tasks = try? viewContext.fetch(TasksData.rangeRequest(between: range))
-        guard let tasks else { return (estimates: 0, actuals: 0, both: 0) }
-        var counts = (estimates: 0, actuals: 0, both: 0)
-        tasks.forEach {
-            if $0.pomosEstimate > 0 {
-                counts.estimates += 1
-            }
-            if $0.pomosActual > 0 && $0.completed {
-                counts.actuals += 1
-            }
-            if $0.pomosEstimate > 0 && $0.pomosActual > 0 {
-                counts.both += 1
-            }
-        }
-        return counts
-    }
-
     var body: some View {
         List {
             VStack(spacing: 20) {
@@ -346,6 +295,28 @@ struct PomodoroEstimationsDetails: View {
         }
     }
 
+    @ViewBuilder var legend: some View {
+        let iconWidth = 12.0
+        HStack {
+            HStack {
+                Circle()
+                    .fill(.barRest)
+                    .frame(width: iconWidth, height: iconWidth)
+                Text("Estimate")
+            }
+            HStack {
+                RoundedRectangle(cornerRadius: 3)
+                    .fill(.end)
+                    .frame(width: iconWidth, height: iconWidth)
+                    .rotationEffect(.degrees(45))
+                Text("Actual")
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .font(.footnote)
+        .foregroundStyle(.secondary)
+    }
+
     @ViewBuilder
     func differenceView(diff: Double?, count: Int) -> some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -403,6 +374,57 @@ struct PomodoroEstimationsDetails: View {
                 }
             }
         }
+    }
+
+    private func diffOfPomos(for range: ClosedRange<Date>) -> Double? {
+        let tasks = try? viewContext.fetch(TasksData.rangeRequest(between: range))
+        guard let tasks else { return nil }
+        var difference: Double?
+        tasks.forEach {
+            guard $0.pomosEstimate > 0 && $0.pomosActual > 0 && $0.completed else { return }
+            if difference == nil {
+                difference = 0.0
+            }
+            difference! += Double($0.pomosEstimate - $0.pomosActual)
+        }
+        return difference
+    }
+
+    private func averageOfPomos(for range: ClosedRange<Date>) -> (estimates: Double, actuals: Double) {
+        let tasks = try? viewContext.fetch(TasksData.rangeRequest(between: range))
+        guard let tasks else { return (estimates: 0.0, actuals: 0.0) }
+        var tasksByRange = (estimation: 0, actual: 0, estimationCount: 0, actualCount: 0)
+        tasks.forEach {
+            if $0.pomosEstimate > 0 {
+                tasksByRange.estimation += Int($0.pomosEstimate)
+                tasksByRange.estimationCount += 1
+            }
+            if $0.pomosActual > 0 && $0.completed {
+                tasksByRange.actual += Int($0.pomosActual)
+                tasksByRange.actualCount += 1
+            }
+        }
+        let averageEstimation = tasksByRange.estimationCount == 0 ? 0.0 : Double(tasksByRange.estimation) / Double(tasksByRange.estimationCount)
+        let averageActuals = tasksByRange.actualCount == 0 ? 0.0 : Double(tasksByRange.actual) / Double(tasksByRange.actualCount)
+        return (estimates: averageEstimation, actuals: averageActuals)
+    }
+
+    private func countsOfPomos(for range: ClosedRange<Date>) -> (estimates: Int, actuals: Int, both: Int) {
+        let tasks = try? viewContext.fetch(TasksData.rangeRequest(between: range))
+        guard let tasks else { return (estimates: 0, actuals: 0, both: 0) }
+        var counts = (estimates: 0, actuals: 0, both: 0)
+        tasks.forEach {
+            if $0.pomosEstimate > 0 {
+                counts.estimates += 1
+            }
+            if $0.pomosActual > 0 && $0.completed {
+                counts.actuals += 1
+            }
+            if $0.pomosEstimate > 0 && $0.pomosActual > 0 {
+                counts.both += 1
+            }
+        }
+        return counts
     }
 }
 
