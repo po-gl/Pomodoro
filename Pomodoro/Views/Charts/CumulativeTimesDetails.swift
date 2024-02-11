@@ -313,7 +313,7 @@ struct WeeklyCumulativeChart: View {
 //        .chartScrollPosition(x: $scrollPosition)
         .chartScrollPosition(initialX: Date.now.startOfWeek)
 
-        .chartXScale(domain: (cumulativeTimes.last?.hourTimestamp ?? Date.now.startOfWeek)...(lastTime?.hourTimestamp?.endOfWeek ?? Date.now.endOfWeek))
+        .chartXScale(domain: (cumulativeTimes.last?.hourTimestamp?.startOfWeek ?? Date.now.startOfWeek)...(lastTime?.hourTimestamp?.endOfWeek ?? Date.now.endOfWeek))
         .chartXVisibleDomain(length: 3600 * 24 * 7 + 1)
         .chartXAxis {
             AxisMarks(values: .stride(by: .day, count: 1)) { _ in
