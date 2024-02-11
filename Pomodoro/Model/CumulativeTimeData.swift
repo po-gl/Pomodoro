@@ -18,6 +18,12 @@ struct CumulativeTimeData {
         ].map { descriptor in NSSortDescriptor(descriptor) }
         return fetchRequest
     }
+    
+    static var latestTimeRequest: NSFetchRequest<CumulativeTime> {
+        let fetchRequest = pastCumulativeTimeRequest
+        fetchRequest.fetchLimit = 1
+        return fetchRequest
+    }
 
     static var thisHourRequest: NSFetchRequest<CumulativeTime> {
         hourRequest(for: Date.now)
