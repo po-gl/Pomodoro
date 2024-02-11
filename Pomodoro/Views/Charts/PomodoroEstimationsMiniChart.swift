@@ -113,6 +113,7 @@ struct PomodoroEstimationsMiniChart: View {
                 AxisValueLabel(format: .dateTime.weekday(.narrow), centered: true)
                     .font(.caption2)
                     .foregroundStyle(.gray)
+                    .offset(y: -2)
             }
         }
         .chartYScale(domain: 0.0...7.0)
