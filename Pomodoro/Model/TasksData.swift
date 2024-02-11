@@ -306,6 +306,27 @@ struct TasksData {
         let todaysTasks = try? context.fetch(todaysTasksRequest)
         return todaysTasks?.first(where: { $0.text == text })
     }
+
+    static func thisWeeksEstimateAverages(context: NSManagedObjectContext) -> (estimate: Double?, actual: Double?) {
+        let startOfWeek = Date.now.startOfWeek
+        let endOfWeek = startOfWeek.endOfWeek
+        let tasks = try? context.fetch(TasksData.rangeRequest(between: startOfWeek...endOfWeek))
+        guard let tasks else { return (0, 0) }
+        var tasksByRange = (estimate: 0, actual: 0, estimateCount: 0, actualCount: 0)
+        tasks.forEach {
+            if $0.pomosEstimate > 0 {
+                tasksByRange.estimate += Int($0.pomosEstimate)
+                tasksByRange.estimateCount += 1
+            }
+            if $0.pomosActual > 0 && $0.completed {
+                tasksByRange.actual += Int($0.pomosActual)
+                tasksByRange.actualCount += 1
+            }
+        }
+        let averageEstimate = tasksByRange.estimateCount == 0 ? nil : Double(tasksByRange.estimate) / Double(tasksByRange.estimateCount)
+        let averageActual = tasksByRange.actualCount == 0 ? nil : Double(tasksByRange.actual) / Double(tasksByRange.actualCount)
+        return (estimate: averageEstimate, actual: averageActual)
+    }
 }
 
 enum TasksDataError: Error {
