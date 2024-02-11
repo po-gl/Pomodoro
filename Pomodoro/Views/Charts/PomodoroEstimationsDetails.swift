@@ -395,7 +395,7 @@ struct PomodoroEstimationsDetails: View {
                         .monospacedDigit()
                         .foregroundStyle(.barRest)
                         .brightness(colorScheme == .dark ? 0.1 : 0.0)
-                    Text("estimations")
+                    Text("estimate")
                         .font(.footnote)
                 }
                 GridRow {
