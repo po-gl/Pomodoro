@@ -81,6 +81,19 @@ struct TasksData {
         return fetchRequest
     }
 
+    static func rangeRequest(between range: ClosedRange<Date>) -> NSFetchRequest<TaskNote> {
+        let fetchRequest = TaskNote.fetchRequest()
+        fetchRequest.sortDescriptors = [
+            SortDescriptor(\TaskNote.timestamp, order: .reverse)
+        ].map { descriptor in NSSortDescriptor(descriptor) }
+        fetchRequest.predicate = NSPredicate(
+            format: "timestamp >= %@ && timestamp < %@",
+            range.lowerBound as NSDate,
+            range.upperBound as NSDate
+        )
+        return fetchRequest
+    }
+
     static func addTask(_ text: String,
                         note: String = "",
                         completed: Bool = false,
