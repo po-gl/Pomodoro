@@ -206,7 +206,7 @@ struct PomodoroEstimationsDetails: View {
         countsOfPomos(for: visibleRange)
     }
     
-    var averagesForVisibleRange: (estimates: Double, actuals: Double) {
+    var averagesForVisibleRange: (estimate: Double, actual: Double) {
         averageOfPomos(for: visibleRange)
     }
 
@@ -220,8 +220,8 @@ struct PomodoroEstimationsDetails: View {
         return countsOfPomos(for: rangeOfSelection)
     }
 
-    var averagesForSelection: (estimates: Double, actuals: Double) {
-        guard let rangeOfSelection else { return (estimates: 0.0, actuals: 0.0) }
+    var averagesForSelection: (estimate: Double, actual: Double) {
+        guard let rangeOfSelection else { return (0, 0) }
         return averageOfPomos(for: rangeOfSelection)
     }
 
@@ -265,7 +265,7 @@ struct PomodoroEstimationsDetails: View {
         let hasEstimatesAndActuals = counts.estimates > 0 && counts.actuals > 0
         HStack(alignment: .top) {
             VStack(alignment: .leading) {
-                differenceView(diff: hasEstimatesAndActuals ? averages.estimates - averages.actuals : nil,
+                differenceView(diff: hasEstimatesAndActuals ? averages.estimate - averages.actual : nil,
                                count: counts.estimates)
                 HStack {
                     let start = visibleRange.lowerBound.formatted(.dateTime.month().day())
@@ -276,7 +276,7 @@ struct PomodoroEstimationsDetails: View {
             }
             Spacer()
             VStack(alignment: .leading) {
-                averagesView(estimates: averages.estimates, actuals: averages.actuals)
+                averagesView(estimates: averages.estimate, actuals: averages.actual)
             }
         }
     }
@@ -288,14 +288,14 @@ struct PomodoroEstimationsDetails: View {
         if let selection {
             HStack(alignment: .top) {
                 VStack(alignment: .leading) {
-                    differenceView(diff: hasEstimatesAndActuals ? averages.estimates - averages.actuals : nil,
+                    differenceView(diff: hasEstimatesAndActuals ? averages.estimate - averages.actual : nil,
                                    count: counts.estimates)
                     Text(selection.formatted(.dateTime.weekday().month().day().year()))
                         .foregroundStyle(.secondary)
                 }
                 Spacer()
                 VStack(alignment: .leading) {
-                    averagesView(estimates: averages.estimates, actuals: averages.actuals)
+                    averagesView(estimates: averages.estimate, actuals: averages.actual)
                 }
             }
         } else {
@@ -425,23 +425,23 @@ struct PomodoroEstimationsDetails: View {
         return difference
     }
 
-    private func averageOfPomos(for range: ClosedRange<Date>) -> (estimates: Double, actuals: Double) {
+    private func averageOfPomos(for range: ClosedRange<Date>) -> (estimate: Double, actual: Double) {
         let tasks = try? viewContext.fetch(TasksData.rangeRequest(between: range))
-        guard let tasks else { return (estimates: 0.0, actuals: 0.0) }
-        var tasksByRange = (estimation: 0, actual: 0, estimationCount: 0, actualCount: 0)
+        guard let tasks else { return (0, 0) }
+        var tasksByRange = (estimate: 0, actual: 0, estimateCount: 0, actualCount: 0)
         tasks.forEach {
             if $0.pomosEstimate > 0 {
-                tasksByRange.estimation += Int($0.pomosEstimate)
-                tasksByRange.estimationCount += 1
+                tasksByRange.estimate += Int($0.pomosEstimate)
+                tasksByRange.estimateCount += 1
             }
             if $0.pomosActual > 0 && $0.completed {
                 tasksByRange.actual += Int($0.pomosActual)
                 tasksByRange.actualCount += 1
             }
         }
-        let averageEstimation = tasksByRange.estimationCount == 0 ? 0.0 : Double(tasksByRange.estimation) / Double(tasksByRange.estimationCount)
-        let averageActuals = tasksByRange.actualCount == 0 ? 0.0 : Double(tasksByRange.actual) / Double(tasksByRange.actualCount)
-        return (estimates: averageEstimation, actuals: averageActuals)
+        let averageEstimate = tasksByRange.estimateCount == 0 ? 0.0 : Double(tasksByRange.estimate) / Double(tasksByRange.estimateCount)
+        let averageActual = tasksByRange.actualCount == 0 ? 0.0 : Double(tasksByRange.actual) / Double(tasksByRange.actualCount)
+        return (estimate: averageEstimate, actual: averageActual)
     }
 
     private func countsOfPomos(for range: ClosedRange<Date>) -> (estimates: Int, actuals: Int, both: Int) {
