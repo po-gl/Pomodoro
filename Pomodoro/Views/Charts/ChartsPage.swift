@@ -96,7 +96,41 @@ struct ChartsPage: View {
                     .brightness(colorScheme == .dark ? 0.1 : 0.0)
                     .fixedSize()
             } latestData: {
-                Text("Data : 3.5")
+                let averages = TasksData.thisWeeksEstimateAverages(context: viewContext)
+                VStack(alignment: .leading) {
+                    Text("Avg this week")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                    HStack(alignment: .firstTextBaseline, spacing: 5) {
+                        Group {
+                            if let estimate = averages.estimate {
+                                Text(String(format: "%.1f", estimate))
+                            } else {
+                                Text("--")
+                            }
+                        }
+                        .font(.title3)
+                        .fontWeight(.medium)
+                        .monospacedDigit()
+                        Text("estimate")
+                            .font(.callout)
+                    }
+                    HStack(alignment: .firstTextBaseline, spacing: 5) {
+                        Group {
+                            if let actual = averages.actual {
+                                Text(String(format: "%.1f", actual))
+                            } else {
+                                Text("--")
+                            }
+                        }
+                        .font(.title3)
+                        .fontWeight(.medium)
+                        .monospacedDigit()
+                        Text("actual pomos")
+                            .font(.callout)
+                    }
+                }
+                .fixedSize()
             } miniChart: {
                 if #available(iOS 17, *) {
                     PomodoroEstimationsMiniChart()
