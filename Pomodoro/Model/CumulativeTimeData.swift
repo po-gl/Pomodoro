@@ -107,6 +107,15 @@ struct CumulativeTimeData {
         saveContext(context, errorMessage: "CoreData error deleting cumulative time.")
     }
 
+    static func deleteAll(context: NSManagedObjectContext) {
+        let times = try? context.fetch(CumulativeTimeData.pastCumulativeTimeRequest)
+        guard let times else { return }
+        for time in times {
+            context.delete(time)
+        }
+        saveContext(context, errorMessage: "CoreData error deleting all cumulative times.")
+    }
+
     // MARK: Save Context
 
     static func saveContext(_ context: NSManagedObjectContext, errorMessage: String = "CoreData error.") {
