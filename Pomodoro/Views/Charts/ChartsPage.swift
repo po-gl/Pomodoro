@@ -11,11 +11,7 @@ import Charts
 struct ChartsPage: View {
     @Environment(\.managedObjectContext) var viewContext
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var pomoTimer: PomoTimer
 
-    @FetchRequest(fetchRequest: CumulativeTimeData.pastCumulativeTimeRequest)
-    var cumulativeTimes: FetchedResults<CumulativeTime>
-    
     @State var showingCumulativeTimesDetails = false
     @State var showingPomodoroEstimationsDetails = false
 
@@ -210,45 +206,9 @@ struct ChartsPage: View {
                 )
         )
     }
-
-    @ViewBuilder var cumulativeTimesList: some View {
-        if #available(iOS 17, *) {
-            CumulativeTimesDetails()
-        } else {
-            EmptyView()
-        }
-    }
-
-    @ViewBuilder var straightList: some View {
-        ForEach(cumulativeTimes) { time in
-            VStack(alignment: .leading, spacing: 10) {
-                Text(time.hourTimestamp?.formatted() ?? "nil")
-                    .foregroundStyle(.secondary)
-                HStack {
-                    Text(String(format: "%.2f", time.work/60))
-                        .foregroundStyle(.barWork)
-                    Spacer()
-                    Text(String(format: "%.2f", time.rest/60))
-                        .foregroundStyle(.barRest)
-                    Spacer()
-                    Text(String(format: "%.2f", time.longBreak/60))
-                        .foregroundStyle(.barLongBreak)
-                }
-                .brightness(0.2)
-            }
-        }
-        .onDelete(perform: delete)
-    }
-
-    func delete(at offsets: IndexSet) {
-        for i in offsets {
-            CumulativeTimeData.delete(cumulativeTimes[i], context: viewContext)
-        }
-    }
 }
 
 #Preview {
     ChartsPage()
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-        .environmentObject(PomoTimer())
 }
