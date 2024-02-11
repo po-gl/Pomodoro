@@ -17,6 +17,7 @@ struct ChartsPage: View {
     var cumulativeTimes: FetchedResults<CumulativeTime>
     
     @State var showingCumulativeTimesDetails = false
+    @State var showingPomodoroEstimationsDetails = false
 
     var borderBrightness: Double { colorScheme == .dark ? -0.09 : 0.0 }
     var borderSaturation: Double { colorScheme == .dark ? 0.85 : 1.05 }
@@ -85,7 +86,7 @@ struct ChartsPage: View {
 
     @ViewBuilder var pomodoroEstimationsCard: some View {
         Button(action: {
-            
+            showingPomodoroEstimationsDetails = true
         }) {
             chartCard(color: .grayedOut) {
                 Text("Pomodoro Estimations")
@@ -100,6 +101,13 @@ struct ChartsPage: View {
             }
         }
         .tint(.primary)
+        .navigationDestination(isPresented: $showingPomodoroEstimationsDetails) {
+            if #available(iOS 17, *) {
+                PomodoroEstimationsDetails()
+            } else {
+                EmptyView()
+            }
+        }
     }
 
     @ViewBuilder var tasksCompletedCard: some View {
