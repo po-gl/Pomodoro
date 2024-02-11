@@ -14,12 +14,12 @@ struct CumulativeTimesMiniChart: View {
 
     let widthRatio = 0.55
     let radius = 5.0
+    
+    @FetchRequest(fetchRequest: CumulativeTimeData.latestTimeRequest)
+    var latestTimeResults: FetchedResults<CumulativeTime>
 
     var lastTime: CumulativeTime? {
-        let request = CumulativeTimeData.pastCumulativeTimeRequest
-        request.fetchLimit = 1
-        let lastTime = try? viewContext.fetch(request)
-        return lastTime?.first
+        return latestTimeResults.first
     }
 
     var lastDayTimes: [(key: Date, value: [PomoStatus: Double])] {
