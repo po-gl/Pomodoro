@@ -13,6 +13,7 @@ struct WeeklyPomodoroEstimations: View {
     @Environment(\.managedObjectContext) var viewContext
 
     @Binding var selection: Date?
+    @Binding var lastingSelection: Date?
     @Binding var scrollPosition: Date
     var showEstimates: Bool = true
     var showActuals: Bool = true
@@ -91,6 +92,13 @@ struct WeeklyPomodoroEstimations: View {
                 .opacity(0.6)
                 .zIndex(-1)
             }
+            if let lastingSelection {
+                RuleMark(
+                    x: .value("Selected", lastingSelection, unit: .day)
+                )
+                .foregroundStyle(.grayedOut)
+                .zIndex(-2)
+            }
         }
         .chartScrollableAxes(.horizontal)
         .chartScrollTargetBehavior(
@@ -136,8 +144,13 @@ struct WeeklyPomodoroEstimations: View {
                 }
             }
         }
-        .aspectRatio(1.2, contentMode: .fit)
+        .aspectRatio(1.3, contentMode: .fit)
         .chartXSelection(value: $selection)
+        .onChange(of: selection) { selection in
+            if let selection {
+                lastingSelection = selection
+            }
+        }
         .transaction {
             $0.animation = nil
         }
@@ -153,6 +166,9 @@ struct PomodoroEstimationsDetails: View {
     @State var actualsToggle: Bool = true
 
     @State var selection: Date?
+    @State var lastingSelection: Date?
+    @State var selectionTasks: [TaskNote]?
+
     @State var scrollPosition = Date.now.startOfDay
     @State var visibleDate = Date.now
 
@@ -171,6 +187,15 @@ struct PomodoroEstimationsDetails: View {
         let endOfDay = selection.endOfDay
         guard startOfDay < endOfDay else { return nil }
         return startOfDay...endOfDay
+    }
+
+    var tasksWithEstimatesForSelection: [TaskNote]? {
+        guard let selection = lastingSelection else { return nil }
+        let startOfDay = selection.startOfDay
+        let endOfDay = selection.endOfDay
+        let tasks = try? viewContext.fetch(TasksData.rangeRequest(between: startOfDay...endOfDay))
+        guard let tasks else { return nil }
+        return tasks.filter { $0.pomosEstimate > 0 }
     }
 
     var diffOfPomosForVisibleRange: Double? {
@@ -201,8 +226,8 @@ struct PomodoroEstimationsDetails: View {
     }
 
     var body: some View {
-        List {
-            VStack(spacing: 20) {
+        ScrollView {
+            VStack(spacing: 15) {
                 ZStack(alignment: .bottomLeading) {
                     chartTitle
                         .opacity(selection == nil ? 1.0 : 0.0)
@@ -213,42 +238,25 @@ struct PomodoroEstimationsDetails: View {
                     .padding(.vertical, -15)
                     .offset(y: 8)
                 WeeklyPomodoroEstimations(selection: $selection,
+                                          lastingSelection: $lastingSelection,
                                           scrollPosition: $scrollPosition,
                                           showEstimates: estimatesToggle,
                                           showActuals: actualsToggle)
                 ChartToggle(isOn: $estimatesToggle, label: "Show Pomodoro Estimations", showData: false, color: .barRest)
                 ChartToggle(isOn: $actualsToggle, label: "Show Actual Pomodoros", showData: false, color: .end)
+
+                Divider()
+
+                taskListForSelection
             }
+            .padding()
             .fontDesign(.rounded)
             .listSectionSeparator(.hidden)
-            .onAppear {
-                visibleDate = allTasks.first?.timestamp ?? Date.now
-            }
         }
-        .listStyle(.plain)
         .navigationTitle("Pomodoro Estimations")
-    }
-
-    @ViewBuilder var legend: some View {
-        let iconWidth = 12.0
-        HStack {
-            HStack {
-                Circle()
-                    .fill(.barRest)
-                    .frame(width: iconWidth, height: iconWidth)
-                Text("Estimate")
-            }
-            HStack {
-                RoundedRectangle(cornerRadius: 3)
-                    .fill(.end)
-                    .frame(width: iconWidth, height: iconWidth)
-                    .rotationEffect(.degrees(45))
-                Text("Actual")
-            }
+        .onAppear {
+            visibleDate = allTasks.first?.timestamp ?? Date.now
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .font(.footnote)
-        .foregroundStyle(.secondary)
     }
 
     @ViewBuilder var chartTitle: some View {
@@ -315,6 +323,33 @@ struct PomodoroEstimationsDetails: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .font(.footnote)
         .foregroundStyle(.secondary)
+    }
+
+    @ViewBuilder var taskListForSelection: some View {
+        if let tasks = tasksWithEstimatesForSelection {
+            Section {
+                VStack(spacing: 10) {
+                    ForEach(tasks) { taskItem in
+                        LightweightTaskCell(taskItem: taskItem)
+                        Divider()
+                    }
+                }
+            } header: {
+                HStack(alignment: .firstTextBaseline) {
+                    Text("Tasks with Estimations (\(tasks.count))")
+                    Spacer()
+                    if let lastingSelection {
+                        Text(lastingSelection.formatted(.dateTime.weekday().month().day().year()))
+                    }
+                }
+                .font(.footnote)
+                .textCase(.uppercase)
+                .foregroundStyle(.secondary)
+                .frame(maxWidth: .infinity)
+            }
+        } else {
+            EmptyView()
+        }
     }
 
     @ViewBuilder
