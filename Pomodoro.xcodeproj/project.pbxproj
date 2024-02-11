@@ -118,6 +118,8 @@
 		614533CB2A27353B00388136 /* Color+Interpolate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614533CA2A27353B00388136 /* Color+Interpolate.swift */; };
 		614533CC2A27353B00388136 /* Color+Interpolate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614533CA2A27353B00388136 /* Color+Interpolate.swift */; };
 		614533CD2A27354200388136 /* Color+Interpolate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614533CA2A27353B00388136 /* Color+Interpolate.swift */; };
+		614963202B786D93007D8E63 /* PomodoroEstimationsMiniChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6149631F2B786D93007D8E63 /* PomodoroEstimationsMiniChart.swift */; };
+		614963212B786D93007D8E63 /* PomodoroEstimationsMiniChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6149631F2B786D93007D8E63 /* PomodoroEstimationsMiniChart.swift */; };
 		614A86C3290A4B74008DFA26 /* PomoTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614A86C2290A4B74008DFA26 /* PomoTimerTests.swift */; };
 		614A86C5290A4E1E008DFA26 /* PomoTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614A86C4290A4E1E008DFA26 /* PomoTimeTests.swift */; };
 		614DA2A72997BE3C00EFC91C /* PopStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2A62997BE3C00EFC91C /* PopStyle.swift */; };
@@ -617,6 +619,7 @@
 		613F4F742B6388D100CD1A86 /* EnvironmentValues+selectedReorderingRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+selectedReorderingRect.swift"; sourceTree = "<group>"; };
 		613F4F772B64C2CF00CD1A86 /* ThrottledViewReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThrottledViewReader.swift; sourceTree = "<group>"; };
 		614533CA2A27353B00388136 /* Color+Interpolate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Interpolate.swift"; sourceTree = "<group>"; };
+		6149631F2B786D93007D8E63 /* PomodoroEstimationsMiniChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroEstimationsMiniChart.swift; sourceTree = "<group>"; };
 		614A86C2290A4B74008DFA26 /* PomoTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomoTimerTests.swift; sourceTree = "<group>"; };
 		614A86C4290A4E1E008DFA26 /* PomoTimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomoTimeTests.swift; sourceTree = "<group>"; };
 		614DA2A62997BE3C00EFC91C /* PopStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopStyle.swift; sourceTree = "<group>"; };
@@ -1040,6 +1043,7 @@
 				61CD3A4A2B718F6000E2695F /* ChartsPage.swift */,
 				61518AF82B7681E30033F23D /* CumulativeTimesMiniChart.swift */,
 				61708F0B2B73D4F500DDD941 /* CumulativeTimesDetails.swift */,
+				6149631F2B786D93007D8E63 /* PomodoroEstimationsMiniChart.swift */,
 				61518AFB2B76A0060033F23D /* PomodoroEstimationsDetails.swift */,
 				61708F362B74DB8B00DDD941 /* ChartToggle.swift */,
 				61708F0E2B73EA1400DDD941 /* ChartScale.swift */,
@@ -1741,6 +1745,7 @@
 				6131C0AE291204C300D1E6F1 /* AnimatedImage.swift in Sources */,
 				612270E32B6C5896000C4637 /* BulletedList.swift in Sources */,
 				61E4681F2AEC77FA001F6D7B /* TinyProjectTag.swift in Sources */,
+				614963202B786D93007D8E63 /* PomodoroEstimationsMiniChart.swift in Sources */,
 				611EE30D2A107CD000DDF171 /* View+doneButton.swift in Sources */,
 				618A3B1F2A3B1AFC00A86441 /* ArchivedProjectsView.swift in Sources */,
 				614DA2B02997BE6C00EFC91C /* Color+isDark.swift in Sources */,
@@ -1926,6 +1931,7 @@
 				61F67BA42A3B042F00318CDC /* ProjectInfoView.swift in Sources */,
 				612270E12B6B8BD3000C4637 /* TipsView.swift in Sources */,
 				61E22AA2297B31130080CA6E /* SequenceTimer.swift in Sources */,
+				614963212B786D93007D8E63 /* PomodoroEstimationsMiniChart.swift in Sources */,
 				61708F322B74832400DDD941 /* Date+startOf.swift in Sources */,
 				6176114A2B31F41E0009910B /* View+showTabBarForOffset.swift in Sources */,
 				61F62A1A2AE0C778005DE8A4 /* TodaysTasksHeader.swift in Sources */,

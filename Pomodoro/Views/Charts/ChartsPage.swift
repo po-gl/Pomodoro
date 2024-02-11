@@ -94,10 +94,16 @@ struct ChartsPage: View {
                     .fontWeight(.bold)
                     .foregroundStyle(.barLongBreak)
                     .brightness(colorScheme == .dark ? 0.1 : 0.0)
+                    .fixedSize()
             } latestData: {
                 Text("Data : 3.5")
             } miniChart: {
-                Text("mini")
+                if #available(iOS 17, *) {
+                    PomodoroEstimationsMiniChart()
+                        .frame(width: 140)
+                } else {
+                    EmptyView()
+                }
             }
         }
         .tint(.primary)
