@@ -85,7 +85,11 @@ struct CumulativeTimesMiniChart: View {
         }
         .chartXScale(domain: (lastTime?.hourTimestamp?.startOfDay ?? Date.now.startOfDay)...(lastTime?.hourTimestamp?.endOfDay ?? Date.now.endOfDay))
         .chartXVisibleDomain(length: 3600 * 24 + 1)
-        .chartXAxis { }
+        .chartXAxis {
+            AxisMarks(position: .top, values: .stride(by: .day)) { _ in
+                AxisValueLabel(format: .dateTime.month().day())
+            }
+        }
         .chartYScale(domain: 0.0...60.0)
         .chartYAxis {
             AxisMarks(values: [0, 15, 30]) { value in
