@@ -69,6 +69,12 @@ struct TasksData {
         return fetchRequest
     }
 
+    static var latestTask: NSFetchRequest<TaskNote> {
+        let fetchRequest = pastTasksRequest(olderThan: Date.now)
+        fetchRequest.fetchLimit = 1
+        return fetchRequest
+    }
+
     static func pastTasksRequest(olderThan date: Date) -> NSFetchRequest<TaskNote> {
         let fetchRequest = TaskNote.fetchRequest()
         fetchRequest.sortDescriptors = [
