@@ -13,7 +13,7 @@ struct LightweightTaskCell: View {
 
     @ObservedObject var taskItem: TaskNote
 
-    var todaysTasks: FetchedResults<TaskNote>
+    var todaysTasks: FetchedResults<TaskNote>? = nil
 
     @State var showTaskInfo = false
 

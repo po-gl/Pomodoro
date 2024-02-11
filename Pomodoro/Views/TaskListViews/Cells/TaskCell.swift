@@ -318,7 +318,7 @@ struct TaskCheck: View {
 
     var isAdderCell: Bool = false
 
-    var todaysTasks: FetchedResults<TaskNote>
+    var todaysTasks: FetchedResults<TaskNote>? = nil
 
     let width: Double = 20
     let pi = Double.pi
@@ -340,7 +340,7 @@ struct TaskCheck: View {
             basicHaptic()
             TasksData.toggleCompleted(for: taskItem, context: viewContext)
 
-            if !isAdderCell {
+            if let todaysTasks, !isAdderCell {
                 Task {
                     try? await Task.sleep(for: .seconds(0.3))
                     withAnimation {
