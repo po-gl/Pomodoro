@@ -122,6 +122,8 @@
 		614963212B786D93007D8E63 /* PomodoroEstimationsMiniChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6149631F2B786D93007D8E63 /* PomodoroEstimationsMiniChart.swift */; };
 		614963232B78C0BB007D8E63 /* CumulativeTimesDataList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614963222B78C0BA007D8E63 /* CumulativeTimesDataList.swift */; };
 		614963242B78C0BB007D8E63 /* CumulativeTimesDataList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614963222B78C0BA007D8E63 /* CumulativeTimesDataList.swift */; };
+		614963262B7A0BC4007D8E63 /* CompletedDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614963252B7A0BC4007D8E63 /* CompletedDetails.swift */; };
+		614963272B7A0BC4007D8E63 /* CompletedDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614963252B7A0BC4007D8E63 /* CompletedDetails.swift */; };
 		614A86C3290A4B74008DFA26 /* PomoTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614A86C2290A4B74008DFA26 /* PomoTimerTests.swift */; };
 		614A86C5290A4E1E008DFA26 /* PomoTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614A86C4290A4E1E008DFA26 /* PomoTimeTests.swift */; };
 		614DA2A72997BE3C00EFC91C /* PopStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2A62997BE3C00EFC91C /* PopStyle.swift */; };
@@ -623,6 +625,7 @@
 		614533CA2A27353B00388136 /* Color+Interpolate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Interpolate.swift"; sourceTree = "<group>"; };
 		6149631F2B786D93007D8E63 /* PomodoroEstimationsMiniChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroEstimationsMiniChart.swift; sourceTree = "<group>"; };
 		614963222B78C0BA007D8E63 /* CumulativeTimesDataList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CumulativeTimesDataList.swift; sourceTree = "<group>"; };
+		614963252B7A0BC4007D8E63 /* CompletedDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedDetails.swift; sourceTree = "<group>"; };
 		614A86C2290A4B74008DFA26 /* PomoTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomoTimerTests.swift; sourceTree = "<group>"; };
 		614A86C4290A4E1E008DFA26 /* PomoTimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomoTimeTests.swift; sourceTree = "<group>"; };
 		614DA2A62997BE3C00EFC91C /* PopStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopStyle.swift; sourceTree = "<group>"; };
@@ -1049,6 +1052,7 @@
 				614963222B78C0BA007D8E63 /* CumulativeTimesDataList.swift */,
 				6149631F2B786D93007D8E63 /* PomodoroEstimationsMiniChart.swift */,
 				61518AFB2B76A0060033F23D /* PomodoroEstimationsDetails.swift */,
+				614963252B7A0BC4007D8E63 /* CompletedDetails.swift */,
 				61708F362B74DB8B00DDD941 /* ChartToggle.swift */,
 				61708F0E2B73EA1400DDD941 /* ChartScale.swift */,
 			);
@@ -1819,6 +1823,7 @@
 				6131C0AA2911F6E200D1E6F1 /* BuddyView.swift in Sources */,
 				610D84302B5D94C700659B41 /* UIFont+rounded.swift in Sources */,
 				610D84392B5DCA8A00659B41 /* Notification+Toasts.swift in Sources */,
+				614963262B7A0BC4007D8E63 /* CompletedDetails.swift in Sources */,
 				61DFEB582B6637F4005459F7 /* RefreshInfoAction.swift in Sources */,
 				619255B12901F4CB00D399B8 /* PomoTimer.swift in Sources */,
 				619255B4290204AB00D399B8 /* PomoTime.swift in Sources */,
@@ -1901,6 +1906,7 @@
 				613F4F792B64C2CF00CD1A86 /* ThrottledViewReader.swift in Sources */,
 				61D5808A29BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */,
 				61D01EC12B3A56FF00A58360 /* SwipeStyle.swift in Sources */,
+				614963272B7A0BC4007D8E63 /* CompletedDetails.swift in Sources */,
 				61F67D7C2B730D6C00B259D4 /* Pomodoro.xcdatamodeld in Sources */,
 				618750F729BABCFE0017BF8E /* Point+Extensions.swift in Sources */,
 				61BF0AC42B5F9F4700FE8B84 /* Publishers+TabView.swift in Sources */,

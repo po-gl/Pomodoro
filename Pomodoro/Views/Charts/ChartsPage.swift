@@ -14,6 +14,7 @@ struct ChartsPage: View {
 
     @State var showingCumulativeTimesDetails = false
     @State var showingPomodoroEstimationsDetails = false
+    @State var showingCompletedDetails = false
 
     var borderBrightness: Double { colorScheme == .dark ? -0.09 : 0.0 }
     var borderSaturation: Double { colorScheme == .dark ? 0.85 : 1.05 }
@@ -148,14 +149,15 @@ struct ChartsPage: View {
 
     @ViewBuilder var tasksCompletedCard: some View {
         Button(action: {
-            
+            showingCompletedDetails = true
         }) {
             chartCard(color: .grayedOut) {
                 Text("Tasks Completed")
                     .font(.headline)
                     .fontWeight(.bold)
                     .foregroundStyle(.end)
-                    .brightness(colorScheme == .dark ? 0.1 : 0.0)
+                    .brightness(colorScheme == .dark ? 0.1 : -0.3)
+                    .fixedSize()
             } latestData: {
                 Text("Data : 3.5")
             } miniChart: {
@@ -163,6 +165,13 @@ struct ChartsPage: View {
             }
         }
         .tint(.primary)
+        .navigationDestination(isPresented: $showingCompletedDetails) {
+            if #available(iOS 17, *) {
+                CompletedDetails()
+            } else {
+                EmptyView()
+            }
+        }
     }
 
     @ViewBuilder
