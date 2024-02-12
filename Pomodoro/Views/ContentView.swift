@@ -27,10 +27,12 @@ struct ContentView: View {
                 .tabItem { Label { Text("Tasks") } icon: { Image(.pomoChecklist) } }
                 .tag(1)
                 .badge(errors.coreDataError != nil ? "!" : nil)
-            ChartsPage()
-                .toasts()
-                .tabItem { Label("Charts", systemImage: "chart.bar.xaxis")}
-                .tag(2)
+            if #available(iOS 17, *) {
+                ChartsPage()
+                    .toasts()
+                    .tabItem { Label("Charts", systemImage: "chart.bar.xaxis")}
+                    .tag(2)
+            }
             SettingsPage()
                 .toasts()
                 .tabItem { Label { Text("Settings") } icon: { Image(.pomoGear) } }
