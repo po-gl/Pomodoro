@@ -455,16 +455,16 @@ struct CumulativeTimesDetails: View {
                                          scrollPosition: $scrollPosition,
                                          dataToggles: toggles,
                                          averageFocused: averageFocused)
+                    ChartToggle(isOn: $averageFocused, label: "Daily Average", value: averageForRange, unit: "hours", color: .end)
                 case .week:
                     WeeklyCumulativeChart(selection: $selection,
                                           scrollPosition: $scrollPosition,
                                           dataToggles: toggles,
                                           averageFocused: averageFocused)
+                    ChartToggle(isOn: $averageFocused, label: "Weekly Average", value: averageForRange, unit: "hours", color: .end)
                 default:
                     EmptyView()
                 }
-
-                ChartToggle(isOn: $averageFocused, label: "Daily Average", value: averageForRange, unit: "hours", color: .end)
                 Divider()
                 chartToggles
                 Divider()
