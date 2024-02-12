@@ -124,6 +124,8 @@
 		614963242B78C0BB007D8E63 /* CumulativeTimesDataList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614963222B78C0BA007D8E63 /* CumulativeTimesDataList.swift */; };
 		614963262B7A0BC4007D8E63 /* CompletedDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614963252B7A0BC4007D8E63 /* CompletedDetails.swift */; };
 		614963272B7A0BC4007D8E63 /* CompletedDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614963252B7A0BC4007D8E63 /* CompletedDetails.swift */; };
+		614963292B7A26FE007D8E63 /* CompletedMiniChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614963282B7A26FE007D8E63 /* CompletedMiniChart.swift */; };
+		6149632A2B7A26FE007D8E63 /* CompletedMiniChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614963282B7A26FE007D8E63 /* CompletedMiniChart.swift */; };
 		614A86C3290A4B74008DFA26 /* PomoTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614A86C2290A4B74008DFA26 /* PomoTimerTests.swift */; };
 		614A86C5290A4E1E008DFA26 /* PomoTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614A86C4290A4E1E008DFA26 /* PomoTimeTests.swift */; };
 		614DA2A72997BE3C00EFC91C /* PopStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DA2A62997BE3C00EFC91C /* PopStyle.swift */; };
@@ -626,6 +628,7 @@
 		6149631F2B786D93007D8E63 /* PomodoroEstimationsMiniChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroEstimationsMiniChart.swift; sourceTree = "<group>"; };
 		614963222B78C0BA007D8E63 /* CumulativeTimesDataList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CumulativeTimesDataList.swift; sourceTree = "<group>"; };
 		614963252B7A0BC4007D8E63 /* CompletedDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedDetails.swift; sourceTree = "<group>"; };
+		614963282B7A26FE007D8E63 /* CompletedMiniChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedMiniChart.swift; sourceTree = "<group>"; };
 		614A86C2290A4B74008DFA26 /* PomoTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomoTimerTests.swift; sourceTree = "<group>"; };
 		614A86C4290A4E1E008DFA26 /* PomoTimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomoTimeTests.swift; sourceTree = "<group>"; };
 		614DA2A62997BE3C00EFC91C /* PopStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopStyle.swift; sourceTree = "<group>"; };
@@ -1052,6 +1055,7 @@
 				614963222B78C0BA007D8E63 /* CumulativeTimesDataList.swift */,
 				6149631F2B786D93007D8E63 /* PomodoroEstimationsMiniChart.swift */,
 				61518AFB2B76A0060033F23D /* PomodoroEstimationsDetails.swift */,
+				614963282B7A26FE007D8E63 /* CompletedMiniChart.swift */,
 				614963252B7A0BC4007D8E63 /* CompletedDetails.swift */,
 				61708F362B74DB8B00DDD941 /* ChartToggle.swift */,
 				61708F0E2B73EA1400DDD941 /* ChartScale.swift */,
@@ -1714,6 +1718,7 @@
 				61D01EBD2B34866A00A58360 /* View+customSwipeActions.swift in Sources */,
 				613D6D9C285C82FD0020C194 /* SequenceTimer.swift in Sources */,
 				61708F312B74832400DDD941 /* Date+startOf.swift in Sources */,
+				614963292B7A26FE007D8E63 /* CompletedMiniChart.swift in Sources */,
 				618750F929BB69400017BF8E /* TasksOnBar.swift in Sources */,
 				612B908A285CD2E4003F1990 /* Color+hex.swift in Sources */,
 				617CF5192AE9EF800040E50B /* EmptyTasksView.swift in Sources */,
@@ -1972,6 +1977,7 @@
 				61B884B52B59D1FB00F2305A /* PickGradient.metal in Sources */,
 				618D67DE2979ECD7000A9D8A /* Background.swift in Sources */,
 				6162B7DE2B22EA9D00C83714 /* WidgetProgressBar.swift in Sources */,
+				6149632A2B7A26FE007D8E63 /* CompletedMiniChart.swift in Sources */,
 				610D843A2B5DCA8A00659B41 /* Notification+Toasts.swift in Sources */,
 				611A7CE22A380F2D0038AE56 /* View+draggableTask.swift in Sources */,
 				61AEA85E29CE56F8007AA1AD /* Publishers+Keyboard.swift in Sources */,

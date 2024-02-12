@@ -160,9 +160,32 @@ struct ChartsPage: View {
                     .brightness(colorScheme == .dark ? 0.1 : -0.3)
                     .fixedSize()
             } latestData: {
-                Text("Data : 3.5")
+                let (count, average) = TasksData.thisWeeksCompletedData(context: viewContext)
+                VStack(alignment: .leading) {
+                    HStack(alignment: .firstTextBaseline, spacing: 5) {
+                        Text(String(format: "%.1f", average))
+                            .font(.title2)
+                            .fontWeight(.medium)
+                            .monospacedDigit()
+                        Text("avg per day")
+                            .foregroundStyle(.secondary)
+                    }
+                    HStack(alignment: .firstTextBaseline, spacing: 5) {
+                        Text("\(count)")
+                            .font(.title2)
+                            .fontWeight(.medium)
+                            .monospacedDigit()
+                        Text("tasks this week")
+                            .foregroundStyle(.secondary)
+                    }
+                }
             } miniChart: {
-                Text("mini")
+                if #available(iOS 17, *) {
+                    CompletedMiniChart()
+                        .frame(width: 140)
+                } else {
+                    EmptyView()
+                }
             }
         }
         .tint(.primary)
