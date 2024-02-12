@@ -327,6 +327,18 @@ struct TasksData {
         let averageActual = tasksByRange.actualCount == 0 ? nil : Double(tasksByRange.actual) / Double(tasksByRange.actualCount)
         return (estimate: averageEstimate, actual: averageActual)
     }
+
+    static func thisWeeksCompletedData(context: NSManagedObjectContext) -> (count: Int, average: Double) {
+        let startOfWeek = Date.now.startOfWeek
+        let endOfWeek = startOfWeek.endOfWeek
+        let tasks = try? context.fetch(TasksData.rangeRequest(between: startOfWeek...endOfWeek))
+        guard let tasks else { return (0, 0) }
+
+        let countOfTasks = tasks.reduce(0, { $0 + ($1.completed ? 1 : 0) })
+        let countOfDays = ceil(min(7, Date.now.timeIntervalSince(Date.now.startOfWeek) / (3600 * 24)))
+        guard countOfDays > 0 else { return (0, 0) }
+        return (count: countOfTasks, average: Double(countOfTasks) / countOfDays)
+    }
 }
 
 enum TasksDataError: Error {
