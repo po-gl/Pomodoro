@@ -58,6 +58,7 @@ struct ChartsPage: View {
                     Text(String(format: "%.1f hr", average / 3600))
                         .font(.title)
                         .fontWeight(.medium)
+                        .monospacedDigit()
                     Text("avg this week")
                         .foregroundStyle(.secondary)
                 }
