@@ -17,10 +17,10 @@ extension Date {
     }
 
     var endOfDay: Date {
-        Calendar.current.date(byAdding: .day, value: 1, to: self.startOfDay)! - 1.0
+        Calendar.current.date(byAdding: .day, value: 1, to: self.startOfDay)!
     }
 
     var endOfWeek: Date {
-        Calendar.current.date(byAdding: .day, value: 7, to: self.startOfWeek)! - 1.0
+        Calendar.current.date(byAdding: .day, value: 7, to: self.startOfWeek)!
     }
 }
