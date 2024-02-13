@@ -35,7 +35,10 @@ struct WeeklyCompletedTasks: View {
     }
 
     var maxCompletedValue: Int {
-        completedTasksByDay.max { $0.value < $1.value }?.value ?? 4
+        // Limit scope to past 30 days
+        completedTasksByDay
+            .prefix { -$0.key.timeIntervalSinceNow < -1 * 3600 * 24 * 30 }
+            .max { $0.value < $1.value }?.value ?? 4
     }
 
     var averagesByWeek: [(key: Date, value: Double)] {
