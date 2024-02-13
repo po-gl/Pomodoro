@@ -152,9 +152,7 @@ class PomoTimer: SequenceTimer {
         var startOfHour = Calendar.current.startOfHour(for: unpauseTime)
         var hourAccumulator = unpauseTime.timeIntervalSince(startOfHour)
 
-        var workTime = 0.0
-        var restTime = 0.0
-        var breakTime = 0.0
+        var times = [(status: PomoStatus, time: TimeInterval)]()
         for i in indexAtUnpause...indexAtPause {
             var timeToAdd = order[i].timeInterval
             if indexAtUnpause == indexAtPause {
@@ -165,22 +163,27 @@ class PomoTimer: SequenceTimer {
                 timeToAdd -= timeRemaining(atDate: endDate)
             }
 
-            addToRecordingTimes(timeToAdd, for: order[i].status, &workTime, &restTime, &breakTime)
+            times.append((status: order[i].status, time: timeToAdd))
 
             hourAccumulator += timeToAdd
             while hourAccumulator > 60 * 60 {
                 let excess = hourAccumulator.truncatingRemainder(dividingBy: 60 * 60)
-                addToRecordingTimes(-excess, for: order[i].status, &workTime, &restTime, &breakTime)
+                times[times.count-1].time -= excess // remove excess
 
+                let workTime = times.reduce(0.0, { $0 + ($1.status == .work ? $1.time : 0.0)})
+                let restTime = times.reduce(0.0, { $0 + ($1.status == .rest ? $1.time : 0.0)})
+                let breakTime = times.reduce(0.0, { $0 + ($1.status == .longBreak ? $1.time : 0.0)})
                 recordTime(workTime: workTime, restTime: restTime, breakTime: breakTime, for: startOfHour)
 
-                workTime = 0.0; restTime = 0.0; breakTime = 0.0
-                addToRecordingTimes(excess, for: order[i].status, &workTime, &restTime, &breakTime)
-
+                times = []
+                times.append((status: order[i].status, time: excess))  // add back excess
                 startOfHour.addTimeInterval(60 * 60)
                 hourAccumulator -= 60 * 60
             }
         }
+        let workTime = times.reduce(0.0, { $0 + ($1.status == .work ? $1.time : 0.0)})
+        let restTime = times.reduce(0.0, { $0 + ($1.status == .rest ? $1.time : 0.0)})
+        let breakTime = times.reduce(0.0, { $0 + ($1.status == .longBreak ? $1.time : 0.0)})
         recordTime(workTime: workTime, restTime: restTime, breakTime: breakTime, for: startOfHour)
     }
 
@@ -189,19 +192,6 @@ class PomoTimer: SequenceTimer {
             Logger().log("Recording cumulative time adding: work=\(workTime.rounded()) rest=\(restTime.rounded()) break=\(breakTime.rounded()) for=\(date.formatted())")
             CumulativeTimeData.addTime(work: workTime, rest: restTime, longBreak: breakTime,
                                        date: date, context: context)
-        }
-    }
-
-    private func addToRecordingTimes(_ value: Double, for status: PomoStatus, _ workTime: inout Double, _ restTime: inout Double, _ breakTime: inout Double) {
-        switch status {
-        case .work:
-            workTime += value
-        case .rest:
-            restTime += value
-        case .longBreak:
-            breakTime += value
-        case .end:
-            break
         }
     }
 
