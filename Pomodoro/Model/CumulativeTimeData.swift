@@ -85,14 +85,19 @@ struct CumulativeTimeData {
                         date: Date = Date(),
                         context: NSManagedObjectContext) {
         let request = date == Date() ? thisHourRequest : hourRequest(for: date)
-        if let existingTimeForHour = try? context.fetch(request).first {
-            existingTimeForHour.work += work
-            existingTimeForHour.rest += rest
-            existingTimeForHour.longBreak += longBreak
-            
-            let formatter = DateFormatter()
-            formatter.setLocalizedDateFormatFromTemplate("dd hh:mm:ss")
+        if let existingTime = try? context.fetch(request).first {
+            guard 3600 >= existingTime.work + work + existingTime.rest + rest + existingTime.longBreak + longBreak else {
+                Logger().error("Cumulative time overflow")
+                return
+            }
+            existingTime.work += work
+            existingTime.rest += rest
+            existingTime.longBreak += longBreak
         } else {
+            guard 3600 >= work + rest + longBreak else {
+                Logger().error("Cumulative time overflow")
+                return
+            }
             let newTime = CumulativeTime(context: context)
             newTime.work = work
             newTime.rest = rest
