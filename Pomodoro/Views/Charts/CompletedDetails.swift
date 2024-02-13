@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Charts
+import Algorithms
 
 @available(iOS 17, *)
 struct WeeklyCompletedTasks: View {
@@ -36,9 +37,10 @@ struct WeeklyCompletedTasks: View {
 
     var maxCompletedValue: Int {
         // Limit scope to past 30 days
-        completedTasksByDay
-            .prefix { -$0.key.timeIntervalSinceNow < -1 * 3600 * 24 * 30 }
-            .max { $0.value < $1.value }?.value ?? 4
+        let maxCompleted = completedTasksByDay
+            .suffix { -$0.key.timeIntervalSinceNow < 3600 * 24 * 30 }
+            .max { $0.value < $1.value }?.value ?? 0
+        return max(maxCompleted, 3)
     }
 
     var averagesByWeek: [(key: Date, value: Double)] {
