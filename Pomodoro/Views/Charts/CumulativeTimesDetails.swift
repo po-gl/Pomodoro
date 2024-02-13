@@ -98,6 +98,23 @@ struct DailyCumulativeChart: View {
                         y: .value("Daily Average", average.value / 60)
                     )
                     .foregroundStyle(.end)
+                    .annotation(
+                        position: .top,
+                        overflowResolution: .init(
+                            x: .fit(to: .chart),
+                            y: .disabled
+                        )
+                    ) { context in
+                        let width = context.targetSize.width
+                        Text(String(format: "%.1f min", average.value / 60))
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .padding(.horizontal, 2)
+                            .foregroundStyle(.black)
+                            .background(RoundedRectangle(cornerRadius: 4).fill(.end))
+                            .padding(.leading, 3)
+                            .frame(minWidth: width > 0 ? width : 0, alignment: .leading)
+                    }
                 }
             }
             if let selection {
@@ -146,16 +163,6 @@ struct DailyCumulativeChart: View {
                     AxisGridLine()
                     AxisValueLabel(collisionResolution: .greedy(priority: 0.0)) {
                         Text("\(valueInt) min")
-                    }
-                }
-            }
-            if averageFocused {
-                if let average = averages.first(where: { $0.key == scrollPosition.startOfDay }) {
-                    AxisMarks(values: [average.value / 60]) { value in
-                        AxisValueLabel(collisionResolution: .greedy(priority: 1.0)) {
-                            Text(String(format: "%.1f min", value.as(Double.self) ?? 0))
-                                .foregroundStyle(.end)
-                        }
                     }
                 }
             }
@@ -290,6 +297,23 @@ struct WeeklyCumulativeChart: View {
                         y: .value("Weekly Average", average.value / 3600)
                     )
                     .foregroundStyle(.end)
+                    .annotation(
+                        position: .top,
+                        overflowResolution: .init(
+                            x: .fit(to: .chart),
+                            y: .disabled
+                        )
+                    ) { context in
+                        let width = context.targetSize.width
+                        Text(String(format: "%.1f hrs", average.value / 3600))
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .padding(.horizontal, 2)
+                            .foregroundStyle(.black)
+                            .background(RoundedRectangle(cornerRadius: 4).fill(.end))
+                            .padding(.leading, 3)
+                            .frame(minWidth: width > 0 ? width : 0, alignment: .leading)
+                    }
                 }
             }
             if let selection {
@@ -336,16 +360,6 @@ struct WeeklyCumulativeChart: View {
                 AxisGridLine()
                 AxisValueLabel(collisionResolution: .greedy(priority: 0.0)) {
                     Text("\(value.as(Int.self) ?? 0) hrs")
-                }
-            }
-            if averageFocused {
-                if let average = averages.first(where: { $0.key == scrollPosition.startOfWeek }) {
-                    AxisMarks(values: [average.value / 3600]) { value in
-                        AxisValueLabel(collisionResolution: .greedy(priority: 1.0)) {
-                            Text(String(format: "%.1f hrs", value.as(Double.self) ?? 0))
-                                .foregroundStyle(.end)
-                        }
-                    }
                 }
             }
         }

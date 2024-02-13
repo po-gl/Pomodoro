@@ -80,6 +80,23 @@ struct WeeklyCompletedTasks: View {
                         y: .value("Weekly Average", average.value)
                     )
                     .foregroundStyle(.barLongBreak)
+                    .annotation(
+                        position: .top,
+                        overflowResolution: .init(
+                            x: .fit(to: .chart),
+                            y: .disabled
+                        )
+                    ) { context in
+                        let width = context.targetSize.width
+                        Text(String(format: "%.1f", average.value))
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .padding(.horizontal, 2)
+                            .foregroundStyle(.black)
+                            .background(RoundedRectangle(cornerRadius: 4).fill(.barLongBreak))
+                            .padding(.leading, 3)
+                            .frame(minWidth: width > 0 ? width : 0, alignment: .leading)
+                    }
                 }
             }
             if let selection {
@@ -133,20 +150,6 @@ struct WeeklyCompletedTasks: View {
                 AxisValueLabel(collisionResolution: .greedy(priority: 0.0)) {
                     Text("\(value.as(Int.self) ?? 0)")
                         .monospacedDigit()
-                }
-            }
-            if averageFocused {
-                if let average = averagesByWeek.first(where: { $0.key == scrollPosition.startOfWeek }) {
-                    AxisMarks(values: [average.value]) { value in
-                        AxisValueLabel(collisionResolution: .greedy(priority: 1.0)) {
-                            Text(String(format: "%.1f", value.as(Double.self) ?? 0))
-                                .foregroundStyle(.barLongBreak)
-                                .monospacedDigit()
-                                .fixedSize()
-                                .offset(x: 5)
-                                .frame(width: 5)
-                        }
-                    }
                 }
             }
         }
