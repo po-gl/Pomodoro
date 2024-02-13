@@ -64,13 +64,13 @@ struct ProjectStack: View {
             metrics.value = Array(repeating: CGRect.zero, count: currentProjects.count)
             reorderCompensatingOffsets = Array(repeating: CGFloat.zero, count: currentProjects.count)
         }
-        .onChange(of: currentProjects.count) { count in
+        .onChange(of: currentProjects.count) { _, count in
             metrics.value = Array(repeating: CGRect.zero, count: count)
             reorderCompensatingOffsets = Array(repeating: CGFloat.zero, count: count)
         }
 
-        .onChange(of: isReordering.value) { isReordering in
-            if !isReordering {
+        .onChange(of: isReordering.value) {
+            if !isReordering.value {
                 do {
                     if selectedReorderingIndex.value >= 0 {
                         metrics.value[selectedReorderingIndex.value] = selectedReorderingRect.value

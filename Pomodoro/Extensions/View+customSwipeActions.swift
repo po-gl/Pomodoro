@@ -118,12 +118,12 @@ struct CustomSwipeActionsModifier<L: View, T: View>: ViewModifier {
         content
             .offset(x: offset)
             .simultaneousGesture(dragGesture)
-            .onChange(of: disabled) { _ in
+            .onChange(of: disabled) {
                 withAnimation(.easeInOut(duration: 0.2)) {
                     resetGesture()
                 }
             }
-            .onChange(of: swipeActionsDisabled.value) { _ in
+            .onChange(of: swipeActionsDisabled.value) {
                 withAnimation(.easeInOut(duration: 0.2)) {
                     resetGesture()
                 }

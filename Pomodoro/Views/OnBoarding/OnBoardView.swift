@@ -56,7 +56,7 @@ struct OnBoardView: View {
             .onAppear {
                 changePageIndicators()
             }
-            .onChange(of: colorScheme) { _ in
+            .onChange(of: colorScheme) {
                 changePageIndicators()
             }
         }

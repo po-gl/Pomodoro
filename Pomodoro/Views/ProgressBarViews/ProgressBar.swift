@@ -36,10 +36,10 @@ struct ProgressBar: View {
 
     var body: some View {
         timeLineColorBars
-            .onChange(of: pomoTimer.isPaused) { _ in
+            .onChange(of: pomoTimer.isPaused) {
                 isDragging = false
             }
-            .onChange(of: pomoTimer.getStatus()) { _ in
+            .onChange(of: pomoTimer.getStatus()) {
                 if isDragging {
                     basicHaptic()
                 }
@@ -47,16 +47,16 @@ struct ProgressBar: View {
             .onAppear {
                 taskNotes.setTaskAmount(for: pomoTimer)
             }
-            .onChange(of: pomoTimer.order.count) { _ in
+            .onChange(of: pomoTimer.order.count) {
                 taskNotes.setTaskAmount(for: pomoTimer)
             }
 
-            .onChange(of: scenePhase) { newPhase in
+            .onChange(of: scenePhase) {
                 guard !isOnBoarding else { return }
-                if newPhase == .active {
+                if scenePhase == .active {
                     taskNotes.restoreFromUserDefaults()
                     taskNotes.setTaskAmount(for: pomoTimer)
-                } else if newPhase == .inactive {
+                } else if scenePhase == .inactive {
                     taskNotes.saveToUserDefaults()
                 }
             }
@@ -121,7 +121,7 @@ struct ProgressBar: View {
                             .foregroundStyle(status.gradient())
                             .brightness(i<taskNotes.pomoHighlight.count && taskNotes.pomoHighlight[i] ? 0.18 : 0.0)
 
-                            .onChange(of: taskFromAdder.dragHasEnded) { _ in
+                            .onChange(of: taskFromAdder.dragHasEnded) {
                                 guard taskFromAdder.dragHasEnded
                                         && taskFromAdder.location != nil
                                         && !isMask else { return }
@@ -133,7 +133,7 @@ struct ProgressBar: View {
                                                                    geometry: geometry)
                             }
 
-                            .onChange(of: taskFromAdder.location) { _ in
+                            .onChange(of: taskFromAdder.location) {
                                 guard taskFromAdder.location != nil && !isMask else { return }
                                 guard status == .work else { return }
                                 updateTaskNoteHighlights(for: i,
@@ -142,7 +142,7 @@ struct ProgressBar: View {
                                                          geometry: geometry)
                             }
 
-                            .onChange(of: taskNotes.draggableTasksOnBar) { _ in
+                            .onChange(of: taskNotes.draggableTasksOnBar) {
                                 guard !isMask else { return }
                                 guard status == .work else { return }
 

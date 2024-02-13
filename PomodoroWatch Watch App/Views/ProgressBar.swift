@@ -40,11 +40,11 @@ struct ProgressBar: View {
                     withAnimation { isScrolling = false }
                 }
             })
-            .onChange(of: pomoTimer.isPaused) { _ in
+            .onChange(of: pomoTimer.isPaused) {
                 isScrolling = false
                 scrollValue = pomoTimer.getCurrentPercentage() * 100.0
             }
-            .onChange(of: pomoTimer.getStatus()) { _ in
+            .onChange(of: pomoTimer.getStatus()) {
                 if isScrolling {
                     basicHaptic()
                 }

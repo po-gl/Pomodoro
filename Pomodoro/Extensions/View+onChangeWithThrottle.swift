@@ -27,7 +27,7 @@ struct OnChangeWithThrottleModifier<E: Equatable>: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .onChange(of: target) { [weak subject] newValue in
+            .onChange(of: target) { [weak subject] oldValue, newValue in
                 subject?.send(newValue)
             }
             .onAppear {

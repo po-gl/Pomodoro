@@ -22,7 +22,7 @@ struct ShowTabBarForOffsetModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .toolbarBackground(showTabBar ? .visible : .hidden, for: .tabBar)
-            .onChange(of: dragOffset) { dragOffset in
+            .onChange(of: dragOffset) {
                 if dragOffset > 0 {
                     cancellableTask?.cancel()
                     showTabBar = true

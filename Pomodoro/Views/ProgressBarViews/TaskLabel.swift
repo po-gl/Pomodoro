@@ -47,20 +47,20 @@ struct TaskLabel: View {
                 .globalPosition(draggableTask.location ?? CGPoint(x: geometry.frame(in: .global).midX,
                                                                   y: geometry.frame(in: .global).midY))
                 .draggableTask($draggableTask)
-                .onChange(of: draggableTask.isDragging) { _ in
+                .onChange(of: draggableTask.isDragging) {
                     draggableTask.dragHasEnded = !draggableTask.isDragging
                 }
-                .onChange(of: taskNotes.tasksOnBar) { tasksOnBar in
+                .onChange(of: taskNotes.tasksOnBar) { _, tasksOnBar in
                     guard index < tasksOnBar.count else { return }
                     draggableTask.text = tasksOnBar[index]
                     setDraggableTaskStartLocation(geometry: geometry)
                 }
-                .onChange(of: pomoTimer.pomoCount) { _ in
+                .onChange(of: pomoTimer.pomoCount) {
                     guard index < taskNotes.tasksOnBar.count else { return }
                     draggableTask.text = taskNotes.tasksOnBar[index]
                     setDraggableTaskStartLocation(geometry: geometry)
                 }
-                .onChange(of: draggableTask.text) { _ in
+                .onChange(of: draggableTask.text) {
                     setDraggableTaskStartLocation(geometry: geometry)
                 }
 

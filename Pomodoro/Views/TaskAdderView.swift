@@ -40,17 +40,10 @@ struct TaskAdderView: View {
                     .animation(.easeInOut(duration: 3), value: taskFromAdder.isDragging)
 
                 if showAutoComplete {
-                    if #available(iOS 17, *) {
-                        AutoCompleteView(text: $taskFromAdder.text)
-                            .position(startLocation)
-                            .offset(x: 153, y: -125)
-                            .transition(BlurReplaceTransition(configuration: .downUp))
-                    } else {
-                        AutoCompleteView(text: $taskFromAdder.text)
-                            .position(startLocation)
-                            .offset(x: 153, y: -125)
-                            .transition(.opacity)
-                    }
+                    AutoCompleteView(text: $taskFromAdder.text)
+                        .position(startLocation)
+                        .offset(x: 153, y: -125)
+                        .transition(BlurReplaceTransition(configuration: .downUp))
                 }
             }
             .frame(height: 50)
@@ -61,15 +54,15 @@ struct TaskAdderView: View {
             taskFromAdder.startLocation = startLocation
         }
 
-        .onChange(of: taskFromAdder.isDragging) { isDragging in
+        .onChange(of: taskFromAdder.isDragging) {
             taskFromAdder.dragHasEnded = !taskFromAdder.isDragging
-            if isDragging {
+            if taskFromAdder.isDragging {
                 taskFocus = false
             }
         }
 
-        .onChange(of: taskFocus) { focus in
-            if focus {
+        .onChange(of: taskFocus) {
+            if taskFocus {
                 Task {
                     try? await Task.sleep(for: .seconds(0.2))
                     withAnimation {

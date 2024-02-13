@@ -20,30 +20,18 @@ struct SettingsPage: View {
     @AppStorage("enableBuddies", store: UserDefaults.pomo) var enableBuddies = true
 
     var body: some View {
-        if #available(watchOS 10, *) {
-            TabView {
-                ChangerPage()
-                NavigationStack {
-                    durationsSettings
-                        .navigationTitle("Durations")
-                }
-                NavigationStack {
-                    buddySettings(geometry)
-                        .navigationTitle("Buddy Selection")
-                }
-            }
-            .tabViewStyle(.verticalPage)
-        } else {
-            ScrollView {
-                ChangerPage()
-                Divider()
-                    .padding(.vertical, 15)
+        TabView {
+            ChangerPage()
+            NavigationStack {
                 durationsSettings
-                Divider()
-                    .padding(.vertical, 15)
+                    .navigationTitle("Durations")
+            }
+            NavigationStack {
                 buddySettings(geometry)
+                    .navigationTitle("Buddy Selection")
             }
         }
+        .tabViewStyle(.verticalPage)
     }
     
     @ViewBuilder var durationsSettings: some View {
@@ -165,14 +153,9 @@ struct SettingsPage_Previews: PreviewProvider {
     static var previews: some View {
         let pomoTimer = PomoTimer()
         return GeometryReader { geometry in
-            if #available(watchOS 10, *) {
-                TabView {
-                    SettingsPage(geometry: geometry)
-                        .containerBackground(.barWork.gradient.opacity(0.4), for: .tabView)
-                        .environmentObject(pomoTimer)
-                }
-            } else {
+            TabView {
                 SettingsPage(geometry: geometry)
+                    .containerBackground(.barWork.gradient.opacity(0.4), for: .tabView)
                     .environmentObject(pomoTimer)
             }
         }

@@ -64,21 +64,13 @@ struct ChartsPage: View {
                 }
                 .fixedSize()
             } miniChart: {
-                if #available(iOS 17, *) {
-                    CumulativeTimesMiniChart()
-                        .frame(width: 140)
-                } else {
-                    EmptyView()
-                }
+                CumulativeTimesMiniChart()
+                    .frame(width: 140)
             }
         }
         .tint(.primary)
         .navigationDestination(isPresented: $showingCumulativeTimesDetails) {
-            if #available(iOS 17, *) {
-                CumulativeTimesDetails()
-            } else {
-                EmptyView()
-            }
+            CumulativeTimesDetails()
         }
     }
 
@@ -131,21 +123,13 @@ struct ChartsPage: View {
                 }
                 .fixedSize()
             } miniChart: {
-                if #available(iOS 17, *) {
-                    PomodoroEstimationsMiniChart()
-                        .frame(width: 140)
-                } else {
-                    EmptyView()
-                }
+                PomodoroEstimationsMiniChart()
+                    .frame(width: 140)
             }
         }
         .tint(.primary)
         .navigationDestination(isPresented: $showingPomodoroEstimationsDetails) {
-            if #available(iOS 17, *) {
-                PomodoroEstimationsDetails()
-            } else {
-                EmptyView()
-            }
+            PomodoroEstimationsDetails()
         }
     }
 
@@ -182,21 +166,13 @@ struct ChartsPage: View {
                     }
                 }
             } miniChart: {
-                if #available(iOS 17, *) {
-                    CompletedMiniChart()
-                        .frame(width: 140)
-                } else {
-                    EmptyView()
-                }
+                CompletedMiniChart()
+                    .frame(width: 140)
             }
         }
         .tint(.primary)
         .navigationDestination(isPresented: $showingCompletedDetails) {
-            if #available(iOS 17, *) {
-                CompletedDetails()
-            } else {
-                EmptyView()
-            }
+            CompletedDetails()
         }
     }
 

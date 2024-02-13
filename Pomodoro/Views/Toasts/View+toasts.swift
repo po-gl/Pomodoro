@@ -57,13 +57,8 @@ struct ToastsModifier: ViewModifier {
             .overlay(alignment: .bottom) {
                 VStack {
                     ForEach(queue) { toast in
-                        if #available(iOS 17, *) {
-                            ToastView(toast: toast)
-                                .transition(BlurReplaceTransition(configuration: .downUp))
-                        } else {
-                            ToastView(toast: toast)
-                                .transition(.opacity)
-                        }
+                        ToastView(toast: toast)
+                            .transition(BlurReplaceTransition(configuration: .downUp))
                     }
                 }
                 .padding(.bottom, 10 + bottomPadding)

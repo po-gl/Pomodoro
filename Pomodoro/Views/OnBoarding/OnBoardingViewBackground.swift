@@ -51,33 +51,16 @@ struct OnBoardViewBackground: View {
         .drawingGroup()
     }
     @ViewBuilder var PickDivider: some View {
-        if #available(iOS 17, *) {
-            Rectangle()
-                .colorEffect(ShaderLibrary.pickGradient(.boundingRect,
-                                                        .float(t0.timeIntervalSinceNow),
-                                                        .color(.black),
-                                                        .float(0.0)))
-                .allowsHitTesting(false)
-                .frame(height: 80)
-                .rotationEffect(.degrees(colorScheme == .dark ? 0 : 180))
-                .offset(y: colorScheme == .dark ? 0 : 70)
-                .animation(nil, value: colorScheme)
-        } else {
-            ZStack(alignment: .top) {
-                Rectangle()
-                    .fill(LinearGradient(colors: [.clear, .black], startPoint: .bottom, endPoint: .top))
-                    .frame(height: 30)
-                    .offset(y: colorScheme == .dark ? 25 : -5)
-                    .rotationEffect(.degrees(colorScheme == .dark ? 180 : 0))
-                Image("PickGradient")
-                    .frame(width: 0, height: 0)
-                    .offset(y: colorScheme == .dark ? 15 : 45)
-                    .rotationEffect(.degrees(colorScheme == .dark ? 180 : 0))
-            }
+        Rectangle()
+            .colorEffect(ShaderLibrary.pickGradient(.boundingRect,
+                                                    .float(t0.timeIntervalSinceNow),
+                                                    .color(.black),
+                                                    .float(0.0)))
+            .allowsHitTesting(false)
+            .frame(height: 80)
+            .rotationEffect(.degrees(colorScheme == .dark ? 0 : 180))
+            .offset(y: colorScheme == .dark ? 0 : 70)
             .animation(nil, value: colorScheme)
-            .compositingGroup()
-            .frame(height: 0)
-        }
     }
     
     private func backgroundColor(for color: Color) -> Color {

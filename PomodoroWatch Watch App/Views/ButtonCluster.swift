@@ -62,28 +62,21 @@ struct ButtonCluster: View {
         // In watchOS 10, blendMode abruptly reverts to normal when
         // luminance is reduced. So here I set the overlay opacity to
         // 0 and set the animation to nil, then delay the returning animation
-        if #available(watchOS 10.0, *) {
-            LinearGradient(colors: [.clear, .white], startPoint: .leading, endPoint: .trailing)
-                .clipShape(Circle())
-                .blendMode(.softLight)
-
-                .opacity(isLuminanceReduced ? 0.0 : showSoftLightOverlay ? 1.0 : 0.0)
-                .animation(nil, value: isLuminanceReduced)
-                .onChange(of: isLuminanceReduced) { isLuminanceReduced in
-                    if !isLuminanceReduced {
-                        withAnimation(.default.delay(0.4)) {
-                            showSoftLightOverlay = true
-                        }
-                    } else {
-                        showSoftLightOverlay = false
+        LinearGradient(colors: [.clear, .white], startPoint: .leading, endPoint: .trailing)
+            .clipShape(Circle())
+            .blendMode(.softLight)
+        
+            .opacity(isLuminanceReduced ? 0.0 : showSoftLightOverlay ? 1.0 : 0.0)
+            .animation(nil, value: isLuminanceReduced)
+            .onChange(of: isLuminanceReduced) {
+                if !isLuminanceReduced {
+                    withAnimation(.default.delay(0.4)) {
+                        showSoftLightOverlay = true
                     }
+                } else {
+                    showSoftLightOverlay = false
                 }
-
-        } else {
-            LinearGradient(colors: [.clear, .white], startPoint: .leading, endPoint: .trailing)
-                .clipShape(Circle())
-                .blendMode(.softLight)
-        }
+            }
     }
 
     private func withFill(_ systemName: String) -> String {

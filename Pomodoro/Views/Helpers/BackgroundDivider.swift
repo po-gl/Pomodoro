@@ -39,81 +39,64 @@ struct BackgroundDivider: View {
     }
 
     var body: some View {
-        if #available(iOS 17, *) {
-            ZStack(alignment: .top) {
-                Group {
-                    if useTime {
-                        TimelineView(.animation) { _ in
-                            Rectangle()
-                                .colorEffect(ShaderLibrary.pickGradient(.boundingRect,
-                                                                        .float(tUnpaused),
-                                                                        .color(.black),
-                                                                        .float(0.0)))
-                        }
-                    } else {
+        ZStack(alignment: .top) {
+            Group {
+                if useTime {
+                    TimelineView(.animation) { _ in
                         Rectangle()
                             .colorEffect(ShaderLibrary.pickGradient(.boundingRect,
-                                                                    .float(tPaused),
+                                                                    .float(tUnpaused),
                                                                     .color(.black),
-                                                                    .float(normalizedMetalPickOffset)))
-                    }
-                }
-                .allowsHitTesting(false)
-                .frame(height: 60)
-                .rotationEffect(.degrees(colorScheme == .dark ? 0 : 180))
-                .offset(y: colorScheme == .dark ? -25 : 17)
-            }
-            .animation(nil, value: colorScheme)
-            .compositingGroup()
-            .frame(height: 0)
-            .onChange(of: pomoTimer.isPaused) { isPaused in
-                if isPaused {
-                    useTime = false
-                    tStopDate = Date.now
-                    tStoppedInterval = tUnpaused
-                    
-                    tAnimateTask?.cancel()
-                    tAnimateTask = Task { @MainActor in
-                        let duration = 2.0
-                        let ticks: Int = Int(duration / (1.0 / 60.0))
-                        for i in 0..<ticks {
-                            let time = 1.0 / 60.0 * (1.0 - Double(i) / Double(ticks))
-                            tStoppedInterval -= time
-                            tStopDate.addTimeInterval(time)
-                            try? await Task.sleep(for: .seconds(1.0 / 60.0))
-                            if Task.isCancelled {
-                                break
-                            }
-                        }
+                                                                    .float(0.0)))
                     }
                 } else {
-                    tAnimateTask?.cancel()
-                    useTime = true
-                    tIntervalOffset += Date.now.timeIntervalSince(tStopDate)
+                    Rectangle()
+                        .colorEffect(ShaderLibrary.pickGradient(.boundingRect,
+                                                                .float(tPaused),
+                                                                .color(.black),
+                                                                .float(normalizedMetalPickOffset)))
                 }
             }
-            .onAppear {
-                t0 = Date.now
+            .allowsHitTesting(false)
+            .frame(height: 60)
+            .rotationEffect(.degrees(colorScheme == .dark ? 0 : 180))
+            .offset(y: colorScheme == .dark ? -25 : 17)
+        }
+        .animation(nil, value: colorScheme)
+        .compositingGroup()
+        .frame(height: 0)
+        .onChange(of: pomoTimer.isPaused) {
+            if pomoTimer.isPaused {
+                useTime = false
                 tStopDate = Date.now
-                tStoppedInterval = 0.0
-                tIntervalOffset = 0.0
-                useTime = !pomoTimer.isPaused
+                tStoppedInterval = tUnpaused
+                
+                tAnimateTask?.cancel()
+                tAnimateTask = Task { @MainActor in
+                    let duration = 2.0
+                    let ticks: Int = Int(duration / (1.0 / 60.0))
+                    for i in 0..<ticks {
+                        let time = 1.0 / 60.0 * (1.0 - Double(i) / Double(ticks))
+                        tStoppedInterval -= time
+                        tStopDate.addTimeInterval(time)
+                        try? await Task.sleep(for: .seconds(1.0 / 60.0))
+                        if Task.isCancelled {
+                            break
+                        }
+                    }
+                }
+            } else {
+                tAnimateTask?.cancel()
+                useTime = true
+                tIntervalOffset += Date.now.timeIntervalSince(tStopDate)
             }
-        } else {
-            ZStack(alignment: .top) {
-                Rectangle()
-                    .fill(LinearGradient(colors: [.clear, .black], startPoint: .bottom, endPoint: .top))
-                    .frame(height: 30)
-                    .offset(y: colorScheme == .dark ? 25 : -5)
-                    .rotationEffect(.degrees(colorScheme == .dark ? 180 : 0))
-                Image("PickGradient")
-                    .frame(width: 0, height: 0)
-                    .offset(y: colorScheme == .dark ? 15 : 45)
-                    .rotationEffect(.degrees(colorScheme == .dark ? 180 : 0))
-            }
-            .animation(nil, value: colorScheme)
-            .compositingGroup()
-            .frame(height: 0)
+        }
+        .onAppear {
+            t0 = Date.now
+            tStopDate = Date.now
+            tStoppedInterval = 0.0
+            tIntervalOffset = 0.0
+            useTime = !pomoTimer.isPaused
         }
     }
 }

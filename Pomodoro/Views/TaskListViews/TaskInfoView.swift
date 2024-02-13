@@ -301,11 +301,7 @@ struct TaskInfoView: View {
     }
 
     var transition: AnyTransition {
-        if #available(iOS 17, *) {
-            return AnyTransition(BlurReplaceTransition(configuration: .downUp).animation(.easeInOut))
-        } else {
-            return AnyTransition.opacity.animation(.easeInOut)
-        }
+        return AnyTransition(BlurReplaceTransition(configuration: .downUp).animation(.easeInOut))
     }
 }
 

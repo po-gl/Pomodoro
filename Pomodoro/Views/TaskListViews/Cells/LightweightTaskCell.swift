@@ -38,8 +38,8 @@ struct LightweightTaskCell: View {
         .sheet(isPresented: $showTaskInfo) {
             TaskInfoView(taskItem: taskItem)
         }
-        .onChange(of: showTaskInfo) { showing in
-            if !showing {
+        .onChange(of: showTaskInfo) {
+            if !showTaskInfo {
                 refreshInfo()
             }
         }

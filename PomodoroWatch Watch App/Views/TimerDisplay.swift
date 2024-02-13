@@ -16,26 +16,17 @@ struct TimerDisplay: View {
 
     var body: some View {
         TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
-            if #available(watchOS 10, *) {
-                MainDisplay(at: context.date)
-                    .containerBackground(pomoTimer.getStatus(atDate: context.date).color.gradient.opacity(0.4), for: .tabView)
-            } else {
-                MainDisplay(at: context.date)
+            VStack(alignment: .leading, spacing: 6) {
+                HStack {
+                    StatusBox(at: context.date)
+                    Spacer()
+                    EndingTime(at: context.date)
+                        .offset(x: 4, y: 0)
+                }
+                .frame(width: metrics.size.width - 20)
+                TimerView(at: context.date)
             }
-        }
-    }
-
-    @ViewBuilder
-    private func MainDisplay(at date: Date) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack {
-                StatusBox(at: date)
-                Spacer()
-                EndingTime(at: date)
-                    .offset(x: 4, y: 0)
-            }
-            .frame(width: metrics.size.width - 20)
-            TimerView(at: date)
+            .containerBackground(pomoTimer.getStatus(atDate: context.date).color.gradient.opacity(0.4), for: .tabView)
         }
     }
 

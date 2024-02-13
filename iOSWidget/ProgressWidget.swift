@@ -26,17 +26,6 @@ struct ProgressWidgetView: View {
     var entry: WidgetTimelineProvider.Entry
 
     var body: some View {
-        if #available(iOSApplicationExtension 17, *) {
-            content
-                .containerBackground(for: .widget) {
-                    Color.white
-                }
-        } else {
-            content
-        }
-    }
-
-    @ViewBuilder var content: some View {
         ZStack {
             circularProgressView {
                 if entry.isPaused {
@@ -47,7 +36,10 @@ struct ProgressWidgetView: View {
                 }
             }
             .progressViewStyle(.circular)
-            .widgetAccentable()
+        }
+        .widgetAccentable()
+        .containerBackground(for: .widget) {
+            Color.white
         }
     }
 

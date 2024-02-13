@@ -42,9 +42,9 @@ struct ContentView: View {
             AppNotifications.shared.getNotificationPermissions()
             startBackgroundSessionIfDidNotReceiveWCSync()
         }
-        .onChange(of: scenePhase) { newPhase in
-            Logger().log("Phase \(newPhase)")
-            if newPhase == .active {
+        .onChange(of: scenePhase) {
+            Logger().log("Phase \(scenePhase)")
+            if scenePhase == .active {
                 pomoTimer.restoreFromUserDefaults()
                 AppNotifications.shared.cancelPendingNotifications()
                 setupWatchConnection()
@@ -54,7 +54,7 @@ struct ContentView: View {
 
                 didPerformInactiveSetup = false
 
-            } else if newPhase == .inactive || newPhase == .background {
+            } else if scenePhase == .inactive || scenePhase == .background {
                 guard !didPerformInactiveSetup else { return }
                 pomoTimer.saveToUserDefaults()
                 WidgetCenter.shared.reloadAllTimelines()
@@ -65,7 +65,7 @@ struct ContentView: View {
             }
         }
 
-        .onChange(of: pomoTimer.isPaused) { _ in
+        .onChange(of: pomoTimer.isPaused) {
             if pomoTimer.isPaused {
                 BackgroundSession.shared.stop()
             } else {
@@ -75,14 +75,14 @@ struct ContentView: View {
             let wcSent = updateWatchConnection(pomoTimer)
             didReceiveSyncFromWatchConnection = !wcSent
         }
-        .onChange(of: pomoTimer.isReset) { _ in
+        .onChange(of: pomoTimer.isReset) {
             if pomoTimer.isReset {
                 WidgetCenter.shared.reloadAllTimelines()
                 let wcSent = updateWatchConnection(pomoTimer)
                 didReceiveSyncFromWatchConnection = !wcSent
             }
         }
-        .onChange(of: pomoTimer.getStatus()) { _ in
+        .onChange(of: pomoTimer.getStatus()) {
             Task {
                 try? await Task.sleep(for: .seconds(1))
                 startBackgroundSessionIfDidNotReceiveWCSync()

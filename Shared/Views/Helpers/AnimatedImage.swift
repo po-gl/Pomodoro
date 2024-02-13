@@ -32,8 +32,8 @@ struct AnimatedImage: View {
         .onDisappear {
             timer?.invalidate()
         }
-        .onChange(of: data) { newData in
-            animate(images: newData.imageNames, interval: newData.interval, loops: newData.loops)
+        .onChange(of: data) {
+            animate(images: data.imageNames, interval: data.interval, loops: data.loops)
         }
     }
 

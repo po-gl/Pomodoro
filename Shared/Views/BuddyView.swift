@@ -52,7 +52,7 @@ struct BuddyView: View {
         .animation(pomoTimer.isPaused ? .spring(duration: 1.8) : startStopAnimation, value: xOffsetForProgress)
         .opacity(enableBuddies ? 1.0 : 0.0)
         .animation(.default, value: enableBuddies)
-        .onChange(of: BuddySelection.shared.selection) { _ in
+        .onChange(of: BuddySelection.shared.selection) {
             buddies = BuddySelection.shared.selectedBuddies
         }
     }

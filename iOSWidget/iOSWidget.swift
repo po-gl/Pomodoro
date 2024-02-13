@@ -19,7 +19,7 @@ struct iOSWidget: Widget {
         .configurationDisplayName("Pomodoro")
         .description("Track your pomodoro timer.")
         .supportedFamilies([.systemSmall, .systemMedium])
-        .backDeployedDisfavoredLocations([.standBy], for: [.systemSmall])
+        .disfavoredLocations([.standBy], for: [.systemSmall])
     }
 }
 
@@ -33,24 +33,13 @@ struct iOSWidgetView: View {
     }
 
     var body: some View {
-        if #available(iOSApplicationExtension 17, *) {
-            content
-                .containerBackground(for: .widget) {
-                    Color.black
-                    LinearGradient(colors: [entry.status.color, .clear], startPoint: .top, endPoint: .bottom)
-                        .opacity(entry.isPaused ? 0.13 : 0.2)
-                        .animation(.default, value: entry.isPaused)
-                }
-        } else {
-            ZStack {
-                Rectangle().fill(.black)
+        content
+            .containerBackground(for: .widget) {
+                Color.black
                 LinearGradient(colors: [entry.status.color, .clear], startPoint: .top, endPoint: .bottom)
                     .opacity(entry.isPaused ? 0.13 : 0.2)
                     .animation(.default, value: entry.isPaused)
-                content
             }
-            .ignoresSafeArea()
-        }
     }
 
     @ViewBuilder var content: some View {

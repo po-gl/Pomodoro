@@ -67,8 +67,8 @@ struct TaskList: View {
                                   showImmediately: !hasShownError)
                     }
                 }
-                .onChange(of: errors.coreDataError) { error in
-                    guard error != nil else { return }
+                .onChange(of: errors.coreDataError) {
+                    guard errors.coreDataError != nil else { return }
                     Task {
                         try? await Task.sleep(for: .seconds(0.5))
                         hasShownError = true

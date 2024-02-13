@@ -146,8 +146,8 @@ struct WeeklyPomodoroEstimations: View {
         }
         .aspectRatio(1.3, contentMode: .fit)
         .chartXSelection(value: $selection)
-        .onChange(of: selection) { selection in
-            if let selection {
+        .onChange(of: selection) {
+            if selection != nil {
                 lastingSelection = selection
             }
         }

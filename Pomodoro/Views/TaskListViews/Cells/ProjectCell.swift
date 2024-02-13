@@ -110,14 +110,14 @@ struct ProjectCell: View {
         .task {
             await reloadTaskNotes()
         }
-        .onChange(of: project.tasks?.count) { _ in
+        .onChange(of: project.tasks?.count) {
             Task {
                 await reloadTaskNotes()
             }
         }
 
         .focused($focus)
-        .onChange(of: focus) { _ in
+        .onChange(of: focus) {
             TaskListViewController.focusedIndexPath = nil
             if !focus && !showingProjectInfo {
                 deleteOrEditProject()
@@ -126,8 +126,8 @@ struct ProjectCell: View {
 
         .doneButton(isPresented: focus)
 
-        .onChange(of: isCollapsed.value) { isCollapsed in
-            if isCollapsed {
+        .onChange(of: isCollapsed.value) {
+            if isCollapsed.value {
                 focus = false
             }
         }

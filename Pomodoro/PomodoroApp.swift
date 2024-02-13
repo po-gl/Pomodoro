@@ -54,21 +54,19 @@ struct PomodoroApp: App {
                     viewContext.undoManager = undoManager
                 }
 
-                .onChange(of: scenePhase) { newPhase in
-                    Logger().log("Phase \(newPhase)")
-                    if newPhase == .active {
+                .onChange(of: scenePhase) {
+                    Logger().log("Phase \(scenePhase)")
+                    if scenePhase == .active {
                         pomoTimer.restoreFromUserDefaults()
                         AppNotifications.shared.cancelPendingNotifications()
                         setupWatchConnection()
                         didPerformInactiveSetup = false
-                        if #available(iOS 16.2, *) {
 #if canImport(ActivityKit)
-                            LiveActivities.shared.startPollingPushTokenUpdates()
+                        LiveActivities.shared.startPollingPushTokenUpdates()
 #endif
-                        }
                         UIApplication.shared.registerForRemoteNotifications()
 
-                    } else if newPhase == .inactive || newPhase == .background {
+                    } else if scenePhase == .inactive || scenePhase == .background {
                         guard !didPerformInactiveSetup else { return }
                         pomoTimer.saveToUserDefaults()
                         WidgetCenter.shared.reloadAllTimelines()
@@ -79,42 +77,38 @@ struct PomodoroApp: App {
                     }
                 }
 
-                .onChange(of: pomoTimer.isPaused) { isPaused in
+                .onChange(of: pomoTimer.isPaused) {
                     WidgetCenter.shared.reloadAllTimelines()
                     let wcSent = updateWatchConnection(pomoTimer)
                     didReceiveSyncFromWatchConnection = !wcSent
                     UIApplication.shared.registerForRemoteNotifications()
 
-                    if #available(iOS 16.2, *) {
 #if canImport(ActivityKit)
-                        Task { @MainActor in
-                            if isPaused {
-                                await LiveActivities.shared.stopLiveActivity(pomoTimer, tasksOnBar)
-                            } else {
-                                await LiveActivities.shared.setupLiveActivity(pomoTimer, tasksOnBar)
-                            }
+                    Task { @MainActor in
+                        if pomoTimer.isPaused {
+                            await LiveActivities.shared.stopLiveActivity(pomoTimer, tasksOnBar)
+                        } else {
+                            await LiveActivities.shared.setupLiveActivity(pomoTimer, tasksOnBar)
                         }
-#endif
                     }
+#endif
 #if targetEnvironment(macCatalyst)
-                    if !isPaused {
+                    if !pomoTimer.isPaused {
                         Task { await AppNotifications.shared.setupNotifications(pomoTimer) }
                     }
 #endif
                 }
-                .onChange(of: pomoTimer.isReset) { isReset in
-                    if isReset {
+                .onChange(of: pomoTimer.isReset) {
+                    if pomoTimer.isReset {
                         WidgetCenter.shared.reloadAllTimelines()
                         let wcSent = updateWatchConnection(pomoTimer)
                         didReceiveSyncFromWatchConnection = !wcSent
                         
-                        if #available(iOS 16.2, *) {
 #if canImport(ActivityKit)
-                            Task { @MainActor in
-                                await LiveActivities.shared.stopLiveActivity(pomoTimer, tasksOnBar)
-                            }
-#endif
+                        Task { @MainActor in
+                            await LiveActivities.shared.stopLiveActivity(pomoTimer, tasksOnBar)
                         }
+#endif
                     }
                 }
 
@@ -144,7 +138,7 @@ struct PomodoroApp: App {
 #endif
         }
 #if targetEnvironment(macCatalyst)
-        .backDeployedDefaultSize(width: 700, height: 1000)
+        .defaultSize(width: 700, height: 1000)
 #endif
     }
 }

@@ -27,18 +27,6 @@ struct ProgressWidgetView: View {
     var entry: WidgetTimelineProvider.Entry
 
     var body: some View {
-        if #available(iOSApplicationExtension 17, watchOS 10, *) {
-            MainProgressWidgetView()
-                .containerBackground(for: .widget) {
-                    Color.white
-                }
-        } else {
-            MainProgressWidgetView()
-        }
-    }
-
-    @ViewBuilder
-    func MainProgressWidgetView() -> some View {
         ZStack {
             progressGradient().mask(
                 CircularProgressView()
@@ -52,6 +40,9 @@ struct ProgressWidgetView: View {
                 }
             }
             .widgetAccentable()
+        }
+        .containerBackground(for: .widget) {
+            Color.white
         }
     }
 
@@ -101,19 +92,6 @@ struct CornerProgressWidgetView: View {
     var entry: WidgetTimelineProvider.Entry
 
     var body: some View {
-        if #available(iOSApplicationExtension 17, watchOS 10, *) {
-            MainCornerProgressWidgetView()
-                .containerBackground(for: .widget) {
-                    Color.white
-                }
-                .widgetCurvesContent()
-        } else {
-            MainCornerProgressWidgetView()
-        }
-    }
-
-    @ViewBuilder
-    func MainCornerProgressWidgetView() -> some View {
         ZStack {
             ZStack {
                 if entry.isPaused {
@@ -128,6 +106,10 @@ struct CornerProgressWidgetView: View {
             }
             .widgetAccentable()
         }
+        .containerBackground(for: .widget) {
+            Color.white
+        }
+        .widgetCurvesContent()
     }
 
     @ViewBuilder
@@ -175,18 +157,6 @@ struct StatusWidgetView: View {
     var entry: WidgetTimelineProvider.Entry
 
     var body: some View {
-        if #available(iOSApplicationExtension 17, watchOS 10, *) {
-            MainStatusWidgetView()
-                .containerBackground(for: .widget) {
-                    Color.white
-                }
-        } else {
-            MainStatusWidgetView()
-        }
-    }
-
-    @ViewBuilder
-    func MainStatusWidgetView() -> some View {
         ZStack {
             AccessoryWidgetBackground()
             if entry.isPaused {
@@ -197,6 +167,9 @@ struct StatusWidgetView: View {
             }
         }
         .widgetAccentable()
+        .containerBackground(for: .widget) {
+            Color.white
+        }
     }
 }
 

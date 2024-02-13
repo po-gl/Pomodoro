@@ -20,8 +20,8 @@ struct OnSubmitWithVerticalTextModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .onChange(of: text) { newValue in
-                guard let newLineIndex = newValue.firstIndex(where: { $0 == "\n" }) else { return }
+            .onChange(of: text) {
+                guard let newLineIndex = text.firstIndex(where: { $0 == "\n" }) else { return }
 
                 text.remove(at: newLineIndex)
                 action()

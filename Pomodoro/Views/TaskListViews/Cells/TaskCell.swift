@@ -59,7 +59,7 @@ struct TaskCell: View {
             TaskInfoCluster(taskItem: taskItem, showTaskInfo: $showTaskInfo, focus: _focus)
         }
         .opacity(deleted ? 0.0 : 1.0)
-        .onChange(of: deleted) { deleted in
+        .onChange(of: deleted) {
             // Since cells are reused, reset deleted property
             if deleted {
                 Task { @MainActor in
@@ -83,14 +83,14 @@ struct TaskCell: View {
         .sheet(isPresented: $showTaskInfo) {
             TaskInfoView(taskItem: taskItem)
         }
-        .onChange(of: showTaskInfo) { showTaskInfo in
+        .onChange(of: showTaskInfo) {
             if isAdderCell && !showTaskInfo {
                 focus = true
             }
         }
 
         .focused($focus)
-        .onChange(of: focus) { _ in
+        .onChange(of: focus) {
             if focus {
                 TaskListViewController.focusedIndexPath = indexPath
             } else if !showTaskInfo {
@@ -110,7 +110,7 @@ struct TaskCell: View {
 
         .doneButton(isPresented: focus)
 
-        .onChange(of: scenePhase) { scenePhase in
+        .onChange(of: scenePhase) {
             if scenePhase == .background || scenePhase == .inactive {
                 focus = false
             }

@@ -36,11 +36,9 @@ class AppNotifications {
     func setupNotifications(_ pomoTimer: PomoTimer) async {
         guard !pomoTimer.isPaused else { return }
         guard await UNUserNotificationCenter.current().pendingNotificationRequests().isEmpty else { return }
-        if #available(iOS 16.1, *) {
 #if canImport(ActivityKit)
-            guard Activity<PomoAttributes>.activities.isEmpty else { return }
+        guard Activity<PomoAttributes>.activities.isEmpty else { return }
 #endif
-        }
         
 #if os(iOS)
         let currentIndex = pomoTimer.getIndex(atDate: Date.now)
