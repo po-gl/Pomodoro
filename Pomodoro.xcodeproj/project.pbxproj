@@ -108,6 +108,7 @@
 		6131C0AF291204C300D1E6F1 /* AnimatedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6131C0AD291204C300D1E6F1 /* AnimatedImage.swift */; };
 		6139AE4F290C643B00C5CB19 /* MainPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6139AE4E290C643B00C5CB19 /* MainPage.swift */; };
 		6139AE51290C64D000C5CB19 /* ChangerPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6139AE50290C64D000C5CB19 /* ChangerPage.swift */; };
+		613CD7EF2B7B7ECB00223B4E /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 613CD7EE2B7B7ECB00223B4E /* Algorithms */; };
 		613D6D9C285C82FD0020C194 /* SequenceTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613D6D9B285C82FD0020C194 /* SequenceTimer.swift */; };
 		613D6D9E285C85FE0020C194 /* SequenceTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613D6D9D285C85FE0020C194 /* SequenceTimerTests.swift */; };
 		613D6D9F285C890F0020C194 /* SequenceTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613D6D9B285C82FD0020C194 /* SequenceTimer.swift */; };
@@ -790,6 +791,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				613CD7EF2B7B7ECB00223B4E /* Algorithms in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1375,6 +1377,9 @@
 				610F99C529BD736A00608F41 /* PBXTargetDependency */,
 			);
 			name = Pomodoro;
+			packageProductDependencies = (
+				613CD7EE2B7B7ECB00223B4E /* Algorithms */,
+			);
 			productName = Pomodoro;
 			productReference = 617789AE2856A1F300BD43D7 /* Pomodoro.app */;
 			productType = "com.apple.product-type.application";
@@ -1521,6 +1526,7 @@
 			mainGroup = 617789A52856A1F200BD43D7;
 			packageReferences = (
 				61BC3DB02AD76C4B007C4BB9 /* XCRemoteSwiftPackageReference "SwiftLint" */,
+				613CD7ED2B7B7ECB00223B4E /* XCRemoteSwiftPackageReference "swift-algorithms" */,
 			);
 			productRefGroup = 617789AF2856A1F300BD43D7 /* Products */;
 			projectDirPath = "";
@@ -2836,6 +2842,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		613CD7ED2B7B7ECB00223B4E /* XCRemoteSwiftPackageReference "swift-algorithms" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-algorithms.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.0;
+			};
+		};
 		61BC3DB02AD76C4B007C4BB9 /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/realm/SwiftLint.git";
@@ -2845,6 +2859,14 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		613CD7EE2B7B7ECB00223B4E /* Algorithms */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 613CD7ED2B7B7ECB00223B4E /* XCRemoteSwiftPackageReference "swift-algorithms" */;
+			productName = Algorithms;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		61F7362E29C00CCE00289149 /* Pomodoro.xcdatamodeld */ = {
