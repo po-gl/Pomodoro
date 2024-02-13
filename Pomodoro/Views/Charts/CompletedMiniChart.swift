@@ -57,7 +57,7 @@ struct CompletedMiniChart: View {
                         y: .value("Completed Tasks", value.count),
                         width: .fixed(width)
                     )
-                    .foregroundStyle(PomoStatus.end.gradient(startPoint: .bottom, endPoint: .top))
+                    .foregroundStyle(PomoStatus.end.gradient(startPoint: .top, endPoint: .bottom))
                     .cornerRadius(radius)
                 } else {
                     BarMark(
@@ -65,7 +65,7 @@ struct CompletedMiniChart: View {
                         y: .value("Placeholder", 0.5),
                         width: .fixed(width)
                     )
-                    .foregroundStyle(disabledGradient(startPoint: .bottom, endPoint: .top))
+                    .foregroundStyle(disabledGradient(startPoint: .top, endPoint: .bottom))
                     .cornerRadius(radius)
                     .opacity(0.5)
                 }

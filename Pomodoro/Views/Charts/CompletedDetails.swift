@@ -168,9 +168,9 @@ struct WeeklyCompletedTasks: View {
 
     func barStyle(isFocused: Bool) -> LinearGradient {
         if isFocused {
-            PomoStatus.end.gradient(startPoint: .bottom, endPoint: .top)
+            PomoStatus.end.gradient(startPoint: .top, endPoint: .bottom)
         } else {
-            disabledGradient(startPoint: .bottom, endPoint: .top)
+            disabledGradient(startPoint: .top, endPoint: .bottom)
         }
     }
 }
