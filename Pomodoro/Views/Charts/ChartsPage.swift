@@ -18,7 +18,7 @@ struct ChartsPage: View {
 
     var borderBrightness: Double { colorScheme == .dark ? -0.09 : 0.0 }
     var borderSaturation: Double { colorScheme == .dark ? 0.85 : 1.05 }
-    var backgroundBrightness: Double { colorScheme == .dark ? -0.25 : 0.4 }
+    var backgroundBrightness: Double { colorScheme == .dark ? -0.25 : 0.65 }
     var backgroundSaturation: Double { colorScheme == .dark ? 0.8 : 0.33 }
     var backgroundOpacity: Double { colorScheme == .dark ? 0.8 : 0.6 }
 
@@ -91,7 +91,8 @@ struct ChartsPage: View {
                     .font(.headline)
                     .fontWeight(.bold)
                     .foregroundStyle(.barLongBreak)
-                    .brightness(colorScheme == .dark ? 0.1 : 0.0)
+                    .brightness(colorScheme == .dark ? 0.1 : -0.05)
+                    .saturation(colorScheme == .dark ? 1.0 : 1.2)
                     .fixedSize()
             } latestData: {
                 let averages = TasksData.thisWeeksEstimateAverages(context: viewContext)
@@ -157,7 +158,8 @@ struct ChartsPage: View {
                     .font(.headline)
                     .fontWeight(.bold)
                     .foregroundStyle(.end)
-                    .brightness(colorScheme == .dark ? 0.1 : -0.3)
+                    .brightness(colorScheme == .dark ? 0.1 : -0.2)
+                    .saturation(colorScheme == .dark ? 1.0 : 1.3)
                     .fixedSize()
             } latestData: {
                 let (count, average) = TasksData.thisWeeksCompletedData(context: viewContext)
