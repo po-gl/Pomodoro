@@ -135,7 +135,7 @@ struct DailyCumulativeChart: View {
             }
         }
 
-        .chartYScale(domain: 0.0...60.0)
+        .chartYScale(domain: 0.0...65.0)
         .chartYAxis {
             AxisMarks(values: [0, 15, 30, 45, 60]) { value in
                 let valueInt = value.as(Int.self) ?? 0
