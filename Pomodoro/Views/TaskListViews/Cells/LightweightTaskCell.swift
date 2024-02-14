@@ -23,7 +23,7 @@ struct LightweightTaskCell: View {
             Group {
                 VStack(spacing: 5) {
                     mainText
-                    if taskItem.note != nil {
+                    if !(taskItem.note?.isEmpty ?? true) {
                         noteText
                     }
                 }
