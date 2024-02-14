@@ -20,7 +20,6 @@ struct LightweightTaskCell: View {
     var body: some View {
         HStack(alignment: .top, spacing: 15) {
             TaskCheck(taskItem: taskItem, isAdderCell: false, todaysTasks: todaysTasks)
-            .offset(y: 2)
             Group {
                 VStack(spacing: 5) {
                     mainText

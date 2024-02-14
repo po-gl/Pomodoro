@@ -49,7 +49,6 @@ struct TaskCell: View {
     var body: some View {
         HStack(alignment: .top, spacing: 15) {
             TaskCheck(taskItem: taskItem, isAdderCell: isAdderCell, todaysTasks: todaysTasks)
-            .offset(y: 2)
             VStack(spacing: 5) {
                 mainTextField
                 if focus || !editNoteText.wrappedValue.isEmpty {
