@@ -189,13 +189,15 @@ struct PomodoroEstimationsDetails: View {
         return startOfDay...endOfDay
     }
 
-    var tasksWithEstimatesForSelection: [TaskNote]? {
+    var tasksForSelection: (withEstimate: [TaskNote], withoutEstimate: [TaskNote])? {
         guard let selection = lastingSelection else { return nil }
         let startOfDay = selection.startOfDay
         let endOfDay = selection.endOfDay
         let tasks = try? viewContext.fetch(TasksData.rangeRequest(between: startOfDay...endOfDay))
         guard let tasks else { return nil }
-        return tasks.filter { $0.pomosEstimate > 0 }
+        let withEstimate = tasks.filter { $0.pomosEstimate > 0 || $0.pomosActual > 0 }
+        let withoutEstimate = tasks.filter { !($0.pomosEstimate > 0 || $0.pomosActual > 0) }
+        return (withEstimate: withEstimate, withoutEstimate: withoutEstimate)
     }
 
     var diffOfPomosForVisibleRange: Double? {
@@ -326,17 +328,46 @@ struct PomodoroEstimationsDetails: View {
     }
 
     @ViewBuilder var taskListForSelection: some View {
-        if let tasks = tasksWithEstimatesForSelection {
+        if let tasks = tasksForSelection {
             Section {
                 VStack(spacing: 10) {
-                    ForEach(tasks) { taskItem in
-                        LightweightTaskCell(taskItem: taskItem)
+                    ForEach(tasks.withEstimate) { taskItem in
+                        VStack(spacing: 0) {
+                            LightweightTaskCell(taskItem: taskItem)
+                            let estimate = taskItem.pomosEstimate
+                            let actual = taskItem.pomosActual
+                            HStack {
+                                HStack(alignment: .firstTextBaseline, spacing: 5) {
+                                    Text("estimate: ")
+                                        .font(.footnote)
+                                        .foregroundStyle(.secondary)
+                                    Text("\(estimate == -1 ? "--" : estimate == 0 ? "<1" : "\(estimate)")")
+                                        .font(.callout)
+                                        .foregroundStyle(.tomato)
+                                        .monospacedDigit()
+                                }
+                                .frame(minWidth: 100, alignment: .leading)
+                                HStack(alignment: .firstTextBaseline, spacing: 5) {
+                                    Text("actual pomos: ")
+                                        .font(.footnote)
+                                        .foregroundStyle(.secondary)
+                                    Text("\(actual == -1 ? "--" : actual == 0 ? "<1" : "\(actual)")")
+                                        .font(.callout)
+                                        .foregroundStyle(.end)
+                                        .monospacedDigit()
+                                        .brightness(colorScheme == .dark ? 0.1 : -0.2)
+                                        .saturation(colorScheme == .dark ? 1.0 : 1.3)
+                                }
+                                .frame(minWidth: 100, alignment: .leading)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        }
                         Divider()
                     }
                 }
             } header: {
                 HStack(alignment: .firstTextBaseline) {
-                    Text("Tasks with Estimations (\(tasks.count))")
+                    Text("Tasks with Estimations (\(tasks.withEstimate.count))")
                     Spacer()
                     if let lastingSelection {
                         Text(lastingSelection.formatted(.dateTime.weekday().month().day().year()))
@@ -346,6 +377,20 @@ struct PomodoroEstimationsDetails: View {
                 .textCase(.uppercase)
                 .foregroundStyle(.secondary)
                 .frame(maxWidth: .infinity)
+            }
+            Section {
+                VStack(spacing: 10) {
+                    ForEach(tasks.withoutEstimate) { taskItem in
+                        LightweightTaskCell(taskItem: taskItem)
+                        Divider()
+                    }
+                }
+            } header: {
+                Text("Tasks without Estimations (\(tasks.withoutEstimate.count))")
+                .font(.footnote)
+                .textCase(.uppercase)
+                .foregroundStyle(.secondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
         } else {
             EmptyView()
@@ -403,7 +448,8 @@ struct PomodoroEstimationsDetails: View {
                         .font(.body)
                         .monospacedDigit()
                         .foregroundStyle(.end)
-                        .brightness(colorScheme == .dark ? 0.1 : 0.0)
+                        .brightness(colorScheme == .dark ? 0.1 : -0.2)
+                        .saturation(colorScheme == .dark ? 1.0 : 1.3)
                     Text("actual pomos")
                         .font(.footnote)
                 }
