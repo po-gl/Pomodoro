@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import CoreData
 @testable import Pomodoro
 
 final class PomoTimerTests: XCTestCase {
@@ -13,11 +14,15 @@ final class PomoTimerTests: XCTestCase {
     private var pomoTimer = PomoTimer(pomos: 0, longBreak: 0.0, perform: { _ in return })
     private var actionsPerformed = 0
     private var status: PomoStatus?
+    private var viewContext: NSManagedObjectContext?
 
     override func setUpWithError() throws {
+        viewContext = PersistenceController(inMemory: true).container.viewContext
         actionsPerformed = 0
         status = nil
-        pomoTimer = PomoTimer(pomos: 2, longBreak: PomoTimer.defaultBreakTime, perform: { status in
+        pomoTimer = PomoTimer(pomos: 2,
+                              context: viewContext,
+                              perform: { status in
             self.status = status
             self.actionsPerformed += 1
         }, timeProvider: MockTimer.self)
@@ -157,6 +162,26 @@ final class PomoTimerTests: XCTestCase {
         time += Int(breakDuration) + 1
         passTime(seconds: time)
         XCTAssertEqual(status, .end)
+    }
+    
+    func testPomoTimer_recordTimes() throws {
+        pomoTimer.unpauseTime = Date.now.addingTimeInterval(-1 * 10 * 3600)
+        pomoTimer.startTime = pomoTimer.unpauseTime
+        pomoTimer.endTime = Date.now
+        pomoTimer.recordTimes()
+
+        let cumulativeTimes = try? viewContext?.fetch(CumulativeTimeData.pastCumulativeTimeRequest)
+        XCTAssertNotEqual(cumulativeTimes, nil)
+        guard let cumulativeTimes else { return }
+        XCTAssertGreaterThanOrEqual(cumulativeTimes.count, 2, "Cumulative times should span at least two 1-hour blocks.")
+
+        let cumulativeWork = cumulativeTimes.map { $0.work }.reduce(0.0, +)
+        let cumulativeRest = cumulativeTimes.map { $0.rest }.reduce(0.0, +)
+        let cumulativeBreak = cumulativeTimes.map { $0.longBreak }.reduce(0.0, +)
+
+        XCTAssertEqual(cumulativeWork, 50 * 60, accuracy: 1.0)
+        XCTAssertEqual(cumulativeRest, 10 * 60, accuracy: 1.0)
+        XCTAssertEqual(cumulativeBreak, 30 * 60, accuracy: 1.0)
     }
 
     func testPomoTimer_saveAndRestore() throws {
