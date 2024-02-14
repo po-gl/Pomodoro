@@ -381,6 +381,13 @@ struct TaskInfoCluster: View {
 
     @ViewBuilder var projectIndicators: some View {
         let projects = Array(taskItem.projectsArray.prefix(4))
+            .sorted {
+                if $0.order == $1.order {
+                    return $0.timestamp ?? Date.now < $1.timestamp ?? Date.now
+                } else {
+                    return $0.order < $1.order
+                }
+            }
         let count = taskItem.projectsArray.count
         if count > 0 {
             WrappingHStack(models: projects, horizontalSpacing: 1.2, verticalSpacing: 1.2) { project in

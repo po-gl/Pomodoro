@@ -220,7 +220,16 @@ struct TaskInfoView: View {
     }
 
     @ViewBuilder var projectsList: some View {
-        WrappingHStack(models: editProjects.sorted { $0.name ?? "" < $1.name ?? ""}) { project in
+        WrappingHStack(
+            models: editProjects
+                .sorted {
+                    if $0.order == $1.order {
+                        return $0.timestamp ?? Date.now < $1.timestamp ?? Date.now
+                    } else {
+                        return $0.order < $1.order
+                    }
+                }
+        ) { project in
             ProjectTag(project: project)
                 .overrideAction(predicate: editingAssignedProjects) {
                     withAnimation(.bouncy) {
@@ -237,8 +246,17 @@ struct TaskInfoView: View {
             Divider()
                 .padding(.vertical, 5)
             let combinedProjects = currentProjects + initialArchivedProjects
-            WrappingHStack(models: combinedProjects.filter { !editProjects.contains($0) }
-                                                   .sorted { $0.name ?? "" < $1.name ?? ""}) { project in
+            WrappingHStack(
+                models: combinedProjects
+                    .filter { !editProjects.contains($0) }
+                    .sorted {
+                        if $0.order == $1.order {
+                            return $0.timestamp ?? Date.now < $1.timestamp ?? Date.now
+                        } else {
+                            return $0.order < $1.order
+                        }
+                    }
+            ) { project in
                 ProjectTag(project: project)
                     .overrideAction(predicate: editingAssignedProjects) {
                         withAnimation(.bouncy) {
