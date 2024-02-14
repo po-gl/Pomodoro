@@ -16,6 +16,8 @@ struct ChartsPage: View {
     @State var showingPomodoroEstimationsDetails = false
     @State var showingCompletedDetails = false
 
+    @State var miniChartRefresh = UUID()
+
     var borderBrightness: Double { colorScheme == .dark ? -0.09 : 0.0 }
     var borderSaturation: Double { colorScheme == .dark ? 0.85 : 1.05 }
     var backgroundBrightness: Double { colorScheme == .dark ? -0.25 : 0.65 }
@@ -37,6 +39,9 @@ struct ChartsPage: View {
             .listStyle(.plain)
             .background(Color.background)
             .navigationTitle("Charts")
+        }
+        .onAppear {
+            miniChartRefresh = UUID()
         }
     }
 
@@ -66,6 +71,7 @@ struct ChartsPage: View {
             } miniChart: {
                 CumulativeTimesMiniChart()
                     .frame(width: 140)
+                    .id(miniChartRefresh.uuidString + "CumulativeTimes")
             }
         }
         .tint(.primary)
@@ -125,6 +131,7 @@ struct ChartsPage: View {
             } miniChart: {
                 PomodoroEstimationsMiniChart()
                     .frame(width: 140)
+                    .id(miniChartRefresh.uuidString + "PomodoroEstimations")
             }
         }
         .tint(.primary)
@@ -168,6 +175,7 @@ struct ChartsPage: View {
             } miniChart: {
                 CompletedMiniChart()
                     .frame(width: 140)
+                    .id(miniChartRefresh.uuidString + "Completed")
             }
         }
         .tint(.primary)
