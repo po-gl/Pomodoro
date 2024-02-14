@@ -30,6 +30,7 @@ final class PomoTimerTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
+        pomoTimer.pause()
     }
 
     func testPomoTimer_defaults() throws {
