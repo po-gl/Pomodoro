@@ -76,7 +76,7 @@ struct TaskLabel: View {
                 .confirmationDialog("Task note options.", isPresented: $presentingNoteOptions) {
                     confirmationDialogButtons
                 } message: {
-                    if let taskNote = TasksData.taskInTodaysTasks(matching: text, context: viewContext),
+                    if let taskNote = TasksData.taskInPastMonth(matching: text, context: viewContext),
                        let note = taskNote.note, note != "" {
                         Text("\(text)\n\(note)")
                     } else {
@@ -120,7 +120,7 @@ struct TaskLabel: View {
     @ViewBuilder private var confirmationDialogButtons: some View {
         renameButton
         if text != "" {
-            if let taskNote = TasksData.taskInTodaysTasks(matching: text, context: viewContext) {
+            if let taskNote = TasksData.taskInPastMonth(matching: text, context: viewContext) {
                 markAsCompletedButton(taskNote: taskNote)
                 addEstimationButton(taskNote: taskNote)
             } else {

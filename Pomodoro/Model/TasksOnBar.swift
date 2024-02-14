@@ -69,7 +69,7 @@ class TasksOnBar: ObservableObject {
         tasksOnBar[index] = text
         saveToUserDefaults()
 
-        if let task = TasksData.taskInTodaysTasks(matching: oldText, context: context) {
+        if let task = TasksData.taskInPastMonth(matching: oldText, context: context) {
             TasksData.edit(text, for: task, context: context)
         }
     }

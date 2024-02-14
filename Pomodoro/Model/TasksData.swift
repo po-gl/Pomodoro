@@ -307,6 +307,13 @@ struct TasksData {
         return todaysTasks?.first(where: { $0.text == text })
     }
 
+    static func taskInPastMonth(matching text: String, context: NSManagedObjectContext) -> TaskNote? {
+        let lastMonth = Calendar.current.date(byAdding: .month, value: -1, to: Date.now)!
+        let fetchRequest = rangeRequest(between: lastMonth...Date.now)
+        let pastTasks = try? context.fetch(fetchRequest)
+        return pastTasks?.first(where: { $0.text == text })
+    }
+
     static func thisWeeksEstimateAverages(context: NSManagedObjectContext) -> (estimate: Double?, actual: Double?) {
         let startOfWeek = Date.now.startOfWeek
         let endOfWeek = startOfWeek.endOfWeek
