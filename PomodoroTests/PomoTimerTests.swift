@@ -6,6 +6,7 @@
 //
 
 import XCTest
+@testable import Pomodoro
 
 final class PomoTimerTests: XCTestCase {
 
