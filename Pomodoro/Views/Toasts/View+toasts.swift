@@ -26,6 +26,7 @@ enum ToastAction {
     case markedTodayAsDone
     case addedUnfinishedTasks
     case clearedPastTasks
+    case projectLimit
 }
 
 extension View {
@@ -73,6 +74,8 @@ struct ToastsModifier: ViewModifier {
             6.0
         case .clearedPastTasks:
             8.0
+        case .projectLimit:
+            5.0
         default:
             2.5
         }
@@ -212,6 +215,13 @@ struct ToastView: View {
                     hasBeenTapped = true
                     viewContext.undoManager?.undo()
                     NotificationCenter.default.post(name: .toast, object: Toast(message: "", action: .undone))
+                }
+            case .projectLimit:
+                VStack(alignment: .leading) {
+                    Text("Active project limit")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                    Text("Archive projects to add more")
                 }
             }
         }

@@ -30,6 +30,18 @@ struct ProjectsHeader: View {
 
     @ViewBuilder private var projectHeaderAddButton: some View {
         Button(action: {
+            basicHaptic()
+            let projects = try? viewContext.fetch(ProjectsData.currentProjectsRequest)
+            guard let projects else {
+                NotificationCenter.default.post(name: .toast, object: Toast(message: "", action: .error))
+                return
+            }
+
+            guard projects.count < ProjectsData.currentProjectLimit else {
+                NotificationCenter.default.post(name: .toast, object: Toast(message: "", action: .projectLimit))
+                return
+            }
+
             withAnimation {
                 _ = ProjectsData.addProject("", context: viewContext)
             }

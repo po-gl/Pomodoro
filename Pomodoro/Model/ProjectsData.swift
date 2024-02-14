@@ -11,6 +11,8 @@ import OSLog
 
 struct ProjectsData {
 
+    static let currentProjectLimit = 10
+
     static var currentProjectsRequest: NSFetchRequest<Project> {
         let fetchRequest = Project.fetchRequest()
         fetchRequest.sortDescriptors = [
