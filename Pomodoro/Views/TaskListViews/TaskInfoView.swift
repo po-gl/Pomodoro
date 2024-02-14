@@ -38,6 +38,12 @@ struct TaskInfoView: View {
             ScrollViewReader { scroll in
                 ScrollView {
                     VStack(spacing: 15) {
+                        if let timestamp = taskItem.timestamp {
+                            Text(timestamp.formatted(.dateTime.weekday().month().day().year().hour()))
+                                .font(.footnote)
+                                .foregroundStyle(.secondary)
+                                .frame(maxWidth: .infinity, alignment: .trailing)
+                        }
                         GroupBox {
                             TextField("Task", text: $editText, axis: .vertical)
                                 .fontWeight(.semibold)
