@@ -130,7 +130,7 @@ struct CumulativeTimeData {
             } catch {
                 let error = error as NSError
                 Errors.shared.coreDataError = error
-                Logger().error("\(errorMessage): \(error), \(error.userInfo)")
+                Logger().error("\(errorMessage) : \(error), \(error.userInfo)")
             }
         }
     }
@@ -141,7 +141,7 @@ struct CumulativeTimeData {
         } catch {
             let error = error as NSError
             Errors.shared.coreDataError = error
-            Logger().error("Synchronous \(errorMessage): \(error), \(error.userInfo)")
+            Logger().error("\(errorMessage) (synchronous) : \(error), \(error.userInfo)")
         }
     }
 }

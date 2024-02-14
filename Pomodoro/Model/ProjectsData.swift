@@ -136,7 +136,7 @@ struct ProjectsData {
             } catch {
                 let error = error as NSError
                 Errors.shared.coreDataError = error
-                Logger().error("CoreData error: \(error), \(error.userInfo)")
+                Logger().error("\(errorMessage) :  \(error), \(error.userInfo)")
             }
         }
     }
@@ -147,7 +147,7 @@ struct ProjectsData {
         } catch {
             let error = error as NSError
             Errors.shared.coreDataError = error
-            Logger().error("CoreData synchronous error: \(error), \(error.userInfo)")
+            Logger().error("\(errorMessage) (synchronous) :  \(error), \(error.userInfo)")
         }
     }
 

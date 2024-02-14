@@ -270,7 +270,7 @@ struct TasksData {
             } catch {
                 let error = error as NSError
                 Errors.shared.coreDataError = error
-                Logger().error("\(#line) CoreData error: \(error), \(error.userInfo)")
+                Logger().error("\(errorMessage) :  \(error), \(error.userInfo)")
             }
         }
     }
