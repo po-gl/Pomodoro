@@ -71,7 +71,7 @@ struct TaskInfoView: View {
                         GroupBox {
                             VStack(alignment: .leading, spacing: 15) {
                                 pomosEstimateView
-                                if editCompleted {
+                                if editCompleted || editPomosActual > -1 {
                                     Group {
                                         Divider()
                                             .padding(.vertical, 5)
