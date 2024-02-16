@@ -53,6 +53,7 @@ struct ProjectsHeader: View {
                 .brightness(colorScheme == .dark ? 0.4 : -0.1)
                 .saturation(colorScheme == .dark ? 1.5 : 0.9)
         }
+        .accessibilityIdentifier("addProjectButton")
     }
 
     @ViewBuilder private var projectHeaderChevronButton: some View {
@@ -73,5 +74,6 @@ struct ProjectsHeader: View {
                         .saturation(colorScheme == .dark ? 0.8 : 0.7)
                 )
         }
+        .accessibilityIdentifier("collapseProjectStackButton")
     }
 }

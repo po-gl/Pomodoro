@@ -180,6 +180,7 @@ struct ProjectCell: View {
 
     @ViewBuilder private var mainTextField: some View {
         TextField("", text: editText, axis: .vertical)
+            .accessibilityIdentifier("\(editText.wrappedValue)Project")
             .font(.system(.title2, design: .rounded, weight: .medium))
             .frame(minHeight: 30)
             .lineLimit(isCollapsed.value ? 1 : Int.max, reservesSpace: false)
@@ -192,6 +193,7 @@ struct ProjectCell: View {
 
     @ViewBuilder private var noteTextField: some View {
         TextField("Add Note", text: editNoteText, axis: .vertical)
+            .accessibilityIdentifier("\(editText.wrappedValue)ProjectNote")
             .font(.system(.footnote))
             .frame(minHeight: 20)
             .lineLimit(isCollapsed.value ? 1 : Int.max, reservesSpace: false)
@@ -280,7 +282,9 @@ struct ProjectCell: View {
         }) {
             Label(project.archivedDate != nil ? "Unarchive" : "Archive",
                   systemImage: project.archivedDate != nil ? "arrow.uturn.up" : "archivebox.fill")
-        }.tint(.end)
+        }
+        .tint(.end)
+        .accessibilityIdentifier("\(editText.wrappedValue)ProjectArchiveToggleButton")
     }
 
     @ViewBuilder private var deleteProjectButton: some View {
@@ -289,7 +293,9 @@ struct ProjectCell: View {
             ProjectsData.delete(project, context: viewContext)
         }) {
             Label("Delete", systemImage: "trash.fill")
-        }.tint(.red)
+        }
+        .tint(.red)
+        .accessibilityIdentifier("\(editText.wrappedValue)ProjectDeleteButton")
     }
 
     @ViewBuilder private var progressCheck: some View {

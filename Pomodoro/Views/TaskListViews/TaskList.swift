@@ -58,6 +58,7 @@ struct TaskList: View {
                     .navigationDestination(isPresented: $showingArchivedProjects) {
                         ArchivedProjectsView()
                     }
+                    .accessibilityIdentifier("taskListOverflowMenu")
                 }
                 
                 .toolbar {
@@ -125,6 +126,7 @@ struct TaskList: View {
         }) {
             Label("Archived Projects", systemImage: "archivebox")
         }
+        .accessibilityIdentifier("showArchivedProjectsButton")
     }
 
     @ViewBuilder private var showProjectsButton: some View {
