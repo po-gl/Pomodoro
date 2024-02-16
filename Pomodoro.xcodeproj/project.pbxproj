@@ -211,6 +211,7 @@
 		61A7FE2C29BD6E74000137E7 /* Color+hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612B9089285CD2E4003F1990 /* Color+hex.swift */; };
 		61A7FE2E29BD6F73000137E7 /* WatchWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A7FE2D29BD6F73000137E7 /* WatchWidgetBundle.swift */; };
 		61AA34CC2B4BB34700809140 /* Migrations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AA34CB2B4BB34700809140 /* Migrations.swift */; };
+		61ADE7B42B7EFB6E004A1405 /* OnBoardingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61ADE7B32B7EFB6E004A1405 /* OnBoardingUITests.swift */; };
 		61AEA85D29CE56F8007AA1AD /* Publishers+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AEA85C29CE56F8007AA1AD /* Publishers+Keyboard.swift */; };
 		61AEA86029CE59D0007AA1AD /* View+scrollToOnFocus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61AEA85F29CE59D0007AA1AD /* View+scrollToOnFocus.swift */; };
 		61B17251285CFCBB001C8245 /* View+Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B17250285CFCBB001C8245 /* View+Modifier.swift */; };
@@ -552,6 +553,7 @@
 		619ED26D29073A7E004E344D /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		61A7FE2D29BD6F73000137E7 /* WatchWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchWidgetBundle.swift; sourceTree = "<group>"; };
 		61AA34CB2B4BB34700809140 /* Migrations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Migrations.swift; sourceTree = "<group>"; };
+		61ADE7B32B7EFB6E004A1405 /* OnBoardingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingUITests.swift; sourceTree = "<group>"; };
 		61AEA85C29CE56F8007AA1AD /* Publishers+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publishers+Keyboard.swift"; sourceTree = "<group>"; };
 		61AEA85F29CE59D0007AA1AD /* View+scrollToOnFocus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+scrollToOnFocus.swift"; sourceTree = "<group>"; };
 		61B17250285CFCBB001C8245 /* View+Modifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Modifier.swift"; sourceTree = "<group>"; };
@@ -1005,6 +1007,7 @@
 				617789CD2856A1F400BD43D7 /* MainPageUITests.swift */,
 				612FF83E2B7E1B2C00866F88 /* ChartsPageUITests.swift */,
 				613CD80D2B7D921700223B4E /* SettingsUITests.swift */,
+				61ADE7B32B7EFB6E004A1405 /* OnBoardingUITests.swift */,
 				617789CF2856A1F400BD43D7 /* PomodoroUITestsLaunchTests.swift */,
 				613CD80F2B7DEC5100223B4E /* Utils.swift */,
 			);
@@ -1702,6 +1705,7 @@
 			files = (
 				612FF83F2B7E1B2C00866F88 /* ChartsPageUITests.swift in Sources */,
 				613CD8002B7C4D0D00223B4E /* MainPageUITests.swift in Sources */,
+				61ADE7B42B7EFB6E004A1405 /* OnBoardingUITests.swift in Sources */,
 				613CD80E2B7D921700223B4E /* SettingsUITests.swift in Sources */,
 				613CD7FF2B7C4D0A00223B4E /* PomodoroUITestsLaunchTests.swift in Sources */,
 				613CD8102B7DEC5100223B4E /* Utils.swift in Sources */,

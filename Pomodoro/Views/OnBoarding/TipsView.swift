@@ -48,6 +48,7 @@ struct TipsView: View {
                         .fontWeight(.medium)
                         .fontDesign(.monospaced)
                 }
+                .accessibilityIdentifier("getStartedButton")
                 .buttonStyle(PopStyle(color: color))
                 .frame(width: 170, height: 50)
             }

@@ -34,7 +34,8 @@ struct OnBoardView: View {
                     .tag(1)
                 TipsView(color: bgColor)
                     .tag(2)
-            }
+            } 
+            .accessibilityIdentifier("onBoardingTabView")
             .tabViewStyle(.page)
             .background {
                 OnBoardViewBackground(color: bgColor)
