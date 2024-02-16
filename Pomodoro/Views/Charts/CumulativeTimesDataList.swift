@@ -42,8 +42,10 @@ struct CumulativeTimesDataList: View {
                 }) {
                     Text("Delete All")
                 }
+                .accessibilityIdentifier("deleteAllButton")
             }
             EditButton()
+                .accessibilityIdentifier("editButton")
         }
 
         .confirmationDialog("Delete All Cumulative Times", isPresented: $showDeleteDialog) {
@@ -52,6 +54,7 @@ struct CumulativeTimesDataList: View {
             }) {
                 Text("Delete All Time Data")
             }
+            .accessibilityIdentifier("confirmDeleteAllButton")
         } message: {
             Text("Are you sure you want to delete all cumulative times?")
         }

@@ -610,6 +610,7 @@ struct CumulativeTimesDetails: View {
             Text("All Data")
                 .foregroundStyle(.tomato)
         }
+        .accessibilityIdentifier("allDataButton")
         .tint(.tomato)
         .padding(.horizontal, 8)
         .frame(maxWidth: .infinity, alignment: .trailing)

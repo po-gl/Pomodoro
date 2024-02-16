@@ -50,4 +50,18 @@ final class ChartsPageUITests: XCTestCase {
         let averageMark = app.otherElements["averageMark\(Calendar.current.startOfDay(for: Date.now).formatted(.iso8601))"].value as? String ?? ""
         XCTAssertGreaterThan(Double(averageMark) ?? 0.0, 0.0)
     }
+
+    func testiOSUI_cumulativeTimesDeleteData() throws {
+        let app = XCUIApplication()
+        app.buttons["cumulativeTimesCard"].tap()
+        
+        app.buttons["allDataButton"].tap()
+        app.buttons["editButton"].tap()
+
+        app.buttons["deleteAllButton"].tap()
+        app.buttons["confirmDeleteAllButton"].tap()
+        
+        app.navigationBars.buttons.element(boundBy: 0).tap()
+        XCTAssertEqual(Double(app.staticTexts["totalHourValue"].label) ?? -1, 0.0, accuracy: 0.01)
+    }
 }
