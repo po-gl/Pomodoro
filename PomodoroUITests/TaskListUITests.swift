@@ -74,6 +74,7 @@ final class TaskListUITests: XCTestCase {
         let app = XCUIApplication()
         let testString = "TestTask\(Date.now.formatted(.iso8601))"
         addTask(testString)
+        XCTAssertEqual(app.textViews[testString].waitForExistence(timeout: 0.1), true)
 
         app.textViews[testString].tapByCoord()
         app.buttons["\(testString)InfoButton"].tap()
@@ -96,6 +97,7 @@ final class TaskListUITests: XCTestCase {
         let app = XCUIApplication()
         let testString = "TestTask\(Date.now.formatted(.iso8601))"
         addTask(testString)
+        XCTAssertEqual(app.textViews[testString].waitForExistence(timeout: 0.1), true)
 
         XCTAssertEqual(app.otherElements["\(testString)CheckIsOff"].exists, true, "Completed check should be off initially")
         app.otherElements["\(testString)CheckIsOff"].tapByCoord()
