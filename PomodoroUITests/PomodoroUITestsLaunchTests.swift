@@ -76,7 +76,7 @@ final class PomodoroUITestsLaunchTests: XCTestCase {
 
         // delete task
         let taskLabel = app.buttons["TaskLabel_TestContent"]
-        taskLabel.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        taskLabel.tapByCoord()
         app.buttons["DeleteTask"].tap()
     }
 

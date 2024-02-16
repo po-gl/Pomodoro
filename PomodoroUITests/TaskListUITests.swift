@@ -43,7 +43,7 @@ final class TaskListUITests: XCTestCase {
         XCTAssertEqual(app.textViews[testString].value as? String ?? "", testString)
 
         // Add a note to the task
-        app.textViews[testString].coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        app.textViews[testString].tapByCoord()
         app.textViews["\(testString)Note"].tap()
         UIPasteboard.general.string = testNote
         app.textViews["\(testString)Note"].doubleTap()
@@ -75,7 +75,7 @@ final class TaskListUITests: XCTestCase {
         let testString = "TestTask\(Date.now.formatted(.iso8601))"
         addTask(testString)
 
-        app.textViews[testString].coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        app.textViews[testString].tapByCoord()
         app.buttons["\(testString)InfoButton"].tap()
 
         XCTAssertEqual(app.segmentedControls["pomosActualPicker"].exists, false, "Picker for actual pomos should not exist until the task is completed")
@@ -98,7 +98,7 @@ final class TaskListUITests: XCTestCase {
         addTask(testString)
 
         XCTAssertEqual(app.otherElements["\(testString)CheckIsOff"].exists, true, "Completed check should be off initially")
-        app.otherElements["\(testString)CheckIsOff"].coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        app.otherElements["\(testString)CheckIsOff"].tapByCoord()
         XCTAssertEqual(app.otherElements["\(testString)CheckIsOn"].exists, true, "Completed check should be on after tapping")
     }
 
@@ -108,7 +108,7 @@ final class TaskListUITests: XCTestCase {
         let app = XCUIApplication()
 
         XCTAssertEqual(app.buttons["collapseProjectStackButton"].isHittable, false, "Project stack should initially be collapsed and collapse button should not be hittable")
-        app.textViews["WorkProject"].coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        app.textViews["WorkProject"].tapByCoord()
         XCTAssertEqual(app.buttons["collapseProjectStackButton"].isHittable, true, "Project stack should be opened now and the collapse button should be hittable")
         app.buttons["collapseProjectStackButton"].tap()
         XCTAssertEqual(app.buttons["collapseProjectStackButton"].isHittable, false, "Project stack should now be collapsed and collapse button should not be hittable")
@@ -131,7 +131,7 @@ final class TaskListUITests: XCTestCase {
         XCTAssertEqual(app.textViews["\(testString)Project"].value as? String ?? "", testString)
 
         // Add a note to the project
-        app.textViews["\(testString)Project"].coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        app.textViews["\(testString)Project"].tapByCoord()
         app.textViews["\(testString)ProjectNote"].tap()
         UIPasteboard.general.string = testNote
         app.textViews["\(testString)ProjectNote"].doubleTap()
@@ -155,19 +155,19 @@ final class TaskListUITests: XCTestCase {
         addProject(testString)
 
         // Archive project
-        app.textViews["\(testString)Project"].coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).referencedElement.swipeLeft()
+        app.textViews["\(testString)Project"].byCoord().referencedElement.swipeLeft()
         app.buttons["\(testString)ProjectArchiveToggleButton"].tap()
 
         XCTAssertEqual(app.textViews["\(testString)Project"].exists, false, "An archived project should be removed from the task list")
 
         // Navigate to archived projects list
-        app.buttons["taskListOverflowMenu"].coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        app.buttons["taskListOverflowMenu"].tapByCoord()
         app.buttons["showArchivedProjectsButton"].tap()
 
         XCTAssertEqual(app.textViews["\(testString)Project"].exists, true, "The archived project should exist in the archived projects list")
 
         // Unarchive project
-        app.textViews["\(testString)Project"].coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).referencedElement.swipeLeft()
+        app.textViews["\(testString)Project"].byCoord().referencedElement.swipeLeft()
         app.buttons["\(testString)ProjectArchiveToggleButton"].tap()
 
         navigateBack()
@@ -195,7 +195,7 @@ final class TaskListUITests: XCTestCase {
     private func openProjectStack() {
         let app = XCUIApplication()
         if !app.buttons["collapseProjectStackButton"].isHittable {
-            app.textViews["WorkProject"].coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+            app.textViews["WorkProject"].tapByCoord()
         }
     }
 }

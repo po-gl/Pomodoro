@@ -85,7 +85,7 @@ final class MainPageUITests: XCTestCase {
         let taskLabel = app.buttons["TaskLabel_TestContent"]
         XCTAssertEqual(taskLabel.waitForExistence(timeout: 0.1), true)
 
-        taskLabel.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        taskLabel.tapByCoord()
         app.buttons["DeleteTask"].tap()
 
         XCTAssertEqual(taskLabel.exists, false)

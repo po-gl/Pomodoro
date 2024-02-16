@@ -25,6 +25,16 @@ extension XCUIApplication {
     }
 }
 
+extension XCUIElement {
+    func tapByCoord() {
+        self.byCoord().tap()
+    }
+
+    func byCoord() -> XCUICoordinate {
+        self.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+    }
+}
+
 func navigateBack() {
     XCUIApplication().navigationBars.buttons.element(boundBy: 0).tap()
 }
