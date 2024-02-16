@@ -212,6 +212,29 @@ final class TaskListUITests: XCTestCase {
         XCTAssertEqual(app.otherElements["\(testTask):\(testProject)TinyTag"].exists, false, "Task should now be unassigned from project")
     }
 
+    func testiOSUI_assignTaskAndViewInProjectInfo() throws {
+        let app = XCUIApplication()
+        let testProject = "Work"
+        let testTask = "TestTask\(UUID().uuidString.prefix(6))"
+
+        addTask(testTask)
+        XCTAssertEqual(app.textViews[testTask].waitForExistence(timeout: 0.1), true)
+
+        // Assign task to top project
+        app.textViews[testTask].byCoord().referencedElement.swipeLeft()
+        app.buttons["\(testTask)AssignToTopProjectButton"].tap()
+
+        app.byCoord().referencedElement.swipeDown()
+        openProjectStack()
+
+        // Open project info
+        app.buttons["\(testProject)ProjectInfoButton"].tap()
+        app.byCoord().referencedElement.swipeUp()
+
+        XCTAssertEqual(app.staticTexts["\(testTask)LightweightCell"].waitForExistence(timeout: 0.1), true, "Lightweight task cell should exist in project info's assigned task list")
+        XCTAssertEqual(app.staticTexts["\(testTask)LightweightCell"].label, testTask)
+    }
+
     private func addTask(_ text: String) {
         let app = XCUIApplication()
         app.buttons["newTaskButton"].tap()

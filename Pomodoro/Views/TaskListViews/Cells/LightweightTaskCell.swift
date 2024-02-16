@@ -47,6 +47,7 @@ struct LightweightTaskCell: View {
     var mainText: some View {
         HStack {
             Text(taskItem.text ?? "")
+                .accessibilityIdentifier("\(taskItem.text ?? "")LightweightCell")
                 .multilineTextAlignment(.leading)
                 .foregroundColor(taskItem.timestamp?.isToday() ?? true ? .primary : .secondary)
             Spacer()
