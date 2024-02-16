@@ -25,6 +25,8 @@ class PomoTimer: SequenceTimer {
     static let defaultRestTime: Double = 5.0 * 60.0
     static let defaultBreakTime: Double = 30.0 * 60.0
 
+    static let singleDurationUpperBound: Double = 3600 * 2
+
     private var pomoAction: (PomoStatus) -> Void
 
     var lastRecordedAt: Date?
@@ -163,6 +165,10 @@ class PomoTimer: SequenceTimer {
                 timeToAdd -= timeRemaining(atDate: endDate)
             }
 
+            guard timeToAdd < PomoTimer.singleDurationUpperBound else {
+                Logger().error("Error recording cumulative times: time to add exceeded duration upper bound")
+                break
+            }
             times.append((status: order[i].status, time: timeToAdd))
 
             hourAccumulator += timeToAdd
