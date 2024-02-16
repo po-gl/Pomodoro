@@ -76,6 +76,8 @@ final class PomodoroUITestsLaunchTests: XCTestCase {
 
         // delete task
         let taskLabel = app.buttons["TaskLabel_TestContent"]
+        XCTAssertEqual(taskLabel.waitForExistence(timeout: 0.2), true)
+
         taskLabel.tapByCoord()
         app.buttons["DeleteTask"].tap()
     }
