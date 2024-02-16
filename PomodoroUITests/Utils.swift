@@ -24,3 +24,7 @@ extension XCUIApplication {
         }
     }
 }
+
+func navigateBack() {
+    XCUIApplication().navigationBars.buttons.element(boundBy: 0).tap()
+}

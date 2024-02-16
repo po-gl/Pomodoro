@@ -60,8 +60,8 @@ final class ChartsPageUITests: XCTestCase {
 
         app.buttons["deleteAllButton"].tap()
         app.buttons["confirmDeleteAllButton"].tap()
-        
-        app.navigationBars.buttons.element(boundBy: 0).tap()
+
+        navigateBack()
         XCTAssertEqual(Double(app.staticTexts["totalHourValue"].label) ?? -1, 0.0, accuracy: 0.01)
     }
 
