@@ -51,6 +51,8 @@ struct BuddySelector: View {
                     }
                 )
                 .animation(.default, value: isSelected)
+                .accessibilityIdentifier("buddySelector\(buddy.rawValue.capitalized)")
+                .accessibilityAddTraits(.isButton)
             Text(buddy.rawValue.capitalized)
                 .font(font)
                 .frame(width: size.width)

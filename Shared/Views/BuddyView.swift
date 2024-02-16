@@ -41,6 +41,7 @@ struct BuddyView: View {
             ForEach(Array(buddies.enumerated()), id: \.element) { _, buddy in
                 animatedBuddy(buddy)
                     .frame(width: buddy == .banana ? 40 : 20)
+                    .accessibilityIdentifier("buddy\(buddy.rawValue.capitalized)")
             }
         }
         .onAppear {

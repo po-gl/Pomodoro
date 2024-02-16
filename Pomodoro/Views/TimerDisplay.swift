@@ -92,6 +92,7 @@ struct TimerDisplay: View {
     @ViewBuilder
     private func timerView(at date: Date) -> some View {
         Text(pomoTimer.timeRemaining(atDate: date).timerFormatted())
+            .accessibilityIdentifier("timerDisplay")
             .font(.system(size: 70,
                           weight: pomoTimer.isPaused ? .light : .regular,
                           design: .rounded))

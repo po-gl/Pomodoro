@@ -20,20 +20,32 @@ struct ContentView: View {
             MainPage()
                 .reverseStatusBarColor()
                 .toasts()
-                .tabItem { Label { Text("Pomodoro") } icon: { Image(.pomoTimer) } }
+                .tabItem {
+                    Label { Text("Pomodoro") } icon: { Image(.pomoTimer) }
+                        .accessibilityIdentifier("mainPage")
+                }
                 .tag(0)
             TaskList()
                 .toasts(bottomPadding: 50)
-                .tabItem { Label { Text("Tasks") } icon: { Image(.pomoChecklist) } }
+                .tabItem {
+                    Label { Text("Tasks") } icon: { Image(.pomoChecklist) }
+                        .accessibilityIdentifier("taskList")
+                }
                 .tag(1)
                 .badge(errors.coreDataError != nil ? "!" : nil)
             ChartsPage()
                 .toasts()
-                .tabItem { Label("Charts", systemImage: "chart.bar.xaxis")}
+                .tabItem {
+                    Label("Charts", systemImage: "chart.bar.xaxis")
+                        .accessibilityIdentifier("chartsPage")
+                }
                 .tag(2)
             SettingsPage()
                 .toasts()
-                .tabItem { Label { Text("Settings") } icon: { Image(.pomoGear) } }
+                .tabItem {
+                    Label { Text("Settings") } icon: { Image(.pomoGear) }
+                        .accessibilityIdentifier("settingsPage")
+                }
                 .tag(3)
         }
         .onReceive(Publishers.selectFirstTab) { _ in

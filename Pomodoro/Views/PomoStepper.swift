@@ -17,6 +17,7 @@ struct PomoStepper: View {
         HStack {
             HStack(spacing: 0) {
                 Text("\(pomoTimer.pomoCount) ")
+                    .accessibilityIdentifier("pomoStepperValue")
                     .font(.system(.title2, design: .monospaced, weight: .semibold))
                 Text("pomodoros")
                     .font(.system(.title3, design: .monospaced, weight: .regular))
@@ -43,5 +44,6 @@ struct PomoStepper: View {
                 pomoTimer.decrementPomos()
             }
         }
+        .accessibilityIdentifier("pomoStepper")
     }
 }

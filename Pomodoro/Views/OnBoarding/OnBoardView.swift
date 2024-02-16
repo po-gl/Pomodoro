@@ -52,6 +52,7 @@ struct OnBoardView: View {
                         .brightness(colorScheme == .dark ? 0.0 : 0.7)
                         .saturation(colorScheme == .dark ? 1.0 : 0.8)
                 }
+                .accessibilityIdentifier("skipWelcomeButton")
             }
             .onAppear {
                 changePageIndicators()

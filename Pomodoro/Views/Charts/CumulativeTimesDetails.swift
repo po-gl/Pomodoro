@@ -456,6 +456,7 @@ struct CumulativeTimesDetails: View {
                     Text("Daily").tag(ChartScale.day)
                     Text("Weekly").tag(ChartScale.week)
                 }
+                .accessibilityIdentifier("chartScalePicker")
                 .pickerStyle(.segmented)
                 ZStack(alignment: .bottomLeading) {
                     chartTitle
@@ -505,6 +506,7 @@ struct CumulativeTimesDetails: View {
         VStack(alignment: .leading) {
             HStack(alignment: .firstTextBaseline) {
                 Text(String(format: "%.1f", totalForRange))
+                    .accessibilityIdentifier("totalHourValue")
                     .font(.title)
                 Text("total hours")
                     .foregroundStyle(.secondary)
@@ -512,12 +514,14 @@ struct CumulativeTimesDetails: View {
             switch chartScale {
             case .day:
                 Text(visibleDate.formatted(.dateTime.weekday().month().day().year()))
+                    .accessibilityIdentifier("visibleDate")
                     .foregroundStyle(.secondary)
             case .week:
                 HStack {
                     let start = visibleRange.lowerBound.formatted(.dateTime.month().day())
                     let end = visibleRange.upperBound.formatted(.dateTime.month().day().year())
                     Text("\(start) - \(end)")
+                        .accessibilityIdentifier("visibleDate")
                         .foregroundStyle(.secondary)
                 }
             default:

@@ -74,6 +74,7 @@ struct ChartsPage: View {
                     .id(miniChartRefresh.uuidString + "CumulativeTimes")
             }
         }
+        .accessibilityIdentifier("cumulativeTimesCard")
         .tint(.primary)
         .navigationDestination(isPresented: $showingCumulativeTimesDetails) {
             CumulativeTimesDetails()
@@ -134,6 +135,7 @@ struct ChartsPage: View {
                     .id(miniChartRefresh.uuidString + "PomodoroEstimations")
             }
         }
+        .accessibilityIdentifier("pomodoroEstimationsCard")
         .tint(.primary)
         .navigationDestination(isPresented: $showingPomodoroEstimationsDetails) {
             PomodoroEstimationsDetails()
@@ -178,6 +180,7 @@ struct ChartsPage: View {
                     .id(miniChartRefresh.uuidString + "Completed")
             }
         }
+        .accessibilityIdentifier("tasksCompletedCard")
         .tint(.primary)
         .navigationDestination(isPresented: $showingCompletedDetails) {
             CompletedDetails()

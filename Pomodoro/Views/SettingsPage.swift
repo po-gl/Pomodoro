@@ -48,17 +48,17 @@ struct SettingsPage: View {
                     .frame(height: 25)
 
                     GroupBox {
-                        durationSlider("Work Duration", value: $workDuration, in: 60*5...60*40)
+                        durationSlider("Work Duration", .work, value: $workDuration, in: 60*5...60*40)
                             .tint(.barWork)
                     }
                     .backgroundStyle(GroupBoxBackgroundStyle())
                     GroupBox {
-                        durationSlider("Rest Duration", value: $restDuration, in: 60*3...60*30)
+                        durationSlider("Rest Duration", .rest, value: $restDuration, in: 60*3...60*30)
                             .tint(.barRest)
                     }
                     .backgroundStyle(GroupBoxBackgroundStyle())
                     GroupBox {
-                        durationSlider("Long Break Duration", value: $breakDuration, in: 60*10...60*60)
+                        durationSlider("Long Break Duration", .longBreak, value: $breakDuration, in: 60*10...60*60)
                             .tint(.barLongBreak)
                     }
                     .backgroundStyle(GroupBoxBackgroundStyle())
@@ -79,6 +79,7 @@ struct SettingsPage: View {
                             Text("Reset to default settings")
                                 .font(.callout)
                         }
+                        .accessibilityIdentifier("resetDurationsButton")
                     }
                     .padding(.horizontal)
 
@@ -92,6 +93,7 @@ struct SettingsPage: View {
                         Toggle(isOn: $enableBuddies, label: {
                             Text("Pixel Buddies")
                         })
+                        .accessibilityIdentifier("buddyToggle")
                         .tint(.end)
                     }
                     .backgroundStyle(GroupBoxBackgroundStyle())
@@ -157,12 +159,14 @@ struct SettingsPage: View {
 
     @ViewBuilder
     func durationSlider(_ text: String,
+                        _ status: PomoStatus,
                         value: Binding<TimeInterval>,
                         in range: ClosedRange<TimeInterval>) -> some View {
         HStack(spacing: 5) {
             Text(text)
             Spacer()
             Text(value.wrappedValue.compactTimerFormatted())
+                .accessibilityIdentifier("durationValue\(status.rawValue.capitalized)")
                 .monospacedDigit()
                 .fontWeight(.medium)
         }
@@ -176,7 +180,8 @@ struct SettingsPage: View {
                 }
             }
         })
-            .labelStyle(.titleAndIcon)
+        .labelStyle(.titleAndIcon)
+        .accessibilityIdentifier("durationSlider\(status.rawValue.capitalized)")
     }
 }
 
