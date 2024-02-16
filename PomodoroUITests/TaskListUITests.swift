@@ -124,6 +124,7 @@ final class TaskListUITests: XCTestCase {
 
         // Add a project
         app.buttons["addProjectButton"].tap()
+        XCTAssertEqual(app.textViews["Project"].waitForExistence(timeout: 0.1), true)
         UIPasteboard.general.string = testString
         app.textViews["Project"].doubleTap()
         app.menuItems["Paste"].tap()
@@ -223,6 +224,7 @@ final class TaskListUITests: XCTestCase {
     private func addProject(_ text: String) {
         let app = XCUIApplication()
         app.buttons["addProjectButton"].tap()
+        XCTAssertEqual(app.textViews["Project"].waitForExistence(timeout: 0.1), true)
         UIPasteboard.general.string = text
         app.textViews["Project"].doubleTap()
         app.menuItems["Paste"].tap()
