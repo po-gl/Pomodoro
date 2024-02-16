@@ -97,6 +97,7 @@ struct DailyCumulativeChart: View {
                         xEnd: .value("End of Average", average.key.addingTimeInterval(3600 * 24)),
                         y: .value("Daily Average", average.value / 60)
                     )
+                    .accessibilityIdentifier("averageMark\(average.key.formatted(.iso8601))")
                     .foregroundStyle(.end)
                     .annotation(
                         position: .top,

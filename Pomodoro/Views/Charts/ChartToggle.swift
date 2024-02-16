@@ -23,6 +23,8 @@ struct ChartToggle: View {
     var body: some View {
         HStack(alignment: .firstTextBaseline) {
             Text(label)
+                .accessibilityIdentifier("chartToggle\(label)")
+                .accessibilityAddTraits(.isButton)
             Spacer()
             HStack(alignment: .firstTextBaseline, spacing: 5) {
                 Text(String(format: "%.1f", value))
