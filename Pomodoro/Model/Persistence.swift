@@ -10,7 +10,12 @@ import GameplayKit
 import OSLog
 
 struct PersistenceController {
-    static let shared = PersistenceController()
+    static var shared: PersistenceController = {
+        if ProcessInfo.processInfo.arguments.contains("-isUITest") {
+            return preview
+        }
+        return PersistenceController()
+    }()
 
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)

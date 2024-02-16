@@ -153,4 +153,24 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         Logger().error("Failed to register remote noticiations: \(error.localizedDescription)")
     }
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        if ProcessInfo.processInfo.arguments.contains("-resetUserDefaults") {
+            resetUserDefaults()
+        }
+        return true
+    }
+
+    private func resetUserDefaults() {
+        let pomoDefaults = UserDefaults.pomo
+        pomoDefaults?.dictionaryRepresentation().keys
+            .forEach { key in
+                pomoDefaults?.removeObject(forKey: key)
+            }
+        let defaults = UserDefaults.standard
+        defaults.dictionaryRepresentation().keys
+            .forEach { key in
+                defaults.removeObject(forKey: key)
+            }
+    }
 }
