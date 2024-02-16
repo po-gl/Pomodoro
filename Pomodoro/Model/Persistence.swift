@@ -88,6 +88,8 @@ struct PersistenceController {
                     taskItem.completed = true
                 }
             }
+            tasks.first?.pomosEstimate = 3
+            tasks.first?.pomosActual = 4
         }
 
         // Add cumulative times data
