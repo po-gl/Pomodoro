@@ -273,6 +273,7 @@ struct PomodoroEstimationsDetails: View {
                     let start = visibleRange.lowerBound.formatted(.dateTime.month().day())
                     let end = visibleRange.upperBound.formatted(.dateTime.month().day().year())
                     Text("\(start) - \(end)")
+                        .accessibilityIdentifier("visibleDate")
                         .foregroundStyle(.secondary)
                 }
             }
@@ -436,6 +437,7 @@ struct PomodoroEstimationsDetails: View {
             Grid(alignment: .leading, verticalSpacing: -1) {
                 GridRow {
                     Text(String(format: "%.1f", estimates))
+                        .accessibilityIdentifier("estimatesAverageValue")
                         .font(.body)
                         .monospacedDigit()
                         .foregroundStyle(.barRest)
@@ -445,6 +447,7 @@ struct PomodoroEstimationsDetails: View {
                 }
                 GridRow {
                     Text(String(format: "%.1f", actuals))
+                        .accessibilityIdentifier("actualsAverageValue")
                         .font(.body)
                         .monospacedDigit()
                         .foregroundStyle(.end)

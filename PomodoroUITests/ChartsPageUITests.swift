@@ -64,4 +64,17 @@ final class ChartsPageUITests: XCTestCase {
         app.navigationBars.buttons.element(boundBy: 0).tap()
         XCTAssertEqual(Double(app.staticTexts["totalHourValue"].label) ?? -1, 0.0, accuracy: 0.01)
     }
+
+    func testiOSUI_pomoEstimationsChartTitle() throws {
+        let app = XCUIApplication()
+        app.buttons["pomodoroEstimationsCard"].tap()
+        
+        XCTAssertGreaterThan(Double(app.staticTexts["estimatesAverageValue"].label) ?? 0, 0.0)
+        XCTAssertGreaterThan(Double(app.staticTexts["actualsAverageValue"].label) ?? 0, 0.0)
+
+        let startOfWeek = Calendar.current.dateComponents([.calendar, .yearForWeekOfYear, .weekOfYear], from: Date.now).date!
+        let endOfWeek = Calendar.current.date(byAdding: .day, value: 7, to: startOfWeek)! - 1.0
+        let visibleDateRange = "\(startOfWeek.formatted(.dateTime.month().day())) - \(endOfWeek.formatted(.dateTime.month().day().year()))"
+        XCTAssertEqual(app.staticTexts["visibleDate"].label, visibleDateRange)
+    }
 }
