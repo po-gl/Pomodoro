@@ -70,6 +70,7 @@
 		612D8F95290B67E50089CDD1 /* PomoTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619255B02901F4CB00D399B8 /* PomoTimer.swift */; };
 		612D8F96290B67E80089CDD1 /* SequenceTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613D6D9B285C82FD0020C194 /* SequenceTimer.swift */; };
 		612D8F97290B67EB0089CDD1 /* PomoTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619255B3290204AB00D399B8 /* PomoTime.swift */; };
+		612FF83F2B7E1B2C00866F88 /* ChartsPageUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 612FF83E2B7E1B2C00866F88 /* ChartsPageUITests.swift */; };
 		61307C752B26B23300B0FA19 /* StandByWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61307C722B26B23300B0FA19 /* StandByWidget.swift */; };
 		61307C782B26B47E00B0FA19 /* WidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61307C772B26B47E00B0FA19 /* WidgetTimelineProvider.swift */; };
 		61307C792B26B47E00B0FA19 /* WidgetTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61307C772B26B47E00B0FA19 /* WidgetTimelineProvider.swift */; };
@@ -82,11 +83,13 @@
 		6139AE51290C64D000C5CB19 /* ChangerPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6139AE50290C64D000C5CB19 /* ChangerPage.swift */; };
 		613CD7EF2B7B7ECB00223B4E /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 613CD7EE2B7B7ECB00223B4E /* Algorithms */; };
 		613CD7FF2B7C4D0A00223B4E /* PomodoroUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617789CF2856A1F400BD43D7 /* PomodoroUITestsLaunchTests.swift */; };
-		613CD8002B7C4D0D00223B4E /* PomodoroUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617789CD2856A1F400BD43D7 /* PomodoroUITests.swift */; };
+		613CD8002B7C4D0D00223B4E /* MainPageUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617789CD2856A1F400BD43D7 /* MainPageUITests.swift */; };
 		613CD8092B7C564200223B4E /* PomodoroTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617789C32856A1F400BD43D7 /* PomodoroTests.swift */; };
 		613CD80A2B7C564200223B4E /* SequenceTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613D6D9D285C85FE0020C194 /* SequenceTimerTests.swift */; };
 		613CD80B2B7C564200223B4E /* PomoTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614A86C4290A4E1E008DFA26 /* PomoTimeTests.swift */; };
 		613CD80C2B7C564200223B4E /* PomoTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614A86C2290A4B74008DFA26 /* PomoTimerTests.swift */; };
+		613CD80E2B7D921700223B4E /* SettingsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613CD80D2B7D921700223B4E /* SettingsUITests.swift */; };
+		613CD8102B7DEC5100223B4E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613CD80F2B7DEC5100223B4E /* Utils.swift */; };
 		613D6D9C285C82FD0020C194 /* SequenceTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613D6D9B285C82FD0020C194 /* SequenceTimer.swift */; };
 		613F4F752B6388D100CD1A86 /* EnvironmentValues+selectedReorderingRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613F4F742B6388D100CD1A86 /* EnvironmentValues+selectedReorderingRect.swift */; };
 		613F4F782B64C2CF00CD1A86 /* ThrottledViewReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613F4F772B64C2CF00CD1A86 /* ThrottledViewReader.swift */; };
@@ -453,6 +456,7 @@
 		612D8F88290B63180089CDD1 /* WatchWidget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = WatchWidget.intentdefinition; sourceTree = "<group>"; };
 		612D8F89290B63190089CDD1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		612D8F8B290B63190089CDD1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		612FF83E2B7E1B2C00866F88 /* ChartsPageUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartsPageUITests.swift; sourceTree = "<group>"; };
 		61307C722B26B23300B0FA19 /* StandByWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandByWidget.swift; sourceTree = "<group>"; };
 		61307C772B26B47E00B0FA19 /* WidgetTimelineProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetTimelineProvider.swift; sourceTree = "<group>"; };
 		61307C7A2B26B4B800B0FA19 /* PomoTimelineEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomoTimelineEntry.swift; sourceTree = "<group>"; };
@@ -460,6 +464,8 @@
 		6131C0AD291204C300D1E6F1 /* AnimatedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedImage.swift; sourceTree = "<group>"; };
 		6139AE4E290C643B00C5CB19 /* MainPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPage.swift; sourceTree = "<group>"; };
 		6139AE50290C64D000C5CB19 /* ChangerPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangerPage.swift; sourceTree = "<group>"; };
+		613CD80D2B7D921700223B4E /* SettingsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUITests.swift; sourceTree = "<group>"; };
+		613CD80F2B7DEC5100223B4E /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		613D6D9B285C82FD0020C194 /* SequenceTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceTimer.swift; sourceTree = "<group>"; };
 		613D6D9D285C85FE0020C194 /* SequenceTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceTimerTests.swift; sourceTree = "<group>"; };
 		613F4F742B6388D100CD1A86 /* EnvironmentValues+selectedReorderingRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+selectedReorderingRect.swift"; sourceTree = "<group>"; };
@@ -507,7 +513,7 @@
 		617789BF2856A1F400BD43D7 /* PomodoroTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PomodoroTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		617789C32856A1F400BD43D7 /* PomodoroTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroTests.swift; sourceTree = "<group>"; };
 		617789C92856A1F400BD43D7 /* PomodoroUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PomodoroUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		617789CD2856A1F400BD43D7 /* PomodoroUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroUITests.swift; sourceTree = "<group>"; };
+		617789CD2856A1F400BD43D7 /* MainPageUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageUITests.swift; sourceTree = "<group>"; };
 		617789CF2856A1F400BD43D7 /* PomodoroUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		617CF4FF2AE8849F0040E50B /* PastTasksHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastTasksHeader.swift; sourceTree = "<group>"; };
 		617CF5062AE889C00040E50B /* TaskList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskList.swift; sourceTree = "<group>"; };
@@ -996,8 +1002,11 @@
 		617789CC2856A1F400BD43D7 /* PomodoroUITests */ = {
 			isa = PBXGroup;
 			children = (
-				617789CD2856A1F400BD43D7 /* PomodoroUITests.swift */,
+				617789CD2856A1F400BD43D7 /* MainPageUITests.swift */,
+				612FF83E2B7E1B2C00866F88 /* ChartsPageUITests.swift */,
+				613CD80D2B7D921700223B4E /* SettingsUITests.swift */,
 				617789CF2856A1F400BD43D7 /* PomodoroUITestsLaunchTests.swift */,
+				613CD80F2B7DEC5100223B4E /* Utils.swift */,
 			);
 			path = PomodoroUITests;
 			sourceTree = "<group>";
@@ -1691,8 +1700,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				613CD8002B7C4D0D00223B4E /* PomodoroUITests.swift in Sources */,
+				612FF83F2B7E1B2C00866F88 /* ChartsPageUITests.swift in Sources */,
+				613CD8002B7C4D0D00223B4E /* MainPageUITests.swift in Sources */,
+				613CD80E2B7D921700223B4E /* SettingsUITests.swift in Sources */,
 				613CD7FF2B7C4D0A00223B4E /* PomodoroUITestsLaunchTests.swift in Sources */,
+				613CD8102B7DEC5100223B4E /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,18 +13,25 @@ final class PomodoroUITestsLaunchTests: XCTestCase {
         true
     }
 
+    override class func setUp() {
+        let app = XCUIApplication()
+        app.launchWithDefaultsCleared()
+        app.dismissWelcomeMessage()
+    }
+
     override func setUpWithError() throws {
+        let app = XCUIApplication()
+        app.launchAsUITest()
         continueAfterFailure = false
     }
 
     override func tearDownWithError() throws {
         let app = XCUIApplication()
-        PomodoroUITests.resetTimer(app)
+        MainPageUITests.resetTimer(app)
     }
 
     func testLaunch() throws {
         let app = XCUIApplication()
-        app.launch()
 
         let attachment = XCTAttachment(screenshot: app.screenshot())
         attachment.name = "Launch Screen"
@@ -34,7 +41,6 @@ final class PomodoroUITestsLaunchTests: XCTestCase {
 
     func testScrubProgressBarScreen() throws {
         let app = XCUIApplication()
-        app.launch()
 
         let barCoords = app.otherElements["DraggableProgressBar"].coordinate(withNormalizedOffset: .zero)
         barCoords.press(forDuration: 0.1, thenDragTo: barCoords.withOffset(CGVector(dx: 400, dy: 0)))
@@ -47,7 +53,6 @@ final class PomodoroUITestsLaunchTests: XCTestCase {
 
     func testTaskDragAndDropScreen() throws {
         let app = XCUIApplication()
-        app.launch()
 
         // Type task
         let taskText = app.textFields["AddTask"]
@@ -57,11 +62,12 @@ final class PomodoroUITestsLaunchTests: XCTestCase {
         app.menuItems["Paste"].tap()
 
         // Drag to progress bar
-        let taskCoords = app.otherElements["DraggableTask"].coordinate(withNormalizedOffset: .zero)
-        let progressBarCoords = app.otherElements["DraggableProgressBar"].coordinate(withNormalizedOffset: .zero)
-        taskCoords.press(forDuration: 0.5, thenDragTo: progressBarCoords.withOffset(CGVector(dx: 100, dy: 0)))
+        let draggableTask = app.otherElements["DraggableTask"]
+        let progressBar = app.otherElements["DraggableProgressBar"]
+        draggableTask.swipeDown() // Swipe to dismiss keyboard so progress bar is hittable
+        draggableTask.press(forDuration: 0.1, thenDragTo: progressBar)
 
-        wait(for: 1)
+        wait(for: 0.2)
 
         let attachment = XCTAttachment(screenshot: app.screenshot())
         attachment.name = "Task Added Screen"
