@@ -161,9 +161,9 @@ struct ProjectsData {
     static func setAsTopProject(_ project: Project, context: NSManagedObjectContext) {
         if let currentProjects = try? context.fetch(currentProjectsRequest) {
             let oldOrder = project.order
-            for project in currentProjects {
-                if project.order < oldOrder {
-                    project.order += 1
+            for otherProject in currentProjects {
+                if otherProject.order <= oldOrder {
+                    otherProject.order += 1
                 } else {
                     break
                 }
