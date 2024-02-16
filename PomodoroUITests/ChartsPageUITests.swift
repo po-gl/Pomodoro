@@ -77,4 +77,27 @@ final class ChartsPageUITests: XCTestCase {
         let visibleDateRange = "\(startOfWeek.formatted(.dateTime.month().day())) - \(endOfWeek.formatted(.dateTime.month().day().year()))"
         XCTAssertEqual(app.staticTexts["visibleDate"].label, visibleDateRange)
     }
+
+    func testiOSUI_completedChartTitle() throws {
+        let app = XCUIApplication()
+        app.buttons["tasksCompletedCard"].tap()
+
+        XCTAssertGreaterThan(Int(app.staticTexts["countValue"].label) ?? 0, 0)
+
+        let startOfWeek = Calendar.current.dateComponents([.calendar, .yearForWeekOfYear, .weekOfYear], from: Date.now).date!
+        let endOfWeek = Calendar.current.date(byAdding: .day, value: 7, to: startOfWeek)! - 1.0
+        let visibleDateRange = "\(startOfWeek.formatted(.dateTime.month().day())) - \(endOfWeek.formatted(.dateTime.month().day().year()))"
+        XCTAssertEqual(app.staticTexts["visibleDate"].label, visibleDateRange)
+    }
+
+    func testiOSUI_completedChartAverages() throws {
+        let app = XCUIApplication()
+        app.buttons["tasksCompletedCard"].tap()
+
+        app.buttons["chartToggleWeekly Average"].tap()
+
+        let startOfWeek = Calendar.current.dateComponents([.calendar, .yearForWeekOfYear, .weekOfYear], from: Date.now).date!
+        let averageMark = app.otherElements["averageMark\(startOfWeek.formatted(.iso8601))"].value as? String ?? ""
+        XCTAssertGreaterThan(Double(averageMark) ?? 0.0, 0.0)
+    }
 }

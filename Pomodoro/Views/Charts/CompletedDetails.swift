@@ -81,6 +81,7 @@ struct WeeklyCompletedTasks: View {
                         xEnd: .value("End of Average", average.key.addingTimeInterval(3600 * 24 * 7)),
                         y: .value("Weekly Average", average.value)
                     )
+                    .accessibilityIdentifier("averageMark\(average.key.formatted(.iso8601))")
                     .foregroundStyle(.barLongBreak)
                     .annotation(
                         position: .top,
@@ -268,6 +269,7 @@ struct CompletedDetails: View {
         VStack(alignment: .leading) {
             HStack(alignment: .firstTextBaseline) {
                 Text("\(countForRange)")
+                    .accessibilityIdentifier("countValue")
                     .font(.title)
                 Text("completed tasks this week")
                     .foregroundStyle(.secondary)
@@ -276,6 +278,7 @@ struct CompletedDetails: View {
                 let start = visibleRange.lowerBound.formatted(.dateTime.month().day())
                 let end = visibleRange.upperBound.formatted(.dateTime.month().day().year())
                 Text("\(start) - \(end)")
+                    .accessibilityIdentifier("visibleDate")
                     .foregroundStyle(.secondary)
             }
         }
