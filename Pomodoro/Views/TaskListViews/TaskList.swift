@@ -105,6 +105,7 @@ struct TaskList: View {
                     .padding(.trailing, 2)
             }
         }
+        .accessibilityIdentifier("newTaskButton")
         .foregroundStyle(Color.accent)
         .buttonStyle(.plain)
         .frame(height: 23)

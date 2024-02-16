@@ -57,7 +57,9 @@ struct TaskInfoView: View {
                         GroupBox {
                             Toggle(isOn: $editCompleted) {
                                 Text("Completed")
-                            }.tint(.end)
+                            }
+                            .tint(.end)
+                            .accessibilityIdentifier("completedToggle")
                         }
                         .backgroundStyle(GroupBoxBackgroundStyle())
 
@@ -191,6 +193,7 @@ struct TaskInfoView: View {
                 Text("\(i)").tag(i)
             }
         }
+        .accessibilityIdentifier("pomosEstimatePicker")
         .pickerStyle(SegmentedPickerStyle())
         if editPomosEstimate >= 0 {
             deselect(for: $editPomosEstimate)
@@ -213,6 +216,7 @@ struct TaskInfoView: View {
                 Text("\(i)").tag(i)
             }
         }
+        .accessibilityIdentifier("pomosActualPicker")
         .pickerStyle(SegmentedPickerStyle())
         if editPomosActual >= 0 {
             deselect(for: $editPomosActual)
@@ -313,6 +317,7 @@ struct TaskInfoView: View {
         }, label: {
             Text("Done").bold()
         })
+        .accessibilityIdentifier("doneButton")
     }
 
     var cancelButton: some View {

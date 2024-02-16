@@ -146,6 +146,7 @@ struct TaskCell: View {
 
     var mainTextField: some View {
         TextField("", text: editText, axis: .vertical)
+            .accessibilityIdentifier(isAdderCell ? "adderCell" : editText.wrappedValue)
             .foregroundColor(taskItem.timestamp?.isToday() ?? true ? .primary : .secondary)
             .onSubmitWithVerticalText(with: editText, resigns: !isAdderCell) {
                 if !isAdderCell {
@@ -169,6 +170,7 @@ struct TaskCell: View {
 
     var noteTextField: some View {
         TextField("Add Note", text: editNoteText, axis: .vertical)
+            .accessibilityIdentifier(isAdderCell ? "adderCellNote" : "\(editText.wrappedValue)Note")
             .font(.footnote)
             .foregroundColor(.secondary)
             .onChangeWithThrottle(of: editNoteText.wrappedValue, for: 0.6) { _ in
@@ -255,7 +257,9 @@ struct TaskCell: View {
             }
         }) {
             Label("Delete", systemImage: "trash")
-        }.tint(.red)
+        }
+        .tint(.red)
+        .accessibilityIdentifier("\(editText.wrappedValue)DeleteButton")
     }
 
     var assignToTopProjectButton: some View {
@@ -286,7 +290,9 @@ struct TaskCell: View {
         }) {
             Label(taskItem.flagged ? "Unflag" : "Flag",
                   systemImage: taskItem.flagged ? "flag.slash.fill" : "flag.fill")
-        }.tint(.barWork)
+        }
+        .tint(.barWork)
+        .accessibilityIdentifier("\(editText.wrappedValue)FlagButton")
     }
 
     var reAddToTodaysTasksButton: some View {
@@ -330,6 +336,7 @@ struct TaskCheck: View {
                                                dash: !isAdderCell ? [] : [2, 2.0*pi*radius/14-2]))
                 .opacity(taskItem.completed ? 1.0 : 0.5)
             Circle().frame(width: width/1.5)
+                .accessibilityIdentifier("\(taskItem.text ?? "")Check\(taskItem.completed ? "IsOn" : "IsOff")")
                 .opacity(taskItem.completed ? 1.0 : 0.0)
         }
         .foregroundColor(taskItem.completed ? .accent : .primary)
@@ -411,6 +418,7 @@ struct TaskInfoCluster: View {
                 .foregroundStyle(color)
                 .brightness(colorScheme == .dark ? 0.1 : -0.15)
                 .saturation(colorScheme == .dark ? 0.9 : 1.1)
+                .accessibilityIdentifier("\(taskItem.text ?? "")EstimateOrActualPomos")
         }
     }
 
@@ -418,6 +426,7 @@ struct TaskInfoCluster: View {
         Image(systemName: "leaf.fill")
             .foregroundColor(.barWork)
             .frame(width: 20, height: 20)
+            .accessibilityIdentifier("\(taskItem.text ?? "")FlagIndicator")
     }
 
     var infoButton: some View {
@@ -433,6 +442,8 @@ struct TaskInfoCluster: View {
         }, label: {
             Image(systemName: "info.circle")
                 .font(.title3)
-        }).tint(Color.accent)
+        })
+        .tint(Color.accent)
+        .accessibilityIdentifier("\(taskItem.text ?? "")InfoButton")
     }
 }
