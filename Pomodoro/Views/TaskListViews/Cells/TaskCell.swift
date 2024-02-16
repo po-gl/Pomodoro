@@ -278,7 +278,9 @@ struct TaskCell: View {
             }
         }) {
             Label("Assign To Top Project", systemImage: "square.3.layers.3d.top.filled")
-        }.tint(.barRest)
+        }
+        .tint(.barRest)
+        .accessibilityIdentifier("\(editText.wrappedValue)AssignToTopProjectButton")
     }
 
     var flagTaskButton: some View {
@@ -399,6 +401,7 @@ struct TaskInfoCluster: View {
         if count > 0 {
             WrappingHStack(models: projects, horizontalSpacing: 1.2, verticalSpacing: 1.2) { project in
                 TinyProjectTag(color: Color(project.color ?? ""), size: 8)
+                    .accessibilityIdentifier("\(taskItem.text ?? ""):\(project.name ?? "")TinyTag")
             }
             .frame(width: 25, height: count > 2 ? 20 : 10, alignment: .top)
             .rotationEffect(.degrees(90))

@@ -176,6 +176,41 @@ final class TaskListUITests: XCTestCase {
         XCTAssertEqual(app.textViews["\(testString)Project"].exists, true, "The archived project should exist in the archived projects list")
     }
 
+    func testiOSUI_setProjectAsTopThenAssignAndRemoveTaskFromTopProject() throws {
+        let app = XCUIApplication()
+        let testProject = "TestProject\(UUID().uuidString.prefix(6))"
+        let testTask = "Task 0"
+        openProjectStack()
+        addProject(testProject)
+
+        // Set newly added project as top project
+        app.textViews["\(testProject)Project"].byCoord().referencedElement.swipeLeft()
+        app.buttons["\(testProject)ProjectSendToTopButton"].tapByCoord()
+
+        app.buttons["collapseProjectStackButton"].tap()
+
+        app.textViews[testTask].byCoord().referencedElement.swipeLeft()
+        app.buttons["\(testTask)AssignToTopProjectButton"].tap()
+
+        // Check project assignment in info cluster
+        XCTAssertEqual(app.otherElements["\(testTask):\(testProject)TinyTag"].exists, true, "Project tiny tag should exist after assigning task to project")
+
+        // Check project assignment in task info
+        app.textViews[testTask].tapByCoord()
+        app.buttons["\(testTask)InfoButton"].tap()
+
+        XCTAssertEqual(app.buttons["\(testProject)ProjectTag"].exists, true, "Project tag should also exist in task info")
+
+        // Unassign task from project
+        app.byCoord().referencedElement.swipeUp()
+        app.buttons["editAssignedProjectsButton"].tap()
+        app.buttons["\(testProject)ProjectTag"].tap()
+        app.buttons["editAssignedProjectsButton"].tap()
+
+        app.buttons["doneButton"].tap()
+        XCTAssertEqual(app.otherElements["\(testTask):\(testProject)TinyTag"].exists, false, "Task should now be unassigned from project")
+    }
+
     private func addTask(_ text: String) {
         let app = XCUIApplication()
         app.buttons["newTaskButton"].tap()

@@ -109,6 +109,7 @@ struct TaskInfoView: View {
                                             .tint(editingAssignedProjects ? .end : .accent)
                                     }
                                     .padding(.trailing, 10)
+                                    .accessibilityIdentifier("editAssignedProjectsButton")
                                 }
                                 projectsList
                                     .offset(x: -5)

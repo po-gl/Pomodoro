@@ -23,6 +23,8 @@ struct ProjectTag: View {
         let name = project.name ?? name
         let color = project.color != nil ? Color(project.color!) : color
         Text(name)
+            .accessibilityIdentifier("\(project.name ?? "")ProjectTag")
+            .accessibilityAddTraits(.isButton)
             .font(font)
             .foregroundStyle(color)
             .padding(.vertical, 2).padding(.horizontal, 8)

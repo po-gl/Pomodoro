@@ -254,6 +254,7 @@ struct ProjectCell: View {
                 .font(.title3)
                 .tint(color)
         }
+        .accessibilityIdentifier("\(editText.wrappedValue)ProjectInfoButton")
     }
 
     @ViewBuilder private var slideInfoButton: some View {
@@ -272,7 +273,9 @@ struct ProjectCell: View {
             withAnimation(.bouncy) { ProjectsData.setAsTopProject(project, context: viewContext) }
         }) {
             Label("Send to Top", systemImage: "square.3.layers.3d.top.filled")
-        }.tint(.barWork)
+        }
+        .tint(.barWork)
+        .accessibilityIdentifier("\(editText.wrappedValue)ProjectSendToTopButton")
     }
 
     @ViewBuilder private var toggleProjectArchiveButton: some View {
