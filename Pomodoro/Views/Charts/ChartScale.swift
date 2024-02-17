@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ChartScale {
+enum ChartScale: String {
     case day
     case week
     case month
