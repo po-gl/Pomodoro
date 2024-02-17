@@ -30,16 +30,13 @@ struct PomodoroEstimationsMiniChart: View {
         tasks.forEach {
             guard let timestamp = $0.timestamp else { return }
             let startOfDay = timestamp.startOfDay
-            if tasksByDay[startOfDay] == nil {
-                tasksByDay[startOfDay] = (estimation: 0, actual: 0, estimationCount: 0, actualCount: 0)
-            }
             if $0.pomosEstimate > 0 {
-                tasksByDay[startOfDay]?.estimation += Int($0.pomosEstimate)
-                tasksByDay[startOfDay]?.estimationCount += 1
+                tasksByDay[startOfDay, default: (0, 0, 0, 0)].estimation += Int($0.pomosEstimate)
+                tasksByDay[startOfDay, default: (0, 0, 0, 0)].estimationCount += 1
             }
             if $0.pomosActual > 0 && $0.completed {
-                tasksByDay[startOfDay]?.actual += Int($0.pomosActual)
-                tasksByDay[startOfDay]?.actualCount += 1
+                tasksByDay[startOfDay, default: (0, 0, 0, 0)].actual += Int($0.pomosActual)
+                tasksByDay[startOfDay, default: (0, 0, 0, 0)].actualCount += 1
             }
         }
         var taskAverages = tasksByDay.mapValues {
