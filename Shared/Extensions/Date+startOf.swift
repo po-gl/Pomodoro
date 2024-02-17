@@ -8,16 +8,25 @@
 import Foundation
 
 extension Date {
+
+    var startOfHour: Date {
+        Calendar.current.startOfHour(for: self)
+    }
+
+    var endOfHour: Date {
+        Calendar.current.date(byAdding: .hour, value: 1, to: self.startOfHour)!
+    }
+
     var startOfDay: Date {
         Calendar.current.startOfDay(for: self)
     }
 
-    var startOfWeek: Date {
-        Calendar.current.startOfWeek(for: self)
-    }
-
     var endOfDay: Date {
         Calendar.current.date(byAdding: .day, value: 1, to: self.startOfDay)!
+    }
+
+    var startOfWeek: Date {
+        Calendar.current.startOfWeek(for: self)
     }
 
     var endOfWeek: Date {
