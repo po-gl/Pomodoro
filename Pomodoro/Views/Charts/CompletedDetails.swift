@@ -16,41 +16,56 @@ struct WeeklyCompletedTasks: View {
     @Binding var scrollPosition: Date
 
     var averageFocused: Bool
+    var showUncompleted: Bool
 
-    let widthRatio = 0.5
+    let widthRatio = 0.3
     let radius = 10.0
 
     @FetchRequest(fetchRequest: TasksData.pastTasksRequest(olderThan: Date.now))
     var allTasks: FetchedResults<TaskNote>
 
-    var completedTasksByDay: [(key: Date, value: Int)] {
-        var tasksByDay: [Date: Int] = [:]
+    var tasksByDay: [(key: Date, value: (completed: Int, uncompleted: Int))] {
+        var tasks: [Date: (completed: Int, uncompleted: Int)] = [:]
         allTasks.forEach {
             guard let timestamp = $0.timestamp else { return }
             let startOfDay = timestamp.startOfDay
             if $0.completed {
-                tasksByDay[startOfDay, default: 0] += 1
+                tasks[startOfDay, default: (0, 0)].completed += 1
+            } else {
+                tasks[startOfDay, default: (0, 0)].uncompleted += 1
             }
         }
-        return tasksByDay.sorted { $0.key < $1.key }
+        return tasks.sorted { $0.key < $1.key }
     }
 
     var maxCompletedValue: Int {
         // Limit scope to past 30 days
-        let maxCompleted = completedTasksByDay
+        let maxCompleted = tasksByDay
             .suffix { -$0.key.timeIntervalSinceNow < 3600 * 24 * 30 }
-            .max { $0.value < $1.value }?.value ?? 0
+            .max { $0.value.completed < $1.value.completed }?.value.completed ?? 0
         return max(maxCompleted, 3)
     }
 
+    var maxUncompletedValue: Int {
+        // Limit scope to past 30 days
+        let maxUncompleted = tasksByDay
+            .suffix { -$0.key.timeIntervalSinceNow < 3600 * 24 * 30 }
+            .max { $0.value.uncompleted < $1.value.uncompleted }?.value.uncompleted ?? 0
+        return max(maxUncompleted, 3)
+    }
+
+    var maxValue: Int {
+        max(maxCompletedValue, maxUncompletedValue)
+    }
+
     var averagesByWeek: [(key: Date, value: Double)] {
-        let tasks = completedTasksByDay
+        let tasks = tasksByDay
         
         var totalsAndDayCounts: [Date: (total: Int, dayCounts: Int)] = [:]
         tasks.forEach {
             let startOfWeek = Calendar.current.startOfWeek(for: $0.key)
-            
-            totalsAndDayCounts[startOfWeek, default: (0, 0)].total += $0.value
+
+            totalsAndDayCounts[startOfWeek, default: (0, 0)].total += $0.value.completed
             if totalsAndDayCounts[startOfWeek, default: (0, 0)].dayCounts < 1 {
                 let countOfDays = ceil(min(7, Date.now.timeIntervalSince(startOfWeek) / (3600 * 24)))
                 totalsAndDayCounts[startOfWeek, default: (0, 0)].dayCounts = Int(countOfDays)
@@ -65,14 +80,34 @@ struct WeeklyCompletedTasks: View {
 
     var body: some View {
         Chart {
-            ForEach(completedTasksByDay, id: \.key) { date, value in
-                BarMark(
-                    x: .value("Date", date, unit: .day),
-                    y: .value("Completed Tasks", value),
-                    width: .ratio(widthRatio)
-                )
-                .foregroundStyle(barStyle(isFocused: !averageFocused))
-                .cornerRadius(radius)
+            ForEach(tasksByDay, id: \.key) { date, value in
+                if showUncompleted {
+                    BarMark(
+                        x: .value("Date", date, unit: .day),
+                        y: .value("Completed Tasks", value.completed),
+                        width: .fixed(12)
+                    )
+                    .foregroundStyle(barStyle(isFocused: !averageFocused, isCompleted: true))
+                    .position(by: .value("Completed", 0), axis: .horizontal, span: .ratio(0.5))
+                    .cornerRadius(radius)
+                    BarMark(
+                        x: .value("Date", date, unit: .day),
+                        y: .value("Uncompleted Tasks", value.uncompleted),
+                        width: .fixed(12)
+                    )
+                    .foregroundStyle(barStyle(isFocused: !averageFocused, isCompleted: false))
+                    .position(by: .value("Uncompleted", 1), axis: .horizontal, span: .ratio(0.5))
+                    .cornerRadius(radius)
+                    .opacity(averageFocused ? 0.4 : 0.6)
+                } else {
+                    BarMark(
+                        x: .value("Date", date, unit: .day),
+                        y: .value("Completed Tasks", value.completed),
+                        width: .ratio(widthRatio)
+                    )
+                    .foregroundStyle(barStyle(isFocused: !averageFocused, isCompleted: true))
+                    .cornerRadius(radius)
+                }
             }
             if averageFocused {
                 ForEach(averagesByWeek, id: \.key) { average in
@@ -145,7 +180,7 @@ struct WeeklyCompletedTasks: View {
                 }
             }
         }
-        .chartYScale(domain: 0...maxCompletedValue + 1)
+        .chartYScale(domain: 0...maxValue + 1)
         .chartYAxis {
             AxisMarks(values: .automatic) { value in
                 AxisTick()
@@ -169,11 +204,17 @@ struct WeeklyCompletedTasks: View {
         }
     }
 
-    func barStyle(isFocused: Bool) -> LinearGradient {
+    func barStyle(isFocused: Bool, isCompleted: Bool) -> LinearGradient {
         if isFocused {
-            PomoStatus.end.gradient(startPoint: .top, endPoint: .bottom)
+            if isCompleted {
+                return PomoStatus.end.gradient(startPoint: .top, endPoint: .bottom)
+            } else {
+                return LinearGradient(stops: [.init(color: .blueberry, location: 0.5),
+                                              .init(color: Color(hex: 0xD3E7ED), location: 1.1)],
+                                      startPoint: .top, endPoint: .bottom)
+            }
         } else {
-            disabledGradient(startPoint: .top, endPoint: .bottom)
+            return disabledGradient(startPoint: .top, endPoint: .bottom)
         }
     }
 }
@@ -183,6 +224,7 @@ struct CompletedDetails: View {
     @Environment(\.managedObjectContext) var viewContext
 
     @State var averageFocused: Bool = false
+    @State var showUncompleted: Bool = true
 
     @State var selection: Date?
     @State var lastingSelection: Date?
@@ -248,9 +290,10 @@ struct CompletedDetails: View {
                 WeeklyCompletedTasks(selection: $selection,
                                      lastingSelection: $lastingSelection,
                                      scrollPosition: $scrollPosition,
-                                     averageFocused: averageFocused)
+                                     averageFocused: averageFocused,
+                                     showUncompleted: showUncompleted)
                 ChartToggle(isOn: $averageFocused, label: "Weekly Average", value: averageForRange, unit: "tasks", color: .barLongBreak)
-
+                ChartToggle(isOn: $showUncompleted, label: "Uncompleted Tasks", showData: false, color: .blueberry)
                 Divider()
 
                 taskListForSelection
