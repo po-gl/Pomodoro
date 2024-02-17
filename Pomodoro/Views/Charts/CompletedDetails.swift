@@ -152,6 +152,12 @@ struct WeeklyCompletedTasks: View {
                 .foregroundStyle(.grayedOut)
                 .zIndex(-2)
             }
+            RuleMark(
+                x: .value("Now", Date.now, unit: .hour)
+            )
+            .foregroundStyle(.blueberry)
+            .lineStyle(StrokeStyle(dash: [3.0, 2.0]))
+            .zIndex(-3)
         }
         .chartScrollableAxes(.horizontal)
         .chartScrollTargetBehavior(
@@ -168,10 +174,16 @@ struct WeeklyCompletedTasks: View {
         .chartXScale(domain: (allTasks.last?.timestamp?.startOfWeek ?? Date.now.startOfWeek)...(allTasks.first?.timestamp?.endOfWeek ?? Date.now.endOfWeek))
         .chartXVisibleDomain(length: 3600 * 24 * 7 + 1)
         .chartXAxis {
-            AxisMarks(values: .stride(by: .day, count: 1)) { _ in
+            AxisMarks(values: .stride(by: .day, count: 1)) { value in
                 AxisTick()
                 AxisGridLine()
-                AxisValueLabel(format: .dateTime.weekday(.narrow), centered: true)
+                if let date = value.as(Date.self), date == Date.now.startOfDay {
+                    AxisValueLabel(format: .dateTime.weekday(.narrow), centered: true)
+                        .font(.system(.caption2, weight: .medium))
+                        .foregroundStyle(.blueberry)
+                } else {
+                    AxisValueLabel(format: .dateTime.weekday(.narrow), centered: true)
+                }
             }
             // This top mark is only necessary while scrollPosition is not viable
             AxisMarks(position: .top, values: .stride(by: .day)) { value in
