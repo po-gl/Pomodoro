@@ -25,6 +25,8 @@ struct ProjectStack: View {
     var collapsedRowHeight: Double { !dynamicTypeSize.isAccessibilitySize ? 85 : 135 }
     var spacing = 8.0
 
+    @State var refreshID = UUID()
+
     @ObservedObject var metrics: ObservableValue<[CGRect]> = ObservableValue([])
     var emptyMetricBinding = Binding(get: { CGRect.zero }, set: { _ in })
     @State var reorderCompensatingOffsets: [CGFloat] = []
@@ -59,10 +61,12 @@ struct ProjectStack: View {
             .frame(maxHeight: isCollapsed.value ? collapsedRowHeight*1.25 : .infinity, alignment: .top)
         }
         .compositingGroup()
+        .id(refreshID)
 
         .onAppear {
             metrics.value = Array(repeating: CGRect.zero, count: currentProjects.count)
             reorderCompensatingOffsets = Array(repeating: CGFloat.zero, count: currentProjects.count)
+            refreshID = UUID()
         }
         .onChange(of: currentProjects.count) { _, count in
             metrics.value = Array(repeating: CGRect.zero, count: count)
