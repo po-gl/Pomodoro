@@ -78,8 +78,9 @@ class TasksOnBar: ObservableObject {
         UserDefaults.pomo?.set(tasksOnBar, forKey: "taskNotes")
     }
 
-    func restoreFromUserDefaults() {
+    func restoreFromUserDefaults(with pomoTimer: PomoTimer) {
         tasksOnBar = UserDefaults.pomo?.object(forKey: "taskNotes") as? [String] ?? tasksOnBar
         Logger().log("RESTORE::tasks=\(self.tasksOnBar)")
+        setTaskAmount(for: pomoTimer)
     }
 }

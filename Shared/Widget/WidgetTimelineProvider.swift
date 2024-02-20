@@ -32,7 +32,7 @@ struct WidgetTimelineProvider: IntentTimelineProvider {
         let pomoTimer = PomoTimer()
         pomoTimer.restoreFromUserDefaults()
         let tasksOnBar = TasksOnBar()
-        tasksOnBar.restoreFromUserDefaults()
+        tasksOnBar.restoreFromUserDefaults(with: pomoTimer)
 
         let now = Date()
         let entry = PomoTimelineEntry.new(for: now, pomoTimer, tasksOnBar, configuration)
@@ -44,7 +44,7 @@ struct WidgetTimelineProvider: IntentTimelineProvider {
         let pomoTimer = PomoTimer()
         pomoTimer.restoreFromUserDefaults()
         let tasksOnBar = TasksOnBar()
-        tasksOnBar.restoreFromUserDefaults()
+        tasksOnBar.restoreFromUserDefaults(with: pomoTimer)
 
         let now = Date()
         entries.append(PomoTimelineEntry.new(for: now, pomoTimer, tasksOnBar, configuration))

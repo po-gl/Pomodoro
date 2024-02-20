@@ -27,7 +27,7 @@ struct StartStop: LiveActivityIntent {
         pomoTimer.saveToUserDefaults()
 
         let tasksOnBar = TasksOnBar()
-        tasksOnBar.restoreFromUserDefaults()
+        tasksOnBar.restoreFromUserDefaults(with: pomoTimer)
 
 #if canImport(ActivityKit)
         if pomoTimer.isPaused {

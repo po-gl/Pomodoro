@@ -58,6 +58,7 @@ struct PomodoroApp: App {
                     Logger().log("Phase \(scenePhase)")
                     if scenePhase == .active {
                         pomoTimer.restoreFromUserDefaults()
+                        tasksOnBar.restoreFromUserDefaults(with: pomoTimer)
                         AppNotifications.shared.cancelPendingNotifications()
                         setupWatchConnection()
                         didPerformInactiveSetup = false
@@ -69,6 +70,7 @@ struct PomodoroApp: App {
                     } else if scenePhase == .inactive || scenePhase == .background {
                         guard !didPerformInactiveSetup else { return }
                         pomoTimer.saveToUserDefaults()
+                        tasksOnBar.saveToUserDefaults()
                         WidgetCenter.shared.reloadAllTimelines()
                         if !didReceiveSyncFromWatchConnection {
                             Task { await AppNotifications.shared.setupNotifications(pomoTimer) }
