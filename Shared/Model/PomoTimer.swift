@@ -19,7 +19,8 @@ class PomoTimer: SequenceTimer {
     var restDuration: Double
     var breakDuration: Double
 
-    private let maxPomos: Int = 6
+    let maxPomos: Int = 6
+    var maxOrder: Int { maxPomos * 2 + 1 }
 
     static let defaultWorkTime: Double = 25.0 * 60.0
     static let defaultRestTime: Double = 5.0 * 60.0
