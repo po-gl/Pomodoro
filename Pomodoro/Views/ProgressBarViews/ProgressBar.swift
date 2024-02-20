@@ -103,7 +103,7 @@ struct ProgressBar: View {
 
     @ViewBuilder var breakTimeLabel: some View {
         TimelineView(isPausedTimelineSchedule) { context in
-            if proportions.count == pomoTimer.order.count {
+            if proportions.count >= pomoTimer.order.count {
                 let i = pomoTimer.order.count - 1
                 let proportion = proportions[i]
                 ZStack {
@@ -129,7 +129,7 @@ struct ProgressBar: View {
     @ViewBuilder var colorBars: some View {
         TimelineView(isPausedTimelineSchedule) { context in
             let proportions = proportions
-            if proportions.count == pomoTimer.order.count {
+            if proportions.count >= pomoTimer.order.count {
                 HStack(spacing: 0) {
                     ForEach(pomoTimer.order.indices, id: \.self) { i in
                         let width = max(barWidth * proportions[i] - barOutlinePadding, 0)
@@ -151,6 +151,7 @@ struct ProgressBar: View {
                         .zIndex(Double(pomoTimer.order.count - i))
                     }
                 }
+                .frame(maxWidth: barWidth)
                 .mask { RoundedRectangle(cornerRadius: 7) }
                 .padding(.vertical, 2)
                 .padding(.horizontal, barOutlinePadding)
@@ -189,8 +190,8 @@ struct ProgressBar: View {
     @ViewBuilder var tasksAboveBars: some View {
         TimelineView(isPausedTimelineSchedule) { context in
             let proportions = proportions
-            if let taskRects = cachedTaskRects, proportions.count == pomoTimer.order.count
-                && taskRects.count == pomoTimer.order.count
+            if let taskRects = cachedTaskRects, proportions.count >= pomoTimer.order.count
+                && taskRects.count >= pomoTimer.order.count
                 && taskNotes.draggableTasksOnBar.count >= pomoTimer.order.count {
 
                 HStack(spacing: 0) {
@@ -258,7 +259,9 @@ struct ProgressBar: View {
     func calculateProportions() -> [CGFloat] {
         let intervals = pomoTimer.order.map { $0.timeInterval }
         let total = intervals.reduce(0, +)
-        return intervals.map { $0 / total }
+        let proportions: [CGFloat] = intervals.map { $0 / total }
+        let padding: [CGFloat] = Array(repeating: 0.0, count: pomoTimer.maxOrder - proportions.count)
+        return proportions + padding
     }
 
     func calculateTaskRects(in geometry: GeometryProxy) -> [CGRect] {
@@ -281,10 +284,10 @@ struct ProgressBar: View {
 
     func calculateTaskRectIndex(containing point: CGPoint, withAdjustment: Bool) -> Int? {
         guard let taskRects = cachedTaskRects else { return nil }
-        guard taskRects.count == pomoTimer.order.count else { return nil }
+        guard taskRects.count >= pomoTimer.order.count else { return nil }
         let point = withAdjustment ? point.adjusted(for: metrics) : point
 
-        for i in 0..<taskRects.count {
+        for i in 0..<pomoTimer.order.count {
             guard pomoTimer.order[i].status == .work else { continue }
             if point.within(rect: taskRects[i]) {
                 return i
@@ -292,7 +295,7 @@ struct ProgressBar: View {
         }
         return nil
     }
-    
+
     func resetPomoHighlights() {
         for i in 0..<taskNotes.pomoHighlight.count {
             taskNotes.pomoHighlight[i] = false
