@@ -69,12 +69,30 @@ struct ProgressBar: View {
             .position(x: geometry.size.width/2, y: geometry.size.height/2)
 
             .onAppear {
-                cachedProportions = calculateProportions()
-                if showsLabels {
-                    cachedTaskRects = calculateTaskRects(in: geometry)
-                }
+                updateCachedViewCalculations(geometry)
                 taskNotes.setTaskAmount(for: pomoTimer)
             }
+            .onChange(of: pomoTimer.order.count) {
+                updateCachedViewCalculations(geometry)
+                taskNotes.setTaskAmount(for: pomoTimer)
+            }
+
+            .onChange(of: pomoTimer.workDuration) {
+                withAnimation(.bouncy) {
+                    updateCachedViewCalculations(geometry)
+                }
+            }
+            .onChange(of: pomoTimer.restDuration) {
+                withAnimation(.bouncy) {
+                    updateCachedViewCalculations(geometry)
+                }
+            }
+            .onChange(of: pomoTimer.breakDuration) {
+                withAnimation(.bouncy) {
+                    updateCachedViewCalculations(geometry)
+                }
+            }
+
             .onChange(of: pomoTimer.isPaused) {
                 isDragging = false
             }
@@ -83,15 +101,16 @@ struct ProgressBar: View {
                     basicHaptic()
                 }
             }
-            .onChange(of: pomoTimer.order.count) {
-                cachedProportions = calculateProportions()
-                if showsLabels {
-                    cachedTaskRects = calculateTaskRects(in: geometry)
-                }
-                taskNotes.setTaskAmount(for: pomoTimer)
-            }
+
         }
         .padding(.horizontal)
+    }
+
+    func updateCachedViewCalculations(_ geometry: GeometryProxy) {
+        cachedProportions = calculateProportions()
+        if showsLabels {
+            cachedTaskRects = calculateTaskRects(in: geometry)
+        }
     }
 
     @ViewBuilder var percentProgress: some View {
