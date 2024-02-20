@@ -75,3 +75,14 @@ struct MainPage: View {
         .ignoresSafeArea(.keyboard)
     }
 }
+
+#Preview {
+    MainPage()
+        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        .environmentObject(
+            PomoTimer(context: PersistenceController.preview.container.viewContext) { status in
+                EndTimerHandler.shared.handle(status: status)
+            }
+        )
+        .environmentObject(TasksOnBar.shared)
+}
