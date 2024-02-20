@@ -20,108 +20,148 @@ struct ProgressBar: View {
     private let barOutlinePadding: Double = 2.0
     private let barHeight: Double = 8.0
 
+    private var barWidth: CGFloat {
+        metrics.size.width - 20.0
+    }
+
+    @State var cachedProportions: [CGFloat]? = nil
+
+    var proportions: [CGFloat] {
+        cachedProportions ?? calculateProportions()
+    }
+
     var body: some View {
-        ScrollableTimeLineColorBars
-    }
-
-    @ViewBuilder private var ScrollableTimeLineColorBars: some View {
-        TimeLineColorBars
-            .focusable(pomoTimer.isPaused)
-            .digitalCrownRotation($scrollValue, from: 0.0, through: 100,
-                                  sensitivity: .medium,
-                                  isHapticFeedbackEnabled: true,
-                                  onChange: { event in
-                guard event.velocity != 0.0 else { return }
-                isScrolling = true
-                pomoTimer.setPercentage(to: event.offset.rounded() / 100)
-            }, onIdle: {
-                Task {
-                    try? await Task.sleep(for: .seconds(1.5))
-                    withAnimation { isScrolling = false }
-                }
-            })
-            .onChange(of: pomoTimer.isPaused) {
-                isScrolling = false
-                scrollValue = pomoTimer.getCurrentPercentage() * 100.0
+        VStack(spacing: 3) {
+            percentProgress
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .padding(.horizontal, 5)
+            
+            ZStack {
+                colorBars
+                progressIndicator
             }
-            .onChange(of: pomoTimer.getStatus()) {
-                if isScrolling {
-                    basicHaptic()
-                }
+        }
+        .padding(.horizontal, 10)
+        .onAppear {
+            cachedProportions = calculateProportions()
+        }
+        .onChange(of: pomoTimer.order.count) {
+            cachedProportions = calculateProportions()
+        }
+        
+        .onChange(of: pomoTimer.workDuration) {
+            withAnimation(.bouncy) {
+                cachedProportions = calculateProportions()
             }
-    }
+        }
+        .onChange(of: pomoTimer.restDuration) {
+            withAnimation(.bouncy) {
+                cachedProportions = calculateProportions()
+            }
+        }
+        .onChange(of: pomoTimer.breakDuration) {
+            withAnimation(.bouncy) {
+                cachedProportions = calculateProportions()
+            }
+        }
 
-    @ViewBuilder private var TimeLineColorBars: some View {
-        TimelineView(PeriodicTimelineSchedule(from: Date(), by: 1.0)) { context in
-            VStack(spacing: 0) {
-                HStack {
-                    Spacer()
-                    Text("\(Int(pomoTimer.getProgress(atDate: context.date) * 100))%")
-                        .font(.system(size: 14, design: .monospaced))
-                }
-                .padding(.bottom, 3)
-                .padding(.horizontal, 15)
-
-                ZStack {
-                    ColorBars
-                        .mask { RoundedRectangle(cornerRadius: 5)}
-                    ProgressIndicator(at: context.date)
-                        .opacity(shouldShowProgressIndicator(at: context.date) ? 1.0 : 0.0)
-                }
-                .padding(.horizontal, 10)
+        .focusable(pomoTimer.isPaused)
+        .digitalCrownRotation($scrollValue, from: 0.0, through: 100,
+                              sensitivity: .medium,
+                              isHapticFeedbackEnabled: true,
+                              onChange: { event in
+            guard event.velocity != 0.0 else { return }
+            isScrolling = true
+            pomoTimer.setPercentage(to: event.offset.rounded() / 100)
+        }, onIdle: {
+            Task {
+                try? await Task.sleep(for: .seconds(1.5))
+                withAnimation { isScrolling = false }
+            }
+        })
+        .onChange(of: pomoTimer.isPaused) {
+            isScrolling = false
+            scrollValue = pomoTimer.getCurrentPercentage() * 100.0
+        }
+        .onChange(of: pomoTimer.status) {
+            if isScrolling {
+                basicHaptic()
             }
         }
     }
 
-    private func shouldShowProgressIndicator(at date: Date) -> Bool {
-        return pomoTimer.getProgress(atDate: date) != 0.0 || !pomoTimer.isPaused || isScrolling
-    }
-
-    private func getProportion(_ index: Int) -> Double {
+    func calculateProportions() -> [CGFloat] {
         let intervals = pomoTimer.order.map { $0.timeInterval }
         let total = intervals.reduce(0, +)
-        return intervals[index] / total
+        let proportions: [CGFloat] = intervals.map { $0 / total }
+        let padding: [CGFloat] = Array(repeating: 0.0, count: pomoTimer.maxOrder - proportions.count)
+        return proportions + padding
     }
 
-    private func getBarWidth() -> Double {
-        return metrics.size.width - 20.0
+    @ViewBuilder var percentProgress: some View {
+        TimelineView(isPausedTimelineSchedule) { context in
+            Text("\(Int(pomoTimer.getProgress(atDate: context.date) * 100))%")
+                .font(.system(size: 14, design: .monospaced))
+        }
     }
 
-    @ViewBuilder private var ColorBars: some View {
-        HStack(spacing: 0) {
-            ForEach(0..<pomoTimer.order.count, id: \.self) { i in
-                RoundedRectangle(cornerRadius: 3)
-                    .scaleEffect(x: 2.0, anchor: .trailing)
-                    .foregroundStyle(pomoTimer.order[i].status.gradient())
-                    .frame(width: getBarWidth() * getProportion(i) - 2, height: barHeight)
+    @ViewBuilder var colorBars: some View {
+        if proportions.count >= pomoTimer.order.count {
+            HStack(spacing: 0) {
+                ForEach(0..<pomoTimer.order.count, id: \.self) { i in
+                    let width = max(barWidth * proportions[i] - 2.0, 0.0)
+                    let barOverlap = 15.0
+                    let barOffset = 3.0
+                    VStack {
+                        RoundedRectangle(cornerRadius: 2.8)
+                            .shadow(radius: 4)
+                            .scaleEffect(x: 2.0, anchor: .trailing)
+                            .foregroundStyle(pomoTimer.order[i].status.gradient())
+                            .frame(width: width + barOverlap)
+                            .offset(x: -barOverlap / 2 + barOffset)
+                            .alignmentGuide(.leading, computeValue: { dimension in
+                                dimension[.trailing] - barOverlap
+                            })
+                    }
+                    .frame(width: width, height: barHeight)
                     .padding(.horizontal, 1)
                     .zIndex(Double(pomoTimer.order.count - i))
-                    .shadow(radius: 4)
+                }
             }
+            .mask { RoundedRectangle(cornerRadius: 5)}
+        } else {
+            EmptyView()
         }
     }
 
-    @ViewBuilder
-    private func ProgressIndicator(at date: Date) -> some View {
-        HStack(spacing: 0) {
-            Spacer(minLength: 0)
-
-            Rectangle()
-                .foregroundColor(.black.opacity(0.5))
-                .blendMode(.colorBurn)
-                .frame(width: getBarWidth() * (1 - pomoTimer.getProgress(atDate: date)), height: barHeight)
-                .overlay {
-                    HStack(spacing: 0) {
-                        Rectangle().fill(.clear).frame(width: 1, height: barHeight).overlay(
-                            AnimatedImage(data: Animations.pickIndicator)
-                                .scaleEffect(40)
-                                .opacity(0.7)
-                        )
-                        .offset(x: -1)
-                        Spacer()
+    @ViewBuilder var progressIndicator: some View {
+        TimelineView(isPausedTimelineSchedule) { context in
+            let progress = pomoTimer.getProgress(atDate: context.date)
+            HStack(spacing: 0) {
+                Spacer(minLength: 0)
+                
+                Rectangle()
+                    .foregroundColor(.black.opacity(0.5))
+                    .blendMode(.colorBurn)
+                    .frame(width: barWidth * (1 - progress), height: barHeight)
+                    .overlay {
+                        HStack(spacing: 0) {
+                            Rectangle().fill(.clear).frame(width: 1, height: barHeight).overlay(
+                                AnimatedImage(data: Animations.pickIndicator)
+                                    .scaleEffect(40)
+                                    .opacity(0.7)
+                            )
+                            .offset(x: -1)
+                            Spacer()
+                        }
                     }
-                }
+            }
+            .mask { RoundedRectangle(cornerRadius: 5)}
+            .opacity(progress > 0.00001 || !pomoTimer.isPaused || isScrolling ? 1.0 : 0.0)
         }
-        .mask { RoundedRectangle(cornerRadius: 5)}
+    }
+
+    var isPausedTimelineSchedule: PeriodicTimelineSchedule {
+        PeriodicTimelineSchedule(from: Date(), by: pomoTimer.isPaused ? 60.0 : 1.0)
     }
 }
