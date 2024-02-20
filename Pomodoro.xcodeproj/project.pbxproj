@@ -313,7 +313,6 @@
 		61FAEAB329065FDC00CACF78 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FAEAB229065FDC00CACF78 /* ContentView.swift */; };
 		61FAEAB529065FDE00CACF78 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61FAEAB429065FDE00CACF78 /* Assets.xcassets */; };
 		61FAEAB829065FDE00CACF78 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61FAEAB729065FDE00CACF78 /* Preview Assets.xcassets */; };
-		61FAEAC229065FDE00CACF78 /* PomodoroWatch_Watch_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FAEAC129065FDE00CACF78 /* PomodoroWatch_Watch_AppTests.swift */; };
 		61FAEACC29065FDE00CACF78 /* PomodoroWatch_Watch_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FAEACB29065FDE00CACF78 /* PomodoroWatch_Watch_AppUITests.swift */; };
 		61FAEACE29065FDE00CACF78 /* PomodoroWatch_Watch_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FAEACD29065FDE00CACF78 /* PomodoroWatch_Watch_AppUITestsLaunchTests.swift */; };
 		61FAEADA290689A200CACF78 /* SequenceTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613D6D9B285C82FD0020C194 /* SequenceTimer.swift */; };
@@ -614,7 +613,6 @@
 		61FAEAB429065FDE00CACF78 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		61FAEAB729065FDE00CACF78 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		61FAEABD29065FDE00CACF78 /* PomodoroWatch Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PomodoroWatch Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		61FAEAC129065FDE00CACF78 /* PomodoroWatch_Watch_AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroWatch_Watch_AppTests.swift; sourceTree = "<group>"; };
 		61FAEAC729065FDE00CACF78 /* PomodoroWatch Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PomodoroWatch Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		61FAEACB29065FDE00CACF78 /* PomodoroWatch_Watch_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroWatch_Watch_AppUITests.swift; sourceTree = "<group>"; };
 		61FAEACD29065FDE00CACF78 /* PomodoroWatch_Watch_AppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroWatch_Watch_AppUITestsLaunchTests.swift; sourceTree = "<group>"; };
@@ -940,7 +938,6 @@
 				612D8F85290B63180089CDD1 /* WatchWidget */,
 				617789C22856A1F400BD43D7 /* PomodoroTests */,
 				617789CC2856A1F400BD43D7 /* PomodoroUITests */,
-				61FAEAC029065FDE00CACF78 /* PomodoroWatch Watch AppTests */,
 				61FAEACA29065FDE00CACF78 /* PomodoroWatch Watch AppUITests */,
 				612D8F80290B63180089CDD1 /* Frameworks */,
 				617789AF2856A1F300BD43D7 /* Products */,
@@ -1146,14 +1143,6 @@
 				61FAEAB729065FDE00CACF78 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		61FAEAC029065FDE00CACF78 /* PomodoroWatch Watch AppTests */ = {
-			isa = PBXGroup;
-			children = (
-				61FAEAC129065FDE00CACF78 /* PomodoroWatch_Watch_AppTests.swift */,
-			);
-			path = "PomodoroWatch Watch AppTests";
 			sourceTree = "<group>";
 		};
 		61FAEACA29065FDE00CACF78 /* PomodoroWatch Watch AppUITests */ = {
@@ -1766,7 +1755,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				61FAEAC229065FDE00CACF78 /* PomodoroWatch_Watch_AppTests.swift in Sources */,
 				61DFEB502B659790005459F7 /* Color+adjust.swift in Sources */,
 				61CD3A462B70D78400E2695F /* Calendar+startOf.swift in Sources */,
 				61D5808C29BA5E5B006F0BB0 /* Comparable+Clamped.swift in Sources */,
