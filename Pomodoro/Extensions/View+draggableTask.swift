@@ -34,38 +34,30 @@ struct DraggableTaskModifier: ViewModifier {
                 newLocation.y += event.translation.height
                 task.location = newLocation
 
-                Task {
-                    await MainActor.run {
-                        task.dragHasEnded = false
-                    }
+                Task { @MainActor in
+                    task.dragHasEnded = false
                 }
             }
             .updating($gestureStartLocation) { _, startLocation, _ in
                 startLocation = startLocation ?? task.location
             }
             .onEnded { _ in
-                Task {
-                    await MainActor.run {
-                        task.isDragging = false
-                        task.dragHasEnded = true
-                    }
+                Task { @MainActor in
+                    task.isDragging = false
+                    task.dragHasEnded = true
                     // wait so location isn't reset immediately on end
                     try? await Task.sleep(for: .seconds(0.1))
 
-                    await MainActor.run {
-                        withAnimation {
-                            task.location = nil
-                        }
+                    withAnimation {
+                        task.location = nil
                     }
                 }
             }
             .updating($isDragging) { _, isDragging, _ in
                 let drag = isDragging
-                Task {
-                    await MainActor.run {
-                        task.isDragging = drag
-                        task.dragHasEnded = !drag
-                    }
+                Task { @MainActor in
+                    task.isDragging = drag
+                    task.dragHasEnded = !drag
                 }
 
                 guard !task.text.isEmpty else { return }
