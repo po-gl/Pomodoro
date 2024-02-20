@@ -48,8 +48,8 @@ final class MainPageUITests: XCTestCase {
     func testiOSUI_scrubProgressBar() throws {
         let app = XCUIApplication()
 
-        let barCoords = app.otherElements["DraggableProgressBar"].coordinate(withNormalizedOffset: .zero)
-        barCoords.press(forDuration: 0.1, thenDragTo: barCoords.withOffset(CGVector(dx: 400, dy: 0)))
+        let barCoords = app.otherElements["DraggableProgressBar"].byCoord()
+        barCoords.press(forDuration: 0.1, thenDragTo: barCoords.withOffset(CGVector(dx: 300, dy: 0)))
 
         XCTAssertEqual(app.staticTexts["Work"].exists, false, "Expected false as the progressbar should be scrubbed close to the end")
         XCTAssertEqual(app.staticTexts["Long Break"].exists, true)
