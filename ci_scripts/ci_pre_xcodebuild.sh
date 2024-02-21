@@ -10,7 +10,7 @@ set -e
 
 echo "Stage: PRE-Xcode Build is starting ..."
 
-if [ $CI_XCODEBUILD_ACTION = "archive" ]; then
+if [[ $CI_XCODEBUILD_ACTION = "archive" || -d "../Shared/" ]]; then
     cd ../Shared/
 
     echo "Adding Env.plist to ../Shared/"
