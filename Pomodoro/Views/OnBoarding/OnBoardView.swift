@@ -76,12 +76,14 @@ struct OnBoardView: View {
 
 #Preview("Base View") {
     OnBoardView()
+        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }
 
 #Preview("From Sheet") {
     Text("Base")
         .sheet(isPresented: Binding(get: { true }, set: { _ in})) {
             OnBoardView()
+                .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
                 .presentationDragIndicator(.visible)
         }
 }
