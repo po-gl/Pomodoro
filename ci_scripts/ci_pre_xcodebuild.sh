@@ -10,17 +10,22 @@ set -e
 
 echo "Stage: PRE-Xcode Build is starting ..."
 
-cd ../Shared/
+if [ -d "$PROJECT_DIR/Shared" ]; then
+    cd $PROJECT_DIR/Shared/
 
-touch Env.plist
-echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
-<plist version=\"1.0\">
-<dict>
-    <key>serverURL</key>
-    <string>$SERVER_URL</string>
-</dict>
-</plist>" > Env.plist
+    echo "Adding Env.plist to $PROJECT_DIR/Shared/"
+    echo "serverURL: $SERVER_URL"
+
+    touch Env.plist
+    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+    <!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+    <plist version=\"1.0\">
+    <dict>
+        <key>serverURL</key>
+        <string>$SERVER_URL</string>
+    </dict>
+    </plist>" > Env.plist
+fi
 
 echo "Stage: PRE-Xcode Build is DONE ..."
 
