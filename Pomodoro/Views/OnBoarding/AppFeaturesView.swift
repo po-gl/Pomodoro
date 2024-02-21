@@ -24,21 +24,23 @@ struct AppFeaturesView: View {
                         .offset(y: -7)
                         .brightness(colorScheme == .dark ? 0.0 : 0.1)
                 }
-                .padding(.top, 190)
+                .padding(.top, 170)
                 .allowsHitTesting(false)
 
                 Divider()
-                    .padding(.vertical, 30)
+                    .padding(.vertical, 15)
                 
                 BulletedList(textList: [
                     "Drag tasks to the progress bar, assigning them to Pomodoros.",
+                    "Track the progress of the timer in a _LiveActivity_ on your lockscreen, in _StandBy_ mode, or in the _DynamicIsland_.",
                     "Manage and reflect on tasks in the task list.",
-                    "Track the progress of the timer in a _LiveActivity_ on your lockscreen, in _StandBy_ mode, or in the _DynamicIsland_."
+                    "See usage trends in the charts tab.",
                 ], withIcons: [
                     AnyView(touchCircle),
-                    AnyView(pomoCheck),
                     AnyView(pomoTimerIcon),
-                ], spacing: 35)
+                    AnyView(pomoCheck),
+                    AnyView(pomoChartIcon),
+                ], spacing: 25)
                 .frame(maxWidth: 400)
                 .padding(.horizontal, 20)
                 .font(.body)
@@ -49,7 +51,7 @@ struct AppFeaturesView: View {
             .onAppear {
                 tasksOnBar.setTaskAmount(for: pomoTimer)
                 tasksOnBar.addTask("Improve focus", index: 0, context: nil)
-                tasksOnBar.addTask("Alleviate anxiety", index: 2, context: nil)
+                tasksOnBar.addTask("Alleviate stress", index: 2, context: nil)
                 tasksOnBar.addTask("Relax", index: 4, context: nil)
                 pomoTimer.setPercentage(to: 0.43)
                 pomoTimer.unpause()
@@ -91,6 +93,14 @@ struct AppFeaturesView: View {
 
     @ViewBuilder var pomoTimerIcon: some View {
         Image(.pomoTimer)
+            .imageScale(.large)
+            .fontWeight(.medium)
+            .opacity(0.5)
+            .offset(x: 2, y: 3)
+    }
+
+    @ViewBuilder var pomoChartIcon: some View {
+        Image(.pomoChart)
             .imageScale(.large)
             .fontWeight(.medium)
             .opacity(0.5)
