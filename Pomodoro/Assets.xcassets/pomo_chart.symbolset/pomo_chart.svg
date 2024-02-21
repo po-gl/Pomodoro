@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 3300 2200" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;">
+    <g id="Notes">
+        <rect id="artboard" x="0" y="0" width="3300" height="2200" style="fill:white;"/>
+        <path d="M263,292L3036,292" style="fill:none;fill-rule:nonzero;stroke:black;stroke-width:0.5px;"/>
+        <g transform="matrix(1,0,0,1,263,322)">
+            <text x="0px" y="0px" style="font-family:'LucidaGrande-Bold', 'Lucida Grande', sans-serif;font-weight:600;font-size:13px;">Weight/Scale Variations</text>
+        </g>
+        <g transform="matrix(1,0,0,1,559.711,322)">
+            <text x="-29.339px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">Ultralight</text>
+        </g>
+        <g transform="matrix(1,0,0,1,856.422,322)">
+            <text x="-14.057px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">Thin</text>
+        </g>
+        <g transform="matrix(1,0,0,1,1153.13,322)">
+            <text x="-15.863px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">Light</text>
+        </g>
+        <g transform="matrix(1,0,0,1,1449.84,322)">
+            <text x="-23.947px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">Regular</text>
+        </g>
+        <g transform="matrix(1,0,0,1,1746.56,322)">
+            <text x="-25.292px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">Medium</text>
+        </g>
+        <g transform="matrix(1,0,0,1,2043.27,322)">
+            <text x="-29.123px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">Semibold</text>
+        </g>
+        <g transform="matrix(1,0,0,1,2339.98,322)">
+            <text x="-13.701px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">Bold</text>
+        </g>
+        <g transform="matrix(1,0,0,1,2636.69,322)">
+            <text x="-18.748px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">Heavy</text>
+        </g>
+        <g transform="matrix(1,0,0,1,2933.4,322)">
+            <text x="-16.336px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">Black</text>
+        </g>
+        <path d="M263,1903L3036,1903" style="fill:none;fill-rule:nonzero;stroke:black;stroke-width:0.5px;"/>
+        <g transform="matrix(0.2,0,0,0.2,263,1933)">
+            <path d="M46.24,4.15C67.773,4.15 85.693,-13.721 85.693,-35.254C85.693,-56.787 67.724,-74.658 46.191,-74.658C24.707,-74.658 6.836,-56.787 6.836,-35.254C6.836,-13.721 24.756,4.15 46.24,4.15L46.24,4.15ZM46.24,-3.271C28.516,-3.271 14.355,-17.48 14.355,-35.254C14.355,-53.027 28.467,-67.236 46.191,-67.236C63.965,-67.236 78.223,-53.027 78.223,-35.254C78.223,-17.48 64.013,-3.271 46.24,-3.271L46.24,-3.271ZM28.271,-35.254C28.271,-33.105 29.785,-31.641 32.031,-31.641L42.529,-31.641L42.529,-21.045C42.529,-18.848 43.994,-17.334 46.142,-17.334C48.389,-17.334 49.853,-18.848 49.853,-21.045L49.853,-31.641L60.449,-31.641C62.646,-31.641 64.16,-33.105 64.16,-35.254C64.16,-37.451 62.646,-38.965 60.449,-38.965L49.853,-38.965L49.853,-49.512C49.853,-51.758 48.389,-53.272 46.142,-53.272C43.994,-53.272 42.529,-51.758 42.529,-49.512L42.529,-38.965L32.031,-38.965C29.785,-38.965 28.271,-37.451 28.271,-35.254Z" style="fill-rule:nonzero;"/>
+        </g>
+        <g transform="matrix(0.2,0,0,0.2,281.506,1933)">
+            <path d="M58.545,14.551C85.791,14.551 108.35,-8.057 108.35,-35.254C108.35,-62.5 85.742,-85.059 58.496,-85.059C31.299,-85.059 8.74,-62.5 8.74,-35.254C8.74,-8.057 31.348,14.551 58.545,14.551ZM58.545,6.25C35.498,6.25 17.09,-12.207 17.09,-35.254C17.09,-58.301 35.449,-76.758 58.496,-76.758C81.543,-76.758 100.049,-58.301 100.049,-35.254C100.049,-12.207 81.592,6.25 58.545,6.25L58.545,6.25ZM35.889,-35.254C35.889,-32.861 37.549,-31.25 40.039,-31.25L54.395,-31.25L54.395,-16.846C54.395,-14.404 56.055,-12.695 58.447,-12.695C60.889,-12.695 62.598,-14.355 62.598,-16.846L62.598,-31.25L77.002,-31.25C79.443,-31.25 81.152,-32.861 81.152,-35.254C81.152,-37.695 79.443,-39.404 77.002,-39.404L62.598,-39.404L62.598,-53.76C62.598,-56.25 60.889,-57.959 58.447,-57.959C56.055,-57.959 54.395,-56.25 54.395,-53.76L54.395,-39.404L40.039,-39.404C37.549,-39.404 35.889,-37.695 35.889,-35.254Z" style="fill-rule:nonzero;"/>
+        </g>
+        <g transform="matrix(0.2,0,0,0.2,304.924,1933)">
+            <path d="M74.854,28.32C109.668,28.32 138.476,-0.488 138.476,-35.254C138.476,-70.068 109.619,-98.877 74.805,-98.877C40.039,-98.877 11.279,-70.068 11.279,-35.254C11.279,-0.488 40.088,28.32 74.853,28.32L74.854,28.32ZM74.854,19.238C44.678,19.238 20.41,-5.078 20.41,-35.254C20.41,-65.479 44.629,-89.746 74.805,-89.746C105.029,-89.746 129.346,-65.479 129.346,-35.254C129.346,-5.078 105.078,19.238 74.853,19.238L74.854,19.238ZM45.996,-35.254C45.996,-32.666 47.852,-30.859 50.586,-30.859L70.313,-30.859L70.313,-11.084C70.313,-8.398 72.168,-6.494 74.756,-6.494C77.441,-6.494 79.297,-8.35 79.297,-11.084L79.297,-30.859L99.072,-30.859C101.758,-30.859 103.662,-32.666 103.662,-35.254C103.662,-37.988 101.807,-39.844 99.072,-39.844L79.297,-39.844L79.297,-59.57C79.297,-62.305 77.441,-64.209 74.756,-64.209C72.168,-64.209 70.313,-62.305 70.313,-59.57L70.313,-39.844L50.586,-39.844C47.852,-39.844 45.996,-37.988 45.996,-35.254Z" style="fill-rule:nonzero;"/>
+        </g>
+        <g transform="matrix(1,0,0,1,263,1953)">
+            <text x="0px" y="0px" style="font-family:'LucidaGrande-Bold', 'Lucida Grande', sans-serif;font-weight:600;font-size:13px;">Design Variations</text>
+        </g>
+        <g transform="matrix(1,0,0,1,263,1971)">
+            <text x="0px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">Symbols are supported in up to nine weights and three scales.</text>
+        </g>
+        <g transform="matrix(1,0,0,1,263,1989)">
+            <text x="0px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">For optimal layout with text and other symbols, vertically align</text>
+        </g>
+        <g transform="matrix(1,0,0,1,263,2007)">
+            <text x="0px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">symbols with the adjacent text.</text>
+        </g>
+        <path d="M776,1919L776,1933" style="fill:none;fill-rule:nonzero;stroke:rgb(0,174,239);stroke-width:0.5px;"/>
+        <g transform="matrix(0.2,0,0,0.2,776,1933)">
+            <path d="M16.553,0.781C19.141,0.781 20.41,-0.195 21.338,-2.93L27.637,-20.166L56.445,-20.166L62.744,-2.93C63.672,-0.195 64.941,0.781 67.48,0.781C70.068,0.781 71.729,-0.781 71.729,-3.223C71.729,-4.053 71.582,-4.834 71.191,-5.859L48.291,-66.846C47.168,-69.824 45.166,-71.338 42.041,-71.338C39.014,-71.338 36.963,-69.873 35.889,-66.895L12.988,-5.811C12.598,-4.785 12.451,-4.004 12.451,-3.174C12.451,-0.732 14.014,0.781 16.553,0.781L16.553,0.781ZM30.029,-27.588L41.895,-60.449L42.139,-60.449L54.004,-27.588L30.029,-27.588Z" style="fill-rule:nonzero;"/>
+        </g>
+        <path d="M792.836,1919L792.836,1933" style="fill:none;fill-rule:nonzero;stroke:rgb(0,174,239);stroke-width:0.5px;"/>
+        <g transform="matrix(1,0,0,1,776,1953)">
+            <text x="0px" y="0px" style="font-family:'LucidaGrande-Bold', 'Lucida Grande', sans-serif;font-weight:600;font-size:13px;">Margins</text>
+        </g>
+        <g transform="matrix(1,0,0,1,776,1971)">
+            <text x="0px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">Leading and trailing margins on the left and right side of each symbol</text>
+        </g>
+        <g transform="matrix(1,0,0,1,776,1989)">
+            <text x="0px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">can be adjusted by modifying the x-location of the margin guidelines.</text>
+        </g>
+        <g transform="matrix(1,0,0,1,776,2007)">
+            <text x="0px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">Modiﬁcations are automatically applied proportionally to all</text>
+        </g>
+        <g transform="matrix(1,0,0,1,776,2025)">
+            <text x="0px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">scales and weights.</text>
+        </g>
+        <g transform="matrix(0.2,0,0,0.2,1289,1933)">
+            <path d="M14.209,9.326L22.705,17.871C27.002,22.217 31.934,21.924 36.572,16.797L90.039,-42.139L85.205,-47.021L32.129,11.377C30.371,13.379 28.711,13.867 26.367,11.523L20.508,5.713C18.164,3.418 18.701,1.709 20.703,-0.098L78.076,-54.102L73.193,-58.936L15.234,-4.492C10.303,0.098 9.912,4.981 14.209,9.326L14.209,9.326ZM46.289,-81.641C44.189,-79.59 44.043,-76.709 45.215,-74.756C46.387,-72.949 48.682,-71.777 51.904,-72.607C59.229,-74.316 66.846,-74.609 73.975,-69.922L71.045,-62.646C69.336,-58.496 70.215,-55.566 72.9,-52.832L84.375,-41.26C86.816,-38.818 88.867,-38.721 91.699,-39.209L97.022,-40.186L100.342,-36.816L100.146,-34.033C99.951,-31.543 100.586,-29.639 103.027,-27.246L106.836,-23.535C109.229,-21.143 112.305,-20.996 114.648,-23.34L129.199,-37.939C131.543,-40.283 131.445,-43.262 129.053,-45.654L125.195,-49.463C122.803,-51.855 120.947,-52.637 118.555,-52.441L115.674,-52.197L112.451,-55.371L113.672,-60.986C114.307,-63.818 113.525,-66.016 110.596,-68.945L99.609,-79.883C82.91,-96.484 60.742,-96.094 46.289,-81.641L46.289,-81.641ZM53.76,-79.785C65.918,-88.672 82.373,-87.158 93.506,-76.025L105.664,-63.965C106.836,-62.793 107.031,-61.865 106.689,-60.156L105.078,-52.734L112.598,-45.313L117.529,-45.606C118.799,-45.654 119.189,-45.557 120.166,-44.58L123.047,-41.699L110.84,-29.492L107.959,-32.373C106.982,-33.35 106.836,-33.74 106.885,-35.059L107.227,-39.941L99.756,-47.363L92.139,-46.094C90.527,-45.752 89.795,-45.899 88.574,-47.07L78.564,-57.08C77.295,-58.252 77.148,-59.082 77.93,-60.938L82.324,-71.387C74.512,-78.662 64.355,-81.787 54.199,-78.809C53.418,-78.613 53.125,-79.248 53.76,-79.785L53.76,-79.785Z" style="fill-rule:nonzero;"/>
+        </g>
+        <g transform="matrix(1,0,0,1,1289,1953)">
+            <text x="0px" y="0px" style="font-family:'LucidaGrande-Bold', 'Lucida Grande', sans-serif;font-weight:600;font-size:13px;">Exporting</text>
+        </g>
+        <g transform="matrix(1,0,0,1,1289,1971)">
+            <text x="0px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">Symbols should be outlined when exporting to ensure the</text>
+        </g>
+        <g transform="matrix(1,0,0,1,1289,1989)">
+            <text x="0px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">design is preserved when submitting to Xcode.</text>
+        </g>
+        <g id="template-version" transform="matrix(1,0,0,1,3036,1933)">
+            <text x="-94.333px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">Template v.5.0</text>
+        </g>
+        <g transform="matrix(1,0,0,1,3036,1951)">
+            <text x="-184.336px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">Requires Xcode 15 or greater</text>
+        </g>
+        <g id="descriptive-name" transform="matrix(1,0,0,1,3036,1969)">
+            <text x="-197.685px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">Generated from chart.bar.xaxis</text>
+        </g>
+        <g transform="matrix(1,0,0,1,3036,1987)">
+            <text x="-150.027px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">Typeset at 100.0 points</text>
+        </g>
+        <g transform="matrix(1,0,0,1,263,726)">
+            <text x="0px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">Small</text>
+        </g>
+        <g transform="matrix(1,0,0,1,263,1156)">
+            <text x="0px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">Medium</text>
+        </g>
+        <g transform="matrix(1,0,0,1,263,1586)">
+            <text x="0px" y="0px" style="font-family:'LucidaGrande', 'Lucida Grande', sans-serif;font-weight:500;font-size:13px;">Large</text>
+        </g>
+    </g>
+    <g id="Guides">
+        <g id="H-reference" transform="matrix(1,0,0,1,339,696)">
+            <path d="M0.994,0L3.638,0L29.328,-67.132L30.03,-67.132L30.03,-70.459L28.123,-70.459L0.994,0ZM11.689,-24.48L46.981,-24.48L46.231,-26.729L12.439,-26.729L11.689,-24.48ZM55.12,0L57.764,0L30.638,-70.459L29.433,-70.459L29.433,-67.132L55.12,0Z" style="fill:rgb(39,170,225);fill-rule:nonzero;"/>
+        </g>
+        <path id="Baseline-S" d="M263,696L3036,696" style="fill:none;fill-rule:nonzero;stroke:rgb(39,170,225);stroke-width:0.5px;"/>
+        <path id="Capline-S" d="M263,625.541L3036,625.541" style="fill:none;fill-rule:nonzero;stroke:rgb(39,170,225);stroke-width:0.5px;"/>
+        <g id="H-reference1" serif:id="H-reference" transform="matrix(1,0,0,1,339,1126)">
+            <path d="M0.994,0L3.638,0L29.328,-67.132L30.03,-67.132L30.03,-70.459L28.123,-70.459L0.994,0ZM11.689,-24.48L46.981,-24.48L46.231,-26.729L12.439,-26.729L11.689,-24.48ZM55.12,0L57.764,0L30.638,-70.459L29.433,-70.459L29.433,-67.132L55.12,0Z" style="fill:rgb(39,170,225);fill-rule:nonzero;"/>
+        </g>
+        <path id="Baseline-M" d="M263,1126L3036,1126" style="fill:none;fill-rule:nonzero;stroke:rgb(39,170,225);stroke-width:0.5px;"/>
+        <path id="Capline-M" d="M263,1055.54L3036,1055.54" style="fill:none;fill-rule:nonzero;stroke:rgb(39,170,225);stroke-width:0.5px;"/>
+        <g id="H-reference2" serif:id="H-reference" transform="matrix(1,0,0,1,339,1556)">
+            <path d="M0.994,0L3.638,0L29.328,-67.132L30.03,-67.132L30.03,-70.459L28.123,-70.459L0.994,0ZM11.689,-24.48L46.981,-24.48L46.231,-26.729L12.439,-26.729L11.689,-24.48ZM55.12,0L57.764,0L30.638,-70.459L29.433,-70.459L29.433,-67.132L55.12,0Z" style="fill:rgb(39,170,225);fill-rule:nonzero;"/>
+        </g>
+        <path id="Baseline-L" d="M263,1556L3036,1556" style="fill:none;fill-rule:nonzero;stroke:rgb(39,170,225);stroke-width:0.5px;"/>
+        <path id="Capline-L" d="M263,1485.54L3036,1485.54" style="fill:none;fill-rule:nonzero;stroke:rgb(39,170,225);stroke-width:0.5px;"/>
+        <path id="left-margin-Regular-M" d="M1382.95,1030.79L1382.95,1150.12" style="fill:none;fill-rule:nonzero;stroke:rgb(0,174,239);stroke-width:0.5px;"/>
+        <path id="right-margin-Regular-M" d="M1516.74,1030.79L1516.74,1150.12" style="fill:none;fill-rule:nonzero;stroke:rgb(0,174,239);stroke-width:0.5px;"/>
+    </g>
+    <g id="Symbols">
+        <g id="Medium-L" transform="matrix(1,0,0,1,1659.31,1556)">
+            <path d="M16.084,17.928C16.084,21.011 18.493,23.22 21.441,23.22L84.444,23.22C87.369,23.22 89.778,21.011 89.778,17.928C89.778,14.914 87.369,12.658 84.444,12.658L21.441,12.658C18.493,12.658 16.084,14.914 16.084,17.928Z" style="fill:none;stroke:black;stroke-width:0.5px;"/>
+            <g transform="matrix(1,0,0,1,20.8696,0)">
+                <path d="M76.097,17.928C76.097,21.011 78.506,23.22 81.453,23.22L85.708,23.22C88.633,23.22 91.042,21.011 91.042,17.928C91.042,14.914 88.633,12.658 85.708,12.658L81.453,12.658C78.506,12.658 76.097,14.914 76.097,17.928Z" style="fill:none;stroke:black;stroke-width:0.5px;"/>
+            </g>
+            <g transform="matrix(1,0,0,1,65.9631,0)">
+                <path d="M53.099,17.928C53.099,21.011 55.509,23.22 58.456,23.22L87.103,23.22C90.028,23.22 92.437,21.011 92.437,17.928C92.437,14.914 90.028,12.658 87.103,12.658L58.456,12.658C55.509,12.658 53.099,14.914 53.099,17.928Z" style="fill:none;stroke:black;stroke-width:0.5px;"/>
+            </g>
+            <path d="M26.75,-3.233C26.75,0.428 28.302,2.687 30.816,2.687L40.618,2.687C43.119,2.687 44.701,0.428 44.701,-3.233L44.701,-58.901C44.701,-62.525 43.119,-64.784 40.618,-64.784L30.816,-64.784C28.302,-64.784 26.75,-62.525 26.75,-58.901L26.75,-3.233Z" style="fill:none;stroke:black;stroke-width:0.5px;"/>
+            <path d="M61.062,-83.294C61.062,-79.799 62.632,-77.643 65.143,-77.643L74.957,-77.643C77.485,-77.643 79.048,-79.799 79.048,-83.294L79.048,-88.05C79.048,-91.533 77.485,-93.643 74.957,-93.643L65.143,-93.643C62.632,-93.643 61.062,-91.533 61.062,-88.05L61.062,-83.294Z" style="fill:none;stroke:black;stroke-width:0.5px;"/>
+            <g transform="matrix(1,0,0,1,0,26.7059)">
+                <path d="M61.062,-29.939C61.062,-26.278 62.632,-24.019 65.143,-24.019L74.957,-24.019C77.485,-24.019 79.048,-26.278 79.048,-29.939L79.048,-91.305C79.048,-94.955 77.485,-97.166 74.957,-97.166L65.143,-97.166C62.632,-97.166 61.062,-94.955 61.062,-91.305L61.062,-29.939Z" style="fill:none;stroke:black;stroke-width:0.5px;"/>
+            </g>
+            <g transform="matrix(1,0,0,1,0,108.256)">
+                <path d="M95.406,-111.489C95.406,-107.828 96.964,-105.569 99.493,-105.569L109.313,-105.569C111.836,-105.569 113.407,-107.828 113.407,-111.489L113.407,-181.221C113.407,-184.893 111.836,-187.151 109.313,-187.151L99.493,-187.151C96.964,-187.151 95.406,-184.893 95.406,-181.221L95.406,-111.489Z" style="fill:none;stroke:black;stroke-width:0.5px;"/>
+            </g>
+            <path d="M129.754,-43.074C129.754,-39.421 131.311,-37.166 133.841,-37.166L143.661,-37.166C146.183,-37.166 147.755,-39.421 147.755,-43.074L147.755,-45.248C147.755,-48.912 146.183,-51.166 143.661,-51.166L133.841,-51.166C131.311,-51.166 129.754,-48.912 129.754,-45.248L129.754,-43.074Z" style="fill:none;stroke:black;stroke-width:0.5px;"/>
+            <path d="M129.761,-3.233C129.761,0.428 131.317,2.687 133.869,2.687L143.695,2.687C146.169,2.687 147.755,0.428 147.755,-3.233L147.755,-24.13C147.755,-27.754 146.169,-30.061 143.695,-30.061L133.869,-30.061C131.317,-30.061 129.761,-27.754 129.761,-24.13L129.761,-3.233Z" style="fill:none;stroke:black;stroke-width:0.5px;"/>
+        </g>
+        <g id="Regular-M" transform="matrix(1,0,0,1,1382.95,1126)">
+            <path d="M17.095,-10.357C17.095,-7.618 18.787,-5.988 21.61,-5.988L32.874,-5.988C35.717,-5.988 37.43,-7.618 37.43,-10.357L37.43,-53.552C37.43,-56.24 35.717,-57.869 32.874,-57.869L21.61,-57.869C18.787,-57.869 17.095,-56.24 17.095,-53.552L17.095,-10.357ZM43.512,-10.357C43.512,-7.618 45.215,-5.988 48.027,-5.988L59.291,-5.988C62.144,-5.988 63.847,-7.618 63.847,-10.357L63.847,-75.974C63.847,-78.703 62.144,-80.281 59.291,-80.281L48.027,-80.281C45.215,-80.281 43.512,-78.703 43.512,-75.974L43.512,-10.357ZM69.94,-10.357C69.94,-7.618 71.642,-5.988 74.496,-5.988L85.719,-5.988C88.572,-5.988 90.275,-7.618 90.275,-10.357L90.275,-64.83C90.275,-67.57 88.572,-69.199 85.719,-69.199L74.496,-69.199C71.642,-69.199 69.94,-67.57 69.94,-64.83L69.94,-10.357ZM96.368,-10.357C96.368,-7.618 98.06,-5.988 100.934,-5.988L112.198,-5.988C114.989,-5.988 116.702,-7.618 116.702,-10.357L116.702,-42.648C116.702,-45.335 114.989,-47.017 112.198,-47.017L100.934,-47.017C98.06,-47.017 96.368,-45.335 96.368,-42.648L96.368,-10.357ZM12.461,5.947C12.461,8.154 14.264,9.863 16.388,9.863L117.42,9.863C119.534,9.863 121.336,8.154 121.336,5.947C121.336,3.802 119.534,2.041 117.42,2.041L16.388,2.041C14.264,2.041 12.461,3.802 12.461,5.947Z" style="fill:none;fill-rule:nonzero;stroke:black;stroke-width:0.5px;"/>
+        </g>
+    </g>
+</svg>

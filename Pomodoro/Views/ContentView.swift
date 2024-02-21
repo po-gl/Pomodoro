@@ -36,7 +36,7 @@ struct ContentView: View {
             ChartsPage()
                 .toasts()
                 .tabItem {
-                    Label("Charts", systemImage: "chart.bar.xaxis")
+                    Label { Text("Charts") } icon: { Image(.pomoChart) }
                         .accessibilityIdentifier("chartsPage")
                 }
                 .tag(2)
