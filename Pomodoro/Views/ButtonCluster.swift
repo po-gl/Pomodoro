@@ -37,7 +37,7 @@ struct ButtonCluster: View {
         .accessibilityIdentifier("resetButton\(isEnabled ? "On" : "Off")")
         .frame(width: 130, height: 60)
         .buttonStyle(PopStyle(color: isEnabled ? .barRest : .grayedOut))
-        .foregroundColor(isEnabled ? .black : .white)
+        .foregroundStyle(isEnabled ? .black : .white)
         .animation(.default, value: pomoTimer.isPaused)
     }
 
@@ -52,7 +52,7 @@ struct ButtonCluster: View {
         .accessibilityIdentifier("playPauseButton\(isEnabled ? "On" : "Off")")
         .frame(width: 130, height: 60)
         .buttonStyle(PopStyle(color: getStartStopButtonColor()))
-        .foregroundColor(isEnabled ? .black : .white)
+        .foregroundStyle(isEnabled ? .black : .white)
         .animation(.default, value: pomoTimer.isPaused)
     }
 

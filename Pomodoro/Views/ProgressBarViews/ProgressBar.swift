@@ -176,7 +176,7 @@ struct ProgressBar: View {
                 .padding(.horizontal, barOutlinePadding)
                 .background {
                     RoundedRectangle(cornerRadius: 8)
-                        .foregroundColor(.black)
+                        .foregroundStyle(.black)
                 }
             } else {
                 EmptyView()
@@ -188,7 +188,7 @@ struct ProgressBar: View {
         TimelineView(isPausedTimelineSchedule) { context in
             let progress = pomoTimer.getProgress(atDate: context.date)
             Rectangle()
-                .foregroundColor(colorScheme == .dark ? .black : .white)
+                .foregroundStyle(colorScheme == .dark ? .black : .white)
                 .opacity(0.5)
                 .blendMode(colorScheme == .dark ? .colorBurn : .colorDodge)
                 .frame(width: max(barWidth * (1 - progress), 0), height: barHeight)

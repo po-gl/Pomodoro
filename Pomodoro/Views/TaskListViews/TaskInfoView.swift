@@ -67,7 +67,7 @@ struct TaskInfoView: View {
                             Toggle(isOn: $editFlagged) {
                                 HStack(spacing: 15) {
                                     Image(systemName: "leaf.fill")
-                                        .foregroundColor(.barWork)
+                                        .foregroundStyle(.barWork)
                                         .saturation(editFlagged ? 1.0 : 0.0)
                                         .frame(width: 20, height: 20)
                                     Text("Flagged")

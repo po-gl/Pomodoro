@@ -204,7 +204,7 @@ struct ChartsPage: View {
             VStack(alignment: .trailing) {
                 Image(systemName: "chevron.right")
                     .font(.system(size: 18, weight: .medium))
-                    .foregroundColor(color)
+                    .foregroundStyle(color)
                 Spacer()
                 miniChart()
             }

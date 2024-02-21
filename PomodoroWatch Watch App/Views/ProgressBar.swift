@@ -141,7 +141,7 @@ struct ProgressBar: View {
                 Spacer(minLength: 0)
                 
                 Rectangle()
-                    .foregroundColor(.black.opacity(0.5))
+                    .foregroundStyle(.black.opacity(0.5))
                     .blendMode(.colorBurn)
                     .frame(width: barWidth * (1 - progress), height: barHeight)
                     .overlay {

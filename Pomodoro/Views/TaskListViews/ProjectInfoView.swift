@@ -41,7 +41,7 @@ struct ProjectInfoView: View {
                             .font(.title2)
                             .fontDesign(.rounded)
                             .fontWeight(.medium)
-                            .foregroundColor(Color(editColor))
+                            .foregroundStyle(Color(editColor))
                             .padding(.bottom, 5)
                         Divider()
                         TextField("Note", text: $editNote, axis: .vertical)
@@ -66,7 +66,7 @@ struct ProjectInfoView: View {
                         Toggle(isOn: $editArchived) {
                             HStack(spacing: 15) {
                                 Image(systemName: "archivebox.fill")
-                                    .foregroundColor(.end)
+                                    .foregroundStyle(.end)
                                     .frame(width: 20, height: 20)
                                     .saturation(editArchived ? 1.0 : 0.0)
                                     .animation(.spring, value: editArchived)

@@ -36,7 +36,7 @@ struct Background: View {
     private func top(at date: Date) -> some View {
         if colorScheme == .dark {
             Rectangle()
-                .foregroundColor(getTopColor(at: date))
+                .foregroundStyle(getTopColor(at: date))
                 .overlay(
                     Rectangle()
                         .fill(LinearGradient(colors: [.white, .clear], startPoint: .top, endPoint: .bottom))
@@ -46,14 +46,14 @@ struct Background: View {
                 .drawingGroup()
         } else {
             Rectangle()
-                .foregroundColor(getTopColor(at: date))
+                .foregroundStyle(getTopColor(at: date))
         }
     }
 
     @ViewBuilder
     private func bottom(at date: Date, geometry: GeometryProxy) -> some View {
         Rectangle()
-            .foregroundColor(getBottomColor(at: date))
+            .foregroundStyle(getBottomColor(at: date))
             .overlay(
                 Rectangle()
                     .fill(LinearGradient(colors: [colorScheme == .light ? .white : .clear, .clear],

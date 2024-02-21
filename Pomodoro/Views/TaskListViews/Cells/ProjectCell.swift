@@ -185,7 +185,7 @@ struct ProjectCell: View {
             .frame(minHeight: 30)
             .lineLimit(isCollapsed.value ? 1 : Int.max, reservesSpace: false)
             .disabled(isCollapsed.value)
-            .foregroundColor(color)
+            .foregroundStyle(color)
             .brightness(primaryBrightness)
             .saturation(primarySaturation)
             .onSubmitWithVerticalText(with: editText)
@@ -199,7 +199,7 @@ struct ProjectCell: View {
             .lineLimit(isCollapsed.value ? 1 : Int.max, reservesSpace: false)
             .fixedSize(horizontal: false, vertical: !isCollapsed.value)
             .disabled(isCollapsed.value)
-            .foregroundColor(color)
+            .foregroundStyle(color)
             .brightness(secondaryBrightness)
             .id("\(project.id)_note_\(isCollapsed.value)")
     }
@@ -215,7 +215,7 @@ struct ProjectCell: View {
             Spacer()
             Text(tasksString)
                 .font(.system(.footnote))
-                .foregroundColor(color)
+                .foregroundStyle(color)
                 .brightness(secondaryBrightness)
                 .onTapGesture {
                     editProject()
@@ -239,7 +239,7 @@ struct ProjectCell: View {
     @ViewBuilder private var chevron: some View {
         Image(systemName: "chevron.right")
             .font(.system(size: 25, weight: .medium))
-            .foregroundColor(color)
+            .foregroundStyle(color)
             .brightness(primaryBrightness)
             .saturation(primarySaturation)
     }
@@ -317,7 +317,7 @@ struct ProjectCell: View {
                     }
             }.frame(width: width/1.5)
         }
-        .foregroundColor(color)
+        .foregroundStyle(color)
         .brightness(isCollapsed.value ? collapsedCheckBrightness : checkBrightness)
         .saturation(isCollapsed.value ? collapsedCheckSaturation : checkSaturation)
         .contentShape(Circle())

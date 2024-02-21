@@ -78,7 +78,7 @@ struct iOSWidgetLiveActivity: Widget {
                     if context.state.isPaused {
                         HStack(spacing: 5) {
                             Text(Image(systemName: "leaf.fill"))
-                                .foregroundColor(Color(hex: 0x31E377))
+                                .foregroundStyle(Color(hex: 0x31E377))
                                 .saturation(0.6)
                                 .scaleEffect(0.8)
                             Text("paused")

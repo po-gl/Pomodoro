@@ -28,7 +28,7 @@ struct EmptyProjectsView: View {
     var body: some View {
         card {
             Text("Add a Project")
-                .foregroundColor(color)
+                .foregroundStyle(color)
                 .brightness(primaryBrightness)
                 .saturation(primarySaturation)
         }

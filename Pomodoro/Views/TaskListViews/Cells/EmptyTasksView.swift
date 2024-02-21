@@ -12,7 +12,7 @@ struct EmptyTasksView: View {
 
     var body: some View {
         Text("No New Tasks")
-            .foregroundColor(.secondary)
+            .foregroundStyle(.secondary)
             .onTapGesture {
                 basicHaptic()
                 TasksData.addTask("", context: viewContext)

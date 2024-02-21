@@ -62,19 +62,19 @@ struct TimerDisplay: View {
         }
         Text(text)
             .font(.system(.title, design: .rounded, weight: .semibold))
-            .foregroundColor(fgColor)
+            .foregroundStyle(fgColor)
             .brightness(colorScheme == .dark ? 0.1 : 0.0)
             .padding(.horizontal, 8)
             .padding(.vertical, 2)
             .background(
                 RoundedRectangle(cornerRadius: 5)
-                    .foregroundColor(bgColor)
+                    .foregroundStyle(bgColor)
                     .brightness(colorScheme == .dark ? 0.0 : 0.05)
                     .shadow(radius: 2, x: 2, y: 2)
                     .background(
                         RoundedRectangle(cornerRadius: 5)
                             .offset(x: 3, y: 3)
-                            .foregroundColor(bgColor).brightness(-0.3)))
+                            .foregroundStyle(bgColor).brightness(-0.3)))
     }
 
     @ViewBuilder
@@ -84,7 +84,7 @@ struct TimerDisplay: View {
             .colorScheme(colorScheme == .dark ? .light : .dark)
             .font(.system(.headline, design: .rounded, weight: .medium))
             .monospacedDigit()
-            .foregroundColor(color)
+            .foregroundStyle(color)
             .brightness(colorScheme == .dark ? -0.45 : -0.5)
             .brightness(pomoTimer.isPaused ? 0.0 : (colorScheme == .dark ? -0.2 : 0.3))
     }

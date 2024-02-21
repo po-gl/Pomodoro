@@ -24,7 +24,7 @@ struct ButtonCluster: View {
         let isEnabled = pomoTimer.isPaused || pomoTimer.getStatus() == .end
         Image(systemName: withFill("arrow.counterclockwise.circle"))
             .accessibilityIdentifier("resetButton")
-            .foregroundColor(pomoTimer.isPaused ? .orange : Color(hex: 0x333333))
+            .foregroundStyle(pomoTimer.isPaused ? .orange : Color(hex: 0x333333))
             .overlay(softLightOverlay)
             .font(.system(size: 40))
             .onTapGesture {
@@ -43,7 +43,7 @@ struct ButtonCluster: View {
         let isEnabled = pomoTimer.getStatus() != .end
         Image(systemName: pomoTimer.isPaused ? withFill("play.circle") : withFill("pause.circle"))
             .accessibilityIdentifier("playPauseButton")
-            .foregroundColor(.accentColor)
+            .foregroundStyle(Color.accentColor)
             .overlay(softLightOverlay)
             .font(.system(size: 40))
             .onTapGesture {

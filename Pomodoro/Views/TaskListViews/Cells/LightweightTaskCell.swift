@@ -49,7 +49,7 @@ struct LightweightTaskCell: View {
             Text(taskItem.text ?? "")
                 .accessibilityIdentifier("\(taskItem.text ?? "")LightweightCell")
                 .multilineTextAlignment(.leading)
-                .foregroundColor(taskItem.timestamp?.isToday() ?? true ? .primary : .secondary)
+                .foregroundStyle(taskItem.timestamp?.isToday() ?? true ? .primary : .secondary)
             Spacer()
         }
     }
@@ -59,7 +59,7 @@ struct LightweightTaskCell: View {
             Text(taskItem.note ?? "")
                 .font(.footnote)
                 .multilineTextAlignment(.leading)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
             Spacer()
         }
     }

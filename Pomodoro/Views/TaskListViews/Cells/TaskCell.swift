@@ -147,7 +147,7 @@ struct TaskCell: View {
     var mainTextField: some View {
         TextField("", text: editText, axis: .vertical)
             .accessibilityIdentifier(isAdderCell ? "adderCell" : editText.wrappedValue)
-            .foregroundColor(taskItem.timestamp?.isToday() ?? true ? .primary : .secondary)
+            .foregroundStyle(taskItem.timestamp?.isToday() ?? true ? .primary : .secondary)
             .onSubmitWithVerticalText(with: editText, resigns: !isAdderCell) {
                 if !isAdderCell {
                     if !editText.wrappedValue.isEmpty && taskItem.timestamp?.isToday() ?? false {
@@ -172,7 +172,7 @@ struct TaskCell: View {
         TextField("Add Note", text: editNoteText, axis: .vertical)
             .accessibilityIdentifier(isAdderCell ? "adderCellNote" : "\(editText.wrappedValue)Note")
             .font(.footnote)
-            .foregroundColor(.secondary)
+            .foregroundStyle(.secondary)
             .onChangeWithThrottle(of: editNoteText.wrappedValue, for: 0.6) { _ in
                 if focus {
                     scrollOnInput()
@@ -341,7 +341,7 @@ struct TaskCheck: View {
                 .accessibilityIdentifier("\(taskItem.text ?? "")Check\(taskItem.completed ? "IsOn" : "IsOff")")
                 .opacity(taskItem.completed ? 1.0 : 0.0)
         }
-        .foregroundColor(taskItem.completed ? .accent : .primary)
+        .foregroundStyle(taskItem.completed ? .accent : .primary)
         .frame(width: width)
         .contentShape(Rectangle())
         .onTapGesture {
@@ -427,7 +427,7 @@ struct TaskInfoCluster: View {
 
     var flag: some View {
         Image(systemName: "leaf.fill")
-            .foregroundColor(.barWork)
+            .foregroundStyle(.barWork)
             .frame(width: 20, height: 20)
             .accessibilityIdentifier("\(taskItem.text ?? "")FlagIndicator")
     }

@@ -24,7 +24,7 @@ struct DynamicIslandProgressView: View {
         if let pausedAt {
             ProgressView(value: pausedAt.progressBetween(timerInterval.lowerBound, timerInterval.upperBound), label: {}, currentValueLabel: {
                 Text(Image(systemName: "leaf.fill"))
-                    .foregroundColor(Color(hex: 0x31E377))
+                    .foregroundStyle(Color(hex: 0x31E377))
                     .fontWeight(.bold)
                     .saturation(0.6)
                     .scaleEffect(0.8)

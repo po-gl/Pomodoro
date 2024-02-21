@@ -177,7 +177,7 @@ struct StatusWidgetView: View {
 func Leaf(size: Double = 18) -> some View {
     Text(Image(systemName: "leaf.fill"))
         .font(.system(size: size))
-        .foregroundColor(Color(hex: 0x31E377))
+        .foregroundStyle(Color(hex: 0x31E377))
         .saturation(0.6)
 }
 

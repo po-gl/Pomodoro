@@ -20,7 +20,7 @@ struct PastTasksHeader: View {
                 .font(.system(.footnote, design: .rounded, weight: .medium))
                 .textCase(.uppercase)
                 .padding(.vertical, 2).padding(.horizontal, 8)
-                .foregroundColor(color)
+                .foregroundStyle(color)
                 .brightness(colorScheme == .dark ? 0.2 : -0.3)
                 .background(
                     RoundedRectangle(cornerRadius: 6)
