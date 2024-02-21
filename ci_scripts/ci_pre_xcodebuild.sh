@@ -10,10 +10,10 @@ set -e
 
 echo "Stage: PRE-Xcode Build is starting ..."
 
-if [ -d "$PROJECT_DIR/Shared" ]; then
-    cd $PROJECT_DIR/Shared/
+if [ -d "../Shared" ]; then
+    cd ../Shared/
 
-    echo "Adding Env.plist to $PROJECT_DIR/Shared/"
+    echo "Adding Env.plist to ../Shared/"
     echo "serverURL: $SERVER_URL"
 
     touch Env.plist
