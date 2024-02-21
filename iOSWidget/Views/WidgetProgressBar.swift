@@ -26,12 +26,21 @@ struct WidgetProgressBar: View {
     var body: some View {
         GeometryReader { geometry in
             HStack(spacing: spacing) {
+                let progressAtPause = pausedAt?.progressBetween(timerInterval.lowerBound, timerInterval.upperBound)
                 ForEach(0..<segmentCount-1, id: \.self) { i in // -1 to take off ".end" segment
                     let status = getStatus(for: i)
                     let percent = getPercent(for: status)
-                    if i == currentSegment {
-                        if let pausedAt {
-                            ProgressView(value: pausedAt.progressBetween(timerInterval.lowerBound, timerInterval.upperBound))
+
+                    // If paused at start
+                    if let progressAtPause, progressAtPause < 0.00001 && currentSegment == 0 {
+                        ProgressView(value: 1.0)
+                            .progressViewStyle(ProgressBarStyle(color: status.color, withOverlay: true))
+                            .frame(width: geometry.frame(in: .local).size.width * percent - spacing)
+
+                    // In-progress segment
+                    } else if i == currentSegment {
+                        if let progressAtPause {
+                            ProgressView(value: progressAtPause)
                                 .progressViewStyle(ProgressBarStyle(color: status.color))
                                 .frame(width: geometry.frame(in: .local).size.width * percent - spacing)
                         } else {
@@ -39,6 +48,8 @@ struct WidgetProgressBar: View {
                                 .progressViewStyle(ProgressBarStyle(color: status.color))
                                 .frame(width: geometry.frame(in: .local).size.width * percent - spacing)
                         }
+
+                    // Either a past or future segment
                     } else if i < currentSegment {
                         ProgressView(value: 1.0)
                             .progressViewStyle(ProgressBarStyle(color: status.color, withOverlay: true))
