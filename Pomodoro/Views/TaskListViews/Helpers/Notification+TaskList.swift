@@ -9,4 +9,5 @@ import Foundation
 
 extension Notification.Name {
     static let focusOnAdder = Notification.Name("focusOnAdder")
+    static let focusedOnTask = Notification.Name("focusOnTask")
 }

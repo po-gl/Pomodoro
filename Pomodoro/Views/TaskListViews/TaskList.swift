@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct TaskList: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -23,6 +24,14 @@ struct TaskList: View {
     var limitedPastTasks: FetchedResults<TaskNote>
 
     @AppStorage("hasShownError") var hasShownError = false
+
+    @State var selectedTask: TaskNote? = nil
+    @State var showSelectedTaskInfoForEstimations = false
+    @State var showSelectedTaskInfoForProjects = false
+
+    // There appears to be a potential bug regarding the keyboard toolbar
+    // where it does not appear on a real device unless a sleep occurs before rendering
+    @State var showKeyboardAccessoryWorkaround: Bool? = nil
 
     init() {
         let titleFont = UIFont.preferredFont(forTextStyle: .body).asBoldRounded()
@@ -87,6 +96,31 @@ struct TaskList: View {
                     .padding(.vertical, 8)
             }
             .ignoresSafeArea(.keyboard)
+
+            .onAppear {
+                Task {
+                    try? await Task.sleep(for: .seconds(0.1))
+                    showKeyboardAccessoryWorkaround = true
+                }
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    if let _ = showKeyboardAccessoryWorkaround {
+                        TaskCellKeyboardAccessory(showInfoForEstimations: $showSelectedTaskInfoForEstimations,
+                                                  showInfoForProjects: $showSelectedTaskInfoForProjects)
+                    }
+                }
+            }
+
+            .onReceive(Publishers.focusedOnTask) { taskNote in
+                selectedTask = taskNote
+            }
+            .sheet(isPresented: $showSelectedTaskInfoForEstimations) {
+                SelectedTaskInfoViewForSheet(selectedTask: $selectedTask, scrollToOnAppear: "estimate")
+            }
+            .sheet(isPresented: $showSelectedTaskInfoForProjects) {
+                SelectedTaskInfoViewForSheet(selectedTask: $selectedTask, scrollToOnAppear: "projects")
+            }
         }
         .tint(.navigationAccent)
     }

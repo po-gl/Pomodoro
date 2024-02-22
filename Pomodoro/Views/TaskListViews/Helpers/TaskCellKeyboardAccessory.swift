@@ -6,12 +6,11 @@
 //
 
 import SwiftUI
+import Combine
 
 struct TaskCellKeyboardAccessory: View {
     @Environment(\.managedObjectContext) var viewContext
     @Environment(\.colorScheme) var colorScheme
-
-    @ObservedObject var taskItem: TaskNote
 
     @Binding var showInfoForEstimations: Bool
     @Binding var showInfoForProjects: Bool
@@ -22,8 +21,14 @@ struct TaskCellKeyboardAccessory: View {
         case assignToProjects
     }
 
-    @State private var isOnBar = false
     @State private var controlsToShow: Controls = .none
+
+    @State private var taskItem: TaskNote? = nil
+    @State private var taskText: String? = nil
+
+    @State private var isOnBar = false
+    @State private var isFlagged = false
+    @State private var isAssignedToProjects = false
 
     var body: some View {
         HStack {
@@ -39,17 +44,27 @@ struct TaskCellKeyboardAccessory: View {
         .padding(.horizontal)
         .labelStyle(.iconOnly)
         .onAppear {
-            if let text = taskItem.text {
+            controlsToShow = .none
+        }
+
+        // Update selected TaskNote
+        .onReceive(Publishers.focusedOnTask) { taskNote in
+            taskItem = taskNote
+            taskText = taskItem?.text
+
+            if let text = taskItem?.text, text != "" {
                 isOnBar = TasksOnBar.shared.isOnBar(text)
             } else {
                 isOnBar = false
             }
-            controlsToShow = .none
+            isFlagged = taskItem?.flagged ?? false
+            isAssignedToProjects = taskItem?.projects?.count ?? 0 > 0
         }
     }
 
     var addToBarButton: some View {
         Button(action: {
+            guard let taskItem else { return }
             basicHaptic()
             if let text = taskItem.text, TasksOnBar.shared.isOnBar(text) {
                 TasksOnBar.shared.removeTaskFromList(text)
@@ -69,44 +84,52 @@ struct TaskCellKeyboardAccessory: View {
         }
         .tint(.end)
         .brightness(colorScheme == .dark ? 0.1 : -0.15)
+        .accessibilityIdentifier("\(taskText ?? "")KeyboardAddToBarButton")
     }
 
     var flagTaskButton: some View {
         Button(action: {
+            guard let taskItem else { return }
             basicHaptic()
             Task { @MainActor in
                 TasksData.toggleFlagged(for: taskItem, context: viewContext)
             }
+            isFlagged.toggle()
         }) {
-            if taskItem.flagged {
+            if isFlagged {
                 Label("Unflag", systemImage: "flag.fill")
             } else {
                 Label("Flag", systemImage: "flag")
             }
         }
         .tint(.barWork)
-        .accessibilityIdentifier("\(taskItem.text ?? "")KeyboardFlagButton")
+        .accessibilityIdentifier("\(taskText ?? "")KeyboardFlagButton")
     }
 
     var addEstimationButton: some View {
         Button(action: {
             basicHaptic()
 //            controlsToShow = controlsToShow == .estimations ? .none : .estimations
-            showInfoForEstimations = true
+            Task {
+                showInfoForEstimations = true
+            }
         }) {
             Label("Add Estimation", systemImage: "target")
         }
         .tint(.tomato)
         .scaleEffect(controlsToShow == .estimations ? 1.2 : 1.0)
+        .accessibilityIdentifier("\(taskText ?? "")KeyboardEstimationButton")
     }
 
     var assignToProjectButton: some View {
         Button(action: {
             basicHaptic()
 //            controlsToShow = controlsToShow == .assignToProjects ? .none : .assignToProjects
-            showInfoForProjects = true
+            Task {
+                showInfoForProjects = true
+            }
         }) {
-            if taskItem.projects?.count ?? 0 > 0 {
+            if isAssignedToProjects {
                 Label("Assign to Project", systemImage: "square.3.layers.3d.top.filled")
             } else {
                 Label("Assign to Project", systemImage: "square.3.layers.3d")
@@ -114,5 +137,6 @@ struct TaskCellKeyboardAccessory: View {
         }
         .tint(.barLongBreak)
         .scaleEffect(controlsToShow == .assignToProjects ? 1.2 : 1.0)
+        .accessibilityIdentifier("\(taskText ?? "")KeyboardAssignToProjectButton")
     }
 }

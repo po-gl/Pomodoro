@@ -16,4 +16,10 @@ extension Publishers {
             }
         return pub.eraseToAnyPublisher()
     }
+    
+    static var focusedOnTask: AnyPublisher<TaskNote?, Never> {
+        let pub = NotificationCenter.default.publisher(for: .focusedOnTask)
+            .map { $0.object as? TaskNote }
+        return pub.eraseToAnyPublisher()
+    }
 }
