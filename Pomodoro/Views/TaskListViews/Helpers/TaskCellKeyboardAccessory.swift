@@ -28,6 +28,7 @@ struct TaskCellKeyboardAccessory: View {
 
     @State private var isOnBar = false
     @State private var isFlagged = false
+    @State private var hasEstimations = false
     @State private var isAssignedToProjects = false
 
     var body: some View {
@@ -45,21 +46,26 @@ struct TaskCellKeyboardAccessory: View {
         .labelStyle(.iconOnly)
         .onAppear {
             controlsToShow = .none
+            updateStateForTaskItem()
         }
 
         // Update selected TaskNote
         .onReceive(Publishers.focusedOnTask) { taskNote in
             taskItem = taskNote
-            taskText = taskItem?.text
-
-            if let text = taskItem?.text, text != "" {
-                isOnBar = TasksOnBar.shared.isOnBar(text)
-            } else {
-                isOnBar = false
-            }
-            isFlagged = taskItem?.flagged ?? false
-            isAssignedToProjects = taskItem?.projects?.count ?? 0 > 0
+            updateStateForTaskItem()
         }
+    }
+
+    func updateStateForTaskItem() {
+        taskText = taskItem?.text
+        if let text = taskItem?.text, text != "" {
+            isOnBar = TasksOnBar.shared.isOnBar(text)
+        } else {
+            isOnBar = false
+        }
+        isFlagged = taskItem?.flagged ?? false
+        hasEstimations = taskItem?.pomosEstimate ?? -1 >= 0
+        isAssignedToProjects = taskItem?.projects?.count ?? 0 > 0
     }
 
     var addToBarButton: some View {
@@ -82,7 +88,7 @@ struct TaskCellKeyboardAccessory: View {
                 Label("Add to Bar", systemImage: "arrowshape.turn.up.left")
             }
         }
-        .tint(.end)
+        .tint(isOnBar ? .end : .secondary)
         .brightness(colorScheme == .dark ? 0.1 : -0.15)
         .accessibilityIdentifier("\(taskText ?? "")KeyboardAddToBarButton")
     }
@@ -102,7 +108,7 @@ struct TaskCellKeyboardAccessory: View {
                 Label("Flag", systemImage: "flag")
             }
         }
-        .tint(.barWork)
+        .tint(isFlagged ? .barWork : .secondary)
         .accessibilityIdentifier("\(taskText ?? "")KeyboardFlagButton")
     }
 
@@ -116,7 +122,7 @@ struct TaskCellKeyboardAccessory: View {
         }) {
             Label("Add Estimation", systemImage: "target")
         }
-        .tint(.tomato)
+        .tint(hasEstimations ? .tomato : .secondary)
         .scaleEffect(controlsToShow == .estimations ? 1.2 : 1.0)
         .accessibilityIdentifier("\(taskText ?? "")KeyboardEstimationButton")
     }
@@ -135,7 +141,7 @@ struct TaskCellKeyboardAccessory: View {
                 Label("Assign to Project", systemImage: "square.3.layers.3d")
             }
         }
-        .tint(.barLongBreak)
+        .tint(isAssignedToProjects ? .barLongBreak : .secondary)
         .scaleEffect(controlsToShow == .assignToProjects ? 1.2 : 1.0)
         .accessibilityIdentifier("\(taskText ?? "")KeyboardAssignToProjectButton")
     }
