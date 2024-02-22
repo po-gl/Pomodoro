@@ -13,6 +13,8 @@ struct LightweightTaskCell: View {
 
     @ObservedObject var taskItem: TaskNote
 
+    var showNotes = true
+
     var todaysTasks: FetchedResults<TaskNote>? = nil
 
     @State var showTaskInfo = false
@@ -23,7 +25,7 @@ struct LightweightTaskCell: View {
             Group {
                 VStack(spacing: 5) {
                     mainText
-                    if !(taskItem.note?.isEmpty ?? true) {
+                    if showNotes && !(taskItem.note?.isEmpty ?? true) {
                         noteText
                     }
                 }
