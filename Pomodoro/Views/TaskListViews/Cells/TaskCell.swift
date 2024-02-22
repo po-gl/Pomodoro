@@ -415,7 +415,7 @@ struct TaskInfoCluster: View {
         let pomos: Int16 = taskItem.pomosActual >= 0 && taskItem.completed ? taskItem.pomosActual : taskItem.pomosEstimate
         let color: Color = taskItem.pomosActual >= 0 && taskItem.completed ? .end : .barRest
         if pomos >= 0 {
-            Text("\(pomos)")
+            Text(pomos == 0 ? "<1" : "\(pomos)")
                 .font(.system(size: 14.0))
                 .fontDesign(.rounded)
                 .fontWeight(.bold)
