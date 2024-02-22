@@ -346,7 +346,7 @@ struct PomodoroEstimationsDetails: View {
                 VStack(spacing: 10) {
                     ForEach(tasks.withEstimate) { taskItem in
                         VStack(spacing: 0) {
-                            LightweightTaskCell(taskItem: taskItem)
+                            LightweightTaskCell(taskItem: taskItem, showNotes: false)
                             let estimate = taskItem.pomosEstimate
                             let actual = taskItem.pomosActual
                             HStack {
