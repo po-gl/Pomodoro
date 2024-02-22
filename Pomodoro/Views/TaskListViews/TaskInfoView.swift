@@ -98,6 +98,10 @@ struct TaskInfoView: View {
                                 HStack(spacing: 15) {
                                     Text("Assigned Projects")
                                         .foregroundStyle(.secondary)
+                                        .onTapGesture {
+                                            basicHaptic()
+                                            editingAssignedProjects.toggle()
+                                        }
                                     Spacer()
                                     Button(action: {
                                         basicHaptic()
