@@ -60,6 +60,19 @@ class TasksOnBar: ObservableObject {
         return false
     }
 
+    @discardableResult
+    func removeTaskFromList(_ text: String) -> Bool {
+        guard !text.isEmpty else { return false }
+        guard tasksOnBar.contains(where: { $0 == text }) else { return false }
+
+        tasksOnBar = tasksOnBar.map { $0 == text ? "" : $0 }
+        return true
+    }
+
+    func isOnBar(_ text: String) -> Bool {
+        return tasksOnBar.contains(where: { $0 == text })
+    }
+
     private func isWorkIndex(_ index: Int) -> Bool {
         return index % 2 == 0 && index < tasksOnBar.count-2
     }
