@@ -20,6 +20,7 @@ enum ToastAction {
     case error
     case reAdded
     case addedToBar
+    case removedFromBar
     case addedToList
     case assignedProject
     case unassignedProject
@@ -110,6 +111,12 @@ struct ToastView: View {
                     Image(systemName: "arrow.turn.up.left")
                         .foregroundStyle(.secondary)
                     Text("Added to bar")
+                }
+            case .removedFromBar:
+                HStack {
+                    Image(systemName: "x.circle")
+                        .foregroundStyle(.secondary)
+                    Text("Removed from bar")
                 }
             case .addedToList:
                 HStack {
