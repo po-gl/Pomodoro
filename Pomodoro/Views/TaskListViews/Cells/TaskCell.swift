@@ -40,6 +40,8 @@ struct TaskCell: View {
     @FocusState var focus
 
     @State var showTaskInfo = false
+    @State var showInfoForEstimations = false
+    @State var showInfoForProjects = false
 
     @State var deleted = false
 
@@ -56,6 +58,15 @@ struct TaskCell: View {
                 }
             }
             TaskInfoCluster(taskItem: taskItem, showTaskInfo: $showTaskInfo, focus: _focus)
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                if focus {
+                    TaskCellKeyboardAccessory(taskItem: taskItem,
+                                              showInfoForEstimations: $showInfoForEstimations,
+                                              showInfoForProjects: $showInfoForProjects)
+                }
+            }
         }
         .opacity(deleted ? 0.0 : 1.0)
         .onChange(of: deleted) {
@@ -81,6 +92,12 @@ struct TaskCell: View {
 
         .sheet(isPresented: $showTaskInfo) {
             TaskInfoView(taskItem: taskItem)
+        }
+        .sheet(isPresented: $showInfoForEstimations) {
+            TaskInfoView(taskItem: taskItem, scrollToIdOnAppear: "estimate")
+        }
+        .sheet(isPresented: $showInfoForProjects) {
+            TaskInfoView(taskItem: taskItem, scrollToIdOnAppear: "projects")
         }
         .onChange(of: showTaskInfo) {
             if isAdderCell && !showTaskInfo {

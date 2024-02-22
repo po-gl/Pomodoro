@@ -126,6 +126,7 @@
 		61569CE12B005FAF00DFC977 /* View+verticalOffsetEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61569CE02B005FAF00DFC977 /* View+verticalOffsetEffect.swift */; };
 		6162B7DD2B22EA9D00C83714 /* WidgetProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6162B7DC2B22EA9D00C83714 /* WidgetProgressBar.swift */; };
 		6162B7DF2B22EA9D00C83714 /* WidgetProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6162B7DC2B22EA9D00C83714 /* WidgetProgressBar.swift */; };
+		616595FE2B86C6F900411BD5 /* TaskCellKeyboardAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616595FD2B86C6F900411BD5 /* TaskCellKeyboardAccessory.swift */; };
 		61708F0C2B73D4F500DDD941 /* CumulativeTimesDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61708F0B2B73D4F500DDD941 /* CumulativeTimesDetails.swift */; };
 		61708F0F2B73EA1400DDD941 /* ChartScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61708F0E2B73EA1400DDD941 /* ChartScale.swift */; };
 		61708F312B74832400DDD941 /* Date+startOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61708F302B74832400DDD941 /* Date+startOf.swift */; };
@@ -490,6 +491,7 @@
 		615E7F2D290B7DA9005BD3AE /* PomodoroWatch Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "PomodoroWatch Watch App.entitlements"; sourceTree = "<group>"; };
 		615E7F2E290B7DB0005BD3AE /* WatchWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WatchWidgetExtension.entitlements; sourceTree = "<group>"; };
 		6162B7DC2B22EA9D00C83714 /* WidgetProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetProgressBar.swift; sourceTree = "<group>"; };
+		616595FD2B86C6F900411BD5 /* TaskCellKeyboardAccessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCellKeyboardAccessory.swift; sourceTree = "<group>"; };
 		61708F0B2B73D4F500DDD941 /* CumulativeTimesDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CumulativeTimesDetails.swift; sourceTree = "<group>"; };
 		61708F0E2B73EA1400DDD941 /* ChartScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartScale.swift; sourceTree = "<group>"; };
 		61708F302B74832400DDD941 /* Date+startOf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+startOf.swift"; sourceTree = "<group>"; };
@@ -787,6 +789,7 @@
 			children = (
 				61E468142AEC5360001F6D7B /* ProjectTag.swift */,
 				61E4681E2AEC77FA001F6D7B /* TinyProjectTag.swift */,
+				616595FD2B86C6F900411BD5 /* TaskCellKeyboardAccessory.swift */,
 				61DFEB572B6637F4005459F7 /* RefreshInfoAction.swift */,
 				61D01EC22B3B55B700A58360 /* DismissSwipeAction.swift */,
 				61DC12122B62348700C00158 /* VStackDraggable.swift */,
@@ -1590,6 +1593,7 @@
 				61B17253285CFCF8001C8245 /* UIView+ClosestVC.swift in Sources */,
 				6191ACB02B453730000A4937 /* UserDefaults+pomo.swift in Sources */,
 				612C042B2B63079C007D5C7D /* EnvironmentValues+isReordering.swift in Sources */,
+				616595FE2B86C6F900411BD5 /* TaskCellKeyboardAccessory.swift in Sources */,
 				61518AE02B75D5430033F23D /* DisabledGradient.swift in Sources */,
 				61DC12102B622D8F00C00158 /* EnvironmentValues+swipeActionsDisable.swift in Sources */,
 				61B17251285CFCBB001C8245 /* View+Modifier.swift in Sources */,
