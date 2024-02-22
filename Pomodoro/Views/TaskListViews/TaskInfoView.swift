@@ -121,6 +121,8 @@ struct TaskInfoView: View {
                         }
                         .backgroundStyle(GroupBoxBackgroundStyle())
                         .animation(.spring(duration: 0.3), value: editingAssignedProjects)
+                        .pulseOnAppear(if: scrollToIdOnAppear == "projects")
+                        .id("projects")
 
                         GroupBox {
                             Button(role: .destructive, action: {
