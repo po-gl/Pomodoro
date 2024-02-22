@@ -40,7 +40,7 @@ class TasksOnBar: ObservableObject {
         if let context {
             saveToUserDefaults()
 
-            if !text.isEmpty && !TasksData.todaysTasksContains(text, context: context) {
+            if !text.isEmpty && TasksData.taskInPastMonth(matching: text, context: context) == nil {
                 TasksData.addTask(text, order: -1, context: context)
             }
         }

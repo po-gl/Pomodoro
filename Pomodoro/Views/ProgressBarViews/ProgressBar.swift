@@ -265,10 +265,15 @@ struct ProgressBar: View {
             if let swapIndex {
                 guard swapIndex != index else { return }
                 let swapTask = taskNotes.tasksOnBar[index]
-                taskNotes.addTask(swapTask, index: swapIndex, context: viewContext)
+                Task {
+                    taskNotes.addTask(swapTask, index: swapIndex, context: viewContext)
+                }
             }
 
-            taskNotes.addTask(draggableTask.text, index: index, context: viewContext)
+            let draggableTaskText = draggableTask.text
+            Task {
+                taskNotes.addTask(draggableTaskText, index: index, context: viewContext)
+            }
             draggableTask.text = ""
             // set location to nil to prevent duplicate updates
             draggableTask.location = nil
