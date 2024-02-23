@@ -255,7 +255,7 @@ class LiveActivities {
                                                      startsAt: startsAt,
                                                      currentSegment: i,
                                                      alert: alert))
-            cumulativeTime += pomo.timeInterval
+            cumulativeTime += pomo.timeInterval + 1.0
         }
         
         let finalAlertContent = AppNotifications.shared.getNotificationContent(for: pomoTimer, at: pomoTimer.order.count-1)
