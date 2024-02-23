@@ -15,7 +15,7 @@ final class OnBoardingUITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = true
         let app = XCUIApplication()
-        app.launchArguments += ["-isUITest"]
+        app.launchArguments += ["-usePreviewData"]
         app.launchWithDefaultsCleared()
     }
 

@@ -14,7 +14,7 @@ extension XCUIApplication {
     }
 
     func launchAsUITest() {
-        self.launchArguments += ["-isUITest"]
+        self.launchArguments += ["-usePreviewData"]
         self.launch()
     }
 

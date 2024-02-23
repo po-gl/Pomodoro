@@ -11,7 +11,7 @@ import OSLog
 
 struct PersistenceController {
     static var shared: PersistenceController = {
-        if ProcessInfo.processInfo.arguments.contains("-isUITest") {
+        if ProcessInfo.processInfo.arguments.contains("-usePreviewData") {
             return preview
         }
         return PersistenceController()
