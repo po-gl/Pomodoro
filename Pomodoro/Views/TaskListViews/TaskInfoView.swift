@@ -168,6 +168,10 @@ struct TaskInfoView: View {
                 editPomosActual = Int(taskItem.pomosActual)
                 editProjects = taskItem.projects as? Set<Project> ?? []
                 initialArchivedProjects = editProjects.filter { $0.archivedDate != nil }
+
+                if scrollToIdOnAppear ?? "" == "projects" {
+                    editingAssignedProjects = true
+                }
             }
             .onDisappear {
                 if !cancelled {
