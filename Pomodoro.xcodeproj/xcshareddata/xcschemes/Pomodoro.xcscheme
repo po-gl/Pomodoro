@@ -51,6 +51,10 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
+            argument = "-usePreviewData"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "-com.apple.CoreData.CloudKitDebug 0"
             isEnabled = "YES">
          </CommandLineArgument>

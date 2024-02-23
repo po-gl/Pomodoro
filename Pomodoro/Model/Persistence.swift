@@ -10,12 +10,16 @@ import GameplayKit
 import OSLog
 
 struct PersistenceController {
+#if DEBUG
     static var shared: PersistenceController = {
         if ProcessInfo.processInfo.arguments.contains("-usePreviewData") {
             return preview
         }
         return PersistenceController()
     }()
+#else
+    static var shared = PersistenceController()
+#endif
 
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
