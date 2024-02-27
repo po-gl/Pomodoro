@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AppFeaturesView: View {
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.isSmallDevice) var isSmallDevice
 
     @StateObject var pomoTimer = PomoTimer()
     @StateObject var tasksOnBar = TasksOnBar()
@@ -28,7 +29,7 @@ struct AppFeaturesView: View {
                 .allowsHitTesting(false)
 
                 Divider()
-                    .padding(.vertical, 15)
+                    .padding(.vertical, isSmallDevice ? 8 : 15)
                 
                 BulletedList(textList: [
                     "Drag tasks to the progress bar, assigning them to Pomodoros.",
@@ -40,7 +41,7 @@ struct AppFeaturesView: View {
                     AnyView(pomoTimerIcon),
                     AnyView(pomoCheck),
                     AnyView(pomoChartIcon),
-                ], spacing: 25)
+                ], spacing: isSmallDevice ? 15 : 25)
                 .frame(maxWidth: 400)
                 .padding(.horizontal, 20)
                 .font(.body)
@@ -111,6 +112,7 @@ struct AppFeaturesView: View {
 #Preview("Base View") {
     AppFeaturesView()
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        .environment(\.isSmallDevice, false)
 }
 
 #Preview("From Sheet") {
@@ -125,4 +127,5 @@ struct AppFeaturesView: View {
             }
         }
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        .environment(\.isSmallDevice, false)
 }

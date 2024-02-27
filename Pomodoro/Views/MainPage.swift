@@ -34,9 +34,11 @@ struct MainPage: View {
 
     @ViewBuilder private var mainStack: some View {
         GeometryReader { proxy in
+            let isSmallDevice = Device.isSmall(geometry: proxy)
+
             VStack {
                 TimerDisplay()
-                    .padding(.top, 30)
+                    .padding(.top, isSmallDevice ? 5 : 30)
                     .verticalOffsetEffect(for: dragOffset, .spring, factor: 0.15)
 
                 Color.clear.contentShape(Rectangle())
@@ -59,16 +61,14 @@ struct MainPage: View {
                 }
                 .verticalOffsetEffect(for: dragOffset, .bouncy)
 
-                HStack {
-                    Spacer()
-                    PomoStepper()
-                        .padding(20)
-                }
-                .padding(.bottom, 10)
-                .verticalOffsetEffect(for: dragOffset, .bouncy, factor: 0.8)
+                PomoStepper()
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    .padding([.trailing, .top], 20)
+                    .padding(.bottom, isSmallDevice ? 20 : 30)
+                    .verticalOffsetEffect(for: dragOffset, .bouncy, factor: 0.8)
 
                 ButtonCluster()
-                    .padding(.bottom, 30)
+                    .padding(.bottom, isSmallDevice ? 10 : 30)
                     .verticalOffsetEffect(for: dragOffset, .spring, factor: 0.7)
             }
         }

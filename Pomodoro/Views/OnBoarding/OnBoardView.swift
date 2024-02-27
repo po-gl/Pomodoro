@@ -26,45 +26,48 @@ struct OnBoardView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            TabView(selection: $selectedTab) {
-                IntroView()
-                    .tag(0)
-                AppFeaturesView()
-                    .tag(1)
-                TipsView(color: bgColor)
-                    .tag(2)
-            } 
-            .accessibilityIdentifier("onBoardingTabView")
-            .tabViewStyle(.page)
-            .background {
-                OnBoardViewBackground(color: bgColor)
-                    .ignoresSafeArea()
-            }
-            .animation(.easeInOut, value: bgColor)
-            .toolbar {
-                Button(action: {
-                    dismiss()
-                }) {
-                    Text("Skip")
-                        .fontDesign(.rounded)
-                        .fontWeight(.bold)
-                        .foregroundStyle(colorScheme == .dark ? .black : bgColor)
-                        .brightness(colorScheme == .dark ? 0.0 : 0.7)
-                        .saturation(colorScheme == .dark ? 1.0 : 0.8)
+        GeometryReader { geometry in
+            NavigationStack {
+                TabView(selection: $selectedTab) {
+                    IntroView()
+                        .tag(0)
+                    AppFeaturesView()
+                        .tag(1)
+                    TipsView(color: bgColor)
+                        .tag(2)
                 }
-                .accessibilityIdentifier("skipWelcomeButton")
+                .environment(\.isSmallDevice, Device.isSmall(geometry: geometry))
+                .accessibilityIdentifier("onBoardingTabView")
+                .tabViewStyle(.page)
+                .background {
+                    OnBoardViewBackground(color: bgColor)
+                        .ignoresSafeArea()
+                }
+                .animation(.easeInOut, value: bgColor)
+                .toolbar {
+                    Button(action: {
+                        dismiss()
+                    }) {
+                        Text("Skip")
+                            .fontDesign(.rounded)
+                            .fontWeight(.bold)
+                            .foregroundStyle(colorScheme == .dark ? .black : bgColor)
+                            .brightness(colorScheme == .dark ? 0.0 : 0.7)
+                            .saturation(colorScheme == .dark ? 1.0 : 0.8)
+                    }
+                    .accessibilityIdentifier("skipWelcomeButton")
+                }
+                .onAppear {
+                    changePageIndicators()
+                }
+                .onChange(of: colorScheme) {
+                    changePageIndicators()
+                }
             }
-            .onAppear {
-                changePageIndicators()
-            }
-            .onChange(of: colorScheme) {
-                changePageIndicators()
-            }
-        }
 #if targetEnvironment(macCatalyst)
-        .ignoresSafeArea(edges: .horizontal)
+            .ignoresSafeArea(edges: .horizontal)
 #endif
+        }
     }
     
     func changePageIndicators() {

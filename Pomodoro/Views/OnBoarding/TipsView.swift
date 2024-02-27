@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TipsView: View {
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.isSmallDevice) var isSmallDevice
     @Environment(\.dismiss) var dismiss
 
     var color: Color
@@ -23,12 +24,12 @@ struct TipsView: View {
                 Spacer()
             }
             .padding(.top, 60)
-            .padding(.bottom, 35)
+            .padding(.bottom, isSmallDevice ? 15 : 35)
             BulletedList(textList: [
                 "Think of the app as a tool to help you improve your own self-discipline rather than an external overseer of your work",
                 "Don’t make expectations for yourself going in, just work and observe how many Pomodoros it takes for you to complete tasks.",
                 "Take it easy at first, but then start to challenge yourself to estimate time accurately and complete tasks quickly (without shortcuts)."
-            ], spacing: 35)
+            ], spacing: isSmallDevice ? 25 : 35)
             .frame(maxWidth: 400)
             .font(.body)
             .fontWeight(.regular)
@@ -60,6 +61,7 @@ struct TipsView: View {
 
 #Preview("Base View") {
     TipsView(color: .barLongBreak)
+        .environment(\.isSmallDevice, false)
 }
 
 #Preview("From Sheet") {
@@ -73,4 +75,5 @@ struct TipsView: View {
                     .padding(.top, 60)
             }
         }
+        .environment(\.isSmallDevice, false)
 }

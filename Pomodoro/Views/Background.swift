@@ -94,7 +94,8 @@ struct Background: View {
     }
 
     private func getTopFrameHeight(proxy: GeometryProxy) -> Double {
-        let height = proxy.size.height / 2.5 + (colorScheme == .dark ? 30.0 : -35.0)
+        let ratio = Device.isSmall(geometry: proxy) ? 0.35 : 0.4
+        let height = proxy.size.height * ratio + (colorScheme == .dark ? 30.0 : -35.0)
         return max(height, 0)
     }
 }
