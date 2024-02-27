@@ -60,7 +60,7 @@ final class TaskListUITests: XCTestCase {
 
     func testiOSUI_flagTaskWithSwipe() throws {
         let app = XCUIApplication()
-        let taskString = "Task 0"
+        let taskString = "Plan out garden"
 
         XCTAssertEqual(app.images["\(taskString)FlagIndicator"].exists, false, "Flag indicator should not before flagging")
 
@@ -110,8 +110,7 @@ final class TaskListUITests: XCTestCase {
         let app = XCUIApplication()
 
         XCTAssertEqual(app.buttons["collapseProjectStackButton"].isHittable, false, "Project stack should initially be collapsed and collapse button should not be hittable")
-        app.textViews["WorkProject"].tapByCoord()
-        XCTAssertEqual(app.buttons["collapseProjectStackButton"].isHittable, true, "Project stack should be opened now and the collapse button should be hittable")
+        openProjectStack()
         app.buttons["collapseProjectStackButton"].tap()
         XCTAssertEqual(app.buttons["collapseProjectStackButton"].isHittable, false, "Project stack should now be collapsed and collapse button should not be hittable")
     }
@@ -135,6 +134,7 @@ final class TaskListUITests: XCTestCase {
 
         // Add a note to the project
         app.textViews["\(testString)Project"].tapByCoord()
+        app.textViews["\(testString)Project"].byCoord().referencedElement.swipeUp(velocity: 0.5)
         app.textViews["\(testString)ProjectNote"].tap()
         UIPasteboard.general.string = testNote
         app.textViews["\(testString)ProjectNote"].doubleTap()
@@ -180,7 +180,7 @@ final class TaskListUITests: XCTestCase {
     func testiOSUI_setProjectAsTopThenAssignAndRemoveTaskFromTopProject() throws {
         let app = XCUIApplication()
         let testProject = "TestProject\(UUID().uuidString.prefix(6))"
-        let testTask = "Task 0"
+        let testTask = "Plan out garden"
         openProjectStack()
         addProject(testProject)
 
@@ -214,7 +214,7 @@ final class TaskListUITests: XCTestCase {
 
     func testiOSUI_assignTaskAndViewInProjectInfo() throws {
         let app = XCUIApplication()
-        let testProject = "Work"
+        let testProject = "Veggie Project"
         let testTask = "TestTask\(UUID().uuidString.prefix(6))"
 
         addTask(testTask)
@@ -256,8 +256,6 @@ final class TaskListUITests: XCTestCase {
 
     private func openProjectStack() {
         let app = XCUIApplication()
-        if !app.buttons["collapseProjectStackButton"].isHittable {
-            app.textViews["WorkProject"].tapByCoord()
-        }
+        app.textViews["Veggie ProjectProject"].tapByCoord()
     }
 }
