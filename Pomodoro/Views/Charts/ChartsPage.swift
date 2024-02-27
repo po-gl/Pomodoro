@@ -28,8 +28,8 @@ struct ChartsPage: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 20) {
-                    cumulativeTimesCard
                     pomodoroEstimationsCard
+                    cumulativeTimesCard
                     tasksCompletedCard
                 }
                 .padding()
