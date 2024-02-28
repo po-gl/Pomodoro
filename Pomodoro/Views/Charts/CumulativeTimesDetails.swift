@@ -403,7 +403,7 @@ struct CumulativeTimesDetails: View {
     @Environment(\.managedObjectContext) var viewContext
     @Environment(\.colorScheme) var colorScheme
     
-    @AppStorage("cumulativeTimesChartScale", store: .pomo) var chartScale: ChartScale = .day
+    @AppStorage("cumulativeTimesChartScale", store: .pomo) var chartScale: ChartScale = .week
 
     @State var averageFocused: Bool = false
     @State var toggles: [PomoStatus: Bool] = [.work: true, .rest: true, .longBreak: true]
