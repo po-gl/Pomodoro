@@ -1,5 +1,5 @@
 # Pomodoro
-A watchOS and iOS focus timer app
+A iOS and watchOS focus timer app
 
 `Pomodoro` is a watchOS and iOS app that sets focus timers using the *Pomodoro Technique*.
 The technique was
@@ -10,16 +10,24 @@ by Francesco Cirillo in the '80s to *enhance focus*, *increase decision awarenes
 
 Features:
 - Set a sequential timer of up to 6 Pomodoro intervals that notify at each phase change 
-- Label Pomodoro intervals with *tasks* to focus on
+- Drag-and-drop tasks to label Pomodoro intervals
 - Maintain a checklist of *tasks* and *projects*
+- Track progress in a live activity (enabled through an [external Rust service](https://github.com/po-gl/pomodoro-notification-service))
 - View and scrub through timer progress
-- Check progress with iOS and watchOS widgets
+- Reflect on results with charts
+- Track progress with iOS and watchOS widgets
+- Settings to adjust work-rest-break time durations
 - Pixel buddies 🍅🫐🍌
 
 ---
 
 <p align="middle"> 
-  <img align="center" width="280" alt="iOS dark" src="https://github.com/po-gl/Pomodoro/assets/42399205/28a43be6-d6a6-449d-ad30-64057a99e90a">
-  <img align="center" width="280" alt="iOS light" src="https://github.com/po-gl/Pomodoro/assets/42399205/c1f0e300-5fd5-458b-b038-5a7e345857d9">
-  <img align="center" width="200" alt="watchOS" src="https://user-images.githubusercontent.com/42399205/226493632-c7e81b3e-dba4-47c1-99cc-e41acd872f77.png">
+  <img align="center" width="250" alt="iOS dark" src="https://github.com/po-gl/Pomodoro/assets/42399205/1c0d53ba-07ec-4c7a-936e-51f0fd2265c8">
+  <img align="center" width="250" alt="iOS TaskList" src="https://github.com/po-gl/Pomodoro/assets/42399205/f70dcad1-6c4c-4e2d-bd4a-38a399aea5eb">
+  <img align="center" width="250" alt="iOS Charts" src="https://github.com/po-gl/Pomodoro/assets/42399205/fbd4354b-d827-4a61-a6ff-060ba790f6da">
+</p>
+
+<p align="middle">
+  <img align="center" width="200" alt="watchOS" src="https://github.com/po-gl/Pomodoro/assets/42399205/899dedb1-8837-41a8-a61e-771d6b0d2faf">
+  <img align="center" width="200" alt="watchOS 2" src="https://github.com/po-gl/Pomodoro/assets/42399205/92391544-7f4c-41f7-a10e-7920ef0b69ad">
 </p>
