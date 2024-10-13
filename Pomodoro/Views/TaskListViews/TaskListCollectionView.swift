@@ -90,7 +90,6 @@ class TaskListViewController: UIViewController {
         showProjects ? 1 : 0
     }
 
-    private var projectStackCell: UICollectionViewCell?
     private var isProjectStackCollapsed = ObservableValue(true)
     private var projectStackSubscriber: AnyCancellable?
     private var projectStackIndex: IndexPath?
@@ -351,7 +350,6 @@ class TaskListViewController: UIViewController {
             cell.contentConfiguration = UIHostingConfiguration {
                 ProjectStack(isCollapsed: isProjectStackCollapsed)
             }
-            projectStackCell = cell
         }
 
         taskCellRegistration = UICollectionView.CellRegistration<UICollectionViewCell, NSManagedObject> { [unowned self] cell, indexPath, item in
@@ -444,14 +442,9 @@ class TaskListViewController: UIViewController {
                                                                     for: indexPath,
                                                                     item: nil)
             case .projectsPlaceholder:
-                if let projectStackCell {
-                    // Use cached cell
-                    return projectStackCell
-                } else {
-                    return collectionView.dequeueConfiguredReusableCell(using: self.projectStackCellRegistration,
-                                                                        for: indexPath,
-                                                                        item: nil)
-                }
+                return collectionView.dequeueConfiguredReusableCell(using: self.projectStackCellRegistration,
+                                                                    for: indexPath,
+                                                                    item: nil)
             }
         }
 
